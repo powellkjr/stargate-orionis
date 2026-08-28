@@ -29,6 +29,7 @@ select,input[type=file],button{width:100%;min-height:44px;border:1px solid #3d46
 button{cursor:pointer;margin-top:8px}
 button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.action-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .status{margin-top:12px;padding:10px;background:#11161d;border-radius:8px;color:var(--muted);font-size:.84rem;min-height:42px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .toolbar button{width:auto;margin:0}
@@ -105,8 +106,9 @@ if (window.location.protocol === "file:") {
 
   <label for="joinCandidate">Join selected with</label>
   <select id="joinCandidate" disabled><option>No legal join candidates</option></select>
-  <div class="row">
+  <div class="action-row">
     <button id="joinSelected" type="button" disabled>Join</button>
+    <button id="stackSelected" type="button" disabled>Stack</button>
     <button id="splitSelected" type="button" disabled>Split Group</button>
   </div>
 

@@ -17,6 +17,7 @@ const removeButton=document.getElementById("removeSelected");
 const rotateButton=document.getElementById("rotateDoor");
 const joinCandidate=document.getElementById("joinCandidate");
 const joinButton=document.getElementById("joinSelected");
+const stackButton=document.getElementById("stackSelected");
 const splitButton=document.getElementById("splitSelected");
 const selectionStatus=document.getElementById("selectionStatus");
 
@@ -217,7 +218,10 @@ function joinCandidatesFor(ref){
 
 function updateSelectionControls(){
   const room=physicalRoom(selectedId);
+  const definition=room&&roomDef(room.roomId);
   removeButton.disabled=!room;rotateButton.disabled=!room;
+  stackButton.disabled=!room||room.stack>=definition.maxStack;
+  stackButton.textContent=room&&definition.maxStack>1?`Stack (${room.stack}/${definition.maxStack})`:"Stack";
   splitButton.disabled=!selectedGroupId;
   const ref=selectedEntityRef(),candidates=joinCandidatesFor(ref);
   joinCandidate.replaceChildren();
@@ -311,6 +315,11 @@ rotateButton.addEventListener("click",()=>{
 
 removeButton.addEventListener("click",()=>{if(selectedId)removePhysicalRoom(selectedId)});
 joinButton.addEventListener("click",()=>createGroup(selectedEntityRef(),joinCandidate.value));
+stackButton.addEventListener("click",()=>{
+  const room=physicalRoom(selectedId),definition=room&&roomDef(room.roomId);
+  if(!room||room.stack>=definition.maxStack)return;
+  room.stack+=1;render();setStatus(`${definition.name} ${room.instanceId} advanced to stack ${room.stack}.`);
+});
 splitButton.addEventListener("click",()=>{if(selectedGroupId)splitGroup(selectedGroupId)});
 
 document.getElementById("resetGrid").addEventListener("click",()=>{

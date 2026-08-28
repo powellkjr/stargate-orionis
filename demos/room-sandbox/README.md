@@ -18,7 +18,8 @@ Browser prototype for testing Stargate base room footprints.
 - Exposed edges are split visually into three sections.
 - Doors occupy the middle edge section.
 - Rotate moves the selected door clockwise: North -> East -> South -> West.
-- Stack level is represented by border thickness.
+- The Stack action advances a selected stackable physical room by one level, up to its catalog `maxStack`.
+- Stack level is represented by thicker room borders (stronger walls).
 
 ## Run
 
