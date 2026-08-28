@@ -10,10 +10,66 @@ const CATALOG_URL="../shared/data/rooms.json";
   const stackSelect=document.getElementById("stackSelect");
   const status=document.getElementById("status");
   const legend=document.getElementById("legend");
+  const roomPreview=document.getElementById("roomPreview");
+
+  const PREVIEW_LABELS={joinGroup:"Join group",maxStack:"Maximum stack",joinStatus:"Joining status",stackStatus:"Stacking status"};
 
   function setStatus(s){status.textContent=s}
 
   function roomDef(id){return getRoomById(catalog,id)}
+
+  function fieldLabel(key){
+    return PREVIEW_LABELS[key] ?? key.replace(/([a-z0-9])([A-Z])/g,"$1 $2").replace(/^./,c=>c.toUpperCase());
+  }
+
+  function valueNode(value){
+    if(Array.isArray(value)){
+      const list=document.createElement("ul");
+      for(const item of value){const li=document.createElement("li");li.appendChild(valueNode(item));list.appendChild(li)}
+      return list;
+    }
+    if(value && typeof value==="object"){
+      const list=document.createElement("dl");list.className="nested";
+      for(const [key,item] of Object.entries(value)){
+        const dt=document.createElement("dt");dt.textContent=fieldLabel(key);
+        const dd=document.createElement("dd");dd.appendChild(valueNode(item));list.append(dt,dd);
+      }
+      return list;
+    }
+    const text=document.createElement("span");
+    text.textContent=value===null?"Unknown":typeof value==="boolean"?(value?"Yes":"No"):String(value);
+    return text;
+  }
+
+  function renderPreview(){
+    const instance=placed.find(p=>p.instanceId===selectedId) ?? null;
+    const def=instance?roomDef(instance.roomId):roomDef(roomSelect.value);
+    roomPreview.replaceChildren();
+    if(!def){const message=document.createElement("p");message.className="muted";message.textContent="Select a room to inspect its current design data.";roomPreview.appendChild(message);return}
+
+    const heading=document.createElement("h2");
+    const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=def.color;
+    heading.append(swatch,document.createTextNode(def.name));roomPreview.appendChild(heading);
+
+    const fields=document.createElement("dl");
+    const hidden=new Set(["id","name","color","openQuestions"]);
+    if(instance){
+      const dt=document.createElement("dt");dt.textContent="Placed instance";
+      const dd=document.createElement("dd");dd.textContent=`Column ${instance.col+1}, row ${instance.row+1}, stack ${instance.stack}`;
+      fields.append(dt,dd);
+    }
+    for(const [key,value] of Object.entries(def)){
+      if(hidden.has(key))continue;
+      const dt=document.createElement("dt");dt.textContent=fieldLabel(key);
+      const dd=document.createElement("dd");dd.appendChild(valueNode(value));fields.append(dt,dd);
+    }
+    if(def.openQuestions?.length){
+      const questions=document.createElement("div");questions.className="questions";
+      const label=document.createElement("strong");label.textContent="Open questions";
+      questions.append(label,valueNode(def.openQuestions));fields.appendChild(questions);
+    }
+    roomPreview.appendChild(fields);
+  }
 
   function populate(){
     roomSelect.innerHTML=""; legend.innerHTML="";
@@ -28,6 +84,7 @@ const CATALOG_URL="../shared/data/rooms.json";
       legend.appendChild(li);
     }
     updateStack();
+    renderPreview();
   }
 
   function updateStack(){
@@ -154,12 +211,13 @@ const CATALOG_URL="../shared/data/rooms.json";
           addEdgeSlots(el,joins,wholeSideEligible?doorSide:null);
 
           el.addEventListener("click",e=>{
-            e.stopPropagation();selectedId=p.instanceId;render();setStatus(def.name+" selected.");
+            e.stopPropagation();selectedId=p.instanceId;roomSelect.value=p.roomId;updateStack();render();setStatus(def.name+" selected.");
           });
           grid.appendChild(el);
         }
       }
     }
+    renderPreview();
   }
 
   document.getElementById("rotateDoor").addEventListener("click",()=>{
@@ -185,7 +243,7 @@ const CATALOG_URL="../shared/data/rooms.json";
     place(c,r,g);
   });
 
-  roomSelect.addEventListener("change",updateStack);
+  roomSelect.addEventListener("change",()=>{selectedId=null;updateStack();render()});
 
   document.getElementById("jsonFile").addEventListener("change",async e=>{
     const f=e.target.files?.[0]; if(!f)return;

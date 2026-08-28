@@ -17,7 +17,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
-.app{display:grid;grid-template-columns:minmax(250px,320px) 1fr;min-height:100vh}
+.app{display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);min-height:100vh}
 aside{padding:16px;background:var(--panel);border-right:1px solid #30363d}
 main{padding:16px;min-width:0}
 h1{font-size:1.2rem;margin:0 0 6px}
@@ -31,6 +31,7 @@ button{cursor:pointer;margin-top:8px}
 .status{margin-top:12px;padding:10px;background:#11161d;border-radius:8px;color:var(--muted);font-size:.84rem;min-height:42px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .toolbar button{width:auto;margin:0}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:16px;align-items:start}
 .grid-wrap{overflow:auto;border:1px solid #30363d;background:#090d12;padding:12px}
 #grid{position:relative;display:grid;grid-template-columns:repeat(12,var(--cell));grid-template-rows:repeat(10,var(--cell));width:calc(12 * var(--cell));height:calc(10 * var(--cell));background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:var(--cell) var(--cell);border-right:1px solid var(--grid);border-bottom:1px solid var(--grid)}
 .cell{width:var(--cell);height:var(--cell);min-height:0;border:0;border-radius:0;padding:0;margin:0;background:transparent;z-index:1}
@@ -49,6 +50,16 @@ button{cursor:pointer;margin-top:8px}
 .legend{display:grid;gap:6px;margin-top:8px}
 .legend-item{display:flex;align-items:center;gap:8px;font-size:.82rem}
 .swatch{width:16px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,.4)}
+.preview{background:var(--panel);border:1px solid #30363d;border-radius:10px;padding:14px;max-height:calc(100vh - 76px);overflow:auto}
+.preview h2{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:1.1rem}
+.preview dl{display:grid;grid-template-columns:minmax(110px,.7fr) minmax(0,1.3fr);gap:7px 10px;margin:0}
+.preview dt{color:var(--muted);font-size:.78rem;font-weight:600;overflow-wrap:anywhere}
+.preview dd{margin:0;font-size:.82rem;overflow-wrap:anywhere}
+.preview ul{margin:0;padding-left:18px}.preview li+li{margin-top:4px}
+.preview .nested{grid-column:1/-1;margin:3px 0 7px;padding:9px;background:#11161d;border-radius:7px}
+.preview .questions{grid-column:1/-1;border-left:3px solid #f2c94c;padding:8px 10px;background:#292510;border-radius:0 7px 7px 0}
+.preview .questions strong{display:block;color:#f2c94c;margin-bottom:6px}
+@media(max-width:1100px){.workspace{grid-template-columns:1fr}.preview{max-height:none}}
 @media(max-width:760px){.app{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid #30363d}}
 </style>
 </head>
@@ -101,8 +112,14 @@ if (window.location.protocol === "file:") {
     <button id="resetGrid" type="button">Reset grid</button>
     <button id="placeGate" type="button">Place gate room</button>
   </div>
-  <div class="grid-wrap">
-    <div id="grid" aria-label="Base room grid"></div>
+  <div class="workspace">
+    <div class="grid-wrap">
+      <div id="grid" aria-label="Base room grid"></div>
+    </div>
+    <section id="roomPreview" class="preview" aria-live="polite">
+      <h2>Room preview</h2>
+      <p class="muted">Select a room to inspect its current design data.</p>
+    </section>
   </div>
 </main>
 </div>
