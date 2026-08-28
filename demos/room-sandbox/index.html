@@ -27,6 +27,7 @@ p{margin-top:0}
 label{display:block;color:var(--muted);font-size:.82rem;margin:12px 0 6px}
 select,input[type=file],button{width:100%;min-height:44px;border:1px solid #3d4653;border-radius:8px;background:var(--panel2);color:var(--text);padding:8px 10px;font:inherit}
 button{cursor:pointer;margin-top:8px}
+button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .status{margin-top:12px;padding:10px;background:#11161d;border-radius:8px;color:var(--muted);font-size:.84rem;min-height:42px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
@@ -39,6 +40,7 @@ button{cursor:pointer;margin-top:8px}
 .room-cell{position:absolute;width:var(--cell);height:var(--cell);z-index:2;pointer-events:auto}
 .room-fill{position:absolute;background:var(--room-color);border-style:solid;border-color:rgba(0,0,0,.78);border-width:2px;border-radius:7px;display:flex;align-items:center;justify-content:center;text-align:center;color:#071018;font-weight:700;font-size:.72rem;line-height:1.05;user-select:none;overflow:hidden}
 .room-cell.selected .room-fill{outline:3px solid white;outline-offset:-3px}
+.room-cell.group-selected .room-fill{box-shadow:inset 0 0 0 3px #7dd3fc}
 .edge-slot{position:absolute;background:rgba(255,255,255,.12);z-index:4}
 .edge-slot.n1,.edge-slot.n2,.edge-slot.n3,.edge-slot.s1,.edge-slot.s2,.edge-slot.s3{height:5px;width:calc((100% - 16px)/3)}
 .edge-slot.w1,.edge-slot.w2,.edge-slot.w3,.edge-slot.e1,.edge-slot.e2,.edge-slot.e3{width:5px;height:calc((100% - 16px)/3)}
@@ -76,7 +78,7 @@ if (window.location.protocol === "file:") {
 <div class="app">
 <aside>
   <h1>Stargate Room Sandbox v2</h1>
-  <p class="muted">Adjacent compatible rooms auto-join by removing only their shared padding.</p>
+  <p class="muted">Place physical rooms, then deliberately join compatible rooms into 1×2 or 2×2 Groups.</p>
 
   <label for="jsonFile">Room JSON</label>
   <input id="jsonFile" type="file" accept=".json,application/json">
@@ -99,7 +101,16 @@ if (window.location.protocol === "file:") {
     </div>
   </div>
 
-  <button id="removeSelected" type="button">Remove selected</button>
+  <button id="removeSelected" type="button" disabled>Remove Room</button>
+
+  <label for="joinCandidate">Join selected with</label>
+  <select id="joinCandidate" disabled><option>No legal join candidates</option></select>
+  <div class="row">
+    <button id="joinSelected" type="button" disabled>Join</button>
+    <button id="splitSelected" type="button" disabled>Split Group</button>
+  </div>
+
+  <div id="selectionStatus" class="status">No physical room selected.</div>
 
   <div id="status" class="status">Loading shared room catalog...</div>
 
@@ -110,7 +121,7 @@ if (window.location.protocol === "file:") {
 <main>
   <div class="toolbar">
     <button id="resetGrid" type="button">Reset grid</button>
-    <button id="placeGate" type="button">Place gate room</button>
+    <button id="placeRoom" type="button">Place Room</button>
   </div>
   <div class="workspace">
     <div class="grid-wrap">

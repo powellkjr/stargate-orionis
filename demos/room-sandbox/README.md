@@ -11,8 +11,10 @@ Browser prototype for testing Stargate base room footprints.
 ## Current rules
 
 - 80x80 px grid cells.
-- Same non-null `joinGroup` means adjacent rooms can join.
-- Joined rooms consume only shared padding.
+- Same non-null `joinGroup` and matching Construction Tier make adjacent rooms compatible candidates for a deliberate join.
+- Legal joined Groups are 1x2 pairs or 2x2 Groups built from two existing 1x2 Groups.
+- Joined rooms consume only shared padding while unjoined adjacent rooms retain their separation.
+- Splitting reverses the stored Group hierarchy without recreating physical rooms.
 - Exposed edges are split visually into three sections.
 - Doors occupy the middle edge section.
 - Rotate moves the selected door clockwise: North -> East -> South -> West.
