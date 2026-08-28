@@ -9,7 +9,8 @@
     "maxStack": 1,
     "staffed": true,
     "joinStatus": "known",
-    "stackStatus": "known"
+    "stackStatus": "known",
+    "coreSet": "TBD"
   },
   {
     "id": "maintenance",
@@ -21,13 +22,23 @@
     "joinGroup": "maintenance",
     "maxStack": 1,
     "staffed": true,
-    "staffingProgression": [2, 4, 6],
+    "staffingPerPhysicalRoom": 2,
+    "joinedStaffingCapacity": {
+      "1x1": 2,
+      "1x2": 4,
+      "2x2": 8
+    },
+    "staffingFlexibility": "Joined Maintenance Groups may operate understaffed or overstaffed.",
     "joinStatus": "known",
-    "stackStatus": "unknown",
+    "joiningEffect": "Joins normally using the standard 1x2 and 2x2 Group rules.",
+    "stackStatus": "known",
+    "stackable": false,
+    "constructionTierUpgrade": "Maintenance must perform its own Construction Tier upgrade.",
     "queueSize": 4,
     "multipleRoomsAllowed": true,
-    "specializationPossible": true,
-    "openQuestions": ["What are the exact joining and stacking effects for Maintenance?"]
+    "specializationPossible": false,
+    "specializationRule": "Maintenance does not specialize; capability improves by installing better Cores.",
+    "coreSet": "Construction Core"
   },
   {
     "id": "tech_platform",
@@ -41,6 +52,7 @@
     "joinStatus": "known",
     "stackStatus": "known",
     "baseCoreLayout": {"focusSlots": 1, "supportSlots": 2},
+    "coreSet": "1 Focus Core slot and 2 Support Core slots at base",
     "openQuestions": ["Is the Tech Platform formally staffed or unstaffed?"]
   },
   {
@@ -55,6 +67,7 @@
     "staffingCapacity": 4,
     "joinStatus": "unknown",
     "stackStatus": "unknown",
+    "coreSet": "TBD",
     "openQuestions": ["Can Response Rooms join?", "Can Response Rooms stack, and what does stacking change?"]
   },
   {
@@ -70,6 +83,7 @@
     "stackStatus": "unknown",
     "baseFunction": "Captive capacity and containment slots",
     "degradableProperty": "Containment quality and habitability",
+    "coreSet": "TBD",
     "openQuestions": ["What is the Holding staffing progression?", "Can Holding rooms join or stack?"]
   },
   {
@@ -85,6 +99,7 @@
     "stackStatus": "unknown",
     "baseFunction": "Patient beds and recovery capacity",
     "degradableProperty": "Passive HP recovery rate",
+    "coreSet": "TBD",
     "openQuestions": ["What is the Infirmary staffing progression?", "Can Infirmaries join or stack?"]
   },
   {
@@ -101,6 +116,7 @@
     "joinStatus": "unknown",
     "stackStatus": "known",
     "stackingEffect": "Increases locker capacity, not resident or bed count",
+    "coreSet": "TBD",
     "openQuestions": ["Can Living Quarters join?"]
   },
   {
@@ -116,6 +132,7 @@
     "stackStatus": "unknown",
     "baseFunction": "Intake, custody creation, inspection, classification, and temporary handling",
     "inventoryType": "Generic Receiving INV",
+    "coreSet": "TBD",
     "openQuestions": ["What is the Receiving staffing progression?", "Can Receiving rooms join or stack?"]
   },
   {
@@ -131,6 +148,7 @@
     "stackStatus": "unknown",
     "baseFunction": "Hazardous, abnormal, biological, fauna, flora, and specimen storage",
     "inventoryType": "CC",
+    "coreSet": "TBD",
     "openQuestions": ["Is Containment staffed?", "Can Containment rooms join or stack?"]
   },
   {
@@ -148,6 +166,7 @@
     "activeProjectsPerJoinedRoom": 1,
     "queueSize": 4,
     "stackingEffect": "Increases Service and Core envelope, not project concurrency",
+    "coreSet": "TBD",
     "openQuestions": ["What is the exact Core-slot progression for Analysis?"]
   },
   {
@@ -165,6 +184,7 @@
     "activeHypothesesPerJoinedRoom": 1,
     "queueSize": 4,
     "stackingEffect": "Increases capability and Core Service envelope, not project concurrency",
+    "coreSet": "TBD",
     "openQuestions": ["What is the exact Core-slot progression for Research?"]
   },
   {
@@ -179,6 +199,7 @@
     "joinStatus": "unknown",
     "stackStatus": "known",
     "coreSlotsByStack": [2, 4, 6],
+    "coreSet": "2, 4, or 6 Core slots according to stack level",
     "baseFunction": "Automated physical Knowledge Cargo read and write infrastructure"
   },
   {
@@ -195,6 +216,7 @@
     "knowledgeSlots": 3,
     "roomStatus": "implementation_not_fully_defined",
     "baseFunction": "Combines existing SGC Knowledge to identify researchable relationships",
+    "coreSet": "TBD",
     "openQuestions": ["What is the final Discovery room structure?", "Is Discovery staffed?", "Can Discovery rooms join or stack?"]
   }
 ]
