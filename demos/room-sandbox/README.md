@@ -20,7 +20,9 @@ Browser prototype for testing Stargate base room footprints.
 
 ## Run
 
-Serve the repository root with a simple web server, for example:
+The sandbox uses an ES module and loads the shared room catalog with `fetch`, so
+opening `index.html` directly from the filesystem will not work. Serve the
+repository root with a simple web server instead:
 
 `python -m http.server 8000`
 

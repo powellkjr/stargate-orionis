@@ -53,6 +53,15 @@ button{cursor:pointer;margin-top:8px}
 </style>
 </head>
 <body>
+<noscript>This prototype requires JavaScript.</noscript>
+<script>
+if (window.location.protocol === "file:") {
+  document.addEventListener("DOMContentLoaded", () => {
+    const status = document.getElementById("status");
+    status.textContent = "This prototype must be served over HTTP. From the repository root, run: python -m http.server 8000, then open http://localhost:8000/demos/room-sandbox/";
+  });
+}
+</script>
 <div class="app">
 <aside>
   <h1>Stargate Room Sandbox v2</h1>
