@@ -1,0 +1,47 @@
+[
+  {
+    "id": "gate_room",
+    "name": "Gate Room",
+    "color": "#c9a227",
+    "width": 3,
+    "height": 3,
+    "joinGroup": "gate",
+    "maxStack": 1
+  },
+  {
+    "id": "med_bay",
+    "name": "Med Bay",
+    "color": "#6fcf97",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "med_bay",
+    "maxStack": 3
+  },
+  {
+    "id": "research_lab",
+    "name": "Research Lab",
+    "color": "#56ccf2",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "research_lab",
+    "maxStack": 3
+  },
+  {
+    "id": "security",
+    "name": "Security",
+    "color": "#eb5757",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxStack": 2
+  },
+  {
+    "id": "workshop",
+    "name": "Workshop",
+    "color": "#f2994a",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "workshop",
+    "maxStack": 3
+  }
+]
