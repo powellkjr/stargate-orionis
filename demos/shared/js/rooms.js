@@ -7,12 +7,13 @@ export function validateRooms(data) {
     const color = room.color.toLowerCase();
     if (colors.has(color)) throw new Error(`Duplicate room color: ${room.color}`);
     ids.add(room.id); colors.add(color);
-    const result = {...room, width: room.width ?? 1, height: room.height ?? 1, maxStack: room.maxStack ?? 1, joinGroup: room.joinGroup ?? null};
+    const {maxStack: legacyMaxStack, ...source} = room;
+    const result = {...source, width: room.width ?? 1, height: room.height ?? 1, maxConstructionTier: room.maxConstructionTier ?? legacyMaxStack ?? 1, joinGroup: room.joinGroup ?? null};
     if (!Number.isInteger(result.width) || !Number.isInteger(result.height) || result.width < 1 || result.height < 1) {
       throw new Error(`${room.id}: width and height must be positive integers.`);
     }
-    if (!Number.isInteger(result.maxStack) || result.maxStack < 1 || result.maxStack > 3) {
-      throw new Error(`${room.id}: maxStack must be an integer from 1-3.`);
+    if (!Number.isInteger(result.maxConstructionTier) || result.maxConstructionTier < 1 || result.maxConstructionTier > 3) {
+      throw new Error(`${room.id}: maxConstructionTier must be an integer from 1-3.`);
     }
     return result;
   });

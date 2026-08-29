@@ -11,7 +11,7 @@ Browser prototype for testing Stargate base room footprints.
 ## Current rules
 
 - 80x80 px grid cells.
-- Same non-null `joinGroup` and matching Construction Tier make adjacent rooms compatible candidates for a deliberate join.
+- Same non-null `joinGroup` and matching Construction Tier (CT) make adjacent rooms compatible candidates for a deliberate join.
 - Rooms marked `unique` can only be placed once and cannot join.
 - Legal joined Groups are 1x2 pairs or 2x2 Groups built from two existing 1x2 Groups.
 - Joined rooms consume only shared padding while unjoined adjacent rooms retain their separation.
@@ -19,9 +19,9 @@ Browser prototype for testing Stargate base room footprints.
 - Exposed edges are split visually into three sections.
 - Doors occupy the middle edge section.
 - Rotate moves the selected door clockwise: North -> East -> South -> West.
-- The Stack action advances a selected stackable physical room by one level, up to its catalog `maxStack`.
-- Stacking a selected Group advances every physical child together, and joining requires matching stack levels.
-- Stack level is represented by thicker room borders (stronger walls).
+- The Upgrade CT action advances a selected physical room by one Construction Tier, up to `maxConstructionTier`.
+- Upgrading a selected Group advances every physical child together, and joining requires matching CTs.
+- Higher CT is represented by thicker room borders (stronger walls).
 - Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
 
 ## Run

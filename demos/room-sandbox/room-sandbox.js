@@ -8,7 +8,7 @@ let selectedId=null, selectedGroupId=null, nextRoomId=1, nextGroupId=1;
 
 const grid=document.getElementById("grid");
 const roomSelect=document.getElementById("roomSelect");
-const stackSelect=document.getElementById("stackSelect");
+const ctSelect=document.getElementById("ctSelect");
 const status=document.getElementById("status");
 const legend=document.getElementById("legend");
 const roomPreview=document.getElementById("roomPreview");
@@ -17,12 +17,12 @@ const removeButton=document.getElementById("removeSelected");
 const rotateButton=document.getElementById("rotateDoor");
 const joinCandidate=document.getElementById("joinCandidate");
 const joinButton=document.getElementById("joinSelected");
-const stackButton=document.getElementById("stackSelected");
+const ctButton=document.getElementById("upgradeCt");
 const staffButton=document.getElementById("addStaff");
 const splitButton=document.getElementById("splitSelected");
 const selectionStatus=document.getElementById("selectionStatus");
 
-const PREVIEW_LABELS={joinGroup:"Join group",maxStack:"Maximum stack",joinStatus:"Joining status",stackStatus:"Stacking status"};
+const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",joinStatus:"Joining status",constructionTierStatus:"CT status"};
 const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
 
 function setStatus(message){status.textContent=message}
@@ -103,7 +103,7 @@ function renderPreview(){
   const fields=document.createElement("dl");
   const hidden=new Set(["id","name","color","openQuestions"]);
   if(instance){
-    const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,stack:instance.stack,constructionTier:instance.constructionTier,staff:instance.staffCount,doorSide:["North","East","South","West"][instance.doorIndex%4]};
+    const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,constructionTier:`CT${instance.constructionTier}`,staff:instance.staffCount,doorSide:["North","East","South","West"][instance.doorIndex%4]};
     for(const [key,value] of Object.entries(details)){const term=document.createElement("dt");term.textContent=fieldLabel(key);const detail=document.createElement("dd");detail.textContent=value;fields.append(term,detail)}
   }
   if(selectedGroupId){
@@ -145,8 +145,8 @@ function populate(){
 function updateRoomControls(){
   const definition=roomDef(roomSelect.value);
   if(!definition)return;
-  for(const option of stackSelect.options)option.disabled=Number(option.value)>definition.maxStack;
-  if(Number(stackSelect.value)>definition.maxStack)stackSelect.value=String(definition.maxStack);
+  for(const option of ctSelect.options)option.disabled=Number(option.value)>definition.maxConstructionTier;
+  if(Number(ctSelect.value)>definition.maxConstructionTier)ctSelect.value=String(definition.maxConstructionTier);
   placeButton.textContent=`Place ${definition.name}`;
 }
 
@@ -160,7 +160,7 @@ function place(col,row,definition=roomDef(roomSelect.value)){
   if(col<0||row<0||col+definition.width>COLS||row+definition.height>ROWS){setStatus("Room would extend past grid.");return false}
   if(overlaps(col,row,definition.width,definition.height)){setStatus("Room overlaps another room.");return false}
   const tiers=staffingTiers(definition);
-  const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,stack:Number(stackSelect.value),doorIndex:0,constructionTier:"CT1",staffTierIndex:0,staffCount:tiers[0]??0};
+  const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,constructionTier:Number(ctSelect.value),doorIndex:0,staffTierIndex:0,staffCount:tiers[0]??0};
   placed.push(room);selectPhysicalRoom(room.instanceId);setStatus(`${definition.name} placed.`);return true;
 }
 
@@ -200,11 +200,10 @@ function matchingJoinProperties(firstRef,secondRef){
   const firstRooms=entityRoomIds(firstRef).map(physicalRoom),secondRooms=entityRoomIds(secondRef).map(physicalRoom);
   if(!firstRooms.length||!secondRooms.length)return false;
   const firstDefinition=roomDef(firstRooms[0].roomId),secondDefinition=roomDef(secondRooms[0].roomId);
-  return firstRooms.every(room=>room.roomId===firstRooms[0].roomId&&room.constructionTier===firstRooms[0].constructionTier&&room.stack===firstRooms[0].stack)
-    &&secondRooms.every(room=>room.roomId===secondRooms[0].roomId&&room.constructionTier===secondRooms[0].constructionTier&&room.stack===secondRooms[0].stack)
+  return firstRooms.every(room=>room.roomId===firstRooms[0].roomId&&room.constructionTier===firstRooms[0].constructionTier)
+    &&secondRooms.every(room=>room.roomId===secondRooms[0].roomId&&room.constructionTier===secondRooms[0].constructionTier)
     &&canRoomsJoin(firstDefinition,secondDefinition)
-    &&firstRooms[0].constructionTier===secondRooms[0].constructionTier
-    &&firstRooms[0].stack===secondRooms[0].stack;
+    &&firstRooms[0].constructionTier===secondRooms[0].constructionTier;
 }
 
 function isLegalJoin(firstRef,secondRef){
@@ -239,11 +238,11 @@ function joinCandidatesFor(ref){
 function updateSelectionControls(){
   const room=physicalRoom(selectedId);
   const definition=room&&roomDef(room.roomId);
-  const stackRooms=entityRoomIds(selectedEntityRef()).map(physicalRoom).filter(Boolean);
+  const ctRooms=entityRoomIds(selectedEntityRef()).map(physicalRoom).filter(Boolean);
   const tiers=staffingTiers(definition);
   removeButton.disabled=!room;rotateButton.disabled=!room;
-  stackButton.disabled=!stackRooms.length||stackRooms.some(member=>member.stack>=roomDef(member.roomId).maxStack);
-  stackButton.textContent=stackRooms.length>1?`Stack Group (${stackRooms[0].stack}/${definition.maxStack})`:room&&definition.maxStack>1?`Stack (${room.stack}/${definition.maxStack})`:"Stack";
+  ctButton.disabled=!ctRooms.length||ctRooms.some(member=>member.constructionTier>=roomDef(member.roomId).maxConstructionTier);
+  ctButton.textContent=ctRooms.length>1?`Upgrade Group CT (CT${ctRooms[0].constructionTier}/CT${definition.maxConstructionTier})`:room&&definition.maxConstructionTier>1?`Upgrade CT (CT${room.constructionTier}/CT${definition.maxConstructionTier})`:"Max CT";
   staffButton.disabled=!room||!tiers.length||room.staffTierIndex>=tiers.length-1;
   staffButton.textContent=room&&tiers.length&&room.staffTierIndex>=tiers.length-1?"Max Staff":"Add Staff";
   splitButton.disabled=!selectedGroupId;
@@ -335,10 +334,10 @@ function render(){
       const fill=document.createElement("div");fill.className="room-fill";
       const top=joins.north?0:PAD,right=joins.east?0:PAD,bottom=joins.south?0:PAD,left=joins.west?0:PAD;
       Object.assign(fill.style,{top:`${top}px`,right:`${right}px`,bottom:`${bottom}px`,left:`${left}px`});
-      const borderWidth=room.stack===3?"8px":room.stack===2?"5px":"2px";
+      const borderWidth=room.constructionTier===3?"8px":room.constructionTier===2?"5px":"2px";
       fill.style.borderWidth=borderWidth;
       if(joins.north)fill.style.borderTopWidth="0";if(joins.east)fill.style.borderRightWidth="0";if(joins.south)fill.style.borderBottomWidth="0";if(joins.west)fill.style.borderLeftWidth="0";
-      if(localCol===0&&localRow===0)fill.textContent=`${definition.name}${room.stack>1?` ×${room.stack}`:""}`;
+      if(localCol===0&&localRow===0)fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;
       element.appendChild(fill);
       const eligible=(doorSide==="north"&&localRow===0)||(doorSide==="south"&&localRow===room.height-1)||(doorSide==="west"&&localCol===0)||(doorSide==="east"&&localCol===room.width-1);
       addEdgeSlots(element,joins,eligible?doorSide:null);
@@ -356,11 +355,11 @@ rotateButton.addEventListener("click",()=>{
 
 removeButton.addEventListener("click",()=>{if(selectedId)removePhysicalRoom(selectedId)});
 joinButton.addEventListener("click",()=>createGroup(selectedEntityRef(),joinCandidate.value));
-stackButton.addEventListener("click",()=>{
+ctButton.addEventListener("click",()=>{
   const members=entityRoomIds(selectedEntityRef()).map(physicalRoom).filter(Boolean);
-  if(!members.length||members.some(room=>room.stack>=roomDef(room.roomId).maxStack))return;
-  for(const room of members)room.stack+=1;
-  render();setStatus(`${members.length>1?`Group ${selectedGroupId}`:entityLabel(members[0].instanceId)} advanced to stack ${members[0].stack}.`);
+  if(!members.length||members.some(room=>room.constructionTier>=roomDef(room.roomId).maxConstructionTier))return;
+  for(const room of members)room.constructionTier+=1;
+  render();setStatus(`${members.length>1?`Group ${selectedGroupId}`:entityLabel(members[0].instanceId)} upgraded to CT${members[0].constructionTier}.`);
 });
 staffButton.addEventListener("click",()=>{
   const room=physicalRoom(selectedId),definition=room&&roomDef(room.roomId),tiers=staffingTiers(definition);
@@ -389,7 +388,7 @@ document.getElementById("jsonFile").addEventListener("change",async event=>{
 
 async function initialize(){
   try{catalog=await loadRooms(CATALOG_URL);populate();render();setStatus(`Loaded ${catalog.length} rooms from the shared catalog.`)}
-  catch(error){roomSelect.disabled=true;stackSelect.disabled=true;placeButton.disabled=true;setStatus(`Could not load the shared room catalog: ${error.message}`)}
+  catch(error){roomSelect.disabled=true;ctSelect.disabled=true;placeButton.disabled=true;setStatus(`Could not load the shared room catalog: ${error.message}`)}
 }
 
 initialize();
