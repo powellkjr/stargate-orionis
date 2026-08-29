@@ -6,6 +6,7 @@ const CATALOG_URL="../shared/data/rooms.json";
 let catalog=[], placed=[], groups=[], hallways=new Set();
 let selectedId=null, selectedGroupId=null, nextRoomId=1, nextGroupId=1;
 let selectedJoinTarget=null, actionEntries=[];
+let lastGeneratedConfiguration=null;
 
 const grid=document.getElementById("grid");
 const roomSelect=document.getElementById("roomSelect");
@@ -181,12 +182,6 @@ function randomGateDoors(){
   const used=new Set(doors.map(door=>`${door.side}:${door.slot}`));
   const available=sides.flatMap(side=>[1,2,3].map(slot=>({side,slot}))).filter(door=>!used.has(`${door.side}:${door.slot}`));
   doors.push(available[Math.floor(Math.random()*available.length)]);return doors;
-}
-
-function shuffled(values){
-  const result=[...values];
-  for(let index=result.length-1;index>0;index--){const target=Math.floor(Math.random()*(index+1));[result[index],result[target]]=[result[target],result[index]]}
-  return result;
 }
 
 function forceGateDoor(room,side,slot){
@@ -486,6 +481,27 @@ function orientDoorTowardHallway(room,preferredSide=null){
   return side??null;
 }
 
+function applyLayoutConfiguration(configuration){
+  const mirrorX=configuration==="mirror-horizontal"||configuration==="rotate-180",mirrorY=configuration==="mirror-vertical"||configuration==="rotate-180";
+  const transformSide=side=>mirrorY&&side==="north"?"south":mirrorY&&side==="south"?"north":mirrorX&&side==="east"?"west":mirrorX&&side==="west"?"east":side;
+  const transformedHallways=new Set();
+  for(const key of hallways){let [col,row]=key.split(",").map(Number);if(mirrorX)col=COLS-1-col;if(mirrorY)row=ROWS-1-row;transformedHallways.add(cellKey(col,row))}
+  hallways=transformedHallways;
+  for(const room of placed){
+    if(mirrorX)room.col=COLS-room.col-room.width;if(mirrorY)room.row=ROWS-room.row-room.height;
+    if(room.doors){
+      for(const door of room.doors){
+        const originalSide=door.side;
+        if(mirrorX&&(originalSide==="north"||originalSide==="south"))door.slot=4-door.slot;
+        if(mirrorY&&(originalSide==="east"||originalSide==="west"))door.slot=4-door.slot;
+        door.side=transformSide(originalSide);
+      }
+    }else{
+      const side=["north","east","south","west"][room.doorIndex%4];room.doorIndex=["north","east","south","west"].indexOf(transformSide(side));
+    }
+  }
+}
+
 function generateLayout(){
   resetSandbox();actionEntries=[];logAction("Started generated layout from a central Gate Room.");
   for(let col=3;col<=7;col++)hallways.add(cellKey(col,2));
@@ -519,18 +535,20 @@ function generateLayout(){
   forceGateDoor(physicalRoom(gate),"north",1);
   forceGateDoor(physicalRoom(gate),"east",1);
   addVaried("infirmary",4,2,"north");
-  const scienceRooms=shuffled(["analysis","research","tech_platform","data_storage","discovery"]),sciencePositions=[[4,0],[6,0],[3,1],[6,1],[7,1]];
+  const scienceRooms=["analysis","research","tech_platform","data_storage","discovery"],sciencePositions=[[4,0],[6,0],[3,1],[6,1],[7,1]];
   scienceRooms.forEach((roomId,index)=>addVaried(roomId,...sciencePositions[index]));
   pairAt("maintenance",[[0,3],[1,3]]);
-  const storagePairRooms=shuffled(["supply_storage","armor_storage","material_storage","supply_storage","containment"]),storagePairPositions=[[[0,5],[1,5]],[[3,7],[3,8]],[[4,7],[4,8]],[[6,7],[6,8]],[[7,7],[7,8]]];
+  const storagePairRooms=["supply_storage","armor_storage","material_storage","supply_storage","containment"],storagePairPositions=[[[0,5],[1,5]],[[3,7],[3,8]],[[4,7],[4,8]],[[6,7],[6,8]],[[7,7],[7,8]]];
   storagePairRooms.forEach((roomId,index)=>pairAt(roomId,storagePairPositions[index]));
   addVaried("receiving",7,3,"east");addVaried("response_room",9,3);
-  const personnelRooms=shuffled(["holding","living_quarters"]),personnelPositions=[[[10,3],[11,3]],[[10,5],[11,5]]];
+  const personnelRooms=["holding","living_quarters"],personnelPositions=[[[10,3],[11,3]],[[10,5],[11,5]]];
   personnelRooms.forEach((roomId,index)=>pairAt(roomId,personnelPositions[index]));
-  const storageQuadRooms=shuffled(["ration_storage","equipment_storage"]),storageQuadPositions=[[[0,7],[1,7],[0,8],[1,8]],[[9,7],[10,7],[9,8],[10,8]]];
+  const storageQuadRooms=["ration_storage","equipment_storage"],storageQuadPositions=[[[0,7],[1,7],[0,8],[1,8]],[[9,7],[10,7],[9,8],[10,8]]];
   storageQuadRooms.forEach((roomId,index)=>quadAt(roomId,storageQuadPositions[index]));
+  const configurations=["original","mirror-horizontal","mirror-vertical","rotate-180"].filter(configuration=>configuration!==lastGeneratedConfiguration);
+  const configuration=configurations[Math.floor(Math.random()*configurations.length)];lastGeneratedConfiguration=configuration;applyLayoutConfiguration(configuration);
   selectedId=gate;selectedGroupId=null;selectedJoinTarget=null;roomSelect.value="gate_room";updateRoomControls();
-  logAction("Finished connected layout; Infirmary and Receiving directly border the Gate and exit into outward hallways.");render();setStatus("Generated a connected base with pass-through Infirmary and Receiving access at the Gate.");
+  logAction(`Applied whole-layout configuration: ${configuration}. Infirmary and Receiving remain direct pass-through Gate neighbors.`);render();setStatus(`Generated ${configuration} base configuration with direct Gate access rooms.`);
 }
 
 function copiedLogText(){
