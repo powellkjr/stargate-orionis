@@ -22,7 +22,7 @@ Browser prototype for testing Stargate base room footprints.
 - The Gate Room renders as one continuous 3x3 room with a centered label and five randomized perimeter doors.
 - The Upgrade CT action advances a selected physical room by one Construction Tier, up to `maxConstructionTier`.
 - Upgrading a selected Group advances every physical child together, and joining requires matching CTs.
-- CT is represented by both wall strength and border color: CT1 steel, CT2 blue, and CT3 amber/gold.
+- CT uses a consistent wall thickness and is represented by border color: CT1 steel, CT2 blue, and CT3 amber/gold.
 - Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
 - Joinable rooms use dotted walls; category palettes visually group related room types.
 - The join destination has its own highlight and can be changed from the grid or candidate dropdown.

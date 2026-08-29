@@ -401,7 +401,7 @@ function addRoomNumber(element,room){
 function renderGateRoom(room,definition){
   const element=document.createElement("div");element.className=`room-cell${room.instanceId===selectedId?" selected":""}`;
   element.style.left=`${room.col*CELL}px`;element.style.top=`${room.row*CELL}px`;element.style.width=`${room.width*CELL}px`;element.style.height=`${room.height*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
-  const fill=document.createElement("div");fill.className="room-fill";Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`,borderWidth:room.constructionTier===3?"8px":room.constructionTier===2?"5px":"2px"});fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;element.appendChild(fill);
+  const fill=document.createElement("div");fill.className="room-fill";Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`});fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;element.appendChild(fill);
   addGateEdgeSlots(element,room.doors);addRoomNumber(element,room);
   element.addEventListener("click",event=>{event.stopPropagation();handleRoomClick(room.instanceId)});grid.appendChild(element);
 }
@@ -424,8 +424,6 @@ function render(){
       const fill=document.createElement("div");fill.className="room-fill";
       const top=joins.north?0:PAD,right=joins.east?0:PAD,bottom=joins.south?0:PAD,left=joins.west?0:PAD;
       Object.assign(fill.style,{top:`${top}px`,right:`${right}px`,bottom:`${bottom}px`,left:`${left}px`});
-      const borderWidth=room.constructionTier===3?"8px":room.constructionTier===2?"5px":"2px";
-      fill.style.borderWidth=borderWidth;
       if(joins.north)fill.style.borderTopWidth="0";if(joins.east)fill.style.borderRightWidth="0";if(joins.south)fill.style.borderBottomWidth="0";if(joins.west)fill.style.borderLeftWidth="0";
       if(localCol===0&&localRow===0)fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;
       element.appendChild(fill);
