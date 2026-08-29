@@ -28,7 +28,7 @@ Browser prototype for testing Stargate base room footprints.
 - Joinable rooms use dotted walls; category palettes visually group related room types.
 - The join destination has its own highlight and can be changed from the grid or candidate dropdown.
 - Generate Layout builds a central-Gate base with connected reserved hallways, mixed legal Groups, CTs, and staffing tiers. Infirmary directly borders the Gate's north side and exits north; Receiving directly borders its east side and exits east, creating pass-through circulation from the Gate.
-- Hallways use connected 5px centerlines, matching door thickness, that terminate at room doors instead of center dots.
+- Hallways use connected 24px-wide walking paths that match and terminate at the 24px room door openings.
 - The rolling action log can copy both recent steps and the full current sandbox state for debugging.
 
 ## Run
