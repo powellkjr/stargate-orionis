@@ -399,18 +399,41 @@ function addRoomNumber(element,room){
 }
 
 function renderGateRoom(room,definition){
-  const element=document.createElement("div");element.className=`room-cell${room.instanceId===selectedId?" selected":""}`;
+  const element=document.createElement("div");element.className=`room-cell gate-room${room.instanceId===selectedId?" selected":""}`;
   element.style.left=`${room.col*CELL}px`;element.style.top=`${room.row*CELL}px`;element.style.width=`${room.width*CELL}px`;element.style.height=`${room.height*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
   const fill=document.createElement("div");fill.className="room-fill";Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`});fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;element.appendChild(fill);
   addGateEdgeSlots(element,room.doors);addRoomNumber(element,room);
   element.addEventListener("click",event=>{event.stopPropagation();handleRoomClick(room.instanceId)});grid.appendChild(element);
 }
 
+function buildDoorTargetMap(){
+  const targets=new Map(),add=(col,row,direction)=>{
+    const key=cellKey(col,row);if(!targets.has(key))targets.set(key,new Set());targets.get(key).add(direction);
+  };
+  for(const room of placed){
+    const doors=room.doors??[{side:["north","east","south","west"][room.doorIndex%4],slot:2}];
+    for(const door of doors){
+      const offset=room.doors?door.slot-1:0;
+      if(door.side==="north")add(room.col+offset,room.row-1,"south");
+      if(door.side==="east")add(room.col+room.width,room.row+offset,"west");
+      if(door.side==="south")add(room.col+offset,room.row+room.height,"north");
+      if(door.side==="west")add(room.col-1,room.row+offset,"east");
+    }
+  }
+  return targets;
+}
+
 function render(){
   grid.replaceChildren();
+  const doorTargets=buildDoorTargetMap();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
     const hallway=hallways.has(cellKey(col,row));
     const cell=document.createElement("button");cell.type="button";cell.className=`cell${hallway?" hallway":""}`;cell.disabled=hallway;cell.setAttribute("aria-label",hallway?`Hallway column ${col+1}, row ${row+1}`:`Grid column ${col+1}, row ${row+1}`);cell.addEventListener("click",()=>place(col,row));grid.appendChild(cell);
+    if(hallway){
+      const directions=new Set(doorTargets.get(cellKey(col,row))??[]);
+      for(const [direction,dx,dy] of [["north",0,-1],["east",1,0],["south",0,1],["west",-1,0]])if(hallways.has(cellKey(col+dx,row+dy)))directions.add(direction);
+      for(const direction of directions){const segment=document.createElement("span");segment.className=`hallway-segment ${direction}`;cell.appendChild(segment)}
+    }
   }
   const selectedGroupRooms=selectedGroupId?new Set(childRoomIds(selectedGroupId)):new Set();
   const destinationRooms=selectedJoinTarget?new Set(entityRoomIds(selectedJoinTarget)):new Set();
