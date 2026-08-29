@@ -4,15 +4,16 @@ Browser prototype for testing Stargate base room footprints.
 
 ## Structure
 
-- `../shared/data/rooms.json`: shared room catalog for this and later demos.
+- `../shared/data/rooms_schema.json`: shared room catalog using the nested schema baseline.
+- `../shared/data/room.schema.json`: authoring schema for creating new room definitions.
 - `../shared/js/rooms.js`: reusable room validation, lookup, loading, and joining rules.
 - `room-sandbox.js`: sandbox-only placement/rendering behavior.
 
 ## Current rules
 
 - 80x80 px grid cells.
-- Same non-null `joinGroup` and matching Construction Tier (CT) make adjacent rooms compatible candidates for a deliberate join.
-- Rooms marked `unique` can only be placed once and cannot join.
+- Same non-null join group and matching Construction Tier (CT) make adjacent rooms compatible candidates for a deliberate join.
+- Rooms with `constructionLimit: "unique"` can only be placed once and cannot join.
 - Legal joined Groups are 1x2 pairs or 2x2 Groups built from two existing 1x2 Groups.
 - Joined rooms consume only shared padding while unjoined adjacent rooms retain their separation.
 - Splitting reverses the stored Group hierarchy without recreating physical rooms.
@@ -27,7 +28,7 @@ Browser prototype for testing Stargate base room footprints.
 - Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
 - Joinable rooms use dotted walls; category palettes visually group related room types.
 - The join destination has its own highlight and can be changed from the grid or candidate dropdown.
-- Generate Layout keeps coherent science, personnel, and storage zoning while selecting a different whole-base configuration (original, horizontal mirror, vertical mirror, or 180-degree rotation) and valid CT/staffing variations. Infirmary and Receiving remain direct pass-through Gate neighbors in every configuration.
+- Generate Layout procedurally builds a new base from scratch on every click, with randomized Gate placement, access directions, loop-free branching hallways, zoned room placement, joined groups, CT, and staffing. Every Gate door leads to an access room or hallway, and every catalog room type appears at least once, including room types added to the catalog later. Infirmary and Receiving remain direct pass-through Gate neighbors in every layout.
 - Each hallway cell uses a 3x3 internal block grid, enabling only its center and required directional arms; the 24px paths match the room door openings.
 - The rolling action log can copy both recent steps and the full current sandbox state for debugging.
 

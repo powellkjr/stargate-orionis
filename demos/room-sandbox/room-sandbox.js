@@ -1,12 +1,11 @@
 import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js";
 
 const COLS=12, ROWS=10, CELL=80, PAD=8;
-const CATALOG_URL="../shared/data/rooms.json";
+const CATALOG_URL="../shared/data/rooms_schema.json";
 
 let catalog=[], placed=[], groups=[], hallways=new Set();
 let selectedId=null, selectedGroupId=null, nextRoomId=1, nextGroupId=1;
 let selectedJoinTarget=null, actionEntries=[];
-let lastGeneratedConfiguration=null;
 
 const grid=document.getElementById("grid");
 const roomSelect=document.getElementById("roomSelect");
@@ -25,7 +24,7 @@ const splitButton=document.getElementById("splitSelected");
 const selectionStatus=document.getElementById("selectionStatus");
 const actionLog=document.getElementById("actionLog");
 
-const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",joinStatus:"Joining status",constructionTierStatus:"CT status"};
+const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity"};
 const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
 const CT_BORDER_COLORS={1:"#8b949e",2:"#38bdf8",3:"#f59e0b"};
 
@@ -103,6 +102,7 @@ function entityLabel(ref){
 function renderPreview(){
   const instance=physicalRoom(selectedId);
   const definition=instance?roomDef(instance.roomId):roomDef(roomSelect.value);
+  const previewData=definition?.schema ?? definition;
   roomPreview.replaceChildren();
   if(!definition){const message=document.createElement("p");message.className="muted";message.textContent="Select a room to inspect its current design data.";roomPreview.appendChild(message);return}
 
@@ -110,7 +110,7 @@ function renderPreview(){
   const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=definition.color;
   heading.append(swatch,document.createTextNode(definition.name));roomPreview.appendChild(heading);
   const fields=document.createElement("dl");
-  const hidden=new Set(["id","name","color","openQuestions"]);
+  const hidden=new Set(["id","name","color","schema"]);
   if(instance){
     const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,constructionTier:`CT${instance.constructionTier}`,staff:instance.staffCount,doors:instance.doors?instance.doors.map(door=>`${fieldLabel(door.side)} slot ${door.slot}`):["North","East","South","West"][instance.doorIndex%4]};
     for(const [key,value] of Object.entries(details)){const term=document.createElement("dt");term.textContent=fieldLabel(key);const detail=document.createElement("dd");detail.textContent=value;fields.append(term,detail)}
@@ -120,15 +120,10 @@ function renderPreview(){
     const groupData={groupId:group.id,primaryChild:group.primaryChild,secondaryChild:group.secondaryChild,recursivePriority:recursivePriority(group),active:group.active};
     for(const [key,value] of Object.entries(groupData)){const term=document.createElement("dt");term.textContent=fieldLabel(key);const detail=document.createElement("dd");detail.appendChild(valueNode(value));fields.append(term,detail)}
   }
-  for(const [key,value] of Object.entries(definition)){
+  for(const [key,value] of Object.entries(previewData)){
     if(hidden.has(key))continue;
     const term=document.createElement("dt");term.textContent=fieldLabel(key);
     const detail=document.createElement("dd");detail.appendChild(valueNode(value));fields.append(term,detail);
-  }
-  if(definition.openQuestions?.length){
-    const questions=document.createElement("div");questions.className="questions";
-    const label=document.createElement("strong");label.textContent="Open questions";
-    questions.append(label,valueNode(definition.openQuestions));fields.appendChild(questions);
   }
   roomPreview.appendChild(fields);
 }
@@ -184,6 +179,12 @@ function randomGateDoors(){
   doors.push(available[Math.floor(Math.random()*available.length)]);return doors;
 }
 
+function shuffled(values){
+  const result=[...values];
+  for(let index=result.length-1;index>0;index--){const target=Math.floor(Math.random()*(index+1));[result[index],result[target]]=[result[target],result[index]]}
+  return result;
+}
+
 function forceGateDoor(room,side,slot){
   const target=room.doors.find(door=>door.side===side);target.slot=slot;
   const used=new Set();
@@ -197,7 +198,7 @@ function forceGateDoor(room,side,slot){
 
 function place(col,row,definition=roomDef(roomSelect.value)){
   if(!definition)return false;
-  if(definition.unique&&placed.some(room=>room.roomId===definition.id)){setStatus(`${definition.name} is unique and has already been placed.`);return false}
+  if(definition.constructionLimit==="unique"&&placed.some(room=>room.roomId===definition.id)){setStatus(`${definition.name} is unique and has already been placed.`);return false}
   if(col<0||row<0||col+definition.width>COLS||row+definition.height>ROWS){setStatus("Room would extend past grid.");return false}
   if(overlapsHallway(col,row,definition.width,definition.height)){setStatus("That footprint is reserved as a hallway.");return false}
   if(overlaps(col,row,definition.width,definition.height)){setStatus("Room overlaps another room.");return false}
@@ -481,41 +482,8 @@ function orientDoorTowardHallway(room,preferredSide=null){
   return side??null;
 }
 
-function applyLayoutConfiguration(configuration){
-  const mirrorX=configuration==="mirror-horizontal"||configuration==="rotate-180",mirrorY=configuration==="mirror-vertical"||configuration==="rotate-180";
-  const transformSide=side=>mirrorY&&side==="north"?"south":mirrorY&&side==="south"?"north":mirrorX&&side==="east"?"west":mirrorX&&side==="west"?"east":side;
-  const transformedHallways=new Set();
-  for(const key of hallways){let [col,row]=key.split(",").map(Number);if(mirrorX)col=COLS-1-col;if(mirrorY)row=ROWS-1-row;transformedHallways.add(cellKey(col,row))}
-  hallways=transformedHallways;
-  for(const room of placed){
-    if(mirrorX)room.col=COLS-room.col-room.width;if(mirrorY)room.row=ROWS-room.row-room.height;
-    if(room.doors){
-      for(const door of room.doors){
-        const originalSide=door.side;
-        if(mirrorX&&(originalSide==="north"||originalSide==="south"))door.slot=4-door.slot;
-        if(mirrorY&&(originalSide==="east"||originalSide==="west"))door.slot=4-door.slot;
-        door.side=transformSide(originalSide);
-      }
-    }else{
-      const side=["north","east","south","west"][room.doorIndex%4];room.doorIndex=["north","east","south","west"].indexOf(transformSide(side));
-    }
-  }
-}
-
-function generateLayout(){
+function generateLayout(attempt=0){
   resetSandbox();actionEntries=[];logAction("Started generated layout from a central Gate Room.");
-  for(let col=3;col<=7;col++)hallways.add(cellKey(col,2));
-  for(let row=2;row<=6;row++){hallways.add(cellKey(3,row));hallways.add(cellKey(7,row))}
-  for(let row=0;row<=2;row++)hallways.add(cellKey(5,row));
-  for(let col=0;col<=3;col++)hallways.add(cellKey(col,4));
-  for(let col=7;col<COLS;col++)hallways.add(cellKey(col,4));
-  for(let col=0;col<COLS;col++){hallways.add(cellKey(col,6));hallways.add(cellKey(col,9))}
-  for(const col of [2,5,8,11])for(let row=6;row<=9;row++)hallways.add(cellKey(col,row));
-  hallways.delete(cellKey(4,2));
-  hallways.delete(cellKey(7,3));
-  hallways.add(cellKey(4,1));
-  hallways.add(cellKey(8,3));
-  logAction(`Generated ${hallways.size} connected hallway cells around the Gate and room wings.`);
   const add=(roomId,col,row,ct=1,staffTier=0,preferredDoor=null)=>{
     const definition=roomDef(roomId),room=createPhysicalRoom(definition,col,row,ct,staffTier);
     const doorSide=definition.id==="gate_room"?"five perimeter doors":orientDoorTowardHallway(room,preferredDoor);
@@ -528,27 +496,72 @@ function generateLayout(){
   const randomCt=roomId=>1+Math.floor(Math.random()*roomDef(roomId).maxConstructionTier);
   const randomStaffTier=roomId=>{const tiers=staffingTiers(roomDef(roomId));return tiers.length?Math.floor(Math.random()*tiers.length):0};
   const addVaried=(roomId,col,row,preferredDoor=null)=>add(roomId,col,row,randomCt(roomId),randomStaffTier(roomId),preferredDoor);
-  const pairAt=(roomId,positions)=>{const ct=randomCt(roomId);return pair(add(roomId,...positions[0],ct,randomStaffTier(roomId)),add(roomId,...positions[1],ct,randomStaffTier(roomId)))};
-  const quadAt=(roomId,positions)=>{const ct=randomCt(roomId);return quad(...positions.map(position=>add(roomId,...position,ct,randomStaffTier(roomId))))};
-
-  const gate=add("gate_room",4,3,1);
-  forceGateDoor(physicalRoom(gate),"north",1);
-  forceGateDoor(physicalRoom(gate),"east",1);
-  addVaried("infirmary",4,2,"north");
-  const scienceRooms=["analysis","research","tech_platform","data_storage","discovery"],sciencePositions=[[4,0],[6,0],[3,1],[6,1],[7,1]];
-  scienceRooms.forEach((roomId,index)=>addVaried(roomId,...sciencePositions[index]));
-  pairAt("maintenance",[[0,3],[1,3]]);
-  const storagePairRooms=["supply_storage","armor_storage","material_storage","supply_storage","containment"],storagePairPositions=[[[0,5],[1,5]],[[3,7],[3,8]],[[4,7],[4,8]],[[6,7],[6,8]],[[7,7],[7,8]]];
-  storagePairRooms.forEach((roomId,index)=>pairAt(roomId,storagePairPositions[index]));
-  addVaried("receiving",7,3,"east");addVaried("response_room",9,3);
-  const personnelRooms=["holding","living_quarters"],personnelPositions=[[[10,3],[11,3]],[[10,5],[11,5]]];
-  personnelRooms.forEach((roomId,index)=>pairAt(roomId,personnelPositions[index]));
-  const storageQuadRooms=["ration_storage","equipment_storage"],storageQuadPositions=[[[0,7],[1,7],[0,8],[1,8]],[[9,7],[10,7],[9,8],[10,8]]];
-  storageQuadRooms.forEach((roomId,index)=>quadAt(roomId,storageQuadPositions[index]));
-  const configurations=["original","mirror-horizontal","mirror-vertical","rotate-180"].filter(configuration=>configuration!==lastGeneratedConfiguration);
-  const configuration=configurations[Math.floor(Math.random()*configurations.length)];lastGeneratedConfiguration=configuration;applyLayoutConfiguration(configuration);
+  const directions=shuffled([
+    {side:"north",dx:0,dy:-1},{side:"east",dx:1,dy:0},{side:"south",dx:0,dy:1},{side:"west",dx:-1,dy:0}
+  ]),gateCol=2+Math.floor(Math.random()*5),gateRow=2+Math.floor(Math.random()*3),gate=add("gate_room",gateCol,gateRow,1);
+  const reserved=new Set();
+  for(let row=gateRow;row<gateRow+3;row++)for(let col=gateCol;col<gateCol+3;col++)reserved.add(cellKey(col,row));
+  const accessRooms=["infirmary","receiving"];
+  directions.slice(0,2).forEach((direction,index)=>{
+    const slot=Math.floor(Math.random()*3),col=direction.side==="west"?gateCol-1:direction.side==="east"?gateCol+3:gateCol+slot,row=direction.side==="north"?gateRow-1:direction.side==="south"?gateRow+3:gateRow+slot;
+    reserved.add(cellKey(col,row));hallways.add(cellKey(col+direction.dx,row+direction.dy));
+    forceGateDoor(physicalRoom(gate),direction.side,slot+1);addVaried(accessRooms[index],col,row,direction.side);
+  });
+  for(const door of physicalRoom(gate).doors){
+    const offset=door.slot-1,col=door.side==="west"?gateCol-1:door.side==="east"?gateCol+3:gateCol+offset,row=door.side==="north"?gateRow-1:door.side==="south"?gateRow+3:gateRow+offset;
+    if(!reserved.has(cellKey(col,row)))hallways.add(cellKey(col,row));
+  }
+  logAction("Connected every Gate door to an access room or a hallway branch.");
+  const inBounds=(col,row)=>col>=0&&row>=0&&col<COLS&&row<ROWS;
+  const blocked=(col,row)=>reserved.has(cellKey(col,row));
+  const hallwayNeighbors=(col,row)=>[[0,-1],[1,0],[0,1],[-1,0]].filter(([dx,dy])=>hallways.has(cellKey(col+dx,row+dy))).length;
+  const walkers=[...hallways].map(key=>key.split(",").map(Number));
+  for(let step=0;step<220&&hallways.size<24;step++){
+    const walker=walkers[Math.floor(Math.random()*walkers.length)],moves=shuffled([[0,-1],[1,0],[0,1],[-1,0]]);let moved=false;
+    for(const [dx,dy] of moves){const col=walker[0]+dx,row=walker[1]+dy;if(!inBounds(col,row)||blocked(col,row)||hallways.has(cellKey(col,row))||hallwayNeighbors(col,row)!==1)continue;walker[0]=col;walker[1]=row;hallways.add(cellKey(col,row));moved=true;break}
+    if(!moved)walkers.push([...walkers[Math.floor(Math.random()*walkers.length)]]);
+    if(step%18===0)walkers.push([...walker]);
+  }
+  logAction(`Procedurally carved ${hallways.size} loop-free hallway cells from ${walkers.length} growing branches.`);
+  const anchors={
+    science:{col:Math.random()<.5?0:COLS-1,row:Math.random()<.5?0:ROWS-1},
+    storage:{col:Math.random()<.5?0:COLS-1,row:Math.random()<.5?0:ROWS-1},
+    personnel:{col:Math.random()<.5?0:COLS-1,row:Math.random()<.5?0:ROWS-1},
+    operations:{col:gateCol+1,row:gateRow+1}
+  };
+  const besideHallway=(col,row)=>[[0,-1],[1,0],[0,1],[-1,0]].some(([dx,dy])=>hallways.has(cellKey(col+dx,row+dy)));
+  const findShape=(shape,zone)=>{
+    const candidates=[];
+    for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
+      const cells=shape.map(([dx,dy])=>[col+dx,row+dy]);
+      if(cells.some(([x,y])=>!inBounds(x,y)||blocked(x,y)||hallways.has(cellKey(x,y))||overlaps(x,y,1,1))||!cells.some(([x,y])=>besideHallway(x,y)))continue;
+      const anchor=anchors[zone],distance=Math.abs(col-anchor.col)+Math.abs(row-anchor.row);candidates.push({cells,score:distance+Math.random()*5});
+    }
+    return candidates.sort((first,second)=>first.score-second.score)[0]?.cells??null;
+  };
+  let skippedRooms=0;
+  const placeShape=(roomId,shape,zone)=>{
+    const cells=findShape(shape,zone);if(!cells){skippedRooms+=1;return null}
+    const ct=randomCt(roomId),ids=cells.map(([col,row])=>add(roomId,col,row,ct,randomStaffTier(roomId)));
+    return ids.length===4?quad(...ids):ids.length===2?pair(...ids):ids[0];
+  };
+  const pairShapes=[[[0,0],[1,0]],[[0,0],[0,1]]],quadShape=[[0,0],[1,0],[0,1],[1,1]];
+  for(const roomId of shuffled(["analysis","research","tech_platform","data_storage","discovery"]))placeShape(roomId,[[0,0]],"science");
+  placeShape("response_room",[[0,0]],"operations");placeShape("maintenance",shuffled(pairShapes)[0],"operations");
+  for(const roomId of shuffled(["holding","living_quarters"]))placeShape(roomId,shuffled(pairShapes)[0],"personnel");
+  for(const roomId of shuffled(["supply_storage","armor_storage","material_storage","containment"]))placeShape(roomId,shuffled(pairShapes)[0],"storage");
+  for(const roomId of shuffled(["ration_storage","equipment_storage"]))placeShape(roomId,quadShape,"storage");
+  const zoneForCategory=category=>category==="Science & Technology"?"science":category==="Storage"?"storage":category==="Personnel"?"personnel":"operations";
+  for(const definition of catalog.filter(definition=>!placed.some(room=>room.roomId===definition.id))){
+    const shape=[];for(let row=0;row<definition.height;row++)for(let col=0;col<definition.width;col++)shape.push([col,row]);
+    placeShape(definition.id,shape,zoneForCategory(definition.category));
+  }
+  const missingRoomIds=catalog.filter(definition=>!placed.some(room=>room.roomId===definition.id)).map(definition=>definition.id);
+  if((skippedRooms||missingRoomIds.length)&&attempt<100)return generateLayout(attempt+1);
+  if(missingRoomIds.length){setStatus(`Could not generate a complete layout; missing ${missingRoomIds.join(", ")}.`);logAction(`Generation stopped after 100 attempts; missing room definitions: ${missingRoomIds.join(", ")}.`);render();return}
   selectedId=gate;selectedGroupId=null;selectedJoinTarget=null;roomSelect.value="gate_room";updateRoomControls();
-  logAction(`Applied whole-layout configuration: ${configuration}. Infirmary and Receiving remain direct pass-through Gate neighbors.`);render();setStatus(`Generated ${configuration} base configuration with direct Gate access rooms.`);
+  logAction(`Verified catalog coverage: all ${catalog.length} room definitions are present.`);
+  logAction(`Finished a new procedural base from scratch${attempt?` after ${attempt+1} layout attempts`:""}; no mirror or rotation template was used.`);render();setStatus(`Generated a new base layout using all ${catalog.length} room types.`);
 }
 
 function copiedLogText(){
@@ -594,7 +607,7 @@ splitButton.addEventListener("click",()=>{if(selectedGroupId)splitGroup(selected
 document.getElementById("resetGrid").addEventListener("click",()=>{
   resetSandbox();logAction("Cleared the grid and reset physical room and Group numbering.");render();setStatus("Grid cleared.");
 });
-document.getElementById("generateLayout").addEventListener("click",generateLayout);
+document.getElementById("generateLayout").addEventListener("click",()=>generateLayout());
 document.getElementById("copyLog").addEventListener("click",copyLog);
 document.getElementById("clearLog").addEventListener("click",()=>{actionEntries=[];actionLog.replaceChildren();setStatus("Action log cleared.")});
 

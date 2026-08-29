@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stargate-orionis.local/schemas/room.schema.json",
+  "title": "Stargate Orionis Room Catalog Entry",
+  "description": "Authoring schema for nested room definitions used by the Stargate room sandbox and future demos.",
+  "type": "object",
+  "required": [
+    "identity",
+    "form",
+    "rules",
+    "function"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "identity": {
+      "type": "object",
+      "required": ["id", "name", "category"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "pattern": "^[a-z0-9_]+$"},
+        "name": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "minLength": 1}
+      }
+    },
+    "form": {
+      "type": "object",
+      "required": ["color", "footprint"],
+      "additionalProperties": false,
+      "properties": {
+        "color": {"type": "string", "pattern": "^#[0-9a-fA-F]{6}$"},
+        "footprint": {
+          "type": "object",
+          "required": ["width", "height"],
+          "additionalProperties": false,
+          "properties": {
+            "width": {"type": "integer", "minimum": 1},
+            "height": {"type": "integer", "minimum": 1}
+          }
+        },
+        "distributed": {"type": "boolean"}
+      }
+    },
+    "rules": {
+      "type": "object",
+      "required": ["joining", "construction", "staffing", "queues", "storage", "specialization", "inventory", "cores", "capacity"],
+      "additionalProperties": false,
+      "properties": {
+        "joining": {"$ref": "#/$defs/joiningRule"},
+        "construction": {"$ref": "#/$defs/constructionRule"},
+        "staffing": {"$ref": "#/$defs/staffingRule"},
+        "queues": {"$ref": "#/$defs/queuesRule"},
+        "storage": {"$ref": "#/$defs/storageRule"},
+        "specialization": {"$ref": "#/$defs/specializationRule"},
+        "inventory": {"$ref": "#/$defs/inventoryRule"},
+        "cores": {"$ref": "#/$defs/coresRule"},
+        "capacity": {"$ref": "#/$defs/capacityRule"}
+      }
+    },
+    "function": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "base": {"type": "string"},
+        "degradableProperty": {"type": "string"},
+        "residentSlots": {"type": "integer", "minimum": 0},
+        "inventoryRole": {"type": "string"},
+        "activeProjectsPerGroup": {"type": "integer", "minimum": 0},
+        "knowledgeSlots": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "$defs": {
+    "notesString": {"type": "string", "minLength": 1},
+    "intProgression": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "integer"}
+    },
+    "stringArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "joiningRule": {
+      "type": "object",
+      "required": ["supportsJoining", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsJoining": {"type": "boolean"},
+        "group": {"type": "string", "minLength": 1},
+        "supportedLayouts": {
+          "type": "array",
+          "items": {"enum": ["1x1", "1x2", "2x2"]}
+        },
+        "staffingByLayout": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "1x1": {"type": "integer", "minimum": 0},
+            "1x2": {"type": "integer", "minimum": 0},
+            "2x2": {"type": "integer", "minimum": 0}
+          }
+        },
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "constructionRule": {
+      "type": "object",
+      "required": ["supportsConstruction", "constructionLimit", "supportsProgression", "progression", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "supportsConstruction": {"type": "boolean"},
+        "constructionLimit": {"enum": ["unique", "limited", "unlimited"]},
+        "supportsProgression": {"type": "boolean"},
+        "progression": {"$ref": "#/$defs/intProgression"},
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "staffingRule": {
+      "type": "object",
+      "required": ["supportsStaffing", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsStaffing": {"type": "boolean"},
+        "supportsProgression": {"type": "boolean"},
+        "progression": {"$ref": "#/$defs/intProgression"},
+        "joinedCapacity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "1x1": {"type": "integer", "minimum": 0},
+            "1x2": {"type": "integer", "minimum": 0},
+            "2x2": {"type": "integer", "minimum": 0}
+          }
+        },
+        "flexibility": {"type": "string"},
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "queuesRule": {
+      "type": "object",
+      "required": ["supportsQueues", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsQueues": {"type": "boolean"},
+        "queueTypes": {"$ref": "#/$defs/stringArray"},
+        "queueSize": {"type": "integer", "minimum": 0},
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "storageRule": {
+      "type": "object",
+      "required": ["supportsStorage", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsStorage": {"type": "boolean"},
+        "storageTypes": {"$ref": "#/$defs/stringArray"},
+        "supportsProgression": {"type": "boolean"},
+        "progression": {
+          "oneOf": [
+            {"$ref": "#/$defs/intProgression"},
+            {"$ref": "#/$defs/stringArray"}
+          ]
+        },
+        "cargoHandled": {"$ref": "#/$defs/stringArray"},
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "specializationRule": {
+      "type": "object",
+      "required": ["supportsSpecialization", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsSpecialization": {"type": "boolean"},
+        "progression": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "minLength": 1}
+          }
+        },
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "inventoryRule": {
+      "type": "object",
+      "required": ["supportsInventory", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsInventory": {"type": "boolean"},
+        "inventoryTypes": {"$ref": "#/$defs/stringArray"},
+        "supportsProgression": {"type": "boolean"},
+        "progression": {"$ref": "#/$defs/intProgression"},
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "coresRule": {
+      "type": "object",
+      "required": ["supportsCores", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsCores": {"type": "boolean"},
+        "coreTypes": {"$ref": "#/$defs/stringArray"},
+        "supportsProgression": {"type": "boolean"},
+        "slotProgression": {"$ref": "#/$defs/intProgression"},
+        "fixedLayout": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 0}
+        },
+        "progressionLayout": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": {"type": "integer", "minimum": 0}
+          }
+        },
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    },
+    "capacityRule": {
+      "type": "object",
+      "required": ["supportsCapacity", "notes"],
+      "additionalProperties": true,
+      "properties": {
+        "supportsCapacity": {"type": "boolean"},
+        "capacityTypes": {"$ref": "#/$defs/stringArray"},
+        "supportsProgression": {"type": "boolean"},
+        "progression": {"$ref": "#/$defs/intProgression"},
+        "notes": {"$ref": "#/$defs/notesString"}
+      }
+    }
+  }
+}
