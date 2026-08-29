@@ -41,7 +41,7 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .cell.hallway{background:#242b35;box-shadow:inset 0 0 0 2px #374151;cursor:not-allowed}
 .cell.hallway::after{content:"";display:block;width:12px;height:12px;margin:auto;border-radius:50%;background:#6b7280}
 .room-cell{position:absolute;width:var(--cell);height:var(--cell);z-index:2;pointer-events:auto}
-.room-fill{position:absolute;background:var(--room-color);border-style:solid;border-color:rgba(0,0,0,.78);border-width:2px;border-radius:7px;display:flex;align-items:center;justify-content:center;text-align:center;color:#071018;font-weight:700;font-size:.72rem;line-height:1.05;user-select:none;overflow:hidden}
+.room-fill{position:absolute;background:var(--room-color);border-style:solid;border-color:var(--ct-border,#8b949e);border-width:2px;border-radius:7px;display:flex;align-items:center;justify-content:center;text-align:center;color:#071018;font-weight:700;font-size:.72rem;line-height:1.05;user-select:none;overflow:hidden}
 .room-cell.selected .room-fill{outline:3px solid white;outline-offset:-3px}
 .room-cell.group-selected .room-fill{box-shadow:inset 0 0 0 3px #7dd3fc}
 .room-cell.join-destination .room-fill{outline:3px solid #f2c94c;outline-offset:-3px}
@@ -61,6 +61,7 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .legend-item{display:flex;align-items:center;gap:8px;font-size:.82rem}
 .legend-group{margin-top:8px;color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .swatch{width:16px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,.4)}
+.ct-legend{display:flex;gap:10px;margin-top:8px;color:var(--muted);font-size:.75rem}.ct-key{display:flex;align-items:center;gap:4px}.ct-line{width:18px;height:10px;border:3px solid var(--key-color);border-radius:3px}
 .preview{background:var(--panel);border:1px solid #30363d;border-radius:10px;padding:14px;max-height:calc(100vh - 76px);overflow:auto}
 .preview h2{display:flex;align-items:center;gap:8px;margin:0 0 12px;font-size:1.1rem}
 .preview dl{display:grid;grid-template-columns:minmax(110px,.7fr) minmax(0,1.3fr);gap:7px 10px;margin:0}
@@ -110,6 +111,11 @@ if (window.location.protocol === "file:") {
       <label>Door</label>
       <button id="rotateDoor" type="button">Rotate clockwise</button>
     </div>
+  </div>
+  <div class="ct-legend" aria-label="Construction Tier border colors">
+    <span class="ct-key"><span class="ct-line" style="--key-color:#8b949e"></span>CT1</span>
+    <span class="ct-key"><span class="ct-line" style="--key-color:#38bdf8"></span>CT2</span>
+    <span class="ct-key"><span class="ct-line" style="--key-color:#f59e0b"></span>CT3</span>
   </div>
 
   <button id="removeSelected" type="button" disabled>Remove Room</button>

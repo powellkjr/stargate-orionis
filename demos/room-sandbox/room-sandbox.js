@@ -26,6 +26,7 @@ const actionLog=document.getElementById("actionLog");
 
 const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",joinStatus:"Joining status",constructionTierStatus:"CT status"};
 const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
+const CT_BORDER_COLORS={1:"#8b949e",2:"#38bdf8",3:"#f59e0b"};
 
 function setStatus(message){status.textContent=message}
 function logAction(message){
@@ -399,7 +400,7 @@ function addRoomNumber(element,room){
 
 function renderGateRoom(room,definition){
   const element=document.createElement("div");element.className=`room-cell${room.instanceId===selectedId?" selected":""}`;
-  element.style.left=`${room.col*CELL}px`;element.style.top=`${room.row*CELL}px`;element.style.width=`${room.width*CELL}px`;element.style.height=`${room.height*CELL}px`;element.style.setProperty("--room-color",definition.color);
+  element.style.left=`${room.col*CELL}px`;element.style.top=`${room.row*CELL}px`;element.style.width=`${room.width*CELL}px`;element.style.height=`${room.height*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
   const fill=document.createElement("div");fill.className="room-fill";Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`,borderWidth:room.constructionTier===3?"8px":room.constructionTier===2?"5px":"2px"});fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;element.appendChild(fill);
   addGateEdgeSlots(element,room.doors);addRoomNumber(element,room);
   element.addEventListener("click",event=>{event.stopPropagation();handleRoomClick(room.instanceId)});grid.appendChild(element);
@@ -419,7 +420,7 @@ function render(){
     for(let localRow=0;localRow<room.height;localRow++)for(let localCol=0;localCol<room.width;localCol++){
       const joins=joinedSides(room,localCol,localRow),element=document.createElement("div");
       element.className="room-cell"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
-      element.style.left=`${(room.col+localCol)*CELL}px`;element.style.top=`${(room.row+localRow)*CELL}px`;element.style.setProperty("--room-color",definition.color);
+      element.style.left=`${(room.col+localCol)*CELL}px`;element.style.top=`${(room.row+localRow)*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
       const fill=document.createElement("div");fill.className="room-fill";
       const top=joins.north?0:PAD,right=joins.east?0:PAD,bottom=joins.south?0:PAD,left=joins.west?0:PAD;
       Object.assign(fill.style,{top:`${top}px`,right:`${right}px`,bottom:`${bottom}px`,left:`${left}px`});
