@@ -12,6 +12,7 @@ Browser prototype for testing Stargate base room footprints.
 
 - 80x80 px grid cells.
 - Same non-null `joinGroup` and matching Construction Tier make adjacent rooms compatible candidates for a deliberate join.
+- Rooms marked `unique` can only be placed once and cannot join.
 - Legal joined Groups are 1x2 pairs or 2x2 Groups built from two existing 1x2 Groups.
 - Joined rooms consume only shared padding while unjoined adjacent rooms retain their separation.
 - Splitting reverses the stored Group hierarchy without recreating physical rooms.

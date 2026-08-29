@@ -140,6 +140,7 @@ function overlaps(col,row,width,height){
 
 function place(col,row,definition=roomDef(roomSelect.value)){
   if(!definition)return false;
+  if(definition.unique&&placed.some(room=>room.roomId===definition.id)){setStatus(`${definition.name} is unique and has already been placed.`);return false}
   if(col<0||row<0||col+definition.width>COLS||row+definition.height>ROWS){setStatus("Room would extend past grid.");return false}
   if(overlaps(col,row,definition.width,definition.height)){setStatus("Room overlaps another room.");return false}
   const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,stack:Number(stackSelect.value),doorIndex:0,constructionTier:"CT1"};
