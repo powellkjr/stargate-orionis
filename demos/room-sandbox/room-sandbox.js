@@ -432,7 +432,11 @@ function render(){
     if(hallway){
       const directions=new Set(doorTargets.get(cellKey(col,row))??[]);
       for(const [direction,dx,dy] of [["north",0,-1],["east",1,0],["south",0,1],["west",-1,0]])if(hallways.has(cellKey(col+dx,row+dy)))directions.add(direction);
-      for(const direction of directions){const segment=document.createElement("span");segment.className=`hallway-segment ${direction}`;cell.appendChild(segment)}
+      const activeBlocks=new Set([4]);
+      if(directions.has("north"))activeBlocks.add(1);if(directions.has("east"))activeBlocks.add(5);if(directions.has("south"))activeBlocks.add(7);if(directions.has("west"))activeBlocks.add(3);
+      const pathGrid=document.createElement("span");pathGrid.className="hallway-path-grid";
+      for(let index=0;index<9;index++){const block=document.createElement("span");block.className=`hallway-block${activeBlocks.has(index)?" active":""}`;pathGrid.appendChild(block)}
+      cell.appendChild(pathGrid);
     }
   }
   const selectedGroupRooms=selectedGroupId?new Set(childRoomIds(selectedGroupId)):new Set();
