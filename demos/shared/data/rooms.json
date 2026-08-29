@@ -2,6 +2,7 @@
   {
     "id": "gate_room",
     "name": "Gate Room",
+    "category": "Command",
     "color": "#c9a227",
     "width": 3,
     "height": 3,
@@ -16,6 +17,7 @@
   {
     "id": "maintenance",
     "name": "Maintenance",
+    "category": "Operations",
     "previousName": "Construction Room",
     "color": "#f2994a",
     "width": 1,
@@ -44,6 +46,7 @@
   {
     "id": "tech_platform",
     "name": "Tech Platform",
+    "category": "Science & Technology",
     "color": "#8b5cf6",
     "width": 1,
     "height": 1,
@@ -58,6 +61,7 @@
   {
     "id": "response_room",
     "name": "Response Room",
+    "category": "Command",
     "color": "#eb5757",
     "width": 1,
     "height": 1,
@@ -73,6 +77,7 @@
   {
     "id": "holding",
     "name": "Holding",
+    "category": "Personnel",
     "color": "#64748b",
     "width": 1,
     "height": 1,
@@ -90,6 +95,7 @@
   {
     "id": "infirmary",
     "name": "Infirmary",
+    "category": "Personnel",
     "color": "#6fcf97",
     "width": 1,
     "height": 1,
@@ -107,6 +113,7 @@
   {
     "id": "living_quarters",
     "name": "Living Quarters",
+    "category": "Personnel",
     "color": "#f2c94c",
     "width": 1,
     "height": 1,
@@ -125,6 +132,7 @@
   {
     "id": "receiving",
     "name": "Receiving",
+    "category": "Operations",
     "color": "#2d9cdb",
     "width": 1,
     "height": 1,
@@ -142,6 +150,7 @@
   {
     "id": "containment",
     "name": "Containment",
+    "category": "Storage",
     "color": "#27ae60",
     "width": 1,
     "height": 1,
@@ -159,6 +168,7 @@
   {
     "id": "analysis",
     "name": "Analysis",
+    "category": "Science & Technology",
     "color": "#56ccf2",
     "width": 1,
     "height": 1,
@@ -178,6 +188,7 @@
   {
     "id": "research",
     "name": "Research",
+    "category": "Science & Technology",
     "color": "#00bcd4",
     "width": 1,
     "height": 1,
@@ -197,6 +208,7 @@
   {
     "id": "data_storage",
     "name": "Data Storage",
+    "category": "Science & Technology",
     "color": "#4f6bed",
     "width": 1,
     "height": 1,
@@ -213,6 +225,7 @@
   {
     "id": "ration_storage",
     "name": "Ration Storage",
+    "category": "Storage",
     "color": "#d4a373",
     "width": 1,
     "height": 1,
@@ -231,6 +244,7 @@
   {
     "id": "material_storage",
     "name": "Material Storage",
+    "category": "Storage",
     "color": "#9c6644",
     "width": 1,
     "height": 1,
@@ -249,6 +263,7 @@
   {
     "id": "supply_storage",
     "name": "Supply Storage",
+    "category": "Storage",
     "color": "#e76f51",
     "width": 1,
     "height": 1,
@@ -267,6 +282,7 @@
   {
     "id": "equipment_storage",
     "name": "Equipment Storage",
+    "category": "Storage",
     "color": "#577590",
     "width": 1,
     "height": 1,
@@ -285,6 +301,7 @@
   {
     "id": "armor_storage",
     "name": "Armor Storage",
+    "category": "Storage",
     "color": "#495057",
     "width": 1,
     "height": 1,
@@ -303,6 +320,7 @@
   {
     "id": "discovery",
     "name": "Discovery",
+    "category": "Science & Technology",
     "color": "#bb6bd9",
     "width": 1,
     "height": 1,

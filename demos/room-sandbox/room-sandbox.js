@@ -18,10 +18,12 @@ const rotateButton=document.getElementById("rotateDoor");
 const joinCandidate=document.getElementById("joinCandidate");
 const joinButton=document.getElementById("joinSelected");
 const stackButton=document.getElementById("stackSelected");
+const staffButton=document.getElementById("addStaff");
 const splitButton=document.getElementById("splitSelected");
 const selectionStatus=document.getElementById("selectionStatus");
 
 const PREVIEW_LABELS={joinGroup:"Join group",maxStack:"Maximum stack",joinStatus:"Joining status",stackStatus:"Stacking status"};
+const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
 
 function setStatus(message){status.textContent=message}
 function roomDef(id){return getRoomById(catalog,id)}
@@ -65,6 +67,13 @@ function topActiveGroupForRoom(roomId){
 
 function selectedEntityRef(){return selectedGroupId ?? selectedId}
 
+function staffingTiers(definition){
+  if(!definition?.staffed)return [];
+  if(Array.isArray(definition.staffingProgression))return definition.staffingProgression;
+  const fixed=definition.staffingPerPhysicalRoom??definition.staffingCapacity;
+  return Number.isInteger(fixed)?[fixed]:[];
+}
+
 function entityRoomIds(ref){return isGroupRef(ref)?childRoomIds(ref):physicalRoom(ref)?[ref]:[]}
 
 function entityBounds(ref){
@@ -94,7 +103,7 @@ function renderPreview(){
   const fields=document.createElement("dl");
   const hidden=new Set(["id","name","color","openQuestions"]);
   if(instance){
-    const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,stack:instance.stack,constructionTier:instance.constructionTier,doorSide:["North","East","South","West"][instance.doorIndex%4]};
+    const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,stack:instance.stack,constructionTier:instance.constructionTier,staff:instance.staffCount,doorSide:["North","East","South","West"][instance.doorIndex%4]};
     for(const [key,value] of Object.entries(details)){const term=document.createElement("dt");term.textContent=fieldLabel(key);const detail=document.createElement("dd");detail.textContent=value;fields.append(term,detail)}
   }
   if(selectedGroupId){
@@ -117,11 +126,18 @@ function renderPreview(){
 
 function populate(){
   roomSelect.replaceChildren();legend.replaceChildren();
-  for(const room of catalog){
-    const option=document.createElement("option");option.value=room.id;option.textContent=`${room.name} (${room.width}×${room.height})`;roomSelect.appendChild(option);
-    const item=document.createElement("div");item.className="legend-item";
-    const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=room.color;
-    item.append(swatch,document.createTextNode(room.name));legend.appendChild(item);
+  const grouped=Map.groupBy(catalog,room=>room.category??"Other");
+  for(const category of CATEGORY_ORDER){
+    const rooms=grouped.get(category);if(!rooms?.length)continue;
+    const optionGroup=document.createElement("optgroup");optionGroup.label=category;
+    const legendHeading=document.createElement("div");legendHeading.className="legend-group";legendHeading.textContent=category;legend.appendChild(legendHeading);
+    for(const room of [...rooms].sort((first,second)=>first.name.localeCompare(second.name))){
+      const option=document.createElement("option");option.value=room.id;option.textContent=`${room.name} (${room.width}×${room.height})`;optionGroup.appendChild(option);
+      const item=document.createElement("div");item.className="legend-item";
+      const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=room.color;
+      item.append(swatch,document.createTextNode(room.name));legend.appendChild(item);
+    }
+    roomSelect.appendChild(optionGroup);
   }
   updateRoomControls();renderPreview();
 }
@@ -143,7 +159,8 @@ function place(col,row,definition=roomDef(roomSelect.value)){
   if(definition.unique&&placed.some(room=>room.roomId===definition.id)){setStatus(`${definition.name} is unique and has already been placed.`);return false}
   if(col<0||row<0||col+definition.width>COLS||row+definition.height>ROWS){setStatus("Room would extend past grid.");return false}
   if(overlaps(col,row,definition.width,definition.height)){setStatus("Room overlaps another room.");return false}
-  const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,stack:Number(stackSelect.value),doorIndex:0,constructionTier:"CT1"};
+  const tiers=staffingTiers(definition);
+  const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,stack:Number(stackSelect.value),doorIndex:0,constructionTier:"CT1",staffTierIndex:0,staffCount:tiers[0]??0};
   placed.push(room);selectPhysicalRoom(room.instanceId);setStatus(`${definition.name} placed.`);return true;
 }
 
@@ -183,9 +200,11 @@ function matchingJoinProperties(firstRef,secondRef){
   const firstRooms=entityRoomIds(firstRef).map(physicalRoom),secondRooms=entityRoomIds(secondRef).map(physicalRoom);
   if(!firstRooms.length||!secondRooms.length)return false;
   const firstDefinition=roomDef(firstRooms[0].roomId),secondDefinition=roomDef(secondRooms[0].roomId);
-  return firstRooms.every(room=>room.roomId===firstRooms[0].roomId&&room.constructionTier===firstRooms[0].constructionTier)
-    &&secondRooms.every(room=>room.roomId===secondRooms[0].roomId&&room.constructionTier===secondRooms[0].constructionTier)
-    &&canRoomsJoin(firstDefinition,secondDefinition)&&firstRooms[0].constructionTier===secondRooms[0].constructionTier;
+  return firstRooms.every(room=>room.roomId===firstRooms[0].roomId&&room.constructionTier===firstRooms[0].constructionTier&&room.stack===firstRooms[0].stack)
+    &&secondRooms.every(room=>room.roomId===secondRooms[0].roomId&&room.constructionTier===secondRooms[0].constructionTier&&room.stack===secondRooms[0].stack)
+    &&canRoomsJoin(firstDefinition,secondDefinition)
+    &&firstRooms[0].constructionTier===secondRooms[0].constructionTier
+    &&firstRooms[0].stack===secondRooms[0].stack;
 }
 
 function isLegalJoin(firstRef,secondRef){
@@ -220,9 +239,13 @@ function joinCandidatesFor(ref){
 function updateSelectionControls(){
   const room=physicalRoom(selectedId);
   const definition=room&&roomDef(room.roomId);
+  const stackRooms=entityRoomIds(selectedEntityRef()).map(physicalRoom).filter(Boolean);
+  const tiers=staffingTiers(definition);
   removeButton.disabled=!room;rotateButton.disabled=!room;
-  stackButton.disabled=!room||room.stack>=definition.maxStack;
-  stackButton.textContent=room&&definition.maxStack>1?`Stack (${room.stack}/${definition.maxStack})`:"Stack";
+  stackButton.disabled=!stackRooms.length||stackRooms.some(member=>member.stack>=roomDef(member.roomId).maxStack);
+  stackButton.textContent=stackRooms.length>1?`Stack Group (${stackRooms[0].stack}/${definition.maxStack})`:room&&definition.maxStack>1?`Stack (${room.stack}/${definition.maxStack})`:"Stack";
+  staffButton.disabled=!room||!tiers.length||room.staffTierIndex>=tiers.length-1;
+  staffButton.textContent=room&&tiers.length&&room.staffTierIndex>=tiers.length-1?"Max Staff":"Add Staff";
   splitButton.disabled=!selectedGroupId;
   const ref=selectedEntityRef(),candidates=joinCandidatesFor(ref);
   joinCandidate.replaceChildren();
@@ -281,6 +304,22 @@ function addEdgeSlots(element,joins,doorSide){
   }
 }
 
+function addStaffDots(element,room){
+  if(!room.staffCount)return;
+  const dots=document.createElement("div");dots.className="staff-dots";
+  const group=topActiveGroupForRoom(room.instanceId),bounds=group&&entityBounds(group.id);
+  let left=50,top=74;
+  if(bounds){
+    const groupCenterX=(bounds.left+bounds.right)/2,groupCenterY=(bounds.top+bounds.bottom)/2;
+    const roomCenterX=room.col+room.width/2,roomCenterY=room.row+room.height/2;
+    left=roomCenterX<groupCenterX?82:roomCenterX>groupCenterX?18:50;
+    top=roomCenterY<groupCenterY?82:roomCenterY>groupCenterY?18:50;
+  }
+  dots.style.left=`${left}%`;dots.style.top=`${top}%`;
+  for(let index=0;index<room.staffCount;index++){const dot=document.createElement("span");dot.className="staff-dot";dots.appendChild(dot)}
+  element.appendChild(dots);
+}
+
 function render(){
   grid.replaceChildren();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
@@ -303,6 +342,7 @@ function render(){
       element.appendChild(fill);
       const eligible=(doorSide==="north"&&localRow===0)||(doorSide==="south"&&localRow===room.height-1)||(doorSide==="west"&&localCol===0)||(doorSide==="east"&&localCol===room.width-1);
       addEdgeSlots(element,joins,eligible?doorSide:null);
+      if(localCol===0&&localRow===0)addStaffDots(element,room);
       element.addEventListener("click",event=>{event.stopPropagation();selectPhysicalRoom(room.instanceId);setStatus(`${definition.name} ${room.instanceId} selected.`)});grid.appendChild(element);
     }
   }
@@ -317,9 +357,15 @@ rotateButton.addEventListener("click",()=>{
 removeButton.addEventListener("click",()=>{if(selectedId)removePhysicalRoom(selectedId)});
 joinButton.addEventListener("click",()=>createGroup(selectedEntityRef(),joinCandidate.value));
 stackButton.addEventListener("click",()=>{
-  const room=physicalRoom(selectedId),definition=room&&roomDef(room.roomId);
-  if(!room||room.stack>=definition.maxStack)return;
-  room.stack+=1;render();setStatus(`${definition.name} ${room.instanceId} advanced to stack ${room.stack}.`);
+  const members=entityRoomIds(selectedEntityRef()).map(physicalRoom).filter(Boolean);
+  if(!members.length||members.some(room=>room.stack>=roomDef(room.roomId).maxStack))return;
+  for(const room of members)room.stack+=1;
+  render();setStatus(`${members.length>1?`Group ${selectedGroupId}`:entityLabel(members[0].instanceId)} advanced to stack ${members[0].stack}.`);
+});
+staffButton.addEventListener("click",()=>{
+  const room=physicalRoom(selectedId),definition=room&&roomDef(room.roomId),tiers=staffingTiers(definition);
+  if(!room||room.staffTierIndex>=tiers.length-1)return;
+  room.staffTierIndex+=1;room.staffCount=tiers[room.staffTierIndex];render();setStatus(`${definition.name} ${room.instanceId} advanced to ${room.staffCount} staff.`);
 });
 splitButton.addEventListener("click",()=>{if(selectedGroupId)splitGroup(selectedGroupId)});
 

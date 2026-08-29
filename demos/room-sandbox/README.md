@@ -20,7 +20,9 @@ Browser prototype for testing Stargate base room footprints.
 - Doors occupy the middle edge section.
 - Rotate moves the selected door clockwise: North -> East -> South -> West.
 - The Stack action advances a selected stackable physical room by one level, up to its catalog `maxStack`.
+- Stacking a selected Group advances every physical child together, and joining requires matching stack levels.
 - Stack level is represented by thicker room borders (stronger walls).
+- Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
 
 ## Run
 
