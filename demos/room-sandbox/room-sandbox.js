@@ -3,7 +3,7 @@ import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared
 const COLS=12, ROWS=10, CELL=80, PAD=8;
 const CATALOG_URL="../shared/data/rooms.json";
 
-let catalog=[], placed=[], groups=[];
+let catalog=[], placed=[], groups=[], hallways=new Set();
 let selectedId=null, selectedGroupId=null, nextRoomId=1, nextGroupId=1;
 let selectedJoinTarget=null, actionEntries=[];
 
@@ -161,6 +161,12 @@ function overlaps(col,row,width,height){
   return placed.some(room=>col<room.col+room.width&&col+width>room.col&&row<room.row+room.height&&row+height>room.row);
 }
 
+function cellKey(col,row){return `${col},${row}`}
+function overlapsHallway(col,row,width,height){
+  for(let y=row;y<row+height;y++)for(let x=col;x<col+width;x++)if(hallways.has(cellKey(x,y)))return true;
+  return false;
+}
+
 function createPhysicalRoom(definition,col,row,constructionTier=Number(ctSelect.value),staffTierIndex=0){
   const tiers=staffingTiers(definition),safeStaffTier=Math.min(staffTierIndex,Math.max(0,tiers.length-1));
   const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,constructionTier,doorIndex:0,staffTierIndex:safeStaffTier,staffCount:tiers[safeStaffTier]??0};
@@ -171,6 +177,7 @@ function place(col,row,definition=roomDef(roomSelect.value)){
   if(!definition)return false;
   if(definition.unique&&placed.some(room=>room.roomId===definition.id)){setStatus(`${definition.name} is unique and has already been placed.`);return false}
   if(col<0||row<0||col+definition.width>COLS||row+definition.height>ROWS){setStatus("Room would extend past grid.");return false}
+  if(overlapsHallway(col,row,definition.width,definition.height)){setStatus("That footprint is reserved as a hallway.");return false}
   if(overlaps(col,row,definition.width,definition.height)){setStatus("Room overlaps another room.");return false}
   const room=createPhysicalRoom(definition,col,row);
   logAction(`Placed ${definition.name} ${room.instanceId} at column ${col+1}, row ${row+1}; CT${room.constructionTier}; staff ${room.staffCount}.`);
@@ -366,7 +373,8 @@ function addRoomNumber(element,room){
 function render(){
   grid.replaceChildren();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
-    const cell=document.createElement("button");cell.type="button";cell.className="cell";cell.addEventListener("click",()=>place(col,row));grid.appendChild(cell);
+    const hallway=hallways.has(cellKey(col,row));
+    const cell=document.createElement("button");cell.type="button";cell.className=`cell${hallway?" hallway":""}`;cell.disabled=hallway;cell.setAttribute("aria-label",hallway?`Hallway column ${col+1}, row ${row+1}`:`Grid column ${col+1}, row ${row+1}`);cell.addEventListener("click",()=>place(col,row));grid.appendChild(cell);
   }
   const selectedGroupRooms=selectedGroupId?new Set(childRoomIds(selectedGroupId)):new Set();
   const destinationRooms=selectedJoinTarget?new Set(entityRoomIds(selectedJoinTarget)):new Set();
@@ -394,14 +402,35 @@ function render(){
 }
 
 function resetSandbox(){
-  placed=[];groups=[];selectedId=null;selectedGroupId=null;selectedJoinTarget=null;nextRoomId=1;nextGroupId=1;
+  placed=[];groups=[];hallways=new Set();selectedId=null;selectedGroupId=null;selectedJoinTarget=null;nextRoomId=1;nextGroupId=1;
+}
+
+function orientDoorTowardHallway(room){
+  const checks=[
+    ["north",()=>Array.from({length:room.width},(_,offset)=>cellKey(room.col+offset,room.row-1))],
+    ["east",()=>Array.from({length:room.height},(_,offset)=>cellKey(room.col+room.width,room.row+offset))],
+    ["south",()=>Array.from({length:room.width},(_,offset)=>cellKey(room.col+offset,room.row+room.height))],
+    ["west",()=>Array.from({length:room.height},(_,offset)=>cellKey(room.col-1,room.row+offset))]
+  ];
+  const side=checks.find(([,keys])=>keys().some(key=>hallways.has(key)))?.[0];
+  if(side)room.doorIndex=["north","east","south","west"].indexOf(side);
+  return side??null;
 }
 
 function generateLayout(){
   resetSandbox();actionEntries=[];logAction("Started generated layout from a central Gate Room.");
+  for(let col=3;col<=7;col++)hallways.add(cellKey(col,2));
+  for(let row=2;row<=6;row++){hallways.add(cellKey(3,row));hallways.add(cellKey(7,row))}
+  for(let row=0;row<=2;row++)hallways.add(cellKey(5,row));
+  for(let col=0;col<=3;col++)hallways.add(cellKey(col,4));
+  for(let col=7;col<COLS;col++)hallways.add(cellKey(col,4));
+  for(let col=0;col<COLS;col++){hallways.add(cellKey(col,6));hallways.add(cellKey(col,9))}
+  for(const col of [2,5,8,11])for(let row=6;row<=9;row++)hallways.add(cellKey(col,row));
+  logAction(`Generated ${hallways.size} connected hallway cells around the Gate and room wings.`);
   const add=(roomId,col,row,ct=1,staffTier=0)=>{
     const definition=roomDef(roomId),room=createPhysicalRoom(definition,col,row,ct,staffTier);
-    logAction(`Generated ${definition.name} ${room.instanceId} at column ${col+1}, row ${row+1}; CT${ct}; staff ${room.staffCount}.`);return room.instanceId;
+    const doorSide=orientDoorTowardHallway(room);
+    logAction(`Generated ${definition.name} ${room.instanceId} at column ${col+1}, row ${row+1}; CT${ct}; staff ${room.staffCount}; door ${doorSide??"unassigned"}.`);return room.instanceId;
   };
   const pair=(first,second)=>createGroup(first,second,{renderAfter:false}).id;
   const quad=(first,second,third,fourth)=>{
@@ -409,25 +438,22 @@ function generateLayout(){
   };
 
   const gate=add("gate_room",4,3,1);
-  add("analysis",4,0,2,1);add("research",5,0,3,2);add("tech_platform",6,0,2);add("data_storage",7,0,3);add("discovery",8,0,1);
-  add("receiving",7,3,2);add("response_room",7,4,2,1);
-  pair(add("maintenance",4,7,2),add("maintenance",5,7,2));
-  pair(add("holding",8,3,1),add("holding",8,4,1));
-  quad(add("infirmary",9,3,2),add("infirmary",10,3,2),add("infirmary",9,4,2),add("infirmary",10,4,2));
-  pair(add("living_quarters",8,6,3),add("living_quarters",9,6,3));
-  quad(add("ration_storage",0,0,1),add("ration_storage",1,0,1),add("ration_storage",0,1,1),add("ration_storage",1,1,1));
-  pair(add("material_storage",2,0,2),add("material_storage",2,1,2));
-  pair(add("supply_storage",0,3,3),add("supply_storage",1,3,3));
-  quad(add("equipment_storage",0,5,2),add("equipment_storage",1,5,2),add("equipment_storage",0,6,2),add("equipment_storage",1,6,2));
-  pair(add("armor_storage",2,5,1),add("armor_storage",2,6,1));
-  pair(add("containment",0,8,3),add("containment",1,8,3));
+  add("analysis",4,0,2,1);add("research",6,0,3,2);add("tech_platform",4,1,2);add("data_storage",6,1,3);add("discovery",7,1,1);
+  pair(add("maintenance",0,3,2),add("maintenance",1,3,2));
+  pair(add("supply_storage",0,5,3),add("supply_storage",1,5,3));
+  add("receiving",8,3,2);add("response_room",9,3,2,1);pair(add("holding",10,3,1),add("holding",11,3,1));
+  pair(add("infirmary",8,5,2),add("infirmary",9,5,2));pair(add("living_quarters",10,5,3),add("living_quarters",11,5,3));
+  quad(add("ration_storage",0,7,1),add("ration_storage",1,7,1),add("ration_storage",0,8,1),add("ration_storage",1,8,1));
+  pair(add("armor_storage",3,7,1),add("armor_storage",3,8,1));pair(add("material_storage",4,7,2),add("material_storage",4,8,2));
+  pair(add("supply_storage",6,7,3),add("supply_storage",6,8,3));pair(add("containment",7,7,3),add("containment",7,8,3));
+  quad(add("equipment_storage",9,7,2),add("equipment_storage",10,7,2),add("equipment_storage",9,8,2),add("equipment_storage",10,8,2));
   selectedId=gate;selectedGroupId=null;selectedJoinTarget=null;roomSelect.value="gate_room";updateRoomControls();
-  logAction("Finished generated layout; selected the central Gate Room.");render();setStatus("Generated a central-Gate layout with mixed Groups, CTs, and staffing tiers.");
+  logAction("Finished connected generated layout; every room door faces an adjacent hallway.");render();setStatus("Generated a connected central-Gate base with hallway-facing doors.");
 }
 
 function copiedLogText(){
   const steps=actionEntries.map((entry,index)=>`${index+1}. ${entry}`).join("\n");
-  const state=JSON.stringify({selectedId,selectedGroupId,selectedJoinTarget,placed,groups},null,2);
+  const state=JSON.stringify({selectedId,selectedGroupId,selectedJoinTarget,hallways:[...hallways],placed,groups},null,2);
   return `Stargate Room Sandbox action log\n${steps}\n\nCurrent sandbox state\n${state}`;
 }
 
