@@ -462,6 +462,10 @@ function generateLayout(){
   for(let col=7;col<COLS;col++)hallways.add(cellKey(col,4));
   for(let col=0;col<COLS;col++){hallways.add(cellKey(col,6));hallways.add(cellKey(col,9))}
   for(const col of [2,5,8,11])for(let row=6;row<=9;row++)hallways.add(cellKey(col,row));
+  hallways.delete(cellKey(4,2));
+  hallways.delete(cellKey(7,3));
+  hallways.add(cellKey(4,1));
+  hallways.add(cellKey(8,3));
   logAction(`Generated ${hallways.size} connected hallway cells around the Gate and room wings.`);
   const add=(roomId,col,row,ct=1,staffTier=0,preferredDoor=null)=>{
     const definition=roomDef(roomId),room=createPhysicalRoom(definition,col,row,ct,staffTier);
@@ -474,18 +478,20 @@ function generateLayout(){
   };
 
   const gate=add("gate_room",4,3,1);
+  forceGateDoor(physicalRoom(gate),"north",1);
   forceGateDoor(physicalRoom(gate),"east",1);
-  add("analysis",4,0,2,1);add("research",6,0,3,2);add("tech_platform",4,1,2);add("data_storage",6,1,3);add("discovery",7,1,1);
+  add("infirmary",4,2,2,0,"north");
+  add("analysis",4,0,2,1);add("research",6,0,3,2);add("tech_platform",3,1,2);add("data_storage",6,1,3);add("discovery",7,1,1);
   pair(add("maintenance",0,3,2),add("maintenance",1,3,2));
   pair(add("supply_storage",0,5,3),add("supply_storage",1,5,3));
-  add("receiving",8,3,2,0,"west");add("response_room",9,3,2,1);pair(add("holding",10,3,1),add("holding",11,3,1));
-  pair(add("infirmary",8,5,2),add("infirmary",9,5,2));pair(add("living_quarters",10,5,3),add("living_quarters",11,5,3));
+  add("receiving",7,3,2,0,"east");add("response_room",9,3,2,1);pair(add("holding",10,3,1),add("holding",11,3,1));
+  pair(add("living_quarters",10,5,3),add("living_quarters",11,5,3));
   quad(add("ration_storage",0,7,1),add("ration_storage",1,7,1),add("ration_storage",0,8,1),add("ration_storage",1,8,1));
   pair(add("armor_storage",3,7,1),add("armor_storage",3,8,1));pair(add("material_storage",4,7,2),add("material_storage",4,8,2));
   pair(add("supply_storage",6,7,3),add("supply_storage",6,8,3));pair(add("containment",7,7,3),add("containment",7,8,3));
   quad(add("equipment_storage",9,7,2),add("equipment_storage",10,7,2),add("equipment_storage",9,8,2),add("equipment_storage",10,8,2));
   selectedId=gate;selectedGroupId=null;selectedJoinTarget=null;roomSelect.value="gate_room";updateRoomControls();
-  logAction("Finished connected generated layout; every room door faces an adjacent hallway.");render();setStatus("Generated a connected central-Gate base with hallway-facing doors.");
+  logAction("Finished connected layout; Infirmary and Receiving directly border the Gate and exit into outward hallways.");render();setStatus("Generated a connected base with pass-through Infirmary and Receiving access at the Gate.");
 }
 
 function copiedLogText(){
