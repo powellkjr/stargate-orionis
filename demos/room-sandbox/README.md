@@ -23,6 +23,10 @@ Browser prototype for testing Stargate base room footprints.
 - Upgrading a selected Group advances every physical child together, and joining requires matching CTs.
 - Higher CT is represented by thicker room borders (stronger walls).
 - Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
+- Joinable rooms use dotted walls; category palettes visually group related room types.
+- The join destination has its own highlight and can be changed from the grid or candidate dropdown.
+- Generate Layout builds a reproducible central-Gate example with mixed legal Groups, CTs, and staffing tiers.
+- The rolling action log can copy both recent steps and the full current sandbox state for debugging.
 
 ## Run
 
