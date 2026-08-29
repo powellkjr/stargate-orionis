@@ -110,7 +110,7 @@ function renderPreview(){
   const fields=document.createElement("dl");
   const hidden=new Set(["id","name","color","openQuestions"]);
   if(instance){
-    const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,constructionTier:`CT${instance.constructionTier}`,staff:instance.staffCount,doorSide:["North","East","South","West"][instance.doorIndex%4]};
+    const details={physicalRoomId:instance.instanceId,gridPosition:`Column ${instance.col+1}, row ${instance.row+1}`,constructionTier:`CT${instance.constructionTier}`,staff:instance.staffCount,doors:instance.doors?instance.doors.map(door=>`${fieldLabel(door.side)} slot ${door.slot}`):["North","East","South","West"][instance.doorIndex%4]};
     for(const [key,value] of Object.entries(details)){const term=document.createElement("dt");term.textContent=fieldLabel(key);const detail=document.createElement("dd");detail.textContent=value;fields.append(term,detail)}
   }
   if(selectedGroupId){
@@ -170,7 +170,27 @@ function overlapsHallway(col,row,width,height){
 function createPhysicalRoom(definition,col,row,constructionTier=Number(ctSelect.value),staffTierIndex=0){
   const tiers=staffingTiers(definition),safeStaffTier=Math.min(staffTierIndex,Math.max(0,tiers.length-1));
   const room={instanceId:`r${nextRoomId++}`,roomId:definition.id,col,row,width:definition.width,height:definition.height,constructionTier,doorIndex:0,staffTierIndex:safeStaffTier,staffCount:tiers[safeStaffTier]??0};
+  if(definition.id==="gate_room")room.doors=randomGateDoors();
   placed.push(room);return room;
+}
+
+function randomGateDoors(){
+  const sides=["north","east","south","west"];
+  const doors=sides.map(side=>({side,slot:1+Math.floor(Math.random()*3)}));
+  const used=new Set(doors.map(door=>`${door.side}:${door.slot}`));
+  const available=sides.flatMap(side=>[1,2,3].map(slot=>({side,slot}))).filter(door=>!used.has(`${door.side}:${door.slot}`));
+  doors.push(available[Math.floor(Math.random()*available.length)]);return doors;
+}
+
+function forceGateDoor(room,side,slot){
+  const target=room.doors.find(door=>door.side===side);target.slot=slot;
+  const used=new Set();
+  for(const door of room.doors){
+    const key=`${door.side}:${door.slot}`;
+    if(!used.has(key)){used.add(key);continue}
+    const replacement=["north","east","south","west"].flatMap(candidateSide=>[1,2,3].map(candidateSlot=>({side:candidateSide,slot:candidateSlot}))).find(candidate=>!used.has(`${candidate.side}:${candidate.slot}`));
+    door.side=replacement.side;door.slot=replacement.slot;used.add(`${door.side}:${door.slot}`);
+  }
 }
 
 function place(col,row,definition=roomDef(roomSelect.value)){
@@ -342,6 +362,13 @@ function addEdgeSlots(element,joins,doorSide){
   }
 }
 
+function addGateEdgeSlots(element,doors){
+  for(const side of ["north","east","south","west"])for(let slotNumber=1;slotNumber<=3;slotNumber++){
+    const slot=document.createElement("div");slot.className=`edge-slot ${side[0]}${slotNumber}`;
+    if(doors.some(door=>door.side===side&&door.slot===slotNumber))slot.classList.add("door");element.appendChild(slot);
+  }
+}
+
 function addStaffDots(element,room){
   if(!room.staffCount)return;
   const dots=document.createElement("div");dots.className="staff-dots";
@@ -370,6 +397,14 @@ function addRoomNumber(element,room){
   number.style[horizontal]="3px";number.style[vertical]="3px";element.appendChild(number);
 }
 
+function renderGateRoom(room,definition){
+  const element=document.createElement("div");element.className=`room-cell${room.instanceId===selectedId?" selected":""}`;
+  element.style.left=`${room.col*CELL}px`;element.style.top=`${room.row*CELL}px`;element.style.width=`${room.width*CELL}px`;element.style.height=`${room.height*CELL}px`;element.style.setProperty("--room-color",definition.color);
+  const fill=document.createElement("div");fill.className="room-fill";Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`,borderWidth:room.constructionTier===3?"8px":room.constructionTier===2?"5px":"2px"});fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;element.appendChild(fill);
+  addGateEdgeSlots(element,room.doors);addRoomNumber(element,room);
+  element.addEventListener("click",event=>{event.stopPropagation();handleRoomClick(room.instanceId)});grid.appendChild(element);
+}
+
 function render(){
   grid.replaceChildren();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
@@ -380,6 +415,7 @@ function render(){
   const destinationRooms=selectedJoinTarget?new Set(entityRoomIds(selectedJoinTarget)):new Set();
   for(const room of placed){
     const definition=roomDef(room.roomId),doorSide=["north","east","south","west"][room.doorIndex%4];
+    if(definition.id==="gate_room"){renderGateRoom(room,definition);continue}
     for(let localRow=0;localRow<room.height;localRow++)for(let localCol=0;localCol<room.width;localCol++){
       const joins=joinedSides(room,localCol,localRow),element=document.createElement("div");
       element.className="room-cell"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
@@ -405,14 +441,15 @@ function resetSandbox(){
   placed=[];groups=[];hallways=new Set();selectedId=null;selectedGroupId=null;selectedJoinTarget=null;nextRoomId=1;nextGroupId=1;
 }
 
-function orientDoorTowardHallway(room){
+function orientDoorTowardHallway(room,preferredSide=null){
   const checks=[
     ["north",()=>Array.from({length:room.width},(_,offset)=>cellKey(room.col+offset,room.row-1))],
     ["east",()=>Array.from({length:room.height},(_,offset)=>cellKey(room.col+room.width,room.row+offset))],
     ["south",()=>Array.from({length:room.width},(_,offset)=>cellKey(room.col+offset,room.row+room.height))],
     ["west",()=>Array.from({length:room.height},(_,offset)=>cellKey(room.col-1,room.row+offset))]
   ];
-  const side=checks.find(([,keys])=>keys().some(key=>hallways.has(key)))?.[0];
+  const available=checks.filter(([,keys])=>keys().some(key=>hallways.has(key))).map(([side])=>side);
+  const side=available.includes(preferredSide)?preferredSide:available[0];
   if(side)room.doorIndex=["north","east","south","west"].indexOf(side);
   return side??null;
 }
@@ -427,9 +464,9 @@ function generateLayout(){
   for(let col=0;col<COLS;col++){hallways.add(cellKey(col,6));hallways.add(cellKey(col,9))}
   for(const col of [2,5,8,11])for(let row=6;row<=9;row++)hallways.add(cellKey(col,row));
   logAction(`Generated ${hallways.size} connected hallway cells around the Gate and room wings.`);
-  const add=(roomId,col,row,ct=1,staffTier=0)=>{
+  const add=(roomId,col,row,ct=1,staffTier=0,preferredDoor=null)=>{
     const definition=roomDef(roomId),room=createPhysicalRoom(definition,col,row,ct,staffTier);
-    const doorSide=orientDoorTowardHallway(room);
+    const doorSide=definition.id==="gate_room"?"five perimeter doors":orientDoorTowardHallway(room,preferredDoor);
     logAction(`Generated ${definition.name} ${room.instanceId} at column ${col+1}, row ${row+1}; CT${ct}; staff ${room.staffCount}; door ${doorSide??"unassigned"}.`);return room.instanceId;
   };
   const pair=(first,second)=>createGroup(first,second,{renderAfter:false}).id;
@@ -438,10 +475,11 @@ function generateLayout(){
   };
 
   const gate=add("gate_room",4,3,1);
+  forceGateDoor(physicalRoom(gate),"east",1);
   add("analysis",4,0,2,1);add("research",6,0,3,2);add("tech_platform",4,1,2);add("data_storage",6,1,3);add("discovery",7,1,1);
   pair(add("maintenance",0,3,2),add("maintenance",1,3,2));
   pair(add("supply_storage",0,5,3),add("supply_storage",1,5,3));
-  add("receiving",8,3,2);add("response_room",9,3,2,1);pair(add("holding",10,3,1),add("holding",11,3,1));
+  add("receiving",8,3,2,0,"west");add("response_room",9,3,2,1);pair(add("holding",10,3,1),add("holding",11,3,1));
   pair(add("infirmary",8,5,2),add("infirmary",9,5,2));pair(add("living_quarters",10,5,3),add("living_quarters",11,5,3));
   quad(add("ration_storage",0,7,1),add("ration_storage",1,7,1),add("ration_storage",0,8,1),add("ration_storage",1,8,1));
   pair(add("armor_storage",3,7,1),add("armor_storage",3,8,1));pair(add("material_storage",4,7,2),add("material_storage",4,8,2));
@@ -467,6 +505,11 @@ async function copyLog(){
 
 rotateButton.addEventListener("click",()=>{
   const room=physicalRoom(selectedId);if(!room)return;
+  if(room.doors){
+    const sides=["north","east","south","west"];
+    for(const door of room.doors)door.side=sides[(sides.indexOf(door.side)+1)%4];
+    logAction(`Rotated all five ${entityLabel(room.instanceId)} doors clockwise.`);render();setStatus("Gate doors rotated clockwise.");return;
+  }
   room.doorIndex=(room.doorIndex+1)%4;logAction(`Rotated ${entityLabel(room.instanceId)} door to ${["north","east","south","west"][room.doorIndex]}.`);render();setStatus("Door rotated clockwise.");
 });
 

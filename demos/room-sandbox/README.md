@@ -19,13 +19,14 @@ Browser prototype for testing Stargate base room footprints.
 - Exposed edges are split visually into three sections.
 - Doors occupy the middle edge section.
 - Rotate moves the selected door clockwise: North -> East -> South -> West.
+- The Gate Room renders as one continuous 3x3 room with a centered label and five randomized perimeter doors.
 - The Upgrade CT action advances a selected physical room by one Construction Tier, up to `maxConstructionTier`.
 - Upgrading a selected Group advances every physical child together, and joining requires matching CTs.
 - Higher CT is represented by thicker room borders (stronger walls).
 - Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
 - Joinable rooms use dotted walls; category palettes visually group related room types.
 - The join destination has its own highlight and can be changed from the grid or candidate dropdown.
-- Generate Layout builds a reproducible central-Gate base with connected reserved hallways, hallway-facing doors, mixed legal Groups, CTs, and staffing tiers.
+- Generate Layout builds a central-Gate base with connected reserved hallways, hallway-facing doors, mixed legal Groups, CTs, and staffing tiers; Receiving connects directly across the Gate's east corridor and at least one Infirmary is included.
 - The rolling action log can copy both recent steps and the full current sandbox state for debugging.
 
 ## Run
