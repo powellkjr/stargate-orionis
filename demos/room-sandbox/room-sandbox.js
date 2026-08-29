@@ -183,6 +183,12 @@ function randomGateDoors(){
   doors.push(available[Math.floor(Math.random()*available.length)]);return doors;
 }
 
+function shuffled(values){
+  const result=[...values];
+  for(let index=result.length-1;index>0;index--){const target=Math.floor(Math.random()*(index+1));[result[index],result[target]]=[result[target],result[index]]}
+  return result;
+}
+
 function forceGateDoor(room,side,slot){
   const target=room.doors.find(door=>door.side===side);target.slot=slot;
   const used=new Set();
@@ -503,20 +509,26 @@ function generateLayout(){
   const quad=(first,second,third,fourth)=>{
     const primary=pair(first,second),secondary=pair(third,fourth);return createGroup(primary,secondary,{renderAfter:false}).id;
   };
+  const randomCt=roomId=>1+Math.floor(Math.random()*roomDef(roomId).maxConstructionTier);
+  const randomStaffTier=roomId=>{const tiers=staffingTiers(roomDef(roomId));return tiers.length?Math.floor(Math.random()*tiers.length):0};
+  const addVaried=(roomId,col,row,preferredDoor=null)=>add(roomId,col,row,randomCt(roomId),randomStaffTier(roomId),preferredDoor);
+  const pairAt=(roomId,positions)=>{const ct=randomCt(roomId);return pair(add(roomId,...positions[0],ct,randomStaffTier(roomId)),add(roomId,...positions[1],ct,randomStaffTier(roomId)))};
+  const quadAt=(roomId,positions)=>{const ct=randomCt(roomId);return quad(...positions.map(position=>add(roomId,...position,ct,randomStaffTier(roomId))))};
 
   const gate=add("gate_room",4,3,1);
   forceGateDoor(physicalRoom(gate),"north",1);
   forceGateDoor(physicalRoom(gate),"east",1);
-  add("infirmary",4,2,2,0,"north");
-  add("analysis",4,0,2,1);add("research",6,0,3,2);add("tech_platform",3,1,2);add("data_storage",6,1,3);add("discovery",7,1,1);
-  pair(add("maintenance",0,3,2),add("maintenance",1,3,2));
-  pair(add("supply_storage",0,5,3),add("supply_storage",1,5,3));
-  add("receiving",7,3,2,0,"east");add("response_room",9,3,2,1);pair(add("holding",10,3,1),add("holding",11,3,1));
-  pair(add("living_quarters",10,5,3),add("living_quarters",11,5,3));
-  quad(add("ration_storage",0,7,1),add("ration_storage",1,7,1),add("ration_storage",0,8,1),add("ration_storage",1,8,1));
-  pair(add("armor_storage",3,7,1),add("armor_storage",3,8,1));pair(add("material_storage",4,7,2),add("material_storage",4,8,2));
-  pair(add("supply_storage",6,7,3),add("supply_storage",6,8,3));pair(add("containment",7,7,3),add("containment",7,8,3));
-  quad(add("equipment_storage",9,7,2),add("equipment_storage",10,7,2),add("equipment_storage",9,8,2),add("equipment_storage",10,8,2));
+  addVaried("infirmary",4,2,"north");
+  const scienceRooms=shuffled(["analysis","research","tech_platform","data_storage","discovery"]),sciencePositions=[[4,0],[6,0],[3,1],[6,1],[7,1]];
+  scienceRooms.forEach((roomId,index)=>addVaried(roomId,...sciencePositions[index]));
+  pairAt("maintenance",[[0,3],[1,3]]);
+  const storagePairRooms=shuffled(["supply_storage","armor_storage","material_storage","supply_storage","containment"]),storagePairPositions=[[[0,5],[1,5]],[[3,7],[3,8]],[[4,7],[4,8]],[[6,7],[6,8]],[[7,7],[7,8]]];
+  storagePairRooms.forEach((roomId,index)=>pairAt(roomId,storagePairPositions[index]));
+  addVaried("receiving",7,3,"east");addVaried("response_room",9,3);
+  const personnelRooms=shuffled(["holding","living_quarters"]),personnelPositions=[[[10,3],[11,3]],[[10,5],[11,5]]];
+  personnelRooms.forEach((roomId,index)=>pairAt(roomId,personnelPositions[index]));
+  const storageQuadRooms=shuffled(["ration_storage","equipment_storage"]),storageQuadPositions=[[[0,7],[1,7],[0,8],[1,8]],[[9,7],[10,7],[9,8],[10,8]]];
+  storageQuadRooms.forEach((roomId,index)=>quadAt(roomId,storageQuadPositions[index]));
   selectedId=gate;selectedGroupId=null;selectedJoinTarget=null;roomSelect.value="gate_room";updateRoomControls();
   logAction("Finished connected layout; Infirmary and Receiving directly border the Gate and exit into outward hallways.");render();setStatus("Generated a connected base with pass-through Infirmary and Receiving access at the Gate.");
 }
