@@ -37,6 +37,7 @@
             "height": {"type": "integer", "minimum": 1}
           }
         },
+        "renderMode": {"enum": ["tiled", "continuous"]},
         "distributed": {"type": "boolean"}
       }
     },

@@ -33,16 +33,22 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .status{margin-top:12px;padding:10px;background:#11161d;border-radius:8px;color:var(--muted);font-size:.84rem;min-height:42px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .toolbar button{width:auto;margin:0}
+.toolbar button.active{background:#14532d;border-color:#22c55e}
 .workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:16px;align-items:start}
 .grid-wrap{overflow:auto;border:1px solid #30363d;background:#090d12;padding:12px}
 #grid{position:relative;display:grid;grid-template-columns:repeat(12,var(--cell));grid-template-rows:repeat(10,var(--cell));width:calc(12 * var(--cell));height:calc(10 * var(--cell));background-image:linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);background-size:var(--cell) var(--cell);border-right:1px solid var(--grid);border-bottom:1px solid var(--grid)}
 .cell{width:var(--cell);height:var(--cell);min-height:0;border:0;border-radius:0;padding:0;margin:0;background:transparent;z-index:1}
+.cell.base-hidden::after{display:none}
 .cell:hover{outline:2px solid #7dd3fc;outline-offset:-2px}
-.cell.hallway{position:relative;background:#242b35;box-shadow:inset 0 0 0 2px #374151;cursor:not-allowed}
-.cell.hallway:disabled{opacity:1}
-.hallway-path-grid{position:absolute;inset:0;z-index:1;display:grid;grid-template-columns:1fr 24px 1fr;grid-template-rows:1fr 24px 1fr;pointer-events:none}.hallway-block.active{background:#9ca3af}
+.cell{position:relative}
+.cell::after{content:"";position:absolute;inset:8px;border-radius:10px;background:rgba(34,197,94,.14);box-shadow:inset 0 0 0 1px rgba(34,197,94,.24);pointer-events:none}
 .room-cell{position:absolute;width:var(--cell);height:var(--cell);z-index:2;pointer-events:auto}
+.room-cell::before{content:"";position:absolute;inset:0;background:#22c55e;pointer-events:none;z-index:1}
+.room-cell::after{content:"";position:absolute;inset:8px;background:var(--room-color);border-radius:7px;pointer-events:none;z-index:2}
+.continuous-room{background:#22c55e;border-radius:10px}
+.continuous-room::before,.continuous-room::after{content:none}
 .room-fill{position:absolute;background:var(--room-color);border-style:solid;border-color:var(--ct-border,#8b949e);border-width:3px;border-radius:7px;display:flex;align-items:center;justify-content:center;text-align:center;color:#071018;font-weight:700;font-size:.72rem;line-height:1.05;user-select:none;overflow:hidden}
+.room-fill{z-index:3}
 .room-cell.selected .room-fill{outline:3px solid white;outline-offset:-3px}
 .room-cell.group-selected .room-fill{box-shadow:inset 0 0 0 3px #7dd3fc}
 .room-cell.join-destination .room-fill{outline:3px solid #f2c94c;outline-offset:-3px}
@@ -50,19 +56,62 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .room-number{position:absolute;z-index:6;padding:1px 3px;border-radius:3px;background:rgba(7,16,24,.8);color:#fff;font-size:.6rem;font-weight:700;line-height:1.2;pointer-events:none}
 .staff-dots{position:absolute;z-index:5;display:flex;flex-wrap:wrap;justify-content:center;gap:2px;width:28px;pointer-events:none;transform:translate(-50%,-50%)}
 .staff-dot{width:6px;height:6px;border-radius:50%;background:#fff;border:1px solid #111827;box-shadow:0 0 2px #000}
-.edge-slot{position:absolute;background:rgba(255,255,255,.12);z-index:4}
-.edge-slot.n1,.edge-slot.n2,.edge-slot.n3,.edge-slot.s1,.edge-slot.s2,.edge-slot.s3{height:5px;width:calc((100% - 16px)/3)}
-.edge-slot.w1,.edge-slot.w2,.edge-slot.w3,.edge-slot.e1,.edge-slot.e2,.edge-slot.e3{width:5px;height:calc((100% - 16px)/3)}
-.edge-slot.n1{top:1px;left:8px}.edge-slot.n2{top:1px;left:calc(8px + (100% - 16px)/3)}.edge-slot.n3{top:1px;right:8px}
-.edge-slot.s1{bottom:1px;left:8px}.edge-slot.s2{bottom:1px;left:calc(8px + (100% - 16px)/3)}.edge-slot.s3{bottom:1px;right:8px}
-.edge-slot.w1{left:1px;top:8px}.edge-slot.w2{left:1px;top:calc(8px + (100% - 16px)/3)}.edge-slot.w3{left:1px;bottom:8px}
-.edge-slot.e1{right:1px;top:8px}.edge-slot.e2{right:1px;top:calc(8px + (100% - 16px)/3)}.edge-slot.e3{right:1px;bottom:8px}
+.edge-slot{position:absolute;background:transparent;z-index:4}
+.edge-slot.n1,.edge-slot.n2,.edge-slot.n3,.edge-slot.s1,.edge-slot.s2,.edge-slot.s3{height:8px;width:calc((100% - 16px)/3)}
+.edge-slot.w1,.edge-slot.w2,.edge-slot.w3,.edge-slot.e1,.edge-slot.e2,.edge-slot.e3{width:8px;height:calc((100% - 16px)/3)}
+.edge-slot.n1{top:0;left:0}.edge-slot.n2{top:0;left:calc(8px + (100% - 16px)/3)}.edge-slot.n3{top:0;right:0}
+.edge-slot.s1{bottom:0;left:0}.edge-slot.s2{bottom:0;left:calc(8px + (100% - 16px)/3)}.edge-slot.s3{bottom:0;right:0}
+.edge-slot.w1{left:0;top:0}.edge-slot.w2{left:0;top:calc(8px + (100% - 16px)/3)}.edge-slot.w3{left:0;bottom:0}
+.edge-slot.e1{right:0;top:0}.edge-slot.e2{right:0;top:calc(8px + (100% - 16px)/3)}.edge-slot.e3{right:0;bottom:0}
 .door{background:#f9fafb !important;border:1px solid #111827}
-.edge-slot.n2.door,.edge-slot.s2.door{left:calc(50% - 12px);width:24px}.edge-slot.w2.door,.edge-slot.e2.door{top:calc(50% - 12px);height:24px}
-.gate-room .edge-slot.n1,.gate-room .edge-slot.n2,.gate-room .edge-slot.n3,.gate-room .edge-slot.s1,.gate-room .edge-slot.s2,.gate-room .edge-slot.s3{width:24px}
-.gate-room .edge-slot.w1,.gate-room .edge-slot.w2,.gate-room .edge-slot.w3,.gate-room .edge-slot.e1,.gate-room .edge-slot.e2,.gate-room .edge-slot.e3{height:24px}
-.gate-room .edge-slot.n1,.gate-room .edge-slot.s1{left:28px}.gate-room .edge-slot.n2,.gate-room .edge-slot.s2{left:108px}.gate-room .edge-slot.n3,.gate-room .edge-slot.s3{right:28px}
-.gate-room .edge-slot.w1,.gate-room .edge-slot.e1{top:28px}.gate-room .edge-slot.w2,.gate-room .edge-slot.e2{top:108px}.gate-room .edge-slot.w3,.gate-room .edge-slot.e3{bottom:28px}
+.edge-slot.n2.door,.edge-slot.s2.door{left:calc(50% - 12px);width:24px;height:8px}.edge-slot.w2.door,.edge-slot.e2.door{top:calc(50% - 12px);height:24px;width:8px}
+.continuous-door{position:absolute;background:#f9fafb;border:1px solid #111827;z-index:4}
+.continuous-door.north,.continuous-door.south{width:24px;height:8px}
+.continuous-door.east,.continuous-door.west{width:8px;height:24px}
+.base-tile{position:absolute;inset:8px;border-radius:10px;pointer-events:none;z-index:0;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.35)}
+.base-tile::before,.base-tile::after{content:"";position:absolute;inset:0;pointer-events:none}
+.base-label{position:absolute;top:4px;left:4px;display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:14px;padding:0 4px;border-radius:999px;background:rgba(15,23,42,.82);border:1px solid rgba(255,255,255,.2);color:#e5eefb;font-size:9px;font-weight:800;line-height:1;letter-spacing:.04em;text-transform:uppercase;z-index:2;box-shadow:0 1px 2px rgba(0,0,0,.45)}
+.base-tile.excavated_empty .base-label,.base-tile.reinforced_excavated .base-label{background:rgba(30,41,59,.72);color:#dbeafe}
+.base-tile.mineral_zone .base-label{background:rgba(120,53,15,.85);color:#fde68a}
+.base-tile.flooded_void .base-label{background:rgba(8,47,73,.88);color:#bae6fd;border-color:rgba(125,211,252,.5)}
+.base-tile.bedrock .base-label,.base-tile.void .base-label,.base-tile.outside_edge .base-label{background:rgba(127,29,29,.88);color:#fee2e2}
+.base-tile.unexcavated_rock{background:#374151}
+.base-tile.unexcavated_rock::after{background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 6px,rgba(0,0,0,.05) 6px 12px)}
+.base-tile.hard_rock{background:#4b5563}
+.base-tile.hard_rock::after{background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 4px,rgba(0,0,0,.08) 4px 8px)}
+.base-tile.bedrock{background:#1f2937;box-shadow:inset 0 0 0 2px #111827}
+.base-tile.bedrock::before,.base-tile.void::before,.base-tile.outside_edge::before{inset:12px;border:2px solid #dc2626;border-radius:6px}
+.base-tile.bedrock::after{background:repeating-linear-gradient(45deg,rgba(220,38,38,.12) 0 6px,transparent 6px 12px)}
+.base-tile.excavated_empty{background:transparent;box-shadow:inset 0 0 0 2px rgba(148,163,184,.55)}
+.base-tile.excavated_empty::before{inset:10px;border:1px dashed rgba(148,163,184,.6);border-radius:6px}
+.base-tile.reinforced_excavated{background:rgba(71,85,105,.22);box-shadow:inset 0 0 0 2px #94a3b8}
+.base-tile.reinforced_excavated::before{inset:10px;border:2px solid rgba(186,230,253,.8);border-radius:6px}
+.base-tile.reinforced_excavated::after{background:repeating-linear-gradient(90deg,rgba(186,230,253,.32) 0 5px,transparent 5px 10px),repeating-linear-gradient(0deg,rgba(148,163,184,.24) 0 5px,transparent 5px 10px)}
+.base-tile.void{background:#020617;box-shadow:inset 0 0 0 1px #0f172a}
+.base-tile.void::after{background:radial-gradient(circle at center,rgba(15,23,42,.2),rgba(2,6,23,.95))}
+.base-tile.flooded_void{background:#082f49;box-shadow:inset 0 0 0 2px #0ea5e9,0 0 0 1px rgba(125,211,252,.15)}
+.base-tile.flooded_void::before{inset:9px;border:2px solid rgba(125,211,252,.95);border-radius:50% 50% 42% 42%/58% 58% 36% 36%}
+.base-tile.flooded_void::after{background:radial-gradient(circle at 50% 75%,rgba(186,230,253,.85) 0 3px,transparent 4px),repeating-linear-gradient(135deg,rgba(56,189,248,.42) 0 6px,rgba(8,47,73,0) 6px 12px),linear-gradient(180deg,rgba(14,165,233,.45),rgba(3,105,161,.92))}
+.base-tile.collapsed_prefab{background:#57534e}
+.base-tile.collapsed_prefab::after{background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 5px,rgba(0,0,0,.08) 5px 10px)}
+.base-tile.outside_edge{background:#111827}
+.base-tile.outside_edge::after{background:repeating-linear-gradient(0deg,rgba(220,38,38,.08) 0 8px,transparent 8px 16px)}
+.base-tile.mineral_zone{background:#3f3f46;box-shadow:inset 0 0 0 2px #f59e0b}
+.base-tile.mineral_zone::before{inset:10px;border:2px solid rgba(245,158,11,.75);border-radius:6px}
+.base-tile.mineral_zone::after{background:repeating-linear-gradient(45deg,rgba(245,158,11,.35) 0 4px,transparent 4px 8px),radial-gradient(circle at 28% 30%,rgba(251,191,36,.95) 0 3px,transparent 4px),radial-gradient(circle at 72% 58%,rgba(245,158,11,.9) 0 3px,transparent 4px),radial-gradient(circle at 45% 74%,rgba(250,204,21,.85) 0 3px,transparent 4px)}
+.base-tile.unstable_rock{background:#4b5563;box-shadow:inset 0 0 0 2px #f97316}
+.base-tile.unstable_rock::before{inset:12px;border-left:3px solid rgba(251,146,60,.9);border-right:1px solid rgba(254,215,170,.5);transform:rotate(12deg)}
+.base-tile.unstable_rock::after{background:linear-gradient(135deg,transparent 0 42%,rgba(251,146,60,.7) 42% 46%,transparent 46% 100%),linear-gradient(35deg,transparent 0 56%,rgba(255,237,213,.5) 56% 59%,transparent 59% 100%),repeating-linear-gradient(135deg,rgba(0,0,0,.1) 0 7px,rgba(255,255,255,.03) 7px 14px)}
+.base-tile.metal_vein{background:#3f4b5b;box-shadow:inset 0 0 0 2px #cbd5e1}
+.base-tile.metal_vein::before{inset:9px;border-radius:6px;border:1px solid rgba(226,232,240,.65)}
+.base-tile.metal_vein::after{background:linear-gradient(120deg,transparent 0 18%,rgba(203,213,225,.85) 18% 26%,transparent 26% 44%,rgba(148,163,184,.95) 44% 54%,transparent 54% 72%,rgba(226,232,240,.8) 72% 79%,transparent 79% 100%),repeating-linear-gradient(0deg,rgba(15,23,42,.12) 0 4px,transparent 4px 8px)}
+.base-tile.anomalous_geology{background:#312e81;box-shadow:inset 0 0 0 2px #22d3ee}
+.base-tile.anomalous_geology::before{inset:11px;border:2px dashed rgba(103,232,249,.85);border-radius:50% 35% 45% 55%}
+.base-tile.anomalous_geology::after{background:radial-gradient(circle at 30% 35%,rgba(196,181,253,.95) 0 4px,transparent 5px),radial-gradient(circle at 68% 62%,rgba(34,211,238,.9) 0 3px,transparent 4px),linear-gradient(135deg,rgba(59,130,246,.12),rgba(14,165,233,.4),rgba(129,140,248,.18))}
+.base-progress{position:absolute;left:8px;right:8px;bottom:8px;height:14px;border-radius:999px;background:rgba(0,0,0,.6);overflow:hidden;z-index:3;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.base-progress-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,#16a34a,#4ade80,#86efac);box-shadow:0 0 10px rgba(134,239,172,.5);transition:width .18s linear}
+.placement-progress{position:absolute;left:8px;right:8px;top:8px;height:10px;border-radius:999px;background:rgba(0,0,0,.55);overflow:hidden;z-index:3;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.placement-progress-fill{display:block;height:100%;width:0;background:linear-gradient(90deg,#38bdf8,#7dd3fc,#bae6fd);transition:width .12s linear}
 .legend{display:grid;gap:6px;margin-top:8px}
 .legend-item{display:flex;align-items:center;gap:8px;font-size:.82rem}
 .legend-group{margin-top:8px;color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
@@ -74,7 +123,10 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .preview dt{color:var(--muted);font-size:.78rem;font-weight:600;overflow-wrap:anywhere}
 .preview dd{margin:0;font-size:.82rem;overflow-wrap:anywhere}
 .preview ul{margin:0;padding-left:18px}.preview li+li{margin-top:4px}
-.preview .nested{grid-column:1/-1;margin:3px 0 7px;padding:9px;background:#11161d;border-radius:7px}
+.preview .nested{grid-column:1/-1;margin:3px 0 7px;padding:9px;background:#11161d;border-radius:7px;display:block}
+.preview .nested dt{margin:0 0 4px}
+.preview .nested dd{margin:0 0 10px 0;padding-left:10px}
+.preview .nested dd:last-child{margin-bottom:0}
 .preview .questions{grid-column:1/-1;border-left:3px solid #f2c94c;padding:8px 10px;background:#292510;border-radius:0 7px 7px 0}
 .preview .questions strong{display:block;color:#f2c94c;margin-bottom:6px}
 .log{margin:8px 0 0;padding:8px 8px 8px 28px;max-height:210px;overflow:auto;background:#090d12;border:1px solid #30363d;border-radius:7px;font:0.72rem/1.35 ui-monospace,Consolas,monospace}
@@ -155,6 +207,8 @@ if (window.location.protocol === "file:") {
   <div class="toolbar">
     <button id="resetGrid" type="button">Reset grid</button>
     <button id="generateLayout" type="button">Generate Layout</button>
+    <button id="toggleBase" type="button">Hide Rooms</button>
+    <button id="toggleMode" type="button">Mode: Interact</button>
     <button id="placeRoom" type="button">Place Room</button>
   </div>
   <div class="workspace">
@@ -170,6 +224,6 @@ if (window.location.protocol === "file:") {
 </div>
 
 
-<script type="module" src="./room-sandbox.js"></script>
+<script type="module" src="./room-sandbox.js?v=continuous-room-1"></script>
 </body>
 </html>

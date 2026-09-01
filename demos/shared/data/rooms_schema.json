@@ -10,7 +10,8 @@
       "footprint": {
         "width": 3,
         "height": 3
-      }
+      },
+      "renderMode": "continuous"
     },
     "rules": {
       "joining": {

@@ -1,11 +1,21 @@
-import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js";
+import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-1";
 
 const COLS=12, ROWS=10, CELL=80, PAD=8;
-const CATALOG_URL="../shared/data/rooms_schema.json";
+const CATALOG_URL="../shared/data/rooms_schema.json?v=continuous-room-1";
+const BASE_TILE_URL="../shared/data/base_tiles.json";
 
-let catalog=[], placed=[], groups=[], hallways=new Set();
+let catalog=[], placed=[], groups=[];
+let baseCatalog=[], baseMap=[];
 let selectedId=null, selectedGroupId=null, nextRoomId=1, nextGroupId=1;
 let selectedJoinTarget=null, actionEntries=[];
+let lastGenerationSeed=null;
+let showRooms=true;
+let interactionMode="interact";
+let excavationProgress=new Map();
+let selectedBaseCell=null;
+let activeExcavationTimers=new Map();
+let placementProgress=new Map();
+let activePlacementTimers=new Map();
 
 const grid=document.getElementById("grid");
 const roomSelect=document.getElementById("roomSelect");
@@ -23,6 +33,8 @@ const staffButton=document.getElementById("addStaff");
 const splitButton=document.getElementById("splitSelected");
 const selectionStatus=document.getElementById("selectionStatus");
 const actionLog=document.getElementById("actionLog");
+const toggleBaseButton=document.getElementById("toggleBase");
+const toggleModeButton=document.getElementById("toggleMode");
 
 const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity"};
 const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
@@ -35,9 +47,38 @@ function logAction(message){
   actionLog.scrollTop=actionLog.scrollHeight;
 }
 function roomDef(id){return getRoomById(catalog,id)}
+function baseTileDef(id){return baseCatalog.find(tile=>tile.identity.id===id) ?? null}
 function physicalRoom(id){return placed.find(room=>room.instanceId===id) ?? null}
 function groupById(id){return groups.find(group=>group.id===id) ?? null}
 function isGroupRef(id){return id?.startsWith("g")}
+function baseTileId(tile){return tile?.identity?.id ?? null}
+function baseTilesWhere(predicate){return baseCatalog.filter(tile=>predicate(tile))}
+function firstBaseTileId(predicate,fallback=null){return baseTileId(baseTilesWhere(predicate)[0]) ?? fallback}
+function roomCategoryZone(category){return category==="Science & Technology"?"science":category==="Storage"?"storage":category==="Personnel"?"personnel":"operations"}
+function roomShape(definition){
+  const shape=[];
+  for(let row=0;row<definition.height;row++)for(let col=0;col<definition.width;col++)shape.push([col,row]);
+  return shape;
+}
+function roomPlacementPriority(definition){
+  const area=definition.width*definition.height;
+  return (definition.id==="gate_room"?1000:0)+(definition.unique?200:0)+(definition.joinGroup?100:0)+area;
+}
+function defaultShapeForDefinition(definition){
+  if(definition.width===2&&definition.height===2)return [[0,0],[1,0],[0,1],[1,1]];
+  if(definition.width===2&&definition.height===1)return [[0,0],[1,0]];
+  if(definition.width===1&&definition.height===2)return [[0,0],[0,1]];
+  return roomShape(definition);
+}
+function baseTileBadge(id){
+  return String(id ?? "")
+    .split("_")
+    .filter(Boolean)
+    .slice(0,3)
+    .map(part=>part[0])
+    .join("")
+    .toUpperCase() || "?";
+}
 
 function fieldLabel(key){
   return PREVIEW_LABELS[key] ?? key.replace(/([a-z0-9])([A-Z])/g,"$1 $2").replace(/^./,character=>character.toUpperCase());
@@ -60,6 +101,215 @@ function valueNode(value){
   const text=document.createElement("span");
   text.textContent=value===null?"Unknown":typeof value==="boolean"?(value?"Yes":"No"):String(value);
   return text;
+}
+
+function createSeededRandom(seed){
+  let state=seed>>>0;
+  return ()=>{
+    state=(state+0x6D2B79F5)>>>0;
+    let temp=Math.imul(state^(state>>>15),1|state);
+    temp^=temp+Math.imul(temp^(temp>>>7),61|temp);
+    return ((temp^(temp>>>14))>>>0)/4294967296;
+  };
+}
+
+function randomInt(random,max){return Math.floor(random()*max)}
+
+async function loadBaseTiles(url){
+  const response=await fetch(url);
+  if(!response.ok)throw new Error(`Could not load base tile catalog (${response.status}).`);
+  return await response.json();
+}
+
+async function refreshCatalogs(){
+  const [rooms,tiles]=await Promise.all([loadRooms(CATALOG_URL),loadBaseTiles(BASE_TILE_URL)]);
+  catalog=rooms;
+  baseCatalog=tiles;
+  populate();
+  return {rooms,tiles};
+}
+
+function emptyBaseMap(fill="excavated_empty"){
+  return Array.from({length:ROWS},()=>Array.from({length:COLS},()=>fill));
+}
+
+function setBaseTile(col,row,id){
+  if(row<0||row>=ROWS||col<0||col>=COLS)return;
+  baseMap[row][col]=id;
+}
+
+function baseProgress(col,row){return excavationProgress.get(cellKey(col,row)) ?? 0}
+function roomPlacementProgress(col,row){return placementProgress.get(cellKey(col,row)) ?? 0}
+
+function clearBaseProgress(col,row){excavationProgress.delete(cellKey(col,row));const key=cellKey(col,row),timer=activeExcavationTimers.get(key);if(timer){clearTimeout(timer);activeExcavationTimers.delete(key)}}
+function clearPlacementProgress(col,row){placementProgress.delete(cellKey(col,row));const key=cellKey(col,row),timer=activePlacementTimers.get(key);if(timer){clearTimeout(timer);activePlacementTimers.delete(key)}}
+
+function selectBaseCell(col,row){
+  selectedBaseCell={col,row};
+  selectedId=null;selectedGroupId=null;selectedJoinTarget=null;
+}
+
+function updatePreviewForBaseCell(col,row){
+  selectBaseCell(col,row);
+  const tileId=baseMap[row]?.[col],tile=tileId&&baseTileDef(tileId);
+  renderPreview();
+  setStatus(tile?`Inspecting ${tile.identity.name} at column ${col+1}, row ${row+1}.`:`No base tile found at column ${col+1}, row ${row+1}.`);
+}
+
+function advanceExcavation(col,row,step=5){
+  const tileId=baseMap[row]?.[col];
+  const tile=tileId&&baseTileDef(tileId);
+  if(!tile){setStatus("No base tile found there.");return}
+  if(!tile.rules?.excavation?.supportsExcavation){setStatus(`${tile.identity.name} cannot currently be excavated.`);return}
+  const next=Math.min(100,baseProgress(col,row)+step);
+  excavationProgress.set(cellKey(col,row),next);
+  selectBaseCell(col,row);
+  logAction(`Excavation progress at column ${col+1}, row ${row+1} (${tile.identity.name}) advanced to ${next}%.`);
+  if(next>=100){
+    const replacement=tile.function?.transitionOnExcavate ?? "excavated_empty";
+    setBaseTile(col,row,replacement);
+    clearBaseProgress(col,row);
+    logAction(`Cleared ${tile.identity.name} at column ${col+1}, row ${row+1}; tile is now ${baseTileDef(replacement)?.identity.name ?? replacement}.`);
+    setStatus(`${tile.identity.name} cleared at column ${col+1}, row ${row+1}.`);
+  }else setStatus(`Excavating ${tile.identity.name}: ${next}%.`);
+  render();
+}
+
+function startExcavation(col,row){
+  const tileId=baseMap[row]?.[col],tile=tileId&&baseTileDef(tileId),key=cellKey(col,row);
+  if(!tile){setStatus("No base tile found there.");return}
+  if(!tile.rules?.excavation?.supportsExcavation){setStatus(`${tile.identity.name} cannot currently be excavated.`);return}
+  if(activeExcavationTimers.has(key))return;
+  const tick=()=>{
+    advanceExcavation(col,row);
+    if(baseProgress(col,row)>0){
+      const timer=setTimeout(tick,180);
+      activeExcavationTimers.set(key,timer);
+    }else activeExcavationTimers.delete(key);
+  };
+  tick();
+}
+
+function advancePlacement(col,row,definition,step=10){
+  const next=Math.min(100,roomPlacementProgress(col,row)+step);
+  placementProgress.set(cellKey(col,row),next);
+  setStatus(`Preparing ${definition.name} at column ${col+1}, row ${row+1}: ${next}%.`);
+  render();
+  if(next>=100){
+    clearPlacementProgress(col,row);
+    place(col,row,definition);
+  }
+}
+
+function startPlacement(col,row,definition=roomDef(roomSelect.value)){
+  const key=cellKey(col,row);
+  if(!definition||activePlacementTimers.has(key))return;
+  const tick=()=>{
+    advancePlacement(col,row,definition);
+    if(roomPlacementProgress(col,row)>0){
+      const timer=setTimeout(tick,120);
+      activePlacementTimers.set(key,timer);
+    }else activePlacementTimers.delete(key);
+  };
+  tick();
+}
+
+function supportsRoomConstructionAt(col,row,width,height){
+  for(let currentRow=row;currentRow<row+height;currentRow++)for(let currentCol=col;currentCol<col+width;currentCol++){
+    const tileId=baseMap[currentRow]?.[currentCol];
+    const tile=tileId&&baseTileDef(tileId);
+    if(!tile?.rules?.construction?.supportsRoomConstruction)return false;
+  }
+  return true;
+}
+
+function handleGridClick(col,row){
+  if(interactionMode==="inspect"){
+    updatePreviewForBaseCell(col,row);
+    return;
+  }
+  const tileId=baseMap[row]?.[col],tile=tileId&&baseTileDef(tileId);
+  if(tile?.rules?.construction?.supportsRoomConstruction){startPlacement(col,row);return}
+  if(tile?.rules?.excavation?.supportsExcavation){startExcavation(col,row);return}
+  setStatus(tile?`${tile.identity.name} cannot be excavated or built on right now.`:"No base tile found there.");
+}
+
+function growBaseCluster(random,startCol,startRow,tileId,size){
+  const queue=[[startCol,startRow]],seen=new Set([cellKey(startCol,startRow)]);
+  for(let index=0;index<queue.length&&index<size;index++){
+    const [col,row]=queue[index];
+    setBaseTile(col,row,tileId);
+    for(const [dx,dy] of shuffled([[0,-1],[1,0],[0,1],[-1,0]],random)){
+      const nextCol=col+dx,nextRow=row+dy,key=cellKey(nextCol,nextRow);
+      if(nextCol<0||nextCol>=COLS||nextRow<0||nextRow>=ROWS||seen.has(key))continue;
+      seen.add(key);
+      if(random()<.7)queue.push([nextCol,nextRow]);
+    }
+  }
+}
+
+function generateBaseMap(random){
+  const boundaryTileId=firstBaseTileId(tile=>tile.identity.category==="Boundary");
+  const buildableTileId=firstBaseTileId(tile=>tile.rules?.construction?.supportsRoomConstruction,"excavated_empty");
+  const defaultRockTileId=firstBaseTileId(tile=>tile.rules?.excavation?.supportsExcavation && tile.function?.transitionOnExcavate===buildableTileId,baseTileId(baseCatalog[0]) ?? buildableTileId);
+  const excavatableTiles=baseTilesWhere(tile=>tile.rules?.excavation?.supportsExcavation && baseTileId(tile)!==defaultRockTileId);
+  const specialTiles=baseTilesWhere(tile=>!tile.rules?.excavation?.supportsExcavation && !tile.rules?.construction?.supportsRoomConstruction && baseTileId(tile)!==boundaryTileId);
+  baseMap=emptyBaseMap(defaultRockTileId);
+  for(const tile of excavatableTiles){
+    const tileId=baseTileId(tile);
+    const hardness=tile.rules?.geology?.hardnessTier ?? 1;
+    const clusters=Math.max(1,Math.round((tile.identity.category==="Geology"?3:1)/(hardness||1)));
+    for(let i=0;i<clusters;i++)growBaseCluster(random,1+randomInt(random,Math.max(1,COLS-2)),1+randomInt(random,Math.max(1,ROWS-2)),tileId,3+randomInt(random,4+Math.max(1,2-hardness)));
+  }
+  for(let i=0;i<Math.max(2,Math.floor((COLS*ROWS)/24));i++){
+    const col=1+randomInt(random,Math.max(1,COLS-2)),row=1+randomInt(random,Math.max(1,ROWS-2));
+    setBaseTile(col,row,buildableTileId);
+  }
+  for(const tile of specialTiles){
+    const tileId=baseTileId(tile);
+    const count=tile.identity.category==="Hazard"?2:1;
+    for(let i=0;i<count;i++)setBaseTile(randomInt(random,COLS),randomInt(random,ROWS),tileId);
+  }
+  for(let col=0;col<COLS;col++){
+    if(boundaryTileId){
+      setBaseTile(col,0,boundaryTileId);
+      setBaseTile(col,ROWS-1,boundaryTileId);
+    }
+  }
+  for(let row=0;row<ROWS;row++){
+    if(boundaryTileId){
+      setBaseTile(0,row,boundaryTileId);
+      setBaseTile(COLS-1,row,boundaryTileId);
+    }
+  }
+  const requiredTiles=baseCatalog.map(tile=>baseTileId(tile)).filter(Boolean);
+  const candidates=[];
+  for(let row=1;row<ROWS-1;row++)for(let col=1;col<COLS-1;col++)candidates.push([col,row]);
+  const shuffledCandidates=shuffled(candidates,random);
+  for(const tileId of requiredTiles){
+    if(baseMap.some(row=>row.includes(tileId)))continue;
+    const candidate=shuffledCandidates.find(([col,row])=>baseMap[row][col]!==boundaryTileId);
+    if(candidate)setBaseTile(candidate[0],candidate[1],tileId);
+  }
+}
+
+function ensureVisibleBaseTileCoverage(random){
+  const requiredTiles=baseCatalog.map(tile=>baseTileId(tile)).filter(Boolean);
+  const uncoveredCells=[];
+  for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++)if(!cellOccupant(col,row))uncoveredCells.push([col,row]);
+  const shuffledCells=shuffled(uncoveredCells,random);
+  for(const tileId of requiredTiles){
+    const alreadyVisible=uncoveredCells.some(([col,row])=>baseMap[row]?.[col]===tileId);
+    if(alreadyVisible)continue;
+    const candidate=shuffledCells.find(([col,row])=>{
+      const current=baseMap[row]?.[col];
+      return current!==tileId && current!==undefined;
+    });
+    if(candidate){
+      setBaseTile(candidate[0],candidate[1],tileId);
+      logAction(`Adjusted visible geology coverage so ${baseTileDef(tileId)?.identity.name ?? tileId} appears on an uncovered tile at column ${candidate[0]+1}, row ${candidate[1]+1}.`);
+    }
+  }
 }
 
 function childRoomIds(ref){
@@ -102,9 +352,23 @@ function entityLabel(ref){
 function renderPreview(){
   const instance=physicalRoom(selectedId);
   const definition=instance?roomDef(instance.roomId):roomDef(roomSelect.value);
+  const baseTile=selectedBaseCell?baseTileDef(baseMap[selectedBaseCell.row]?.[selectedBaseCell.col]):null;
   const previewData=definition?.schema ?? definition;
   roomPreview.replaceChildren();
-  if(!definition){const message=document.createElement("p");message.className="muted";message.textContent="Select a room to inspect its current design data.";roomPreview.appendChild(message);return}
+  if(!definition&&!baseTile){const message=document.createElement("p");message.className="muted";message.textContent="Select a room or base tile to inspect its current design data.";roomPreview.appendChild(message);return}
+  if(baseTile&&!instance&&!selectedGroupId){
+    const heading=document.createElement("h2");
+    heading.textContent=baseTile.identity.name;
+    roomPreview.appendChild(heading);
+    const fields=document.createElement("dl");
+    const baseData={...baseTile,selectedCell:{column:selectedBaseCell.col+1,row:selectedBaseCell.row+1},excavationProgress:baseProgress(selectedBaseCell.col,selectedBaseCell.row)};
+    for(const [key,value] of Object.entries(baseData)){
+      const term=document.createElement("dt");term.textContent=fieldLabel(key);
+      const detail=document.createElement("dd");detail.appendChild(valueNode(value));fields.append(term,detail);
+    }
+    roomPreview.appendChild(fields);
+    return;
+  }
 
   const heading=document.createElement("h2");
   const swatch=document.createElement("span");swatch.className="swatch";swatch.style.background=definition.color;
@@ -159,10 +423,6 @@ function overlaps(col,row,width,height){
 }
 
 function cellKey(col,row){return `${col},${row}`}
-function overlapsHallway(col,row,width,height){
-  for(let y=row;y<row+height;y++)for(let x=col;x<col+width;x++)if(hallways.has(cellKey(x,y)))return true;
-  return false;
-}
 
 function createPhysicalRoom(definition,col,row,constructionTier=Number(ctSelect.value),staffTierIndex=0){
   const tiers=staffingTiers(definition),safeStaffTier=Math.min(staffTierIndex,Math.max(0,tiers.length-1));
@@ -171,17 +431,17 @@ function createPhysicalRoom(definition,col,row,constructionTier=Number(ctSelect.
   placed.push(room);return room;
 }
 
-function randomGateDoors(){
+function randomGateDoors(random=Math.random){
   const sides=["north","east","south","west"];
-  const doors=sides.map(side=>({side,slot:1+Math.floor(Math.random()*3)}));
+  const doors=sides.map(side=>({side,slot:1+randomInt(random,3)}));
   const used=new Set(doors.map(door=>`${door.side}:${door.slot}`));
   const available=sides.flatMap(side=>[1,2,3].map(slot=>({side,slot}))).filter(door=>!used.has(`${door.side}:${door.slot}`));
-  doors.push(available[Math.floor(Math.random()*available.length)]);return doors;
+  doors.push(available[randomInt(random,available.length)]);return doors;
 }
 
-function shuffled(values){
+function shuffled(values,random=Math.random){
   const result=[...values];
-  for(let index=result.length-1;index>0;index--){const target=Math.floor(Math.random()*(index+1));[result[index],result[target]]=[result[target],result[index]]}
+  for(let index=result.length-1;index>0;index--){const target=randomInt(random,index+1);[result[index],result[target]]=[result[target],result[index]]}
   return result;
 }
 
@@ -200,9 +460,10 @@ function place(col,row,definition=roomDef(roomSelect.value)){
   if(!definition)return false;
   if(definition.constructionLimit==="unique"&&placed.some(room=>room.roomId===definition.id)){setStatus(`${definition.name} is unique and has already been placed.`);return false}
   if(col<0||row<0||col+definition.width>COLS||row+definition.height>ROWS){setStatus("Room would extend past grid.");return false}
-  if(overlapsHallway(col,row,definition.width,definition.height)){setStatus("That footprint is reserved as a hallway.");return false}
+  if(!supportsRoomConstructionAt(col,row,definition.width,definition.height)){setStatus("Rooms can only be placed on cleared/excavated tiles.");return false}
   if(overlaps(col,row,definition.width,definition.height)){setStatus("Room overlaps another room.");return false}
   const room=createPhysicalRoom(definition,col,row);
+  clearPlacementProgress(col,row);
   logAction(`Placed ${definition.name} ${room.instanceId} at column ${col+1}, row ${row+1}; CT${room.constructionTier}; staff ${room.staffCount}.`);
   selectPhysicalRoom(room.instanceId,false);setStatus(`${definition.name} placed.`);return true;
 }
@@ -365,11 +626,58 @@ function addEdgeSlots(element,joins,doorSide){
   }
 }
 
-function addGateEdgeSlots(element,doors){
-  for(const side of ["north","east","south","west"])for(let slotNumber=1;slotNumber<=3;slotNumber++){
-    const slot=document.createElement("div");slot.className=`edge-slot ${side[0]}${slotNumber}`;
-    if(doors.some(door=>door.side===side&&door.slot===slotNumber))slot.classList.add("door");element.appendChild(slot);
+function addDoorSlots(element,joins,doors=[]){
+  const grouped=Map.groupBy(doors,door=>door.side);
+  for(const side of ["north","east","south","west"]){
+    if(joins[side])continue;
+    const sideDoors=grouped.get(side)??[];
+    for(let index=1;index<=3;index++){
+      const slot=document.createElement("div");slot.className=`edge-slot ${side[0]}${index}`;
+      if(sideDoors.some(door=>door.slot===index))slot.classList.add("door");
+      element.appendChild(slot);
+    }
   }
+}
+
+function addContinuousDoors(element,doors,width,height){
+  const totalWidth=width*CELL,totalHeight=height*CELL;
+  for(const door of doors){
+    const marker=document.createElement("div");
+    marker.className=`continuous-door ${door.side}`;
+    if(door.side==="north"||door.side==="south"){
+      const segmentWidth=totalWidth/3;
+      const left=(door.slot-1)*segmentWidth+(segmentWidth-24)/2;
+      marker.style.left=`${left}px`;
+      marker.style[door.side]="0";
+    }else{
+      const segmentHeight=totalHeight/3;
+      const top=(door.slot-1)*segmentHeight+(segmentHeight-24)/2;
+      marker.style.top=`${top}px`;
+      marker.style[door.side]="0";
+    }
+    element.appendChild(marker);
+  }
+}
+
+function renderContinuousRoom(room,definition,selectedGroupRooms,destinationRooms){
+  const element=document.createElement("div");
+  element.className="room-cell continuous-room"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
+  element.style.left=`${room.col*CELL}px`;
+  element.style.top=`${room.row*CELL}px`;
+  element.style.width=`${room.width*CELL}px`;
+  element.style.height=`${room.height*CELL}px`;
+  element.style.setProperty("--room-color",definition.color);
+  element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
+  const fill=document.createElement("div");
+  fill.className="room-fill";
+  Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`});
+  fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;
+  element.appendChild(fill);
+  addContinuousDoors(element,room.doors??[],room.width,room.height);
+  addStaffDots(element,room);
+  addRoomNumber(element,room);
+  element.addEventListener("click",event=>{event.stopPropagation();if(interactionMode==="inspect"){setStatus(`Inspecting ${definition.name} ${room.instanceId}.`);return}handleRoomClick(room.instanceId)});
+  grid.appendChild(element);
 }
 
 function addStaffDots(element,room){
@@ -400,52 +708,38 @@ function addRoomNumber(element,room){
   number.style[horizontal]="3px";number.style[vertical]="3px";element.appendChild(number);
 }
 
-function renderGateRoom(room,definition){
-  const element=document.createElement("div");element.className=`room-cell gate-room${room.instanceId===selectedId?" selected":""}`;
-  element.style.left=`${room.col*CELL}px`;element.style.top=`${room.row*CELL}px`;element.style.width=`${room.width*CELL}px`;element.style.height=`${room.height*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
-  const fill=document.createElement("div");fill.className="room-fill";Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`});fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;element.appendChild(fill);
-  addGateEdgeSlots(element,room.doors);addRoomNumber(element,room);
-  element.addEventListener("click",event=>{event.stopPropagation();handleRoomClick(room.instanceId)});grid.appendChild(element);
-}
-
-function buildDoorTargetMap(){
-  const targets=new Map(),add=(col,row,direction)=>{
-    const key=cellKey(col,row);if(!targets.has(key))targets.set(key,new Set());targets.get(key).add(direction);
-  };
-  for(const room of placed){
-    const doors=room.doors??[{side:["north","east","south","west"][room.doorIndex%4],slot:2}];
-    for(const door of doors){
-      const offset=room.doors?door.slot-1:0;
-      if(door.side==="north")add(room.col+offset,room.row-1,"south");
-      if(door.side==="east")add(room.col+room.width,room.row+offset,"west");
-      if(door.side==="south")add(room.col+offset,room.row+room.height,"north");
-      if(door.side==="west")add(room.col-1,room.row+offset,"east");
-    }
-  }
-  return targets;
-}
-
 function render(){
   grid.replaceChildren();
-  const doorTargets=buildDoorTargetMap();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
-    const hallway=hallways.has(cellKey(col,row));
-    const cell=document.createElement("button");cell.type="button";cell.className=`cell${hallway?" hallway":""}`;cell.disabled=hallway;cell.setAttribute("aria-label",hallway?`Hallway column ${col+1}, row ${row+1}`:`Grid column ${col+1}, row ${row+1}`);cell.addEventListener("click",()=>place(col,row));grid.appendChild(cell);
-    if(hallway){
-      const directions=new Set(doorTargets.get(cellKey(col,row))??[]);
-      for(const [direction,dx,dy] of [["north",0,-1],["east",1,0],["south",0,1],["west",-1,0]])if(hallways.has(cellKey(col+dx,row+dy)))directions.add(direction);
-      const activeBlocks=new Set([4]);
-      if(directions.has("north"))activeBlocks.add(1);if(directions.has("east"))activeBlocks.add(5);if(directions.has("south"))activeBlocks.add(7);if(directions.has("west"))activeBlocks.add(3);
-      const pathGrid=document.createElement("span");pathGrid.className="hallway-path-grid";
-      for(let index=0;index<9;index++){const block=document.createElement("span");block.className=`hallway-block${activeBlocks.has(index)?" active":""}`;pathGrid.appendChild(block)}
-      cell.appendChild(pathGrid);
+    const cell=document.createElement("button");cell.type="button";cell.className="cell";cell.setAttribute("aria-label",`Grid column ${col+1}, row ${row+1}`);
+    const baseId=baseMap[row]?.[col];
+    if(baseId){
+      const definition=baseTileDef(baseId),base=document.createElement("span");
+      base.className=`base-tile ${baseId}`;
+      base.title=definition?`${definition.identity.name} (${baseId})`:baseId;
+      const label=document.createElement("span");
+      label.className="base-label";
+      label.textContent=baseTileBadge(baseId);
+      label.title=base.title;
+      base.appendChild(label);
+      cell.setAttribute("aria-label",`Grid column ${col+1}, row ${row+1}, ${definition?.identity?.name ?? baseId}`);
+      cell.appendChild(base);
     }
+    const progress=baseProgress(col,row);
+    if(progress>0){const bar=document.createElement("span");bar.className="base-progress";const fill=document.createElement("span");fill.className="base-progress-fill";fill.style.width=`${progress}%`;bar.appendChild(fill);cell.appendChild(bar)}
+    const placement=roomPlacementProgress(col,row);
+    if(placement>0){const bar=document.createElement("span");bar.className="placement-progress";const fill=document.createElement("span");fill.className="placement-progress-fill";fill.style.width=`${placement}%`;bar.appendChild(fill);cell.appendChild(bar)}
+    cell.addEventListener("click",()=>handleGridClick(col,row));grid.appendChild(cell);
   }
+  if(!showRooms){updateSelectionControls();renderPreview();return}
   const selectedGroupRooms=selectedGroupId?new Set(childRoomIds(selectedGroupId)):new Set();
   const destinationRooms=selectedJoinTarget?new Set(entityRoomIds(selectedJoinTarget)):new Set();
   for(const room of placed){
     const definition=roomDef(room.roomId),doorSide=["north","east","south","west"][room.doorIndex%4];
-    if(definition.id==="gate_room"){renderGateRoom(room,definition);continue}
+    if(definition.renderMode==="continuous"){
+      renderContinuousRoom(room,definition,selectedGroupRooms,destinationRooms);
+      continue;
+    }
     for(let localRow=0;localRow<room.height;localRow++)for(let localCol=0;localCol<room.width;localCol++){
       const joins=joinedSides(room,localCol,localRow),element=document.createElement("div");
       element.className="room-cell"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
@@ -454,119 +748,206 @@ function render(){
       const top=joins.north?0:PAD,right=joins.east?0:PAD,bottom=joins.south?0:PAD,left=joins.west?0:PAD;
       Object.assign(fill.style,{top:`${top}px`,right:`${right}px`,bottom:`${bottom}px`,left:`${left}px`});
       if(joins.north)fill.style.borderTopWidth="0";if(joins.east)fill.style.borderRightWidth="0";if(joins.south)fill.style.borderBottomWidth="0";if(joins.west)fill.style.borderLeftWidth="0";
-      if(localCol===0&&localRow===0)fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;
+      if(localCol===Math.floor(room.width/2)&&localRow===Math.floor(room.height/2))fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;
       element.appendChild(fill);
+      const cellDoors=(room.doors??[]).filter(door=>(door.side==="north"&&localRow===0&&localCol===door.slot-1)||(door.side==="south"&&localRow===room.height-1&&localCol===door.slot-1)||(door.side==="west"&&localCol===0&&localRow===door.slot-1)||(door.side==="east"&&localCol===room.width-1&&localRow===door.slot-1));
       const eligible=(doorSide==="north"&&localRow===0)||(doorSide==="south"&&localRow===room.height-1)||(doorSide==="west"&&localCol===0)||(doorSide==="east"&&localCol===room.width-1);
-      addEdgeSlots(element,joins,eligible?doorSide:null);
+      if(room.doors?.length)addDoorSlots(element,joins,cellDoors);
+      else addEdgeSlots(element,joins,eligible?doorSide:null);
       if(localCol===0&&localRow===0){addStaffDots(element,room);addRoomNumber(element,room)}
-      element.addEventListener("click",event=>{event.stopPropagation();handleRoomClick(room.instanceId)});grid.appendChild(element);
+      element.addEventListener("click",event=>{event.stopPropagation();if(interactionMode==="inspect"){setStatus(`Inspecting ${definition.name} ${room.instanceId}.`);return}handleRoomClick(room.instanceId)});grid.appendChild(element);
     }
   }
   updateSelectionControls();renderPreview();
 }
 
 function resetSandbox(){
-  placed=[];groups=[];hallways=new Set();selectedId=null;selectedGroupId=null;selectedJoinTarget=null;nextRoomId=1;nextGroupId=1;
+  placed=[];groups=[];selectedId=null;selectedGroupId=null;selectedJoinTarget=null;nextRoomId=1;nextGroupId=1;
 }
 
-function orientDoorTowardHallway(room,preferredSide=null){
-  const checks=[
-    ["north",()=>Array.from({length:room.width},(_,offset)=>cellKey(room.col+offset,room.row-1))],
-    ["east",()=>Array.from({length:room.height},(_,offset)=>cellKey(room.col+room.width,room.row+offset))],
-    ["south",()=>Array.from({length:room.width},(_,offset)=>cellKey(room.col+offset,room.row+room.height))],
-    ["west",()=>Array.from({length:room.height},(_,offset)=>cellKey(room.col-1,room.row+offset))]
-  ];
-  const available=checks.filter(([,keys])=>keys().some(key=>hallways.has(key))).map(([side])=>side);
-  const side=available.includes(preferredSide)?preferredSide:available[0];
-  if(side)room.doorIndex=["north","east","south","west"].indexOf(side);
-  return side??null;
+function orientDoorToOpenSide(room,preferredSide=null){
+  const sides=[];
+  const canUseSide={
+    north:()=>room.row>0,
+    east:()=>room.col+room.width<COLS,
+    south:()=>room.row+room.height<ROWS,
+    west:()=>room.col>0
+  };
+  for(const side of ["north","east","south","west"])if(canUseSide[side]())sides.push(side);
+  const side=sides.includes(preferredSide)?preferredSide:sides[0]??preferredSide??"north";
+  room.doorIndex=["north","east","south","west"].indexOf(side);
+  return side;
 }
 
-function generateLayout(attempt=0){
-  resetSandbox();actionEntries=[];logAction("Started generated layout from a central Gate Room.");
+function oppositeSide(side){
+  return side==="north"?"south":side==="south"?"north":side==="east"?"west":"east";
+}
+
+function cellsForShape(originCol,originRow,shape){
+  return shape.map(([dx,dy])=>[originCol+dx,originRow+dy]);
+}
+
+function canPlaceCells(cells){
+  return cells.every(([col,row])=>col>=0&&row>=0&&col<COLS&&row<ROWS&&!overlaps(col,row,1,1));
+}
+
+function edgeContactDirection(candidateCells,anchorCells){
+  for(const [col,row] of candidateCells){
+    for(const [anchorCol,anchorRow] of anchorCells){
+      if(col===anchorCol&&row===anchorRow-1)return "south";
+      if(col===anchorCol&&row===anchorRow+1)return "north";
+      if(col===anchorCol-1&&row===anchorRow)return "east";
+      if(col===anchorCol+1&&row===anchorRow)return "west";
+    }
+  }
+  return null;
+}
+
+function candidatePlacementsNearAnchor(shape,anchor,zoneBias){
+  const anchorRoom=physicalRoom(anchor.roomId);
+  const anchorCells=[];
+  for(let row=0;row<anchorRoom.height;row++)for(let col=0;col<anchorRoom.width;col++)anchorCells.push([anchorRoom.col+col,anchorRoom.row+row]);
+  const seen=new Set(),results=[];
+  for(const [anchorCol,anchorRow] of anchorCells){
+    for(const [shapeCol,shapeRow] of shape){
+      for(const [dx,dy] of [[0,-1],[1,0],[0,1],[-1,0]]){
+        const originCol=anchorCol+dx-shapeCol,originRow=anchorRow+dy-shapeRow,key=cellKey(originCol,originRow);
+        if(seen.has(key))continue;
+        seen.add(key);
+        const cells=cellsForShape(originCol,originRow,shape);
+        if(!canPlaceCells(cells))continue;
+        const contactSide=edgeContactDirection(cells,anchorCells);
+        if(!contactSide)continue;
+        const left=Math.min(...cells.map(([col])=>col)),top=Math.min(...cells.map(([,row])=>row));
+        const score=Math.abs(left-zoneBias.col)+Math.abs(top-zoneBias.row)+Math.random()*3;
+        results.push({cells,contactSide,score});
+      }
+    }
+  }
+  return results.sort((first,second)=>first.score-second.score);
+}
+
+function orphanedRoomIds(){
+  const gate=placed.find(room=>room.roomId==="gate_room");
+  if(!gate)return placed.map(room=>room.instanceId);
+  const visited=new Set([gate.instanceId]);
+  const queue=[gate.instanceId];
+  while(queue.length){
+    const current=physicalRoom(queue.shift());
+    const neighbors=placed.filter(other=>other.instanceId!==current.instanceId&&entitiesTouch(current.instanceId,other.instanceId));
+    for(const neighbor of neighbors)if(!visited.has(neighbor.instanceId)){visited.add(neighbor.instanceId);queue.push(neighbor.instanceId)}
+  }
+  return placed.filter(room=>!visited.has(room.instanceId)).map(room=>room.instanceId);
+}
+
+async function generateLayout(seed=Math.floor(Math.random()*0xFFFFFFFF),attempt=0){
+  if(attempt===0){
+    try{
+      const {rooms,tiles}=await refreshCatalogs();
+      logAction(`Reloaded ${rooms.length} rooms and ${tiles.length} base tile definitions before generation.`);
+    }catch(error){
+      setStatus(`Could not refresh catalogs for generation: ${error.message}`);
+      return;
+    }
+  }
+  const random=createSeededRandom((seed+attempt)>>>0);
+  const gateDefinition=roomDef("gate_room");
+  const buildableTileId=firstBaseTileId(tile=>tile.rules?.construction?.supportsRoomConstruction,"excavated_empty");
+  const accessRooms=catalog
+    .filter(definition=>definition.id!=="gate_room"&&definition.width===1&&definition.height===1)
+    .sort((first,second)=>roomPlacementPriority(second)-roomPlacementPriority(first));
+  const prioritizedDefinitions=shuffled(catalog.filter(definition=>definition.id!=="gate_room"),random)
+    .sort((first,second)=>roomPlacementPriority(second)-roomPlacementPriority(first));
+  lastGenerationSeed=seed>>>0;
+  resetSandbox();generateBaseMap(random);actionEntries=[];logAction("Started generated layout from a central Gate Room.");
   const add=(roomId,col,row,ct=1,staffTier=0,preferredDoor=null)=>{
     const definition=roomDef(roomId),room=createPhysicalRoom(definition,col,row,ct,staffTier);
-    const doorSide=definition.id==="gate_room"?"five perimeter doors":orientDoorTowardHallway(room,preferredDoor);
+    if(definition.id==="gate_room")room.doors=randomGateDoors(random);
+    const doorSide=definition.id==="gate_room"?"five perimeter doors":orientDoorToOpenSide(room,preferredDoor);
     logAction(`Generated ${definition.name} ${room.instanceId} at column ${col+1}, row ${row+1}; CT${ct}; staff ${room.staffCount}; door ${doorSide??"unassigned"}.`);return room.instanceId;
   };
   const pair=(first,second)=>createGroup(first,second,{renderAfter:false}).id;
   const quad=(first,second,third,fourth)=>{
     const primary=pair(first,second),secondary=pair(third,fourth);return createGroup(primary,secondary,{renderAfter:false}).id;
   };
-  const randomCt=roomId=>1+Math.floor(Math.random()*roomDef(roomId).maxConstructionTier);
-  const randomStaffTier=roomId=>{const tiers=staffingTiers(roomDef(roomId));return tiers.length?Math.floor(Math.random()*tiers.length):0};
+  const randomCt=roomId=>1+randomInt(random,roomDef(roomId).maxConstructionTier);
+  const randomStaffTier=roomId=>{const tiers=staffingTiers(roomDef(roomId));return tiers.length?randomInt(random,tiers.length):0};
   const addVaried=(roomId,col,row,preferredDoor=null)=>add(roomId,col,row,randomCt(roomId),randomStaffTier(roomId),preferredDoor);
   const directions=shuffled([
     {side:"north",dx:0,dy:-1},{side:"east",dx:1,dy:0},{side:"south",dx:0,dy:1},{side:"west",dx:-1,dy:0}
-  ]),gateCol=2+Math.floor(Math.random()*5),gateRow=2+Math.floor(Math.random()*3),gate=add("gate_room",gateCol,gateRow,1);
-  const reserved=new Set();
-  for(let row=gateRow;row<gateRow+3;row++)for(let col=gateCol;col<gateCol+3;col++)reserved.add(cellKey(col,row));
-  const accessRooms=["infirmary","receiving"];
-  directions.slice(0,2).forEach((direction,index)=>{
-    const slot=Math.floor(Math.random()*3),col=direction.side==="west"?gateCol-1:direction.side==="east"?gateCol+3:gateCol+slot,row=direction.side==="north"?gateRow-1:direction.side==="south"?gateRow+3:gateRow+slot;
-    reserved.add(cellKey(col,row));hallways.add(cellKey(col+direction.dx,row+direction.dy));
-    forceGateDoor(physicalRoom(gate),direction.side,slot+1);addVaried(accessRooms[index],col,row,direction.side);
+  ],random),gateCol=2+randomInt(random,5),gateRow=2+randomInt(random,3),gate=add(gateDefinition.id,gateCol,gateRow,1);
+  for(let row=gateRow-1;row<gateRow+gateDefinition.height+1;row++)for(let col=gateCol-1;col<gateCol+gateDefinition.width+1;col++)if(row>0&&row<ROWS-1&&col>0&&col<COLS-1)setBaseTile(col,row,buildableTileId);
+  const frontier=[{roomId:gate,zone:"operations"}];
+  accessRooms.slice(0,Math.min(2,directions.length)).forEach((definition,index)=>{
+    const direction=directions[index];
+    const slot=randomInt(random,3),col=direction.side==="west"?gateCol-1:direction.side==="east"?gateCol+3:gateCol+slot,row=direction.side==="north"?gateRow-1:direction.side==="south"?gateRow+3:gateRow+slot;
+    setBaseTile(col,row,buildableTileId);
+    forceGateDoor(physicalRoom(gate),direction.side,slot+1);
+    const roomId=addVaried(definition.id,col,row,oppositeSide(direction.side));
+    frontier.push({roomId,zone:roomCategoryZone(definition.category)});
   });
-  for(const door of physicalRoom(gate).doors){
-    const offset=door.slot-1,col=door.side==="west"?gateCol-1:door.side==="east"?gateCol+3:gateCol+offset,row=door.side==="north"?gateRow-1:door.side==="south"?gateRow+3:gateRow+offset;
-    if(!reserved.has(cellKey(col,row)))hallways.add(cellKey(col,row));
-  }
-  logAction("Connected every Gate door to an access room or a hallway branch.");
-  const inBounds=(col,row)=>col>=0&&row>=0&&col<COLS&&row<ROWS;
-  const blocked=(col,row)=>reserved.has(cellKey(col,row));
-  const hallwayNeighbors=(col,row)=>[[0,-1],[1,0],[0,1],[-1,0]].filter(([dx,dy])=>hallways.has(cellKey(col+dx,row+dy))).length;
-  const walkers=[...hallways].map(key=>key.split(",").map(Number));
-  for(let step=0;step<220&&hallways.size<24;step++){
-    const walker=walkers[Math.floor(Math.random()*walkers.length)],moves=shuffled([[0,-1],[1,0],[0,1],[-1,0]]);let moved=false;
-    for(const [dx,dy] of moves){const col=walker[0]+dx,row=walker[1]+dy;if(!inBounds(col,row)||blocked(col,row)||hallways.has(cellKey(col,row))||hallwayNeighbors(col,row)!==1)continue;walker[0]=col;walker[1]=row;hallways.add(cellKey(col,row));moved=true;break}
-    if(!moved)walkers.push([...walkers[Math.floor(Math.random()*walkers.length)]]);
-    if(step%18===0)walkers.push([...walker]);
-  }
-  logAction(`Procedurally carved ${hallways.size} loop-free hallway cells from ${walkers.length} growing branches.`);
+  logAction(`Generation seed: ${lastGenerationSeed}${attempt?` (attempt ${attempt+1})`:""}.`);
+  logAction("Placed Gate-adjacent access rooms without dedicated hallway tiles; circulation is implied around room footprints.");
   const anchors={
-    science:{col:Math.random()<.5?0:COLS-1,row:Math.random()<.5?0:ROWS-1},
-    storage:{col:Math.random()<.5?0:COLS-1,row:Math.random()<.5?0:ROWS-1},
-    personnel:{col:Math.random()<.5?0:COLS-1,row:Math.random()<.5?0:ROWS-1},
+    science:{col:random()<.5?0:COLS-1,row:random()<.5?0:ROWS-1},
+    storage:{col:random()<.5?0:COLS-1,row:random()<.5?0:ROWS-1},
+    personnel:{col:random()<.5?0:COLS-1,row:random()<.5?0:ROWS-1},
     operations:{col:gateCol+1,row:gateRow+1}
   };
-  const besideHallway=(col,row)=>[[0,-1],[1,0],[0,1],[-1,0]].some(([dx,dy])=>hallways.has(cellKey(col+dx,row+dy)));
-  const findShape=(shape,zone)=>{
-    const candidates=[];
-    for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
-      const cells=shape.map(([dx,dy])=>[col+dx,row+dy]);
-      if(cells.some(([x,y])=>!inBounds(x,y)||blocked(x,y)||hallways.has(cellKey(x,y))||overlaps(x,y,1,1))||!cells.some(([x,y])=>besideHallway(x,y)))continue;
-      const anchor=anchors[zone],distance=Math.abs(col-anchor.col)+Math.abs(row-anchor.row);candidates.push({cells,score:distance+Math.random()*5});
-    }
-    return candidates.sort((first,second)=>first.score-second.score)[0]?.cells??null;
-  };
   let skippedRooms=0;
-  const placeShape=(roomId,shape,zone)=>{
-    const cells=findShape(shape,zone);if(!cells){skippedRooms+=1;return null}
-    const ct=randomCt(roomId),ids=cells.map(([col,row])=>add(roomId,col,row,ct,randomStaffTier(roomId)));
-    return ids.length===4?quad(...ids):ids.length===2?pair(...ids):ids[0];
+  const pickFrontierAnchor=zone=>{
+    const scored=frontier.map(entry=>({entry,score:(entry.zone===zone?0:2)+random()*3})).sort((first,second)=>first.score-second.score);
+    return scored[0]?.entry??null;
   };
-  const pairShapes=[[[0,0],[1,0]],[[0,0],[0,1]]],quadShape=[[0,0],[1,0],[0,1],[1,1]];
-  for(const roomId of shuffled(["analysis","research","tech_platform","data_storage","discovery"]))placeShape(roomId,[[0,0]],"science");
-  placeShape("response_room",[[0,0]],"operations");placeShape("maintenance",shuffled(pairShapes)[0],"operations");
-  for(const roomId of shuffled(["holding","living_quarters"]))placeShape(roomId,shuffled(pairShapes)[0],"personnel");
-  for(const roomId of shuffled(["supply_storage","armor_storage","material_storage","containment"]))placeShape(roomId,shuffled(pairShapes)[0],"storage");
-  for(const roomId of shuffled(["ration_storage","equipment_storage"]))placeShape(roomId,quadShape,"storage");
-  const zoneForCategory=category=>category==="Science & Technology"?"science":category==="Storage"?"storage":category==="Personnel"?"personnel":"operations";
-  for(const definition of catalog.filter(definition=>!placed.some(room=>room.roomId===definition.id))){
-    const shape=[];for(let row=0;row<definition.height;row++)for(let col=0;col<definition.width;col++)shape.push([col,row]);
-    placeShape(definition.id,shape,zoneForCategory(definition.category));
+  const placeShape=(roomId,shape,zone)=>{
+    const zoneBias=anchors[zone]??anchors.operations;
+    const tried=new Set();
+    let placement=null,anchor=null;
+    for(let attempts=0;attempts<Math.max(12,frontier.length*2)&&!placement;attempts++){
+      const candidateAnchor=pickFrontierAnchor(zone);if(!candidateAnchor)break;
+      const key=`${candidateAnchor.roomId}:${candidateAnchor.zone}`;
+      if(tried.has(key)&&tried.size<frontier.length)continue;
+      tried.add(key);
+      const candidates=candidatePlacementsNearAnchor(shape,candidateAnchor,zoneBias);
+      if(candidates.length){placement=candidates[0];anchor=candidateAnchor}
+    }
+    if(!placement){
+      const fallback=[];
+      for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
+        const cells=cellsForShape(col,row,shape);
+        if(!canPlaceCells(cells))continue;
+        const left=Math.min(...cells.map(([cellCol])=>cellCol)),top=Math.min(...cells.map(([,cellRow])=>cellRow));
+        fallback.push({cells,score:Math.abs(left-zoneBias.col)+Math.abs(top-zoneBias.row)+random()*5});
+      }
+      const picked=fallback.sort((first,second)=>first.score-second.score)[0];
+      if(!picked){skippedRooms+=1;return null}
+      placement={...picked,contactSide:null};
+    }
+    for(const [col,row] of placement.cells)setBaseTile(col,row,buildableTileId);
+    const ct=randomCt(roomId),ids=placement.cells.map(([col,row])=>add(roomId,col,row,ct,randomStaffTier(roomId),placement.contactSide));
+    const ref=ids.length===4?quad(...ids):ids.length===2?pair(...ids):ids[0];
+    frontier.push({roomId:isGroupRef(ref)?recursivePriority(groupById(ref))[0]:ref,zone});
+    if(anchor)logAction(`Connected ${roomDef(roomId).name} to ${entityLabel(anchor.roomId)} as part of the generated room tree.`);
+    return ref;
+  };
+  for(const definition of prioritizedDefinitions){
+    if(placed.some(room=>room.roomId===definition.id))continue;
+    placeShape(definition.id,defaultShapeForDefinition(definition),roomCategoryZone(definition.category));
   }
+  ensureVisibleBaseTileCoverage(random);
   const missingRoomIds=catalog.filter(definition=>!placed.some(room=>room.roomId===definition.id)).map(definition=>definition.id);
-  if((skippedRooms||missingRoomIds.length)&&attempt<100)return generateLayout(attempt+1);
+  const orphanIds=orphanedRoomIds();
+  if((skippedRooms||missingRoomIds.length||orphanIds.length)&&attempt<100)return await generateLayout(seed,attempt+1);
   if(missingRoomIds.length){setStatus(`Could not generate a complete layout; missing ${missingRoomIds.join(", ")}.`);logAction(`Generation stopped after 100 attempts; missing room definitions: ${missingRoomIds.join(", ")}.`);render();return}
+  logAction(`Orphaned rooms: ${orphanIds.length}${orphanIds.length?` (${orphanIds.join(", ")})`:"."}`);
   selectedId=gate;selectedGroupId=null;selectedJoinTarget=null;roomSelect.value="gate_room";updateRoomControls();
   logAction(`Verified catalog coverage: all ${catalog.length} room definitions are present.`);
-  logAction(`Finished a new procedural base from scratch${attempt?` after ${attempt+1} layout attempts`:""}; no mirror or rotation template was used.`);render();setStatus(`Generated a new base layout using all ${catalog.length} room types.`);
+  logAction(`Finished a new procedural base from scratch using seed ${lastGenerationSeed}${attempt?` after ${attempt+1} layout attempts`:""}; no mirror or rotation template was used.`);render();setStatus(`Generated a new base layout using all ${catalog.length} room types; seed ${lastGenerationSeed}; orphaned rooms ${orphanIds.length}.`);
 }
 
 function copiedLogText(){
   const steps=actionEntries.map((entry,index)=>`${index+1}. ${entry}`).join("\n");
-  const state=JSON.stringify({selectedId,selectedGroupId,selectedJoinTarget,hallways:[...hallways],placed,groups},null,2);
+  const state=JSON.stringify({lastGenerationSeed,showRooms,interactionMode,baseMap,excavationProgress:[...excavationProgress.entries()],selectedId,selectedGroupId,selectedJoinTarget,placed,groups},null,2);
   return `Stargate Room Sandbox action log\n${steps}\n\nCurrent sandbox state\n${state}`;
 }
 
@@ -607,7 +988,9 @@ splitButton.addEventListener("click",()=>{if(selectedGroupId)splitGroup(selected
 document.getElementById("resetGrid").addEventListener("click",()=>{
   resetSandbox();logAction("Cleared the grid and reset physical room and Group numbering.");render();setStatus("Grid cleared.");
 });
-document.getElementById("generateLayout").addEventListener("click",()=>generateLayout());
+document.getElementById("generateLayout").addEventListener("click",()=>{generateLayout().catch(error=>setStatus(`Could not generate layout: ${error.message}`))});
+toggleBaseButton.addEventListener("click",()=>{showRooms=!showRooms;toggleBaseButton.textContent=showRooms?"Hide Rooms":"Show Rooms";render();setStatus(showRooms?"Room layer shown.":"Room layer hidden; geology visible.")});
+toggleModeButton.addEventListener("click",()=>{interactionMode=interactionMode==="interact"?"inspect":"interact";toggleModeButton.textContent=`Mode: ${interactionMode==="interact"?"Interact":"Inspect"}`;toggleModeButton.classList.toggle("active",interactionMode==="inspect");setStatus(interactionMode==="inspect"?"Inspect mode: click rooms or geology to inspect them without changing state.":"Interact mode: click geology to excavate or cleared tiles to place/select rooms.");render()});
 document.getElementById("copyLog").addEventListener("click",copyLog);
 document.getElementById("clearLog").addEventListener("click",()=>{actionEntries=[];actionLog.replaceChildren();setStatus("Action log cleared.")});
 
@@ -626,7 +1009,7 @@ document.getElementById("jsonFile").addEventListener("change",async event=>{
 });
 
 async function initialize(){
-  try{catalog=await loadRooms(CATALOG_URL);populate();logAction(`Loaded ${catalog.length} rooms from the shared catalog.`);render();setStatus(`Loaded ${catalog.length} rooms from the shared catalog.`)}
+  try{const {rooms,tiles}=await refreshCatalogs();baseMap=emptyBaseMap();logAction(`Loaded ${rooms.length} rooms and ${tiles.length} base tile definitions from the shared catalogs.`);render();setStatus(`Loaded ${rooms.length} rooms and ${tiles.length} base tile definitions.`)}
   catch(error){roomSelect.disabled=true;ctSelect.disabled=true;placeButton.disabled=true;setStatus(`Could not load the shared room catalog: ${error.message}`)}
 }
 

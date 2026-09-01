@@ -1,0 +1,17 @@
+{
+  "Marksman": "../icons/specializations/marksman.svg",
+  "Guardian": "../icons/specializations/guardian.svg",
+  "Tactician": "../icons/specializations/tactician.svg",
+  "Pathfinder": "../icons/specializations/pathfinder.svg",
+  "Observer": "../icons/specializations/observer.svg",
+  "Demolitions": "../icons/specializations/demolitions.svg",
+  "Integrations": "../icons/specializations/integrations.svg",
+  "Operational": "../icons/specializations/operational.svg",
+  "Negotiator": "../icons/specializations/negotiator.svg",
+  "Ambassador": "../icons/specializations/ambassador.svg",
+  "Arbiter": "../icons/specializations/arbiter.svg",
+  "Strategic": "../icons/specializations/strategic.svg",
+  "Overdrive": "../icons/specializations/overdrive.svg",
+  "Trauma": "../icons/specializations/trauma.svg",
+  "Epidemiology": "../icons/specializations/epidemiology.svg"
+}

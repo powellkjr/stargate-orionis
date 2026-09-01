@@ -12,6 +12,7 @@ Browser prototype for testing Stargate base room footprints.
 ## Current rules
 
 - 80x80 px grid cells.
+- Rooms visually occupy most of their tile footprint, leaving implied navigable space around them rather than using dedicated hallway cells.
 - Same non-null join group and matching Construction Tier (CT) make adjacent rooms compatible candidates for a deliberate join.
 - Rooms with `constructionLimit: "unique"` can only be placed once and cannot join.
 - Legal joined Groups are 1x2 pairs or 2x2 Groups built from two existing 1x2 Groups.
@@ -28,8 +29,7 @@ Browser prototype for testing Stargate base room footprints.
 - Staff dots show the current staffing tier and shift toward the common interior of joined Groups.
 - Joinable rooms use dotted walls; category palettes visually group related room types.
 - The join destination has its own highlight and can be changed from the grid or candidate dropdown.
-- Generate Layout procedurally builds a new base from scratch on every click, with randomized Gate placement, access directions, loop-free branching hallways, zoned room placement, joined groups, CT, and staffing. Every Gate door leads to an access room or hallway, and every catalog room type appears at least once, including room types added to the catalog later. Infirmary and Receiving remain direct pass-through Gate neighbors in every layout.
-- Each hallway cell uses a 3x3 internal block grid, enabling only its center and required directional arms; the 24px paths match the room door openings.
+- Generate Layout procedurally builds a new base from scratch on every click, with randomized Gate placement, direct Gate-adjacent access rooms, zoned room placement, joined groups, CT, and staffing. Every catalog room type appears at least once, including room types added to the catalog later. Infirmary and Receiving remain direct Gate neighbors in every layout.
 - The rolling action log can copy both recent steps and the full current sandbox state for debugging.
 
 ## Run

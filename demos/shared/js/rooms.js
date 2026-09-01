@@ -75,6 +75,7 @@ function normalizeRoom(room) {
     color: form.color,
     width,
     height,
+    renderMode: form.renderMode ?? "tiled",
     joinGroup,
     maxConstructionTier,
     supportsConstructionTierProgression: Boolean(construction.supportsProgression),

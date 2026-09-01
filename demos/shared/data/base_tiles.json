@@ -1,0 +1,622 @@
+[
+  {
+    "identity": {
+      "id": "unexcavated_rock",
+      "name": "Unexcavated Rock",
+      "category": "Geology"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_rock",
+      "variant": "standard",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply"],
+        "yieldRange": {"min": 0, "max": 2},
+        "notes": "Standard excavatable mountain rock."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Must be excavated before the tile can host a room."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "hidden_until_excavated",
+        "notes": "Obscures unrevealed interior base space."
+      },
+      "geology": {
+        "geologyType": "ordinary_rock",
+        "hardnessTier": 1,
+        "supportsEvents": true,
+        "eventFamilies": ["geology", "excavation"],
+        "notes": "Default mountain composition."
+      }
+    },
+    "function": {
+      "base": "Solid mountain rock awaiting excavation.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Cut natural rock with subtle geological variation; no built room shell yet."
+    }
+  },
+  {
+    "identity": {
+      "id": "hard_rock",
+      "name": "Hard Rock",
+      "category": "Geology"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_rock",
+      "variant": "hard",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply"],
+        "yieldRange": {"min": 0, "max": 3},
+        "notes": "Harder geological tier requiring more effort to clear."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Must be excavated before room construction can occur."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "hidden_until_excavated",
+        "notes": "Remains hidden until excavation succeeds."
+      },
+      "geology": {
+        "geologyType": "hard_rock",
+        "hardnessTier": 2,
+        "supportsEvents": true,
+        "eventFamilies": ["geology", "excavation"],
+        "notes": "Dense mountain material that can slow expansion."
+      }
+    },
+    "function": {
+      "base": "Hard mountain rock requiring reinforced excavation work.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Darker denser rock with stronger fracture lines and drill wear."
+    }
+  },
+  {
+    "identity": {
+      "id": "bedrock",
+      "name": "Bedrock",
+      "category": "Blocker"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_blocker",
+      "variant": "bedrock",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": false
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": false,
+        "notes": "Permanent geological blocker."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Cannot host rooms or excavation progress."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "revealed_when_scanned_or_adjacent",
+        "notes": "May be discovered before excavation through geology scanning."
+      },
+      "geology": {
+        "geologyType": "bedrock",
+        "hardnessTier": 99,
+        "supportsEvents": false,
+        "notes": "Absolute excavation boundary."
+      }
+    },
+    "function": {
+      "base": "Permanent mountain blocker tile."
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Massive immovable geological face with retaining anchors or warning markings if exposed."
+    }
+  },
+  {
+    "identity": {
+      "id": "excavated_empty",
+      "name": "Excavated Empty",
+      "category": "Prepared Space"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "excavated_chamber",
+      "variant": "empty",
+      "supportsDamageVariants": true,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": false,
+        "notes": "Already excavated and ready for use."
+      },
+      "construction": {
+        "supportsPlacement": true,
+        "supportsRoomConstruction": true,
+        "blocksConstruction": false,
+        "notes": "This is the standard empty tile state that can host a room shell."
+      },
+      "visibility": {
+        "supportsFogOfWar": false,
+        "revealBehavior": "always_visible_once_created",
+        "notes": "Becomes visible when the chamber is opened."
+      },
+      "geology": {
+        "geologyType": "excavated_space",
+        "hardnessTier": 0,
+        "supportsEvents": true,
+        "eventFamilies": ["construction", "maintenance"],
+        "notes": "Cut chamber with temporary utilities and usable open floor."
+      }
+    },
+    "function": {
+      "base": "Excavated chamber ready for room construction.",
+      "transitionOnRemoveRoom": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "circulationMargin": "20_percent",
+      "promptNotes": "Cut rock chamber with rough floor, temporary lighting, and utility stubs ready for construction."
+    }
+  },
+  {
+    "identity": {
+      "id": "void",
+      "name": "Void",
+      "category": "Hazard"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "natural_void",
+      "variant": "cavern",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": false
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": false,
+        "notes": "Already open but not automatically usable as a base floor tile."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Requires special support/bridging logic before standard room construction."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "revealed_when_exposed",
+        "notes": "May be unexpectedly uncovered during excavation."
+      },
+      "geology": {
+        "geologyType": "void",
+        "hardnessTier": 0,
+        "supportsEvents": true,
+        "eventFamilies": ["hazard", "discovery"],
+        "notes": "Open cavern or drop space inside the mountain."
+      }
+    },
+    "function": {
+      "base": "Natural open space inside the mountain requiring special treatment."
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Dark cavernous drop or open void with exposed rock and unstable edges."
+    }
+  },
+  {
+    "identity": {
+      "id": "collapsed_prefab",
+      "name": "Collapsed Prefab",
+      "category": "Special Space"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "collapsed_structure",
+      "variant": "prefab",
+      "supportsDamageVariants": true,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply", "salvage"],
+        "yieldRange": {"min": 1, "max": 4},
+        "notes": "Can be cleared and salvaged like a special excavation site."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Must be cleared, stabilized, or converted before normal room construction."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "revealed_when_exposed",
+        "notes": "Acts like a discovered special chamber."
+      },
+      "geology": {
+        "geologyType": "collapsed_prefab",
+        "hardnessTier": 1,
+        "supportsEvents": true,
+        "eventFamilies": ["salvage", "construction", "incident"],
+        "notes": "An old damaged built space embedded in the mountain."
+      }
+    },
+    "function": {
+      "base": "Damaged prefabricated chamber that may be cleared, repaired, or salvaged.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Partially collapsed man-made chamber with exposed framing, debris, damaged lighting, and surrounding rock pressure."
+    }
+  },
+  {
+    "identity": {
+      "id": "outside_edge",
+      "name": "Outside Edge",
+      "category": "Boundary"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_boundary",
+      "variant": "outside",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": false
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": false,
+        "notes": "Represents the non-buildable exterior boundary."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Map edge or exterior boundary tile."
+      },
+      "visibility": {
+        "supportsFogOfWar": false,
+        "revealBehavior": "always_visible",
+        "notes": "Boundary remains visible as part of map framing."
+      },
+      "geology": {
+        "geologyType": "outside_edge",
+        "hardnessTier": 0,
+        "supportsEvents": false,
+        "notes": "Marks the outside or map-limit edge of the mountain complex."
+      }
+    },
+    "function": {
+      "base": "Exterior or map-limit boundary tile."
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Outer cliff, mountain face, or edge boundary where constructed base space stops."
+    }
+  },
+  {
+    "identity": {
+      "id": "mineral_zone",
+      "name": "Mineral Zone",
+      "category": "Geology"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_rock",
+      "variant": "mineral",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply", "mineral"],
+        "yieldRange": {"min": 1, "max": 4},
+        "notes": "Excavatable geology with higher-value material potential."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Must first be excavated into usable chamber space."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "hidden_until_excavated_or_scanned",
+        "notes": "May reveal through geology or specialized scanning."
+      },
+      "geology": {
+        "geologyType": "mineral_zone",
+        "hardnessTier": 1,
+        "supportsEvents": true,
+        "eventFamilies": ["geology", "resource", "excavation"],
+        "notes": "Unusual mineral-bearing rock with distinct visual cues."
+      }
+    },
+    "function": {
+      "base": "Special geological resource tile.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Rock with clear mineral veins or unusual coloration without becoming fantasy-glowy."
+    }
+  },
+  {
+    "identity": {
+      "id": "unstable_rock",
+      "name": "Unstable Rock",
+      "category": "Geology"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_rock",
+      "variant": "unstable",
+      "supportsDamageVariants": true,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply", "rubble"],
+        "yieldRange": {"min": 0, "max": 2},
+        "notes": "Loose and fracture-prone rock that clears quickly but may trigger cave-in style incidents."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Must be excavated and stabilized before normal construction can proceed."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "hidden_until_excavated",
+        "notes": "Reads as ordinary geology until revealed and inspected more closely."
+      },
+      "geology": {
+        "geologyType": "unstable_rock",
+        "hardnessTier": 1,
+        "supportsEvents": true,
+        "eventFamilies": ["geology", "excavation", "incident"],
+        "notes": "Structurally weak rock layer with a higher collapse risk than standard stone."
+      }
+    },
+    "function": {
+      "base": "Fragile rock pocket that can be excavated into usable space with extra risk.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Cracked, splintered rock face with unstable seams and loose debris."
+    }
+  },
+  {
+    "identity": {
+      "id": "metal_vein",
+      "name": "Metal Vein",
+      "category": "Geology"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_rock",
+      "variant": "metallic",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply", "metal"],
+        "yieldRange": {"min": 1, "max": 4},
+        "notes": "Ore-bearing rock layer with strong salvage and fabrication value."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Acts as solid geology until excavated into normal base space."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "hidden_until_excavated_or_scanned",
+        "notes": "May be identified ahead of time by survey or scanning systems."
+      },
+      "geology": {
+        "geologyType": "metal_vein",
+        "hardnessTier": 2,
+        "supportsEvents": true,
+        "eventFamilies": ["geology", "resource", "excavation"],
+        "notes": "Dense metallic seam suitable for mining-oriented base expansion gameplay."
+      }
+    },
+    "function": {
+      "base": "Resource-bearing metallic seam embedded in the mountain.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Rock wall shot through with visible metal bands, dull reflective ore, and industrial extraction cues."
+    }
+  },
+  {
+    "identity": {
+      "id": "anomalous_geology",
+      "name": "Anomalous Geology",
+      "category": "Geology"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_rock",
+      "variant": "anomalous",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": true,
+        "yieldTypes": ["supply", "research"],
+        "yieldRange": {"min": 0, "max": 3},
+        "notes": "Unusual geological matrix suitable for discovery and research events."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Must be cleared before the area can host standard rooms."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "hidden_until_excavated_or_scanned",
+        "notes": "Can be flagged by advanced surveying before direct excavation."
+      },
+      "geology": {
+        "geologyType": "anomalous_geology",
+        "hardnessTier": 1,
+        "supportsEvents": true,
+        "eventFamilies": ["geology", "research", "discovery"],
+        "notes": "Strange subsurface material associated with scientific anomalies and unusual finds."
+      }
+    },
+    "function": {
+      "base": "Scientifically unusual rock formation with potential discovery value.",
+      "transitionOnExcavate": "excavated_empty"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Geological feature with non-fantastical but clearly unusual texture, banding, and survey-worthy formation."
+    }
+  },
+  {
+    "identity": {
+      "id": "flooded_void",
+      "name": "Flooded Void",
+      "category": "Hazard"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "mountain_hazard",
+      "variant": "flooded_void",
+      "supportsDamageVariants": false,
+      "supportsConstructionVariants": false
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": false,
+        "notes": "Water-filled or fluid-filled breach that cannot be normally excavated in the current sandbox."
+      },
+      "construction": {
+        "supportsPlacement": false,
+        "supportsRoomConstruction": false,
+        "blocksConstruction": true,
+        "notes": "Hazard tile requiring special systems before safe use."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "revealed_when_exposed",
+        "notes": "Typically discovered when nearby rock is cleared or surveyed."
+      },
+      "geology": {
+        "geologyType": "flooded_void",
+        "hardnessTier": 0,
+        "supportsEvents": true,
+        "eventFamilies": ["hazard", "incident", "discovery"],
+        "notes": "Open subsurface cavity compromised by water or another fluid hazard."
+      }
+    },
+    "function": {
+      "base": "Fluid-filled underground breach that blocks normal expansion."
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Dark breached cavity with pooled water or coolant, slick rock, and clear hazard framing."
+    }
+  },
+  {
+    "identity": {
+      "id": "reinforced_excavated",
+      "name": "Reinforced Excavated Space",
+      "category": "Prepared Space"
+    },
+    "form": {
+      "footprint": {"width": 1, "height": 1},
+      "renderFamily": "prepared_space",
+      "variant": "reinforced",
+      "supportsDamageVariants": true,
+      "supportsConstructionVariants": true
+    },
+    "rules": {
+      "excavation": {
+        "supportsExcavation": false,
+        "notes": "Already cleared and stabilized for use."
+      },
+      "construction": {
+        "supportsPlacement": true,
+        "supportsRoomConstruction": true,
+        "blocksConstruction": false,
+        "notes": "Buildable prepared tile with additional structural reinforcement."
+      },
+      "visibility": {
+        "supportsFogOfWar": true,
+        "revealBehavior": "revealed_when_exposed",
+        "notes": "Visible as an already-cleared and stabilized chamber footprint."
+      },
+      "geology": {
+        "geologyType": "reinforced_excavated",
+        "hardnessTier": 0,
+        "supportsEvents": true,
+        "eventFamilies": ["construction", "logistics"],
+        "notes": "Engineered interior tile representing prepared structural support and lining."
+      }
+    },
+    "function": {
+      "base": "Cleared and reinforced space that is immediately ready for room construction.",
+      "transitionOnRemoveRoom": "reinforced_excavated"
+    },
+    "visual": {
+      "shellFamily": "sgc_mountain",
+      "mountainContext": true,
+      "promptNotes": "Excavated chamber wall and floor with visible supports, bracing, and reinforced lining for active construction."
+    }
+  }
+]

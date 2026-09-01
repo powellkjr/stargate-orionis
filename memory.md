@@ -1,0 +1,215 @@
+# Project Memory
+
+## Current Status
+
+- The room data model has been migrated from the old flat catalog format toward a nested schema baseline.
+- The main authoring catalog is now `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/rooms_schema.json`.
+- The room sandbox loader was updated to consume the nested schema and normalize it into the flat runtime fields the existing sandbox logic still expects.
+- The room sandbox now loads `../shared/data/rooms_schema.json` instead of the legacy `rooms.json`.
+- A machine-usable JSON Schema authoring file was created at `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/room.schema.json`.
+- The room sandbox no longer uses dedicated hallway grid cells; it now uses adjacent room placement with implied circulation space around room footprints.
+- JS syntax and JSON validity were checked successfully for:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/js/rooms.js`
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/room-sandbox/room-sandbox.js`
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/rooms_schema.json`
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/room.schema.json`
+
+## What We Just Completed
+
+- Reorganized room definitions into nested groups:
+  - `identity`
+  - `form`
+  - `rules`
+  - `function`
+- Added clearer rule separation for:
+  - `joining`
+  - `construction`
+  - `staffing`
+  - `queues`
+  - `storage`
+  - `specialization`
+  - `inventory`
+  - `cores`
+  - `capacity`
+- Modeled Tech Platform cores using:
+  - `fixedLayout`
+  - `progressionLayout`
+- Modeled Living Quarters with separate:
+  - resident `capacity`
+  - locker/tool `inventory`
+- Modeled joinable rooms so staffing scaling comes from `joining.staffingByLayout` rather than staffing progression.
+- Modeled Receiving as a non-joining room with:
+  - staffing progression `[2, 4, 6]`
+  - inventory throughput progression `[40, 60, 80]`
+- Updated sandbox preview logic to show the nested schema data instead of only the normalized runtime object.
+- Refactored the sandbox away from dedicated hallway tiles toward implied navigable space around adjacent rooms.
+- Updated room placement and procedural generation to stop reserving/painting hallway cells.
+- Updated door orientation logic to target open sides rather than hallway cells.
+- Updated the grid styling so empty cells now act as simple placement parcels while rooms visually leave navigable margin around themselves.
+- Updated procedural generation to grow room placement as a loose tree from the Gate/access anchors instead of only scattering by zone bias.
+- Updated generated room doors to prefer the side that connects back toward the room's parent/anchor in that tree.
+- Updated sandbox circulation visuals so the margin around rooms reads as navigation space in green, while doors remain white.
+- Refined the sandbox circulation visuals so navigation bands are solid at corners and Gate Room perimeter visuals use the same implied-circulation framing.
+- Unified Gate Room rendering with the standard per-cell room renderer so it no longer uses a separate wall/navigation path.
+- Added seeded procedural generation logging so layouts can be reproduced from a logged seed, and started tracking orphaned room counts in generation logs/status.
+- Added `form.renderMode` to the room schema and set Gate Room to `continuous`, with sandbox support for continuous multi-tile room rendering.
+- Refined continuous-room rendering so `renderMode: "continuous"` uses one direct navigation band/background and explicit perimeter door markers instead of segmented edge-slot pieces.
+- New design handoff received for underground base tile generation; likely needs a separate non-room/base-tile schema rather than being folded into the room schema.
+- Created a separate base-tile schema family with starter `base_tiles.json` entries for rock, excavated, blocker, void, prefab, boundary, and mineral tiles.
+- Added base-tile rendering to the sandbox as an underlay beneath rooms, plus a UI toggle to show/hide the generated base layer.
+- Updated the sandbox so the layer toggle hides rooms instead of geology, and added an Inspect/Interact mode with clickable geology clearing progress.
+- Fixed sandbox placement/excavation rules so rooms can only be placed on cleared/excavated tiles, and inspect-mode clicks on occupied room cells now excavate the underlying geology tile with progress.
+- Corrected mode semantics: Inspect mode is now read-only, while Interact mode excavates geology tiles and places rooms only on cleared/excavated tiles.
+- Improved sandbox excavation and inspection flow so one Interact click starts auto-progress excavation, while Inspect mode populates the preview panel with base-tile data.
+- Updated base-layer visuals so buildable/cleared tiles render as open outlines, geology uses clearer patterns, blocked tiles use red inner-border cues, and excavation progress is slower/more visible.
+- Fixed preview readability for nested base/room data, made the excavation progress fill visually expand, and guaranteed that every defined base tile type appears at least once in generated geology maps.
+- Smoothed excavation pacing with smaller faster steps, added room-placement progress bars, and made `mineral_zone` much more visually obvious.
+- Follow-up fix completed: room-placement progress is now actually implemented in the sandbox logic, excavation uses smaller faster steps, and mineral-zone cluster size/frequency increased.
+
+## Exact Next Steps
+
+1. Do a consistency cleanup pass on `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/rooms_schema.json`.
+   - Remove accidental duplicate keys or stale notes where present.
+   - Normalize wording across notes fields.
+   - Reconcile any remaining rooms whose schema still mixes older assumptions with newer design rules.
+2. Tighten `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/room.schema.json`.
+   - Encode more of the design invariants.
+   - Especially enforce cases like joinable rooms not also using staffing progression where appropriate.
+3. Decide whether to keep the sandbox runtime normalization layer long-term or eventually migrate sandbox logic to consume the nested schema directly.
+4. Reconcile `rooms_schema.json` against the latest game design notes as more room/system details are provided.
+5. If needed, generate canonical example room templates for future AI-assisted authoring.
+6. Continue refining the room sandbox so navigation, doors, and procedural layout fully match the implied-circulation model.
+   - Possibly add a visual overlay for implied circulation lanes.
+   - Revisit procedural generation so placement feels intentionally connected rather than only zoned.
+   - Decide whether door validation should check exposed/open sides more explicitly.
+   - Improve the tree generator further if some fallback placements still feel too scattered.
+   - Refine the perimeter visualization further if the navigation band still looks segmented at corners.
+   - Check whether joined-room seams and multi-tile rooms need additional circulation-band polish.
+   - Decide whether dotted walls for join-capable rooms are still desirable, since they currently affect room borders only.
+   - Use the logged seed/orphan count workflow to debug and eliminate remaining orphan-room layouts.
+   - Decide which future rooms besides Gate Room should use `form.renderMode: "continuous"`.
+   - Verify whether continuous-room door placement/slot logic should become schema-driven for future large rooms.
+   - Design a separate schema family for base terrain / excavated / constructed map tiles and visual tile-generation metadata.
+   - Expand the new base-tile schema/catalog as geological and construction-state systems become more concrete.
+   - Refine sandbox base-tile generation so geological clustering and excavated-space patterns feel more intentional.
+   - Refine inspect-mode excavation gameplay and decide which base tiles should be excavatable vs permanently blocked.
+   - Decide whether Interact mode should prioritize room selection over excavation when clicking mixed/occupied edge cases.
+   - Continue tightening generator connectivity using the new Gate-connected orphan test and investigate seeds that still produce disconnected clusters.
+   - Tune base-tile patterns and excavation pacing further based on readability in actual screenshots.
+   - Re-check generated maps visually to make sure the guaranteed base-tile coverage still looks geologically plausible.
+   - Verify that room-placement progress feels good in practice and that `mineral_zone` survives room overlays often enough to stay visible.
+   - Consider reserving or showcasing at least one visible uncovered `mineral_zone` if room overlays hide all examples too often.
+
+## Critical Architectural Decisions / Config / Notes
+
+- Always read this file at the start of a new session.
+- Maintain and update this file after major tasks or at the end of a chat session.
+- Current room authoring source of truth for demos is:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/rooms_schema.json`
+- Current room authoring schema is:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/room.schema.json`
+- Current sandbox runtime strategy:
+  - nested schema is authored and validated;
+  - `demos/shared/js/rooms.js` normalizes it into flat runtime fields for the sandbox.
+- `capacity` is distinct from `inventory` and `storage`:
+  - `capacity` = occupant/room-role slots like residents, patients, captives, knowledge slots;
+  - `inventory` = custody/storage interface capacity like personal storage or receiving INV;
+  - `storage` = broader room purpose for stored categories like rations, materials, containment, knowledge cargo.
+- Joinable rooms should use join-based staffing scaling via `joining.staffingByLayout` rather than staffing progression.
+- Non-joining rooms may still use staffing progression directly.
+- Tech Platform core modeling decision:
+  - use `rules.cores.fixedLayout` for fixed slots;
+  - use `rules.cores.progressionLayout` for CT-based changing slots.
+- Receiving modeling decision:
+  - staffing progression `[2, 4, 6]`;
+  - inventory throughput progression `[40, 60, 80]`.
+- Base navigation/layout decision:
+  - empty grid tiles should not represent hallway/path tiles for the real game layout model;
+  - rooms should generally be placeable adjacent to each other;
+  - each room visually occupies about 80% of its tile footprint, leaving navigable space around the room within the tile;
+  - navigation uses the implied space around rooms rather than dedicated hallway cells;
+  - doors connect room interiors to that surrounding navigable space.
+- Rendering topology decision:
+  - `form.footprint` describes size;
+  - `form.renderMode` describes whether a multi-tile room renders as tiled cells or one continuous body.
+- Base tile schema decision (provisional):
+  - room definitions should stay focused on simulator room records;
+  - unexcavated rock, excavated empty space, geological blockers/voids, and visual tile-generation metadata should likely live in a separate base-tile schema family.
+- Current base tile schema/catalog:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/base-tile.schema.json`
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/base_tiles.json`
+ - Current shared base-class visual assets:
+   - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/base-classes.json`
+   - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/icons/base-classes/`
+   - uses simple recognizable Game Icons SVGs plus one color per base class for later staffing/room demos.
+   - the practical systems/build/repair class is currently `technician`, not `engineer`, to avoid overlap with scientist-style theoretical design roles.
+ - Current dedicated room staffing demo:
+   - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/room-staffing-demo/index.html`
+   - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/room-staffing-demo/room-staffing-demo.js`
+   - starts with `analysis` loaded into a centered room mockup;
+   - simulates join-driven staffing growth using `joining.staffingByLayout` (`2 -> 4 -> 8` for Analysis);
+   - reuses sandbox-style controls for join / CT / add staff / reset;
+    - supports dragging prefab unit roster entries into up to 8 room staff slots.
+   - room presentation is now top-anchored in the stage rather than bottom-weighted.
+   - left roster is now a prefab unit library covering base-class/tier combinations plus specialization and cross-path variants, with unique names plus sort/filter controls.
+  - verified the current prefab first-name pools are globally unique across all six base classes (48 first names checked, 48 unique).
+   - prefab roster names now use class-flavored human name pools instead of serial-like codes.
+   - prefab roster was tightened so base-class entries start at I, specialization entries start at primary-class III + specialization I, and cross-path entries start at primary-class III + cross-path I.
+   - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/specialization-icons.json` was cleaned and deduplicated after repeated fuzzy patch collisions; the file should now be treated as the single source of truth for specialization icon mappings.
+   - localized specialization SVG files now exist for Marksman, Guardian, Tactician, Pathfinder, Arbiter, Strategic, Negotiator, Observer, Demolitions, and Integrations.
+   - prefab unit ids now increment correctly so dragging different roster entries preserves their distinct prefab state.
+   - the staffing demo now outputs a live configuration string for the current room and assigned units in the preview panel.
+   - active staffed units now show derived tool slots: base-only units get 1 base-class tool slot, while specialization or cross-path units get 2 slots (base track + secondary track), with each slot offering tool tiers up to the unit's current progression on that track.
+   - the configuration string now emits `ROOM-STATE SHORTHAND v2` style output as `ROOM[FOOTPRINT]{STAFF|CORESETS}` with optional equipped personal tools appended per unit as `[TOOL,...]`; tool codes now follow the strict parser-friendly rule `toolCode = class/spec code + "T"` (for example `SCT`, `DIT`, `SGT`, `MET`); because the staffing demo does not yet model Core Set selection, it still emits `_` placeholders per physical tile/Core Set.
+   - icon paths in the staffing demo are resolved relative to the demo module URL rather than the fetch URL string so shared SVG assets load reliably in-browser.
+   - staffing demo icons now render by fetching and inlining the shared SVG markup directly into the roster/slot icon containers.
+   - class roster is now drag-only again; unit progression controls live on assigned room slots instead.
+   - assigned room slots now support a unit name field, slot-local base-tier progression capped at III, and mutually exclusive specialization/cross-path progression once base III is reached.
+   - choosing specialization at base III disables cross-path for that unit, and choosing cross-path disables specialization.
+   - once a specialization or cross path is actually chosen on a unit, the slot hides the irrelevant opposite branch action and also hides the base Add Tier control.
+   - base III unbranched units no longer show a `Base Max` button; Add Tier simply disappears once the unit reaches the branching threshold.
+   - slot labels now collapse to specialization-first (`Ambassador I`) or cross-path (`Diplomat/Scout I`) forms once those branches exist.
+   - cross-path roster and slot icons now use a 50/50 two-tone split between the base class color and the cross-path class color instead of a single blended color.
+   - base III unbranched slots now show only specialization and cross-path dropdown choices; selecting either immediately creates branch tier I and removes the other path.
+   - branch dropdowns now use selectable top placeholder entries (`Select specialization` / `Select cross path`) to avoid the first real option being swallowed by the browser's unchanged-selection behavior.
+   - specialization-mode slots now show only the Add Specialization button, while cross-mode slots show only the Add Cross Path button.
+   - slot action buttons now stay on one horizontal action row with Clear isolated on its own bottom row.
+   - joining a room now auto-reveals the newly gained staff capacity instead of requiring extra Add Staff clicks.
+   - joined layouts now show a small joined-state badge in the room corner.
+   - preview schema rendering was switched to a stacked layout and the configuration string now appears above the schema block for readability.
+  - newly added base tile ids:
+    - `unstable_rock`
+    - `metal_vein`
+    - `anomalous_geology`
+    - `flooded_void`
+    - `reinforced_excavated`
+- Sandbox base-layer status:
+  - base tiles now render first as a simple colored underlay beneath rooms;
+  - a toolbar button now hides/shows the room layer so geology can be inspected underneath;
+  - generation creates clustered geology and excavated-empty pockets before room placement overlays them.
+  - inspect mode is read-only and reports what is under the cursor; interact mode excavates geology and places rooms on cleared tiles.
+  - copied sandbox state now includes room-layer visibility, interaction mode, base map, and excavation progress.
+  - room placement is now gated to tiles whose base definition supports room construction.
+  - interact-mode excavation now auto-advances after a single click until the tile clears;
+  - inspect mode now pushes selected base-tile data into the preview panel.
+  - cleared/buildable tiles now render as open shapes rather than filled blocks; blocked/non-buildable tiles use stronger red center-border cues.
+  - base tiles now have distinct per-id render treatments for the newly added tile types, and tile hover/ARIA labeling now includes the exact base tile name/id for easier debugging.
+  - base tiles now also render tiny automatic abbreviation badges derived from their tile ids so map screenshots can be read without hover.
+  - every generated geology layer now guarantees at least one instance of each defined base tile type.
+  - after rooms are placed, generation now also ensures at least one uncovered/visible instance of each geology tile type remains for sandbox inspection.
+  - Generate Layout now reloads both `rooms_schema.json` and `base_tiles.json` at the start of each run instead of relying on initialization-time data.
+  - generation should no longer hardcode geology or room id lists; it derives room placement order/shapes from the loaded room catalog and visible geology coverage from the loaded base tile catalog.
+  - excavation now advances in smaller faster steps, and room placement now has its own visible progress bar.
+  - mineral-zone generation is now stronger, but room overlays may still hide some examples depending on layout.
+- Sandbox implementation status for navigation:
+  - dedicated hallway-cell rendering/placement has been removed from the prototype;
+  - procedural generation now places rooms without carving hallway cells and tries to grow a connected tree from Gate-side anchors;
+  - doors currently orient toward open/exposed sides and prefer the side that connects back toward a generation parent/anchor;
+  - the implied circulation band is currently visualized in green around room footprints, with white door markers;
+  - circulation bands are now rendered as solid perimeter fills rather than isolated oval markers;
+  - Gate Room now renders through the same multi-cell room path as other rooms rather than a special-case composite renderer;
+  - Gate Room is now marked with `form.renderMode: "continuous"` and uses a continuous multi-tile render mode in the sandbox;
+  - continuous rooms now use one direct perimeter/navigation band and explicit white perimeter door markers instead of tiled edge-slot fillers;
+  - procedural generation now logs and copies a reproducible seed value plus orphaned-room counts for debugging bad layouts;
+  - navigation is still an implied visual/modeling concept, not yet a full movement graph.
+- API keys: none recorded.

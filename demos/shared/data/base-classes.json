@@ -1,0 +1,50 @@
+[
+  {
+    "id": "soldier",
+    "name": "Soldier",
+    "shortName": "SOL",
+    "color": "#d1495b",
+    "icon": "../icons/base-classes/soldier.svg",
+    "description": "Combat and security personnel used for defense, breaching, and hostile-response roles."
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "shortName": "SCT",
+    "color": "#2a9d8f",
+    "icon": "../icons/base-classes/scout.svg",
+    "description": "Reconnaissance and exploration personnel suited to detection, route-finding, and early warning."
+  },
+  {
+    "id": "technician",
+    "name": "Technician",
+    "shortName": "TEC",
+    "color": "#f4a261",
+    "icon": "../icons/base-classes/technician.svg",
+    "description": "Hands-on systems personnel focused on building, testing, maintenance, repair, and machinery."
+  },
+  {
+    "id": "scientist",
+    "name": "Scientist",
+    "shortName": "SCI",
+    "color": "#7b6ef6",
+    "icon": "../icons/base-classes/scientist.svg",
+    "description": "Research and analysis personnel used for science rooms, discovery work, and alien phenomena."
+  },
+  {
+    "id": "medic",
+    "name": "Medic",
+    "shortName": "MED",
+    "color": "#4cc9f0",
+    "icon": "../icons/base-classes/medic.svg",
+    "description": "Medical and recovery personnel focused on healing, treatment, and endurance support."
+  },
+  {
+    "id": "diplomat",
+    "name": "Diplomat",
+    "shortName": "DIP",
+    "color": "#b8a14f",
+    "icon": "../icons/base-classes/diplomat.svg",
+    "description": "Social, trade, faction, and intelligence personnel used for negotiation and information work."
+  }
+]

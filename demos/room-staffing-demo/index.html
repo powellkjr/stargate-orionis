@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stargate Room Staffing Demo</title>
+<style>
+:root{
+  --bg:#0d1117;
+  --panel:#161b22;
+  --panel2:#20262f;
+  --text:#f3f4f6;
+  --muted:#9ca3af;
+  --line:#30363d;
+  --ct1:#8b949e;
+  --ct2:#38bdf8;
+  --ct3:#f59e0b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+.app{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr) minmax(320px,380px);min-height:100vh}
+aside,.preview{background:var(--panel)}
+aside,.preview,main{padding:16px}
+aside{border-right:1px solid var(--line)}
+.preview{border-left:1px solid var(--line);overflow:auto}
+h1{font-size:1.2rem;margin:0 0 8px}
+h2{font-size:1rem;margin:0 0 10px}
+p{margin:0 0 10px}
+.muted{color:var(--muted);font-size:.88rem}
+label{display:block;color:var(--muted);font-size:.82rem;margin:12px 0 6px}
+select,input[type=file],button{width:100%;min-height:44px;border:1px solid #3d4653;border-radius:8px;background:var(--panel2);color:var(--text);padding:8px 10px;font:inherit}
+button{cursor:pointer;margin-top:8px}
+button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.action-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.status{margin-top:12px;padding:10px;background:#11161d;border-radius:8px;color:var(--muted);font-size:.84rem;min-height:42px}
+.ct-legend{display:flex;gap:10px;margin-top:8px;color:var(--muted);font-size:.75rem}.ct-key{display:flex;align-items:center;gap:4px}.ct-line{width:18px;height:10px;border:3px solid var(--key-color);border-radius:3px}
+.roster-filters{display:grid;gap:8px;margin-top:12px}
+.class-palette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.class-chip{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);cursor:grab;user-select:none}
+.class-chip:active{cursor:grabbing}
+.class-icon{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;flex:0 0 auto;overflow:hidden;border:1px solid rgba(15,23,42,.35)}
+.class-icon svg{width:18px;height:18px;display:block}
+.class-copy{min-width:0}.class-name{font-size:.82rem;font-weight:700}.class-short{font-size:.72rem;color:var(--muted)}.class-meta{font-size:.68rem;color:var(--muted);margin-top:2px}
+main{display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-width:0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{width:auto;margin:0}
+.stage{display:grid;align-content:start;justify-items:center;border:1px solid var(--line);background:#090d12;border-radius:16px;padding:24px;min-height:560px}
+.room-shell{position:relative;width:min(92%,760px);aspect-ratio:1.3/1;display:grid;place-items:center;background:#22c55e;border-radius:22px;padding:22px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+.room-body{position:relative;width:100%;height:100%;border-radius:18px;background:var(--room-color);border:4px solid var(--ct-border);padding:28px 24px 24px;color:#071018;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.room-title{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.room-title h2{margin:0;font-size:1.35rem;color:#071018}.room-meta{font-size:.8rem;font-weight:700;color:rgba(7,16,24,.8)}
+.join-badge{position:absolute;top:14px;right:14px;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:rgba(7,16,24,.82);color:#e5eefb;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.slot-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.staff-slot{position:relative;min-height:110px;border-radius:14px;border:2px dashed rgba(7,16,24,.35);background:rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center;transition:transform .12s ease,border-color .12s ease,background .12s ease}
+.staff-slot.available{border-style:solid;background:rgba(255,255,255,.22)}
+.staff-slot.over{transform:translateY(-2px);border-color:#f8fafc;background:rgba(255,255,255,.3)}
+.staff-slot.filled{border-style:solid;background:rgba(7,16,24,.14)}
+.staff-slot.locked{opacity:.38}
+.slot-index{position:absolute;top:8px;left:10px;font-size:.72rem;font-weight:800;color:rgba(7,16,24,.58)}
+.slot-empty{font-size:.76rem;font-weight:700;color:rgba(7,16,24,.7)}
+.slot-hint{font-size:.68rem;color:rgba(7,16,24,.58);margin-top:4px}
+.slot-card{display:flex;flex-direction:column;align-items:center;gap:8px}
+.slot-card .class-icon{width:42px;height:42px}
+.slot-card .class-icon svg{width:22px;height:22px}
+.slot-card .slot-name{font-size:.8rem;font-weight:800;color:#071018}
+.slot-card .slot-role{font-size:.68rem;color:rgba(7,16,24,.75)}
+.slot-name-input{width:100%;min-height:30px;border:1px solid rgba(7,16,24,.18);border-radius:8px;background:rgba(255,255,255,.78);color:#071018;padding:6px 8px;font:inherit;font-size:.74rem}
+.slot-actions,.slot-clear-row,.slot-branch-controls,.slot-branch-row{display:grid;grid-template-columns:1fr;gap:6px;width:100%}
+.slot-control{width:100%;min-height:34px;margin-top:0;padding:6px 10px;font-size:.8rem;border-radius:8px;white-space:normal;background:rgba(255,255,255,.82);color:#071018;border:1px solid rgba(7,16,24,.18)}
+.slot-actions .slot-control,.slot-clear-row .slot-control{background:#232b36;color:#f3f4f6;border:1px solid #3d4653}
+.slot-tier{font-size:.68rem;font-weight:700;color:rgba(7,16,24,.84)}
+.layout-strip{display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#11161d;border:1px solid rgba(255,255,255,.1);font-size:.78rem;color:var(--muted)}
+.preview dl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:0}
+.preview dt{color:var(--muted);font-size:.78rem;font-weight:600;display:block;margin-bottom:3px}.preview dd{margin:0;font-size:.82rem;padding-left:0}
+.preview ul{margin:0;padding-left:18px}.preview li+li{margin-top:4px}
+.swatch{width:16px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,.35);display:inline-block;vertical-align:middle;margin-right:8px}
+.config-output{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#11161d;color:#dbe4f0;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow:auto;max-height:220px}
+@media (max-width:1200px){.app{grid-template-columns:320px minmax(0,1fr)}.preview{grid-column:1 / -1;border-left:0;border-top:1px solid var(--line)}}
+@media (max-width:900px){.app{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}.preview{border-top:1px solid var(--line)}.slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<noscript>This prototype requires JavaScript.</noscript>
+<script>
+if (window.location.protocol === "file:") {
+  document.addEventListener("DOMContentLoaded", () => {
+    const status = document.getElementById("status");
+    status.textContent = "This prototype must be served over HTTP. From the repository root, run: python -m http.server 8000, then open http://localhost:8000/demos/room-staffing-demo/";
+  });
+}
+</script>
+<div class="app">
+  <aside>
+    <h1>Room Staffing Demo</h1>
+    <p class="muted">Focused prototype for staffing and join-driven capacity using the shared room and base-class data.</p>
+
+    <label for="jsonFile">Room JSON</label>
+    <input id="jsonFile" type="file" accept=".json,application/json">
+
+    <label for="roomSelect">Room</label>
+    <select id="roomSelect"></select>
+
+    <div class="row">
+      <div>
+        <label for="ctSelect">Construction Tier</label>
+        <select id="ctSelect">
+          <option value="1">CT1</option>
+          <option value="2">CT2</option>
+          <option value="3">CT3</option>
+        </select>
+      </div>
+      <div>
+        <label for="layoutSelect">Joined layout</label>
+        <select id="layoutSelect"></select>
+      </div>
+    </div>
+
+    <div class="ct-legend" aria-label="Construction Tier border colors">
+      <span class="ct-key"><span class="ct-line" style="--key-color:#8b949e"></span>CT1</span>
+      <span class="ct-key"><span class="ct-line" style="--key-color:#38bdf8"></span>CT2</span>
+      <span class="ct-key"><span class="ct-line" style="--key-color:#f59e0b"></span>CT3</span>
+    </div>
+
+    <div class="action-row">
+      <button id="joinSelected" type="button">Join Room</button>
+      <button id="upgradeCt" type="button">Upgrade CT</button>
+      <button id="addStaff" type="button">Add Staff Slot</button>
+      <button id="resetRoom" type="button">Reset Room</button>
+    </div>
+
+    <div id="selectionStatus" class="status">Loading Analysis room…</div>
+    <div id="status" class="status">Loading shared room catalog...</div>
+
+    <h2>Unit roster</h2>
+    <p class="muted">Prefab units cover base tiers plus specialization and cross-path variants. Drag one into an available staff slot.</p>
+    <div class="roster-filters">
+      <div class="row">
+        <div>
+          <label for="rosterBaseFilter">Base class</label>
+          <select id="rosterBaseFilter"></select>
+        </div>
+        <div>
+          <label for="rosterSort">Sort</label>
+          <select id="rosterSort"></select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="rosterSpecializationFilter">Specialization</label>
+          <select id="rosterSpecializationFilter"></select>
+        </div>
+        <div>
+          <label for="rosterCrossFilter">Cross path</label>
+          <select id="rosterCrossFilter"></select>
+        </div>
+      </div>
+    </div>
+    <div id="classPalette" class="class-palette"></div>
+  </aside>
+
+  <main>
+    <div class="toolbar">
+      <button id="loadAnalysis" type="button">Load Analysis</button>
+      <button id="fillOpenScientist" type="button">Fill Open With Scientist</button>
+      <button id="clearAssignments" type="button">Clear Assignments</button>
+    </div>
+
+    <section class="stage">
+      <div class="room-shell">
+        <div id="roomCard" class="room-body" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <div class="layout-strip">
+      <span class="pill" id="layoutPill">Layout: --</span>
+      <span class="pill" id="capacityPill">Capacity: --</span>
+      <span class="pill" id="staffedPill">Assigned: --</span>
+    </div>
+  </main>
+
+  <section id="roomPreview" class="preview" aria-live="polite">
+    <h2>Room preview</h2>
+    <p class="muted">Room details, staffing state, and the underlying normalized schema appear here.</p>
+    <h2>Configuration string</h2>
+    <div id="configOutput" class="config-output">Loading configuration…</div>
+  </section>
+</div>
+
+<script type="module" src="./room-staffing-demo.js?v=room-staffing-demo-3"></script>
+</body>
+</html>
