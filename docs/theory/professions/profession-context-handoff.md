@@ -2,9 +2,19 @@
 
 ## Purpose
 
-Use this document to reorient another contributor or chat to the current Profession definitions without loading the full curricula.
+Use this document as the initial context for any contributor or chat working with Profession definitions.
 
-The detailed documents under `docs/theory/professions/` remain authoritative.
+It is intentionally compact. Read this document first instead of loading the full Theory library.
+
+## How to Use This Handoff
+
+1. Read this document completely before reasoning about Profession capabilities or boundaries.
+2. Use the definitions here for ordinary discussion and implementation planning.
+3. If a specific detail remains unclear, inspect only the relevant linked curriculum or architecture section in the repository.
+4. Do not load every linked document preemptively.
+5. Do not infer a new capability from a summary. Verify uncertain details against the authoritative repository document.
+
+The detailed documents under `docs/theory/` are the authority. This handoff is their compact working summary.
 
 ## Universal Profession Contract
 
@@ -124,6 +134,13 @@ Profession A output
 
 ## Authority Pointers
 
+- Start with this document for normal Profession context.
+- Use [Profession boundaries](./profession-boundaries.md) when a cross-Profession ownership question is not resolved by the pairwise summaries above.
+- Use an individual curriculum only when exact competencies, tier limits, certifications, tools, Services, or field guidance matter.
+- Use the [Theory architecture](../README.md) when the question concerns universal Knowledge, Recipe, Incident, plan, Requirement, or semantic-state rules.
+
+Detailed references:
+
 - [Profession boundaries](./profession-boundaries.md)
 - [Technician curriculum](./technician/technician-summary.md)
 - [Scientist curriculum](./scientist/scientist-summary.md)
@@ -133,4 +150,4 @@ Profession A output
 - [Diplomat curriculum](./diplomat/diplomat-summary.md)
 - [Theory architecture](../README.md)
 
-When this handoff conflicts with a detailed curriculum or architecture document, the detailed document is authoritative.
+When this handoff conflicts with a detailed curriculum or architecture document, the detailed repository document is authoritative. Report the conflict instead of silently inventing a reconciliation.
