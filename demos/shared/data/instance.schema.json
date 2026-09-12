@@ -1,0 +1,275 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stargate-orionis.local/schemas/instance.schema.json",
+  "title": "Stargate Orionis Instance Table",
+  "description": "Schema for persistent physical instances. The table is keyed by instanceId; cross-table references are validated separately.",
+  "type": "object",
+  "patternProperties": {
+    "^[A-Z][A-Z0-9_]*$": {
+      "$ref": "#/$defs/instance"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "instance": {
+      "type": "object",
+      "required": [
+        "instanceId",
+        "itemId",
+        "state",
+        "reality",
+        "knowledge",
+        "custody",
+        "processes",
+        "history"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "instanceId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "itemId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "state": {
+          "$ref": "#/$defs/physicalState"
+        },
+        "reality": {
+          "$ref": "#/$defs/reality"
+        },
+        "knowledge": {
+          "$ref": "#/$defs/knowledge"
+        },
+        "custody": {
+          "$ref": "#/$defs/custody"
+        },
+        "processes": {
+          "$ref": "#/$defs/processes"
+        },
+        "history": {
+          "$ref": "#/$defs/history"
+        }
+      }
+    },
+    "physicalState": {
+      "type": "object",
+      "required": ["condition", "functionalState", "quantity", "percentOfWhole"],
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "enum": ["INTACT", "DAMAGED", "DESTROYED"]
+        },
+        "functionalState": {
+          "enum": ["FUNCTIONAL", "DEGRADED", "NONFUNCTIONAL", "UNKNOWN"]
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "percentOfWhole": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      }
+    },
+    "theoryBinding": {
+      "type": "object",
+      "required": ["theoryId", "implementedProperties"],
+      "additionalProperties": false,
+      "properties": {
+        "theoryId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "implementedProperties": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "implementationTags": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "reality": {
+      "type": "object",
+      "required": ["theoryBindings", "authoredTags"],
+      "additionalProperties": false,
+      "properties": {
+        "theoryBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/theoryBinding"
+          }
+        },
+        "authoredTags": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "instanceFinding": {
+      "type": "object",
+      "required": ["id", "type", "claim", "scope", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "type": {
+          "const": "INSTANCE_FINDING"
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "const": "INSTANCE"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relatedTheory": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "knowledge": {
+      "type": "object",
+      "required": ["revealedTags"],
+      "additionalProperties": false,
+      "properties": {
+        "revealedTags": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "instanceFindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/instanceFinding"
+          }
+        }
+      }
+    },
+    "cost": {
+      "type": "object",
+      "required": ["unitCost", "extendedCost"],
+      "additionalProperties": false,
+      "properties": {
+        "unitCost": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "extendedCost": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "custody": {
+      "type": "object",
+      "required": ["storageId", "containerId", "leaseId", "state", "nextStorageId", "status", "reservedBy", "committedBy", "cost"],
+      "additionalProperties": false,
+      "properties": {
+        "storageId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "containerId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "leaseId": {
+          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+        },
+        "state": {
+          "enum": ["ACTIVE", "INACTIVE", "DROPPED", "LOST", "EQUIPPED", "STANDBY"]
+        },
+        "nextStorageId": {
+          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+        },
+        "status": {
+          "enum": ["STORED", "IN_TRANSIT", "INBOUND", "OUTBOUND", "DELIVERED", "PENDING_STORAGE"]
+        },
+        "reservedBy": {
+          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+        },
+        "committedBy": {
+          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+        },
+        "cost": {
+          "$ref": "#/$defs/cost"
+        }
+      }
+    },
+    "process": {
+      "type": "object",
+      "required": ["state"],
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE", "BLOCKED", "CANCELLED"]
+        },
+        "recipeId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "completedBubbles": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "currentBubble": {
+          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+        },
+        "partialProgress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "findingsProduced": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "processes": {
+      "type": "object",
+      "required": ["receiving", "analysis", "reverseEngineering", "salvage"],
+      "additionalProperties": false,
+      "properties": {
+        "receiving": {"$ref": "#/$defs/process"},
+        "analysis": {"$ref": "#/$defs/process"},
+        "construction": {"$ref": "#/$defs/process"},
+        "repair": {"$ref": "#/$defs/process"},
+        "reverseEngineering": {"$ref": "#/$defs/process"},
+        "salvage": {"$ref": "#/$defs/process"}
+      }
+    },
+    "historyEvent": {
+      "type": "array",
+      "prefixItems": [
+        {"type": "integer", "minimum": 0},
+        {"$ref": "#/$defs/identifier"},
+        {"$ref": "#/$defs/identifier"},
+        {"$ref": "#/$defs/identifier"}
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/historyEvent"
+      }
+    }
+  }
+}

@@ -1,0 +1,2210 @@
+{
+  "schemaVersion": "theory-0.1",
+  "contentStatus": "SIMULATOR_TEST",
+  "theories": [
+    {
+      "id": "PULSED_POWER_I",
+      "name": "Pulsed Power I",
+      "type": "THEORY",
+      "family": "PULSED_POWER",
+      "tier": 1,
+      "version": 1,
+      "summary": "Controlled accumulation, storage, and release of electrical energy as discrete pulses within a Tier-I operating envelope.",
+      "identity": {
+        "description": "Basic pulsed-power behavior within the Tier-I capability envelope.",
+        "scope": "Universal pulsed-power theory.",
+        "subjectTags": [
+          "PULSED_POWER",
+          "ENERGY_STORAGE",
+          "CONTROLLED_DISCHARGE"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [],
+        "requiresTheories": [],
+        "supersedes": [],
+        "commonlyAssociatedWith": [],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": []
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [],
+          "enablesRecognitionOf": [
+            "PULSED_POWER_I_BEHAVIOR"
+          ]
+        },
+        "interpretation": {
+          "requirements": [],
+          "enablesInterpretationOf": [
+            "PULSED_POWER_I_BEHAVIOR"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "PULSED_POWER"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [
+          "ACCUMULATE",
+          "STORE",
+          "CONTROL_DISCHARGE",
+          "DELIVER_PULSE",
+          "RECOVER"
+        ],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            1,
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [],
+        "roomServices": []
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [
+            {
+              "id": "ACCUMULATE",
+              "process": "ACCUMULATE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": []
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "STORE",
+              "process": "STORE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": []
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "CONTROL_DISCHARGE",
+              "process": "CONTROL_DISCHARGE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": []
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "DELIVER_PULSE",
+              "process": "DELIVER_PULSE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": []
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "RECOVER",
+              "process": "RECOVER",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": []
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            }
+          ],
+          "edges": [
+            [
+              "ACCUMULATE",
+              "STORE"
+            ],
+            [
+              "STORE",
+              "CONTROL_DISCHARGE"
+            ],
+            [
+              "CONTROL_DISCHARGE",
+              "DELIVER_PULSE"
+            ],
+            [
+              "DELIVER_PULSE",
+              "RECOVER"
+            ]
+          ]
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {
+        "verticalAdvancementTarget": "PULSED_POWER_II",
+        "targetScaleClass": 10
+      },
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {},
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {}
+    },
+    {
+      "id": "PULSED_POWER_II",
+      "name": "Pulsed Power II",
+      "type": "THEORY",
+      "family": "PULSED_POWER",
+      "tier": 2,
+      "version": 1,
+      "summary": "Pulsed-power behavior at approximately the next order-of-magnitude capability class.",
+      "identity": {
+        "description": "Advanced pulsed-power behavior requiring control of substantially greater electrical, thermal, switching, and recovery demands.",
+        "scope": "Universal pulsed-power theory.",
+        "subjectTags": [
+          "PULSED_POWER",
+          "HIGH_POWER",
+          "PULSE_SEQUENCING",
+          "LOAD_RESPONSE"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [
+          "PULSED_POWER_I"
+        ],
+        "requiresTheories": [
+          "PULSED_POWER_I"
+        ],
+        "supersedes": [
+          "PULSED_POWER_I"
+        ],
+        "commonlyAssociatedWith": [
+          "ELECTROMAGNETIC_ACTUATION_II"
+        ],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": [
+          "ELECTROMAGNETIC_ACTUATION_II"
+        ]
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [
+            "PULSED_POWER_I"
+          ],
+          "enablesRecognitionOf": [
+            "PULSED_POWER_II_BEHAVIOR"
+          ]
+        },
+        "interpretation": {
+          "requirements": [
+            "PULSED_POWER_I"
+          ],
+          "enablesInterpretationOf": [
+            "PULSED_POWER_II_BEHAVIOR"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "PULSED_POWER",
+          "TIER_II_CAPABILITY"
+        ],
+        "possible": [
+          "THERMAL_ACCUMULATION",
+          "HIGH_CURRENT_DENSITY",
+          "LOAD_RESPONSE_VARIATION"
+        ],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [
+          "ACCUMULATE",
+          "STORE",
+          "SHAPE_DISCHARGE",
+          "SYNCHRONIZE",
+          "DELIVER_CONTROLLED_PULSE",
+          "MONITOR_LOAD_RESPONSE",
+          "RECOVER_COMPENSATE"
+        ],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [],
+        "roomServices": [
+          "PULSED_POWER_PROCESSING_II"
+        ]
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [
+            {
+              "id": "ACCUMULATE",
+              "process": "ACCUMULATE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [
+                  "PULSED_POWER_I"
+                ],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "STORE",
+              "process": "STORE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [
+                  "PULSED_POWER_I"
+                ],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "SHAPE_DISCHARGE",
+              "process": "SHAPE_DISCHARGE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "SYNCHRONIZE",
+              "process": "SYNCHRONIZE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "DELIVER_CONTROLLED_PULSE",
+              "process": "DELIVER_CONTROLLED_PULSE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "MONITOR_LOAD_RESPONSE",
+              "process": "MONITOR_LOAD_RESPONSE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "RECOVER_COMPENSATE",
+              "process": "RECOVER_COMPENSATE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "PULSED_POWER_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            }
+          ],
+          "edges": [
+            [
+              "ACCUMULATE",
+              "STORE"
+            ],
+            [
+              "STORE",
+              "SHAPE_DISCHARGE"
+            ],
+            [
+              "SHAPE_DISCHARGE",
+              "SYNCHRONIZE"
+            ],
+            [
+              "SYNCHRONIZE",
+              "DELIVER_CONTROLLED_PULSE"
+            ],
+            [
+              "DELIVER_CONTROLLED_PULSE",
+              "MONITOR_LOAD_RESPONSE"
+            ],
+            [
+              "MONITOR_LOAD_RESPONSE",
+              "RECOVER_COMPENSATE"
+            ]
+          ]
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {},
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {
+        "provisionalServiceNames": [
+          "PULSED_POWER_PROCESSING_II"
+        ]
+      }
+    },
+    {
+      "id": "ELECTROMAGNETIC_ACTUATION_II",
+      "name": "Electromagnetic Actuation II",
+      "type": "THEORY",
+      "family": "ELECTROMAGNETIC_ACTUATION",
+      "tier": 2,
+      "version": 1,
+      "summary": "Controlled use of electromagnetic fields to generate useful mechanical force and motion at Technology Tier II.",
+      "identity": {
+        "description": "Electromagnetic field generation and control sufficient to produce controlled mechanical force and motion.",
+        "scope": "Universal electromagnetic actuation theory.",
+        "subjectTags": [
+          "ELECTROMAGNETIC_ACTUATION",
+          "CONTROLLED_FORCE",
+          "CONTROLLED_MOTION"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [],
+        "requiresTheories": [],
+        "supersedes": [],
+        "commonlyAssociatedWith": [
+          "PULSED_POWER_II"
+        ],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": [
+          "PULSED_POWER_II"
+        ]
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [],
+          "enablesRecognitionOf": [
+            "ELECTROMAGNETIC_ACTUATION_II_BEHAVIOR"
+          ]
+        },
+        "interpretation": {
+          "requirements": [],
+          "enablesInterpretationOf": [
+            "ELECTROMAGNETIC_ACTUATION_II_BEHAVIOR"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "ELECTROMAGNETIC_ACTUATION",
+          "TIER_II_CAPABILITY"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [
+          "CONTROLLED_ELECTROMAGNETIC_FORCE"
+        ],
+        "supportsProcesses": [
+          "RECEIVE_CONTROL_INPUT",
+          "GENERATE_FIELD",
+          "APPLY_ELECTROMAGNETIC_FORCE",
+          "PRODUCE_CONTROLLED_MOTION",
+          "RETURN_OR_HOLD"
+        ],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [],
+        "roomServices": [
+          "ELECTROMAGNETIC_PROCESSING_II"
+        ]
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [
+            {
+              "id": "RECEIVE_CONTROL_INPUT",
+              "process": "RECEIVE_CONTROL_INPUT",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "ELECTROMAGNETIC_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "GENERATE_FIELD",
+              "process": "GENERATE_FIELD",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "ELECTROMAGNETIC_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "APPLY_ELECTROMAGNETIC_FORCE",
+              "process": "APPLY_ELECTROMAGNETIC_FORCE",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "ELECTROMAGNETIC_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "PRODUCE_CONTROLLED_MOTION",
+              "process": "PRODUCE_CONTROLLED_MOTION",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "ELECTROMAGNETIC_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "RETURN_OR_HOLD",
+              "process": "RETURN_OR_HOLD",
+              "executionClass": "SYSTEM",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [],
+                "competencyRequirements": [],
+                "toolServiceOptions": [],
+                "roomServiceOptions": [
+                  "ELECTROMAGNETIC_PROCESSING_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            }
+          ],
+          "edges": [
+            [
+              "RECEIVE_CONTROL_INPUT",
+              "GENERATE_FIELD"
+            ],
+            [
+              "GENERATE_FIELD",
+              "APPLY_ELECTROMAGNETIC_FORCE"
+            ],
+            [
+              "APPLY_ELECTROMAGNETIC_FORCE",
+              "PRODUCE_CONTROLLED_MOTION"
+            ],
+            [
+              "PRODUCE_CONTROLLED_MOTION",
+              "RETURN_OR_HOLD"
+            ]
+          ]
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {},
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {
+        "provisionalServiceNames": [
+          "ELECTROMAGNETIC_PROCESSING_II"
+        ]
+      }
+    },
+    {
+      "id": "ELECTROMAGNETIC_ACCELERATION_I",
+      "name": "Electromagnetic Acceleration I",
+      "type": "THEORY",
+      "family": "ELECTROMAGNETIC_ACCELERATION",
+      "tier": 1,
+      "version": 1,
+      "summary": "Basic understanding that controlled electromagnetic force can accelerate a physical mass.",
+      "identity": {
+        "description": "Tier-I electromagnetic acceleration theory.",
+        "scope": "Universal electromagnetic acceleration theory.",
+        "subjectTags": [
+          "ELECTROMAGNETIC_ACCELERATION",
+          "KINETIC_ACCELERATION"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [],
+        "requiresTheories": [],
+        "supersedes": [],
+        "commonlyAssociatedWith": [],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": []
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [],
+          "enablesRecognitionOf": [
+            "ELECTROMAGNETIC_ACCELERATION_I_BEHAVIOR"
+          ]
+        },
+        "interpretation": {
+          "requirements": [],
+          "enablesInterpretationOf": [
+            "ELECTROMAGNETIC_ACCELERATION_I_BEHAVIOR"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "ELECTROMAGNETIC_ACCELERATION"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            1,
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [],
+        "roomServices": []
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [],
+          "edges": []
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {
+        "canRecognizeHigherTierEvidence": true,
+        "higherTierRecognitionRequiresKnownPreviousTier": true
+      },
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {},
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {}
+    },
+    {
+      "id": "ELECTROMAGNETIC_ACCELERATION_II",
+      "name": "Electromagnetic Acceleration II",
+      "type": "THEORY",
+      "family": "ELECTROMAGNETIC_ACCELERATION",
+      "tier": 2,
+      "version": 1,
+      "summary": "Controlled electromagnetic acceleration at the Tier-II capability envelope.",
+      "identity": {
+        "description": "Predictable acceleration through coordinated electromagnetic force, pulsed-energy delivery, timing, staging, and controlled system response.",
+        "scope": "Universal electromagnetic acceleration theory.",
+        "subjectTags": [
+          "ELECTROMAGNETIC_ACCELERATION",
+          "TIER_II_CAPABILITY",
+          "KINETIC_ACCELERATION"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [
+          "ELECTROMAGNETIC_ACCELERATION_I"
+        ],
+        "requiresTheories": [
+          "ELECTROMAGNETIC_ACCELERATION_I"
+        ],
+        "supersedes": [
+          "ELECTROMAGNETIC_ACCELERATION_I"
+        ],
+        "commonlyAssociatedWith": [
+          "PULSED_POWER_II",
+          "ELECTROMAGNETIC_ACTUATION_II"
+        ],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": [
+          "HUMAN_MANUFACTURING_II"
+        ]
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [
+            "ELECTROMAGNETIC_ACCELERATION_I"
+          ],
+          "enablesRecognitionOf": [
+            "ELECTROMAGNETIC_ACCELERATION_II_BEHAVIOR"
+          ]
+        },
+        "interpretation": {
+          "requirements": [
+            "ELECTROMAGNETIC_ACCELERATION_I"
+          ],
+          "enablesInterpretationOf": [
+            "ELECTROMAGNETIC_ACCELERATION_II_BEHAVIOR"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "ELECTROMAGNETIC_ACCELERATION",
+          "TIER_II_CAPABILITY"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [],
+        "roomServices": []
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [],
+          "edges": []
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {
+        "validHypothesisDefinitions": [
+          "HYP_EM_ACCELERATION_II_HORIZONTAL",
+          "HYP_EM_ACCELERATION_II_EXTRACTION"
+        ]
+      },
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {},
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {}
+    },
+    {
+      "id": "HUMAN_MANUFACTURING_II",
+      "name": "Human Manufacturing II",
+      "type": "THEORY",
+      "family": "HUMAN_MANUFACTURING",
+      "tier": 2,
+      "version": 1,
+      "summary": "Institutional Human knowledge for manufacturing and integrating ordinary Human Technology Tier-II systems.",
+      "identity": {
+        "description": "The Human Tier-II manufacturing ecosystem and its ordinary material-working practices.",
+        "scope": "Human civilization-specific manufacturing knowledge.",
+        "subjectTags": [
+          "HUMAN",
+          "MANUFACTURING",
+          "TIER_II"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [],
+        "requiresTheories": [],
+        "supersedes": [],
+        "commonlyAssociatedWith": [],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": [
+          "ELECTROMAGNETIC_ACCELERATION_II"
+        ]
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [],
+          "enablesRecognitionOf": [
+            "HUMAN_TIER_II_MANUFACTURING"
+          ]
+        },
+        "interpretation": {
+          "requirements": [],
+          "enablesInterpretationOf": [
+            "HUMAN_TIER_II_MANUFACTURING"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "HUMAN_MANUFACTURING",
+          "TIER_II_CAPABILITY"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [
+          "FABRICATE",
+          "ASSEMBLE",
+          "INTEGRATE",
+          "ALIGN",
+          "CALIBRATE"
+        ],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [
+          "TET2_MODIFY"
+        ],
+        "roomServices": [
+          "HUMAN_WORKSHOP_II"
+        ]
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [],
+          "edges": []
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {
+        "ordinaryTierMaterialWorkingImplicit": true
+      },
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {}
+    },
+    {
+      "id": "HUMAN_ROOM_CONSTRUCTION_II",
+      "name": "Human Room Construction II",
+      "type": "THEORY",
+      "family": "HUMAN_ROOM_CONSTRUCTION",
+      "tier": 2,
+      "version": 1,
+      "summary": "Human Technology Tier-II room construction capability.",
+      "identity": {
+        "description": "Human Tier-II room construction knowledge including ordinary structural and utility implementation knowledge.",
+        "scope": "Human civilization-specific room construction.",
+        "subjectTags": [
+          "HUMAN",
+          "ROOM_CONSTRUCTION",
+          "TIER_II"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [],
+        "requiresTheories": [],
+        "supersedes": [],
+        "commonlyAssociatedWith": [],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": []
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [],
+          "enablesRecognitionOf": [
+            "HUMAN_ROOM_CONSTRUCTION_II"
+          ]
+        },
+        "interpretation": {
+          "requirements": [],
+          "enablesInterpretationOf": [
+            "HUMAN_ROOM_CONSTRUCTION_II"
+          ]
+        },
+        "implicitlyGrants": [
+          "HUMAN_WALL_PATTERN_II",
+          "HUMAN_DOOR_PATTERN_II",
+          "HUMAN_UTILITY_PATTERN_II",
+          "HUMAN_WORKSPACE_PATTERN_II"
+        ]
+      },
+      "tags": {
+        "inherent": [
+          "HUMAN_ROOM_CONSTRUCTION",
+          "TIER_II_CAPABILITY"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            2,
+            3
+          ]
+        },
+        "competencies": [],
+        "toolServices": [],
+        "roomServices": []
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [],
+          "edges": []
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {},
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {
+        "implicitGrantListStatus": "ILLUSTRATIVE"
+      }
+    },
+    {
+      "id": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+      "name": "Human Electromagnetic Accelerator Pattern II",
+      "type": "IMPLEMENTATION_PATTERN",
+      "family": "ELECTROMAGNETIC_ACCELERATOR",
+      "tier": 2,
+      "version": 1,
+      "summary": "The reproducible Human Tier-II implementation of electromagnetic acceleration.",
+      "identity": {
+        "description": "How Humans manufacture, assemble, integrate, calibrate, and validate a Tier-II electromagnetic accelerator.",
+        "scope": "Human civilization-specific implementation pattern.",
+        "subjectTags": [
+          "HUMAN",
+          "ELECTROMAGNETIC_ACCELERATOR",
+          "IMPLEMENTATION_PATTERN",
+          "TIER_II"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [
+          "ELECTROMAGNETIC_ACCELERATION_II",
+          "HUMAN_MANUFACTURING_II"
+        ],
+        "requiresTheories": [
+          "ELECTROMAGNETIC_ACCELERATION_II",
+          "HUMAN_MANUFACTURING_II"
+        ],
+        "supersedes": [],
+        "commonlyAssociatedWith": [
+          "HUMAN_ADVANCED_RIFLE_PATTERN"
+        ],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": [
+          "HUMAN_ADVANCED_RIFLE_PATTERN"
+        ]
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [
+            "ELECTROMAGNETIC_ACCELERATION_II",
+            "HUMAN_MANUFACTURING_II"
+          ],
+          "enablesRecognitionOf": [
+            "HUMAN_ELECTROMAGNETIC_ACCELERATOR_IMPLEMENTATION_II"
+          ]
+        },
+        "interpretation": {
+          "requirements": [
+            "ELECTROMAGNETIC_ACCELERATION_II",
+            "HUMAN_MANUFACTURING_II"
+          ],
+          "enablesInterpretationOf": [
+            "HUMAN_ELECTROMAGNETIC_ACCELERATOR_IMPLEMENTATION_II"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "HUMAN",
+          "IMPLEMENTATION_PATTERN",
+          "ELECTROMAGNETIC_ACCELERATOR"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [
+          "PRIMARY_WEAPON_SYSTEM"
+        ],
+        "supportsProcesses": [
+          "FABRICATE",
+          "ASSEMBLE",
+          "INTEGRATE",
+          "ALIGN",
+          "CALIBRATE",
+          "VALIDATE"
+        ],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            2,
+            3
+          ]
+        },
+        "competencies": [
+          "FABRICATION",
+          "INTEGRATION",
+          "ALIGNMENT_CALIBRATION"
+        ],
+        "toolServices": [
+          "TET2_MODIFY",
+          "SCT2"
+        ],
+        "roomServices": [
+          "HUMAN_WORKSHOP_II",
+          "ELECTRODYNAMICS_FABRICATION_II",
+          "SHIELDED_ELECTRODYNAMICS_TEST_II"
+        ]
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [
+            {
+              "id": "FABRICATE_FIELD_COMPONENTS",
+              "process": "FABRICATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [
+                  "ELECTROMAGNETIC_ACCELERATION_II",
+                  "HUMAN_MANUFACTURING_II"
+                ],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "FABRICATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "ELECTRODYNAMICS_FABRICATION_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "FABRICATE_POWER_CONTROL_COMPONENTS",
+              "process": "FABRICATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [
+                  "HUMAN_MANUFACTURING_II"
+                ],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "FABRICATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "ASSEMBLE_ACCELERATOR_STAGES",
+              "process": "ASSEMBLE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "INTEGRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "INTEGRATE_POWER_CONTROL",
+              "process": "INTEGRATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "INTEGRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "ALIGN_STAGES",
+              "process": "ALIGN",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "ALIGNMENT_CALIBRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "CALIBRATE_SEQUENCING",
+              "process": "CALIBRATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "ALIGNMENT_CALIBRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "SHIELDED_ELECTRODYNAMICS_TEST_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "POWERED_VALIDATION",
+              "process": "VALIDATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "SC2"
+                ],
+                "competencyRequirements": [],
+                "toolServiceOptions": [
+                  "SCT2"
+                ],
+                "roomServiceOptions": [
+                  "SHIELDED_ELECTRODYNAMICS_TEST_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            }
+          ],
+          "edges": [
+            [
+              "FABRICATE_FIELD_COMPONENTS",
+              "FABRICATE_POWER_CONTROL_COMPONENTS"
+            ],
+            [
+              "FABRICATE_POWER_CONTROL_COMPONENTS",
+              "ASSEMBLE_ACCELERATOR_STAGES"
+            ],
+            [
+              "ASSEMBLE_ACCELERATOR_STAGES",
+              "INTEGRATE_POWER_CONTROL"
+            ],
+            [
+              "INTEGRATE_POWER_CONTROL",
+              "ALIGN_STAGES"
+            ],
+            [
+              "ALIGN_STAGES",
+              "CALIBRATE_SEQUENCING"
+            ],
+            [
+              "CALIBRATE_SEQUENCING",
+              "POWERED_VALIDATION"
+            ]
+          ]
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {
+        "patternComposition": {
+          "providesRoles": [
+            "PRIMARY_WEAPON_SYSTEM"
+          ],
+          "requiresRoles": [],
+          "compatibleRoleTags": [
+            "RIFLE_SCALE",
+            "LINEAR_WEAPON",
+            "KINETIC_PROJECTILE"
+          ],
+          "incompatibleRoleTags": []
+        }
+      },
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {}
+    },
+    {
+      "id": "HUMAN_ADVANCED_RIFLE_PATTERN",
+      "name": "Human Advanced Rifle Pattern",
+      "type": "IMPLEMENTATION_PATTERN",
+      "family": "RIFLE",
+      "tier": 2,
+      "version": 1,
+      "summary": "Human Tier-II rifle form-factor implementation knowledge.",
+      "identity": {
+        "description": "How Humans manufacture a Tier-II rifle form factor while leaving the primary weapon technology as an implementation role.",
+        "scope": "Human civilization-specific rifle implementation pattern.",
+        "subjectTags": [
+          "HUMAN",
+          "RIFLE",
+          "IMPLEMENTATION_PATTERN",
+          "TIER_II"
+        ]
+      },
+      "relationships": {
+        "derivesFrom": [
+          "HUMAN_MANUFACTURING_II"
+        ],
+        "requiresTheories": [
+          "HUMAN_MANUFACTURING_II"
+        ],
+        "supersedes": [],
+        "commonlyAssociatedWith": [
+          "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+        ],
+        "compatibleWith": [],
+        "incompatibleWith": [],
+        "discoveryPartners": [
+          "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+        ]
+      },
+      "knowledge": {
+        "recognition": {
+          "requirements": [
+            "HUMAN_MANUFACTURING_II"
+          ],
+          "enablesRecognitionOf": [
+            "HUMAN_ADVANCED_RIFLE_IMPLEMENTATION"
+          ]
+        },
+        "interpretation": {
+          "requirements": [
+            "HUMAN_MANUFACTURING_II"
+          ],
+          "enablesInterpretationOf": [
+            "HUMAN_ADVANCED_RIFLE_IMPLEMENTATION"
+          ]
+        },
+        "implicitlyGrants": []
+      },
+      "tags": {
+        "inherent": [
+          "HUMAN",
+          "RIFLE",
+          "IMPLEMENTATION_PATTERN"
+        ],
+        "possible": [],
+        "implied": [],
+        "incompatible": [],
+        "hiddenByDefault": [],
+        "revealRules": []
+      },
+      "capabilities": {
+        "provides": [],
+        "supportsProcesses": [
+          "FABRICATE",
+          "ASSEMBLE",
+          "INTEGRATE",
+          "FIT",
+          "ALIGN",
+          "FUNCTION_CHECK"
+        ],
+        "supportsInteractions": []
+      },
+      "capabilityEnvelope": {
+        "profession": {
+          "allowedTiers": [
+            1,
+            2,
+            3
+          ]
+        },
+        "competencies": [
+          "FABRICATION",
+          "INTEGRATION"
+        ],
+        "toolServices": [
+          "TET2_MODIFY"
+        ],
+        "roomServices": [
+          "HUMAN_WORKSHOP_II"
+        ]
+      },
+      "graphs": {
+        "primary": {
+          "nodes": [
+            {
+              "id": "FABRICATE_STRUCTURAL_COMPONENTS",
+              "process": "FABRICATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [
+                  "HUMAN_MANUFACTURING_II"
+                ],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "FABRICATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "FABRICATE_FEED_CONTROL_COMPONENTS",
+              "process": "FABRICATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [
+                  "HUMAN_MANUFACTURING_II"
+                ],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "FABRICATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "ASSEMBLE_RIFLE_BODY",
+              "process": "ASSEMBLE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "INTEGRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+              "process": "INTEGRATE",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [
+                  "PRIMARY_WEAPON_SYSTEM"
+                ],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "INTEGRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "FIT_ALIGN",
+              "process": "ALIGN",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE2"
+                ],
+                "competencyRequirements": [
+                  "INTEGRATION"
+                ],
+                "toolServiceOptions": [
+                  "TET2_MODIFY"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            },
+            {
+              "id": "FUNCTION_CHECK",
+              "process": "VERIFY",
+              "executionClass": "ACTOR",
+              "semanticRequirements": {
+                "theories": [],
+                "tagsRequired": [],
+                "tagsForbidden": []
+              },
+              "executionGuidance": {
+                "professionRequirements": [
+                  "TE1"
+                ],
+                "competencyRequirements": [],
+                "toolServiceOptions": [
+                  "TET1_SERVICE"
+                ],
+                "roomServiceOptions": [
+                  "HUMAN_WORKSHOP_II"
+                ]
+              },
+              "consequences": {
+                "addTags": [],
+                "removeTags": [],
+                "revealTags": [],
+                "physicalOutputs": [],
+                "knowledgeOutputs": []
+              }
+            }
+          ],
+          "edges": [
+            [
+              "FABRICATE_STRUCTURAL_COMPONENTS",
+              "FABRICATE_FEED_CONTROL_COMPONENTS"
+            ],
+            [
+              "FABRICATE_FEED_CONTROL_COMPONENTS",
+              "ASSEMBLE_RIFLE_BODY"
+            ],
+            [
+              "ASSEMBLE_RIFLE_BODY",
+              "INTEGRATE_PRIMARY_WEAPON_SYSTEM"
+            ],
+            [
+              "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+              "FIT_ALIGN"
+            ],
+            [
+              "FIT_ALIGN",
+              "FUNCTION_CHECK"
+            ]
+          ]
+        },
+        "secondary": [],
+        "crossTheoryHooks": []
+      },
+      "interactions": [],
+      "receivingGuidance": {},
+      "analysisGuidance": {},
+      "researchGuidance": {},
+      "discoveryGuidance": {},
+      "fieldGuidance": {},
+      "failureGuidance": {},
+      "damageGuidance": {},
+      "incidentGuidance": {},
+      "salvageGuidance": {},
+      "resourceGuidance": {},
+      "physicalConsequences": {},
+      "compositionGuidance": {
+        "patternComposition": {
+          "providesRoles": [],
+          "requiresRoles": [
+            "PRIMARY_WEAPON_SYSTEM"
+          ],
+          "compatibleRoleTags": [
+            "RIFLE_SCALE",
+            "HANDHELD",
+            "LINEAR_WEAPON"
+          ],
+          "incompatibleRoleTags": []
+        }
+      },
+      "evidenceGuidance": {},
+      "narrativeGuidance": {},
+      "extension": {
+        "advancedMeansTechnologyTier": 2
+      }
+    }
+  ],
+  "discoveryRelationships": [
+    {
+      "id": "DISC_PULSED_POWER_II_VERTICAL",
+      "inputs": [
+        "PULSED_POWER_I"
+      ],
+      "output": {
+        "type": "HYPOTHESIS",
+        "id": "HYP_PULSED_POWER_II_VERTICAL"
+      }
+    },
+    {
+      "id": "DISC_EM_ACCELERATION_II_HORIZONTAL",
+      "inputs": [
+        "PULSED_POWER_II",
+        "ELECTROMAGNETIC_ACTUATION_II"
+      ],
+      "output": {
+        "type": "HYPOTHESIS",
+        "id": "HYP_EM_ACCELERATION_II_HORIZONTAL"
+      }
+    },
+    {
+      "id": "DISC_HUMAN_EM_ACCELERATOR_PATTERN_II",
+      "inputs": [
+        "ELECTROMAGNETIC_ACCELERATION_II",
+        "HUMAN_MANUFACTURING_II"
+      ],
+      "output": {
+        "type": "HYPOTHESIS",
+        "id": "HYP_HUMAN_EM_ACCELERATOR_PATTERN_II"
+      }
+    },
+    {
+      "id": "DISC_HUMAN_ADVANCED_COIL_RIFLE",
+      "inputs": [
+        "HUMAN_ADVANCED_RIFLE_PATTERN",
+        "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+      ],
+      "output": {
+        "type": "RECIPE",
+        "id": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"
+      }
+    }
+  ],
+  "hypothesisDefinitions": [
+    {
+      "id": "HYP_PULSED_POWER_II_VERTICAL",
+      "name": "Pulsed Power II",
+      "contributingKnowledge": [
+        "PULSED_POWER_I"
+      ],
+      "targetKnowledge": "PULSED_POWER_II",
+      "sourceTypes": [
+        "DISCOVERY"
+      ],
+      "advancement": {
+        "mode": "VERTICAL",
+        "targetScaleClass": 10
+      }
+    },
+    {
+      "id": "HYP_EM_ACCELERATION_II_HORIZONTAL",
+      "name": "Electromagnetic Acceleration II",
+      "contributingKnowledge": [
+        "PULSED_POWER_II",
+        "ELECTROMAGNETIC_ACTUATION_II"
+      ],
+      "targetKnowledge": "ELECTROMAGNETIC_ACCELERATION_II",
+      "sourceTypes": [
+        "DISCOVERY"
+      ],
+      "derivedRequirements": {
+        "roomServices": [
+          "PULSED_POWER_PROCESSING_II",
+          "ELECTROMAGNETIC_PROCESSING_II"
+        ],
+        "preserveIndependentParentConstraints": true
+      }
+    },
+    {
+      "id": "HYP_HUMAN_EM_ACCELERATOR_PATTERN_II",
+      "name": "Human Electromagnetic Accelerator Pattern II",
+      "contributingKnowledge": [
+        "ELECTROMAGNETIC_ACCELERATION_II",
+        "HUMAN_MANUFACTURING_II"
+      ],
+      "targetKnowledge": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+      "sourceTypes": [
+        "DISCOVERY"
+      ]
+    },
+    {
+      "id": "HYP_EM_ACCELERATION_II_EXTRACTION",
+      "name": "Electromagnetic Acceleration II",
+      "contributingKnowledge": [
+        "ELECTROMAGNETIC_ACCELERATION_I"
+      ],
+      "targetKnowledge": "ELECTROMAGNETIC_ACCELERATION_II",
+      "sourceTypes": [
+        "REVERSE_ENGINEERING"
+      ],
+      "sourceRequirements": {
+        "previousTierKnowledge": "ELECTROMAGNETIC_ACCELERATION_I",
+        "evidenceClass": "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+      }
+    }
+  ],
+  "recipes": [
+    {
+      "id": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+      "name": "Human Advanced Coil Rifle",
+      "type": "RECIPE",
+      "knowledgeRequirements": [
+        "HUMAN_ADVANCED_RIFLE_PATTERN",
+        "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+      ],
+      "output": {
+        "object": "HUMAN_ADVANCED_COIL_RIFLE"
+      },
+      "bubbles": [
+        {
+          "id": "FABRICATE_RIFLE_COMPONENTS",
+          "actorRequirement": "TE2",
+          "toolRequirement": "TET2_MODIFY",
+          "roomServiceRequirement": "HUMAN_WORKSHOP_II"
+        },
+        {
+          "id": "FABRICATE_ACCELERATOR_COMPONENTS",
+          "actorRequirement": "TE2",
+          "toolRequirement": "TET2_MODIFY",
+          "roomServiceRequirement": "ELECTRODYNAMICS_FABRICATION_II"
+        },
+        {
+          "id": "ASSEMBLE_RIFLE_BODY",
+          "actorRequirement": "TE2",
+          "toolRequirement": "TET2_MODIFY",
+          "roomServiceRequirement": "HUMAN_WORKSHOP_II"
+        },
+        {
+          "id": "ASSEMBLE_ACCELERATOR",
+          "actorRequirement": "TE2",
+          "toolRequirement": "TET2_MODIFY",
+          "roomServiceRequirement": "HUMAN_WORKSHOP_II"
+        },
+        {
+          "id": "INTEGRATE_ACCELERATOR",
+          "actorRequirement": "TE2",
+          "toolRequirement": "TET2_MODIFY",
+          "roomServiceRequirement": "HUMAN_WORKSHOP_II"
+        },
+        {
+          "id": "CALIBRATE_ACCELERATOR",
+          "actorRequirement": "TE2",
+          "toolRequirement": "TET2_MODIFY",
+          "roomServiceRequirement": "SHIELDED_ELECTRODYNAMICS_TEST_II"
+        },
+        {
+          "id": "TECHNICAL_VALIDATION",
+          "actorRequirement": "SC2",
+          "toolRequirement": "SCT2",
+          "roomServiceRequirement": "SHIELDED_ELECTRODYNAMICS_TEST_II"
+        },
+        {
+          "id": "FIELD_TEST",
+          "actorRequirement": "SO1",
+          "toolRequirement": null,
+          "roomServiceRequirement": null
+        }
+      ],
+      "edges": [
+        [
+          "FABRICATE_RIFLE_COMPONENTS",
+          "FABRICATE_ACCELERATOR_COMPONENTS"
+        ],
+        [
+          "FABRICATE_ACCELERATOR_COMPONENTS",
+          "ASSEMBLE_RIFLE_BODY"
+        ],
+        [
+          "ASSEMBLE_RIFLE_BODY",
+          "ASSEMBLE_ACCELERATOR"
+        ],
+        [
+          "ASSEMBLE_ACCELERATOR",
+          "INTEGRATE_ACCELERATOR"
+        ],
+        [
+          "INTEGRATE_ACCELERATOR",
+          "CALIBRATE_ACCELERATOR"
+        ],
+        [
+          "CALIBRATE_ACCELERATOR",
+          "TECHNICAL_VALIDATION"
+        ],
+        [
+          "TECHNICAL_VALIDATION",
+          "FIELD_TEST"
+        ]
+      ]
+    }
+  ],
+  "coreDefinitions": [
+    {
+      "id": "ELECTRODYNAMICS_FABRICATION_CORE_II",
+      "tier": 2,
+      "providesServices": [
+        "ELECTRODYNAMICS_FABRICATION_II"
+      ]
+    },
+    {
+      "id": "ELECTRODYNAMICS_TEST_CORE_II",
+      "tier": 2,
+      "providesServices": [
+        "SHIELDED_ELECTRODYNAMICS_TEST_II"
+      ]
+    }
+  ],
+  "provisionalDefinitions": {
+    "roomServices": [
+      "PULSED_POWER_PROCESSING_II",
+      "ELECTROMAGNETIC_PROCESSING_II",
+      "SAFE_ELECTROMAGNETIC_ENVIRONMENT_II",
+      "HUMAN_WORKSHOP_II"
+    ],
+    "notes": [
+      "These names are sufficient for simulator testing but are not yet locked production vocabulary.",
+      "Implicit Human room-construction Pattern IDs are illustrative and not yet fully authored."
+    ]
+  }
+}

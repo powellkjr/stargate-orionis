@@ -1,7 +1,7 @@
-import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-1";
+import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-2";
 
 const COLS=12, ROWS=10, CELL=80, PAD=8;
-const CATALOG_URL="../shared/data/rooms_schema.json?v=continuous-room-1";
+const CATALOG_URL="../shared/data/rooms_schema.json?v=continuous-room-2";
 const BASE_TILE_URL="../shared/data/base_tiles.json";
 
 let catalog=[], placed=[], groups=[];
@@ -36,7 +36,7 @@ const actionLog=document.getElementById("actionLog");
 const toggleBaseButton=document.getElementById("toggleBase");
 const toggleModeButton=document.getElementById("toggleMode");
 
-const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity"};
+const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity",subordinateTabs:"Subordinate tabs"};
 const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
 const CT_BORDER_COLORS={1:"#8b949e",2:"#38bdf8",3:"#f59e0b"};
 
@@ -81,7 +81,11 @@ function baseTileBadge(id){
 }
 
 function fieldLabel(key){
-  return PREVIEW_LABELS[key] ?? key.replace(/([a-z0-9])([A-Z])/g,"$1 $2").replace(/^./,character=>character.toUpperCase());
+  if(PREVIEW_LABELS[key])return PREVIEW_LABELS[key];
+  return key
+    .replace(/_/g," ")
+    .replace(/([a-z0-9])([A-Z])/g,"$1 $2")
+    .replace(/^./,character=>character.toUpperCase());
 }
 
 function valueNode(value){
@@ -116,7 +120,7 @@ function createSeededRandom(seed){
 function randomInt(random,max){return Math.floor(random()*max)}
 
 async function loadBaseTiles(url){
-  const response=await fetch(url);
+  const response=await fetch(url,{cache:"no-store"});
   if(!response.ok)throw new Error(`Could not load base tile catalog (${response.status}).`);
   return await response.json();
 }

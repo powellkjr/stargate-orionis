@@ -1,0 +1,115 @@
+{
+  "PULSED_POWER_II": {
+    "id": "PULSED_POWER_II",
+    "name": "Pulsed Power II",
+    "type": "THEORY",
+    "family": "PULSED_POWER",
+    "tier": 2,
+    "properties": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"],
+    "graphs": {"primary": {"graphId": "PULSED_POWER_II_PRIMARY", "nodes": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"]}, "secondary": []}
+  },
+  "ELECTROMAGNETIC_ACTUATION_II": {
+    "id": "ELECTROMAGNETIC_ACTUATION_II",
+    "name": "Electromagnetic Actuation II",
+    "type": "THEORY",
+    "family": "ELECTROMAGNETIC_ACTUATION",
+    "tier": 2,
+    "properties": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"],
+    "graphs": {"primary": {"graphId": "ELECTROMAGNETIC_ACTUATION_II_PRIMARY", "nodes": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"]}, "secondary": []}
+  },
+  "ELECTROMAGNETIC_ACCELERATION_II": {
+    "id": "ELECTROMAGNETIC_ACCELERATION_II",
+    "name": "Electromagnetic Acceleration II",
+    "type": "THEORY",
+    "family": "ELECTROMAGNETIC_ACCELERATION",
+    "tier": 2,
+    "properties": [],
+    "graphs": {"primary": {"graphId": "ELECTROMAGNETIC_ACCELERATION_II_PRIMARY", "nodes": []}, "secondary": []},
+    "authoringNote": "The current canonical fixture has not authored graph nodes for this theory yet."
+  },
+  "HUMAN_MANUFACTURING_II": {
+    "id": "HUMAN_MANUFACTURING_II",
+    "name": "Human Manufacturing II",
+    "type": "THEORY",
+    "family": "HUMAN_MANUFACTURING",
+    "tier": 2,
+    "properties": [],
+    "graphs": {"primary": {"graphId": "HUMAN_MANUFACTURING_II_PRIMARY", "nodes": []}, "secondary": []},
+    "authoringNote": "The current canonical fixture has not authored graph nodes for this theory yet."
+  },
+  "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II": {
+    "id": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+    "name": "Human Electromagnetic Accelerator Pattern II",
+    "type": "IMPLEMENTATION_PATTERN",
+    "family": "ELECTROMAGNETIC_ACCELERATOR",
+    "tier": 2,
+    "properties": ["FABRICATE_FIELD_COMPONENTS", "FABRICATE_POWER_CONTROL_COMPONENTS", "ASSEMBLE_ACCELERATOR_STAGES", "INTEGRATE_POWER_CONTROL", "ALIGN_STAGES", "CALIBRATE_SEQUENCING", "POWERED_VALIDATION"],
+    "graphs": {"primary": {"graphId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_PRIMARY", "nodes": ["FABRICATE_FIELD_COMPONENTS", "FABRICATE_POWER_CONTROL_COMPONENTS", "ASSEMBLE_ACCELERATOR_STAGES", "INTEGRATE_POWER_CONTROL", "ALIGN_STAGES", "CALIBRATE_SEQUENCING", "POWERED_VALIDATION"]}, "secondary": []}
+  },
+  "HUMAN_ADVANCED_RIFLE_PATTERN": {
+    "id": "HUMAN_ADVANCED_RIFLE_PATTERN",
+    "name": "Human Advanced Rifle Pattern",
+    "type": "IMPLEMENTATION_PATTERN",
+    "family": "RIFLE",
+    "tier": 2,
+    "properties": ["FABRICATE_STRUCTURAL_COMPONENTS", "FABRICATE_FEED_CONTROL_COMPONENTS", "ASSEMBLE_RIFLE_BODY", "INTEGRATE_PRIMARY_WEAPON_SYSTEM", "FIT_ALIGN", "FUNCTION_CHECK"],
+    "graphs": {"primary": {"graphId": "HUMAN_ADVANCED_RIFLE_PATTERN_PRIMARY", "nodes": ["FABRICATE_STRUCTURAL_COMPONENTS", "FABRICATE_FEED_CONTROL_COMPONENTS", "ASSEMBLE_RIFLE_BODY", "INTEGRATE_PRIMARY_WEAPON_SYSTEM", "FIT_ALIGN", "FUNCTION_CHECK"]}, "secondary": []}
+  },
+  "KINETIC_IMPACT_DISSIPATION_II": {
+    "id": "KINETIC_IMPACT_DISSIPATION_II",
+    "name": "Kinetic Impact Dissipation II",
+    "type": "THEORY",
+    "family": "KINETIC_IMPACT_DISSIPATION",
+    "tier": 2,
+    "properties": ["DISTRIBUTE", "REDIRECT", "DISSIPATE", "LIMIT_TRANSMISSION", "RECOVER", "CONTROLLED_TRANSMITTED_LOAD"],
+    "graphs": {
+      "primary": {
+        "graphId": "KINETIC_IMPACT_DISSIPATION_II_PRIMARY",
+        "nodes": ["KINETIC_IMPACT", "DISTRIBUTE", "REDIRECT", "DISSIPATE", "LIMIT_TRANSMISSION", "RECOVER", "CONTROLLED_TRANSMITTED_LOAD"]
+      },
+      "secondary": []
+    },
+    "scope": "General control of sudden kinetic loads; not specific to armor, wearers, electromagnetic fields, or projectiles."
+  },
+  "HUMAN_EM_IMPACT_ARMOR_PATTERN_II": {
+    "id": "HUMAN_EM_IMPACT_ARMOR_PATTERN_II",
+    "name": "Human EM Impact Armor Pattern II",
+    "type": "IMPLEMENTATION_PATTERN",
+    "family": "EM_IMPACT_ARMOR",
+    "civilization": "HUMAN",
+    "tier": 2,
+    "properties": ["PROTECTIVE_STRUCTURE", "FIELD_ELEMENTS", "POWER_CONTROL", "LOAD_DISTRIBUTION_STRUCTURE", "INTEGRATE_FIELD_ELEMENTS", "INTEGRATE_POWER_CONTROL", "ALIGN_PROTECTIVE_ARRAY", "CALIBRATE_IMPACT_RESPONSE", "POWERED_IMPACT_VALIDATION"],
+    "composesTheoryIds": ["KINETIC_IMPACT_DISSIPATION_II", "ELECTROMAGNETIC_ACTUATION_II", "PULSED_POWER_II"],
+    "graphs": {
+      "primary": {
+        "graphId": "HUMAN_EM_IMPACT_ARMOR_PATTERN_II_PRIMARY",
+        "nodes": ["PROTECTIVE_STRUCTURE", "FIELD_ELEMENTS", "POWER_CONTROL", "LOAD_DISTRIBUTION_STRUCTURE", "INTEGRATE_FIELD_ELEMENTS", "INTEGRATE_POWER_CONTROL", "ALIGN_PROTECTIVE_ARRAY", "CALIBRATE_IMPACT_RESPONSE", "POWERED_IMPACT_VALIDATION"]
+      },
+      "secondary": []
+    },
+    "bindingMappings": [
+      {"theoryId": "KINETIC_IMPACT_DISSIPATION_II", "property": "DISTRIBUTE", "implementationProperty": "LOAD_DISTRIBUTION_STRUCTURE"},
+      {"theoryId": "KINETIC_IMPACT_DISSIPATION_II", "property": "REDIRECT", "implementationProperty": "ALIGN_PROTECTIVE_ARRAY"},
+      {"theoryId": "KINETIC_IMPACT_DISSIPATION_II", "property": "DISSIPATE", "implementationProperty": "INTEGRATE_FIELD_ELEMENTS"},
+      {"theoryId": "KINETIC_IMPACT_DISSIPATION_II", "property": "LIMIT_TRANSMISSION", "implementationProperty": "POWERED_IMPACT_VALIDATION"},
+      {"theoryId": "KINETIC_IMPACT_DISSIPATION_II", "property": "RECOVER", "implementationProperty": "CALIBRATE_IMPACT_RESPONSE"}
+    ]
+  },
+  "HUMAN_ARMOR_VEST_PATTERN_II": {
+    "id": "HUMAN_ARMOR_VEST_PATTERN_II",
+    "name": "Human Armor Vest Pattern II",
+    "type": "IMPLEMENTATION_PATTERN",
+    "family": "ARMOR_VEST",
+    "civilization": "HUMAN",
+    "tier": 2,
+    "properties": ["BODY_INTERFACE", "PROTECTIVE_STRUCTURE", "ATTACHMENT_RETENTION", "FIT"],
+    "graphs": {
+      "primary": {
+        "graphId": "HUMAN_ARMOR_VEST_PATTERN_II_PRIMARY",
+        "nodes": ["BODY_INTERFACE", "PROTECTIVE_STRUCTURE", "ATTACHMENT_RETENTION", "FIT"]
+      },
+      "secondary": []
+    },
+    "authoringNote": "Minimal table record for the existing Human construction curriculum referenced by the impact vest."
+  }
+}

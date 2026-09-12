@@ -1,5 +1,176 @@
 [
   {
+    "id": "analysis",
+    "name": "Analysis",
+    "category": "Science & Technology",
+    "color": "#4ea8de",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "staffingProgression": [
+      2,
+      4,
+      6
+    ],
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "activeProjectsPerRoom": 1,
+    "queueSize": 4,
+    "constructionTierEffect": "Increases Service and Core envelope, not project concurrency",
+    "coreSet": "TBD",
+    "openQuestions": [
+      "What is the exact Core-slot progression for Analysis?"
+    ],
+    "slotConfig": {
+      "staff": {
+        "byLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Analysis staff slots follow joined room layout."
+      },
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": true,
+        "notes": "Analysis core slots scale by CT per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Analysis accepts physical items for characterization."
+      },
+      "theory": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Analysis holds known Theory references during work."
+      }
+    }
+  },
+  {
+    "id": "containment",
+    "name": "Containment",
+    "category": "Storage",
+    "color": "#52796f",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "containment",
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "staffingPerPhysicalRoom": 2,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "baseFunction": "Hazardous, abnormal, biological, fauna, flora, and specimen storage",
+    "inventoryType": "CC",
+    "coreSet": "TBD",
+    "slotConfig": {
+      "staff": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Containment staffing scales by physical room count."
+      },
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": true,
+        "notes": "Containment core slots scale by CT per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Containment exposes stored specimen/item slots per physical room."
+      }
+    }
+  },
+  {
+    "id": "data_storage",
+    "name": "Data Storage",
+    "category": "Science & Technology",
+    "color": "#355070",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": false,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "coreSlotsByConstructionTier": [
+      2,
+      4,
+      6
+    ],
+    "coreSet": "2, 4, or 6 Core slots according to Construction Tier",
+    "baseFunction": "Automated physical Knowledge Cargo read and write infrastructure with a subordinate Discovery tab.",
+    "subordinateTabs": [
+      "Discovery"
+    ],
+    "slotConfig": {
+      "core": {
+        "byConstructionTier": [
+          2,
+          4,
+          6
+        ],
+        "scaleWithLayout": false,
+        "notes": "Data Storage core slots match authored core progression."
+      },
+      "theory": {
+        "fixed": 3,
+        "scaleWithLayout": false,
+        "notes": "Data Storage exposes three theory/discovery-facing slots."
+      }
+    }
+  },
+  {
+    "id": "equipment_storage",
+    "name": "Equipment Storage",
+    "category": "Storage",
+    "color": "#607d8b",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "equipment_storage",
+    "maxConstructionTier": 3,
+    "staffed": false,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "inventoryType": "EQ (equipment)",
+    "baseFunction": "Stores equipment and handles equipment cargo through subordinate Weapons and Armor tabs.",
+    "cargoHandled": "Equipment, weapon, and armor cargo",
+    "coreSlots": 2,
+    "coreSet": "2 Core slots",
+    "subordinateTabs": [
+      "Weapons",
+      "Armor"
+    ],
+    "slotConfig": {
+      "core": {
+        "byConstructionTier": [
+          2
+        ],
+        "scaleWithLayout": true,
+        "notes": "Equipment Storage has two core slots per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Equipment Storage exposes weapon/armor item slots per physical room."
+      }
+    }
+  },
+  {
     "id": "gate_room",
     "name": "Gate Room",
     "category": "Command",
@@ -12,66 +183,6 @@
     "joinStatus": "known",
     "constructionTierStatus": "known",
     "unique": true,
-    "coreSet": "TBD"
-  },
-  {
-    "id": "maintenance",
-    "name": "Maintenance",
-    "category": "Operations",
-    "previousName": "Construction Room",
-    "color": "#e07a3f",
-    "width": 1,
-    "height": 1,
-    "joinGroup": "maintenance",
-    "maxConstructionTier": 1,
-    "staffed": true,
-    "staffingPerPhysicalRoom": 2,
-    "joinedStaffingCapacity": {
-      "1x1": 2,
-      "1x2": 4,
-      "2x2": 8
-    },
-    "staffingFlexibility": "Joined Maintenance Groups may operate understaffed or overstaffed.",
-    "joinStatus": "known",
-    "joiningEffect": "Joins normally using the standard 1x2 and 2x2 Group rules.",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": false,
-    "constructionTierUpgrade": "Maintenance must perform its own Construction Tier upgrade.",
-    "queueSize": 4,
-    "multipleRoomsAllowed": true,
-    "specializationPossible": false,
-    "specializationRule": "Maintenance does not specialize; capability improves by installing better Cores.",
-    "coreSet": "Construction Core"
-  },
-  {
-    "id": "tech_platform",
-    "name": "Tech Platform",
-    "category": "Science & Technology",
-    "color": "#9b5de5",
-    "width": 1,
-    "height": 1,
-    "joinGroup": null,
-    "maxConstructionTier": 3,
-    "staffed": false,
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "baseCoreLayout": {"focusSlots": 1, "supportSlots": 2},
-    "coreSet": "1 Focus Core slot and 2 Support Core slots at base"
-  },
-  {
-    "id": "response_room",
-    "name": "Response Room",
-    "category": "Command",
-    "color": "#c94c4c",
-    "width": 1,
-    "height": 1,
-    "joinGroup": null,
-    "maxConstructionTier": 3,
-    "staffed": true,
-    "staffingProgression": [2, 3, 4],
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
     "coreSet": "TBD"
   },
   {
@@ -108,7 +219,28 @@
     "supportsConstructionTierProgression": true,
     "baseFunction": "Patient beds and recovery capacity",
     "degradableProperty": "Passive HP recovery rate",
-    "coreSet": "TBD"
+    "coreSet": "TBD",
+    "slotConfig": {
+      "staff": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Infirmary staffing scales by physical room count."
+      },
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": true,
+        "notes": "Infirmary core slots scale by CT per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 1,
+        "scaleWithLayout": true,
+        "notes": "Infirmary exposes clinical item slots per physical room."
+      }
+    }
   },
   {
     "id": "living_quarters",
@@ -127,119 +259,69 @@
     "constructionTierEffect": "Increases locker capacity, not resident or bed count",
     "inventoryType": "PS (personal storage)",
     "coreSet": "TBD",
-    "supportsConstructionTierProgression": true
-  },
-  {
-    "id": "receiving",
-    "name": "Receiving",
-    "category": "Operations",
-    "color": "#f2a65a",
-    "width": 1,
-    "height": 1,
-    "joinGroup": null,
-    "maxConstructionTier": 3,
-    "staffed": true,
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
     "supportsConstructionTierProgression": true,
-    "unique": true,
-    "baseFunction": "Intake, custody creation, inspection, classification, and temporary handling",
-    "inventoryType": "Generic Receiving INV",
-    "coreSet": "TBD"
+    "slotConfig": {
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": true,
+        "notes": "Living Quarters core slots scale by CT per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 1,
+        "scaleWithLayout": true,
+        "notes": "Living Quarters expose personal-storage item slots per physical room."
+      }
+    }
   },
   {
-    "id": "containment",
-    "name": "Containment",
-    "category": "Storage",
-    "color": "#52796f",
+    "id": "maintenance",
+    "name": "Maintenance",
+    "category": "Operations",
+    "previousName": "Construction Room",
+    "color": "#e07a3f",
     "width": 1,
     "height": 1,
-    "joinGroup": "containment",
-    "maxConstructionTier": 3,
+    "joinGroup": "maintenance",
+    "maxConstructionTier": 1,
     "staffed": true,
     "staffingPerPhysicalRoom": 2,
+    "joinedStaffingCapacity": {
+      "1x1": 2,
+      "1x2": 4,
+      "2x2": 8
+    },
+    "staffingFlexibility": "Joined Maintenance Groups may operate understaffed or overstaffed.",
     "joinStatus": "known",
+    "joiningEffect": "Joins normally using the standard 1x2 and 2x2 Group rules.",
     "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "baseFunction": "Hazardous, abnormal, biological, fauna, flora, and specimen storage",
-    "inventoryType": "CC",
-    "coreSet": "TBD"
-  },
-  {
-    "id": "analysis",
-    "name": "Analysis",
-    "category": "Science & Technology",
-    "color": "#4ea8de",
-    "width": 1,
-    "height": 1,
-    "joinGroup": null,
-    "maxConstructionTier": 3,
-    "staffed": true,
-    "staffingProgression": [2, 4, 6],
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "activeProjectsPerRoom": 1,
+    "supportsConstructionTierProgression": false,
+    "constructionTierUpgrade": "Maintenance must perform its own Construction Tier upgrade.",
     "queueSize": 4,
-    "constructionTierEffect": "Increases Service and Core envelope, not project concurrency",
-    "coreSet": "TBD",
-    "openQuestions": ["What is the exact Core-slot progression for Analysis?"]
-  },
-  {
-    "id": "research",
-    "name": "Research",
-    "category": "Science & Technology",
-    "color": "#4361ee",
-    "width": 1,
-    "height": 1,
-    "joinGroup": null,
-    "maxConstructionTier": 3,
-    "staffed": true,
-    "staffingProgression": [2, 4, 6],
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "activeHypothesesPerRoom": 1,
-    "queueSize": 4,
-    "constructionTierEffect": "Increases capability and Core Service envelope, not project concurrency",
-    "coreSet": "TBD",
-    "openQuestions": ["What is the exact Core-slot progression for Research?"]
-  },
-  {
-    "id": "data_storage",
-    "name": "Data Storage",
-    "category": "Science & Technology",
-    "color": "#355070",
-    "width": 1,
-    "height": 1,
-    "joinGroup": null,
-    "maxConstructionTier": 3,
-    "staffed": false,
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "coreSlotsByConstructionTier": [2, 4, 6],
-    "coreSet": "2, 4, or 6 Core slots according to Construction Tier",
-    "baseFunction": "Automated physical Knowledge Cargo read and write infrastructure"
-  },
-  {
-    "id": "ration_storage",
-    "name": "Ration Storage",
-    "category": "Storage",
-    "color": "#c9a66b",
-    "width": 1,
-    "height": 1,
-    "joinGroup": "ration_storage",
-    "maxConstructionTier": 3,
-    "staffed": false,
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "inventoryType": "Rations FW (food and water)",
-    "baseFunction": "Stores bulk rations and handles ration cargo",
-    "cargoHandled": "Ration cargo",
-    "coreSlots": 2,
-    "coreSet": "2 Core slots"
+    "multipleRoomsAllowed": true,
+    "specializationPossible": false,
+    "specializationRule": "Maintenance does not specialize; capability improves by installing better Cores.",
+    "coreSet": "Construction Core",
+    "slotConfig": {
+      "staff": {
+        "byLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Maintenance staffing follows joined room layout."
+      },
+      "core": {
+        "byConstructionTier": [
+          1
+        ],
+        "scaleWithLayout": true,
+        "notes": "Maintenance has one construction core slot per physical room."
+      }
+    }
   },
   {
     "id": "material_storage",
@@ -261,6 +343,139 @@
     "coreSet": "2 Core slots"
   },
   {
+    "id": "ration_storage",
+    "name": "Ration Storage",
+    "category": "Storage",
+    "color": "#c9a66b",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "ration_storage",
+    "maxConstructionTier": 3,
+    "staffed": false,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "inventoryType": "Rations FW (food and water)",
+    "baseFunction": "Stores bulk rations and handles ration cargo",
+    "cargoHandled": "Ration cargo",
+    "coreSlots": 2,
+    "coreSet": "2 Core slots"
+  },
+  {
+    "id": "receiving",
+    "name": "Receiving",
+    "category": "Operations",
+    "color": "#f2a65a",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "unique": true,
+    "baseFunction": "Intake, custody creation, inspection, classification, and temporary handling",
+    "inventoryType": "Generic Receiving INV",
+    "coreSet": "TBD",
+    "slotConfig": {
+      "staff": {
+        "fixed": 2,
+        "scaleWithLayout": false,
+        "notes": "Receiving uses two visible staff slots in the staffing demo."
+      },
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": false,
+        "notes": "Receiving core slots scale by construction tier."
+      },
+      "item": {
+        "fixed": 2,
+        "scaleWithLayout": false,
+        "notes": "Receiving holds two temporary intake item slots."
+      }
+    }
+  },
+  {
+    "id": "research",
+    "name": "Research",
+    "category": "Science & Technology",
+    "color": "#4361ee",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "staffingProgression": [
+      2,
+      4,
+      6
+    ],
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "activeHypothesesPerRoom": 1,
+    "queueSize": 4,
+    "constructionTierEffect": "Increases capability and Core Service envelope, not project concurrency",
+    "coreSet": "TBD",
+    "openQuestions": [
+      "What is the exact Core-slot progression for Research?"
+    ],
+    "slotConfig": {
+      "staff": {
+        "byLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Research staff slots follow joined room layout."
+      },
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": true,
+        "notes": "Research core slots scale by CT per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Research accepts physical artifacts and hypothesis-linked materials."
+      },
+      "theory": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Research holds Theory or Hypothesis references during work."
+      }
+    }
+  },
+  {
+    "id": "response_room",
+    "name": "Response Room",
+    "category": "Command",
+    "color": "#c94c4c",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "staffingProgression": [
+      2,
+      3,
+      4
+    ],
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "coreSet": "TBD"
+  },
+  {
     "id": "supply_storage",
     "name": "Supply Storage",
     "category": "Storage",
@@ -280,59 +495,84 @@
     "coreSet": "2 Core slots"
   },
   {
-    "id": "equipment_storage",
-    "name": "Equipment Storage",
-    "category": "Storage",
-    "color": "#607d8b",
-    "width": 1,
-    "height": 1,
-    "joinGroup": "equipment_storage",
-    "maxConstructionTier": 3,
-    "staffed": false,
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "inventoryType": "EQ (equipment)",
-    "baseFunction": "Stores equipment and handles equipment cargo",
-    "cargoHandled": "Equipment cargo",
-    "coreSlots": 2,
-    "coreSet": "2 Core slots"
-  },
-  {
-    "id": "armor_storage",
-    "name": "Armor Storage",
-    "category": "Storage",
-    "color": "#455a64",
-    "width": 1,
-    "height": 1,
-    "joinGroup": "armor_storage",
-    "maxConstructionTier": 3,
-    "staffed": false,
-    "joinStatus": "known",
-    "constructionTierStatus": "known",
-    "supportsConstructionTierProgression": true,
-    "inventoryType": "EQ (equipment)",
-    "baseFunction": "Stores armor and handles armor cargo",
-    "cargoHandled": "Armor cargo",
-    "coreSlots": 2,
-    "coreSet": "2 Core slots"
-  },
-  {
-    "id": "discovery",
-    "name": "Discovery",
+    "id": "tech_platform",
+    "name": "Tech Platform",
     "category": "Science & Technology",
-    "color": "#7b61d1",
+    "color": "#9b5de5",
     "width": 1,
     "height": 1,
     "joinGroup": null,
-    "maxConstructionTier": 1,
-    "staffed": null,
-    "joinStatus": "unknown",
-    "constructionTierStatus": "unknown",
-    "knowledgeSlots": 3,
-    "roomStatus": "implementation_not_fully_defined",
-    "baseFunction": "Combines existing SGC Knowledge to identify researchable relationships",
+    "maxConstructionTier": 3,
+    "staffed": false,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "baseCoreLayout": {
+      "focusSlots": 1,
+      "supportSlots": 2
+    },
+    "coreSet": "1 Focus Core slot and 2 Support Core slots at base"
+  },
+  {
+    "id": "workshop",
+    "name": "Workshop",
+    "category": "Science & Technology",
+    "color": "#6c757d",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "workshop",
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "staffingProgression": [
+      2,
+      4,
+      6
+    ],
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "activeProjectsPerRoom": 1,
+    "queueSize": 4,
+    "constructionTierEffect": "Increases Service and Core envelope, not project concurrency",
     "coreSet": "TBD",
-    "openQuestions": ["What is the final Discovery room structure?", "Is Discovery staffed?", "Can Discovery rooms join or progress through Construction Tiers?"]
+    "openQuestions": [
+      "What is the exact Core-slot progression for Analysis?"
+    ],
+    "baseFunction": "Physical fabrication, modification, equipment handling, and reverse engineering workspace aligned with Analysis-like room behavior.",
+    "supportsSpecialization": true,
+    "specializationStatus": "supported_but_not_fully_defined",
+    "subordinateTabs": [
+      "Weapons",
+      "Armor",
+      "Reverse Engineering"
+    ],
+    "slotConfig": {
+      "staff": {
+        "byLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Workshop staff slots follow joined room layout."
+      },
+      "core": {
+        "byConstructionTier": [
+          1,
+          2,
+          3
+        ],
+        "scaleWithLayout": true,
+        "notes": "Workshop core slots scale by CT per physical room."
+      },
+      "item": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Workshop accepts physical items for fabrication and reverse engineering."
+      },
+      "theory": {
+        "perPhysicalRoom": 2,
+        "scaleWithLayout": true,
+        "notes": "Workshop uses Theory references for implementation and reverse engineering work."
+      }
+    }
   }
 ]

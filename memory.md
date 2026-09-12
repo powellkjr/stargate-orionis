@@ -152,7 +152,7 @@
     - supports dragging prefab unit roster entries into up to 8 room staff slots.
    - room presentation is now top-anchored in the stage rather than bottom-weighted.
    - left roster is now a prefab unit library covering base-class/tier combinations plus specialization and cross-path variants, with unique names plus sort/filter controls.
-  - verified the current prefab first-name pools are globally unique across all six base classes (48 first names checked, 48 unique).
+  - prefab names now load from `demos/shared/data/personnel-names.json` (96 globally unique first names, 16 first names and 16 surnames per class); provenance and extension instructions are in `demos/shared/data/personnel-names.md`. All pools replaced by batch `profession-reference-v1`: locally generated using recorded Fantasy Name Generators category references (not captured site output), with exact prompt and per-profession style briefs in the manifest.
    - prefab roster names now use class-flavored human name pools instead of serial-like codes.
    - prefab roster was tightened so base-class entries start at I, specialization entries start at primary-class III + specialization I, and cross-path entries start at primary-class III + cross-path I.
    - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/specialization-icons.json` was cleaned and deduplicated after repeated fuzzy patch collisions; the file should now be treated as the single source of truth for specialization icon mappings.
@@ -213,3 +213,350 @@
   - procedural generation now logs and copies a reproducible seed value plus orphaned-room counts for debugging bad layouts;
   - navigation is still an implied visual/modeling concept, not yet a full movement graph.
 - API keys: none recorded.
+
+## Latest Simulator Table Work
+
+- Added the standalone instance schema at:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/instance.schema.json`
+- Migrated the standalone instance data at:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/instance.json`
+- Updated the supporting table-model documentation at:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/docs/theory/simulator/instance-item-theory-tables.md`
+- The current standalone table files are keyed JSON objects:
+  - `instance.json`
+  - `item.json`
+  - `theories.json`
+- Instance IDs and referenced IDs use uppercase identifiers matching existing authored content.
+- `instanceId` is the persistent physical-object identity; `itemId` references the reusable item definition.
+- Optional `displayName` supports UI-specific names without creating item variants.
+- Instance physical state currently contains only:
+  - `condition`
+  - `functionalState`
+  - `quantity`
+  - `percentOfWhole`
+- Removed from instance state:
+  - `powerState`
+  - `damage`
+  - top-level `constructionState`
+- `quantity` represents one inseparable stack of identical objects. A quantity of 20 is one instance representing 20 units and cannot be processed separately unless a Recipe explicitly splits it.
+- `percentOfWhole` is an integer from 0 to 1000, where 1000 is 100% and 125 is 12.5%.
+- Construction belongs under `processes.construction.state`; process entries are currently objects with a required status `state`.
+- Instance Reality stores:
+  - `theoryBindings` for instance-specific bindings
+  - `authoredTags` for tags not inherited from item/theory bindings
+- Aggregate `reality.tags`, `reality.theories`, and `reality.fabricationEcosystem` are not stored in the revised instance shape.
+- Instance Knowledge currently stores revealed tags and optional instance findings. It does not duplicate institutional Theory Knowledge or store `recognizedTheories`.
+- Custody semantics are now:
+  - `storageId`: valid storage service and fallback storage location; its service determines the storage unit such as INV, CC, or EQ.
+  - `containerId`: current physical location/container, such as a map cell, room, unit, or storage service.
+  - `leaseId`: current unit/service assigned to or responsible for the instance; may remain after an item is dropped or lost.
+  - `state`: relationship between current container and lease: `ACTIVE`, `INACTIVE`, `DROPPED`, `LOST`, `EQUIPPED`, or `STANDBY`.
+  - `nextStorageId`: next storage service for an in-progress transfer.
+  - `status`: movement state between storage services, not current use state.
+  - `reservedBy` and `committedBy`: nullable IDs identifying who or what holds each claim.
+  - `cost.unitCost` and `cost.extendedCost`: integer basic handling/storage costs; extended cost should equal `unitCost * state.quantity`.
+- `cost.unit` and separate custody `holderType`, `holderId`, `capacityUnit`, and `returnHolderId` are not used.
+- History is an append-only array of compact positional tuples:
+  - `[when, who, what, where]`
+  - one encoder/decoder service owns tuple meanings.
+- The instance schema validates structure and ID formats. Cross-table references, outer-key/inner-ID equality, and cost arithmetic require a separate integrity validator.
+- JSON parsing and custom cross-table/cost validation passed for the current three instance records. The Python `jsonschema` package was unavailable, so external schema validation was not run.
+
+## Item Table Work Completed
+
+- Added the standalone item schema at:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/item.schema.json`
+- Migrated the standalone item data at:
+  - `c:/Users/Powel/Documents/projects/git/stargate-orionis/demos/shared/data/item.json`
+- Item definitions are keyed by uppercase item ID and require:
+  - `id`
+  - `name`
+  - `type: "ITEM"`
+  - `tags`
+  - `storage`
+  - `processCompatibility`
+  - `theoryBindings`
+- Item identity is represented by top-level tags. There are no special civilization, family, form-factor, or identity fields.
+- Physical form/form factor is derived from bound Pattern theories rather than duplicated as an item field.
+- Item storage/handling is represented by:
+  - `storage.storageClasses`: valid storage capacity classes, such as `INV`, `CC`, or `EQ`;
+  - `storage.handlingCost`: generalized per-unit handling cost, numerically equivalent across contexts (`1 INV = 1 EQ = 1 CC`);
+  - `storage.isUnique`;
+  - `storage.isStackable`;
+  - `storage.isCargo`.
+- Item `handlingCost * instance.state.quantity` produces the effective cost. Extended cost is not stored on the item or instance; the relevant validator/runtime calculates it.
+- Most transportable item definitions should include both `INV` and `CC` in `storage.storageClasses`: `INV` covers gate/Receiving/map handling, while `CC` provides containment fallback for unknown or unresolved properties. Specialized classes such as `EQ` or `CORE` are added when the item qualifies for those storage services.
+- Item process compatibility uses the same six names as instance processes:
+  - `receiving`
+  - `analysis`
+  - `construction`
+  - `repair`
+  - `reverseEngineering`
+  - `salvage`
+- `theoryBindings` is the authoritative item-to-theory/pattern relationship. Bindings contain `theoryId` and `implementedProperties`, with optional `role` and `implementationTags`.
+- Item `composition`, `source`, `sourceRecipeId`, `physical`, `identity`, and direct wearable/container/tool/core flags were removed from the standalone item model.
+- The three current item definitions are:
+  - `ASGARD_EM_RIFLE`
+  - `HUMAN_ADVANCED_COIL_RIFLE`
+  - `HUMAN_EM_IMPACT_VEST`
+
+## Theory Table Field Review — Continue Here
+
+No Theory schema is locked yet. The next session should continue field review
+using a worked example before changing `theories.json` or creating a schema.
+
+### Theory meaning
+
+- A Theory is the semantic knowledge/content layer, not a lore entry, unlock
+  node, or map data model.
+- A Theory describes knowledge about a subject: technology, organism,
+  environment, physical principle, social practice, medical phenomenon, room
+  function, Profession curriculum, and similar domains.
+- Theory provides enough structured guidance for the rest of the game to know
+  what can exist, what can be understood, what interactions make sense, and what
+  content can be generated.
+- Keep Theory separate from Profession competency, Physical Instance, Recipe
+  Instance, Knowledge records, Tools, Cargo, Cores, Services, Locations, and
+  current State.
+- The fundamental action relationship is:
+  - Profession Curriculum = how the character knows how to work;
+  - Subject Theory = what the character understands;
+  - Tool Service = what equipment capability exists;
+  - Room/Field Service = where or under what supporting conditions work occurs;
+  - State = whether the action makes sense now;
+  - together with valid resources/state, these determine whether an action is
+    valid.
+- Profession competency cannot substitute for missing subject Theory. A TE3
+  cannot reverse-engineer unknown alien physics merely because the Technician is
+  highly trained.
+
+### Reality, observation, knowledge, and research
+
+- Reality is what is actually true.
+- Observation/revealed state is what was detected or learned about a particular
+  instance.
+- Institutional Knowledge is what the SGC understands generally and can reuse.
+- Theory does not magically reveal Reality.
+- The intended information flow is:
+  - Reality -> observation/evidence -> Discovery;
+  - Discovery/investigation -> Thesis;
+  - Thesis -> Research;
+  - Research -> reusable Theory.
+- Analysis and observation reveal or interpret existing facts; they do not create
+  physical properties.
+
+### Theory as a content-generation engine
+
+- Generators should compose reusable semantic Theories rather than use bespoke
+  encounter tables for every object, environment, faction, or damaged state.
+- Example composition:
+  - `JUNGLE` + `SCION_HAVEN` + `ABANDONED` + `RECENT_COMBAT_DAMAGE`.
+- Composed Theories jointly guide observable clues, hazards, discoveries,
+  resources, Profession interactions, complications, escalation, and possible
+  resolutions.
+- Composition uses semantic intersections, not random unions. The generator
+  should select compatible interactions that make sense together.
+- Prefer reusable State Theories such as `ABANDONED_I`, `SCAVENGED_I`,
+  `FLOODED_I`, `UNPOWERED_I`, `RECENT_COMBAT_DAMAGE_I`, `DAMAGE_ELECTRICAL_I`,
+  `CONTAMINATED_I`, and `UNDER_SIEGE_I` rather than duplicating object-specific
+  theories.
+- A Destination or physical object holds actual state. It may be described by
+  composed Theories, but Theory must not become the Destination or instance data
+  model.
+
+### Common Theory fields under review
+
+The universal architecture suggests a shared Theory foundation containing fields
+such as:
+
+```text
+id
+name
+type
+family
+tier
+version
+summary
+identity
+relationships
+knowledge
+capabilities
+capabilityEnvelope
+graphs
+interactions
+receivingGuidance
+analysisGuidance
+researchGuidance
+discoveryGuidance
+fieldGuidance
+failureGuidance
+damageGuidance
+incidentGuidance
+salvageGuidance
+resourceGuidance
+physicalConsequences
+compositionGuidance
+evidenceGuidance
+narrativeGuidance
+extension
+```
+
+These are discussion candidates, not yet a final required schema for the
+standalone simulator table.
+
+### Tags, civilization, and properties
+
+- `civilization` is not a special Theory field. Civilization belongs in the
+  normal Theory tag structure, just like other subject, identity, or
+  implementation tags.
+- The current standalone `properties` array should not remain a separate
+  semantic primitive. Its values can be represented as tags.
+- Keep the distinction clear between broad subject/identity tags and procedural
+  or capability tags, even if both are stored in the common tag system.
+- Do not decide the exact tag bucket names until the worked Theory example has
+  been reviewed.
+- Existing item bindings currently call these values
+  `implementedProperties`; revisit that name after the Theory tag model is
+  agreed. A tag-oriented name such as `implementedTags` may be clearer, but no
+  rename is approved yet.
+
+### Primary and secondary graphs
+
+- A Theory's Primary graph is its common semantic procedure: the necessary
+  stages/steps for implementing or realizing the Theory.
+- Example: `ELECTROMAGNETIC_ACTUATION_II` has a Primary procedure involving
+  receiving control input, generating a field, applying electromagnetic force,
+  producing controlled motion, and returning or holding.
+- Primary graph nodes are procedural semantic guidance. They are not
+  automatically one Recipe bubble each. Recipe generation contextualizes them
+  into executable bubbles.
+- Primary graphs should represent meaningful stage relationships, normally with
+  explicit edges rather than relying only on array order.
+- A Theory may provide Secondary graphs for optional capabilities or procedures
+  that an implementation may also want to support, such as diagnostics,
+  maintenance, manufacturing, calibration, containment, salvage, installation,
+  field application, operating procedure, or emergency response.
+- Secondary graphs must be authored as capabilities derived from the underlying
+  Theory. Implementations may select/use them; runtime must not invent them.
+- Secondary graphs likely need an authored purpose/category in addition to an ID,
+  nodes, and edges. This is still under review.
+- Cross-Theory hooks/composition must remain explicit and may not manufacture
+  missing semantic knowledge.
+
+### Graph-stage entry contracts
+
+- Every procedural graph stage must define the contract tags/conditions required
+  to enter that stage. This is currently missing from the compact standalone
+  table notes and must be added to the field review.
+- A stage-entry contract describes semantic admission to the stage, not the
+  complete runtime execution resolution.
+- At minimum, the contract needs to distinguish:
+  - required Theory knowledge or subject tags;
+  - required state/physical tags;
+  - forbidden state/tags;
+  - outputs/tags established by preceding stages, where applicable;
+  - any required resources or valid input state.
+- Conceptually, a graph node may contain something like:
+
+```yaml
+entryContract:
+  requiredTheories: []
+  requiredTags: []
+  forbiddenTags: []
+  requiredInputs: []
+```
+
+- The exact field names and whether entry contracts belong directly on nodes or
+  in a reusable stage-definition structure remain open.
+- Entry contracts should state what must be true before the stage can be
+  entered. They should not silently become a Recipe bubble's entire Actor/Tool/
+  Room requirement.
+- Profession, Tool Service, and Room Service references remain subject to the
+  Theory capability envelope and the Bubble Execution Contract. Runtime still
+  performs resolve -> validate -> execute -> commit.
+- Stage completion may establish tags, reveal observations, produce physical or
+  knowledge outputs, or make later stage contracts satisfiable. Those are
+  authored consequences, not automatic effects of merely possessing the Theory.
+
+### Field guidance
+
+- Every full/substantive Theory needs `fieldGuidance`, even where arrays are
+  empty.
+- The current agreed broad structure is:
+
+```text
+fieldGuidance:
+  encounterRoles[]
+  observableClues[]
+  sensoryPresentation[]
+  interactionOpportunities[]
+  professionInteractions{}
+  hazards[]
+  complications[]
+  discoveries[]
+  resourceOpportunities[]
+  escalationPatterns[]
+  resolutionApproaches[]
+  environmentalInteractions[]
+  stateModifiers[]
+  fieldEventSeeds[]
+  questionsThisTheoryCanCreate[]
+  compositionGuidance{}
+  narrativeGuidance{}
+```
+
+- All six Professions must be considered in `professionInteractions`: `TE`,
+  `SC`, `ME`, `ST`, `SO`, and `DI`.
+- Low relevance is valid. A Profession may contribute only observation,
+  interpretation, useful questions, risk, or narrative flavor.
+- Field guidance describes valid content-generation possibilities. It does not
+  grant Profession mechanics, create Reality, or execute a Recipe.
+
+### Capability envelopes
+
+- The Theory capability envelope remains separate from field interactions and
+  actual execution requirements.
+- The detailed architecture uses:
+
+```yaml
+capabilityEnvelope:
+  profession:
+    allowedTiers: []
+  competencies: []
+  toolServices: []
+  roomServices: []
+```
+
+- The envelope limits what a Theory's graphs and interactions may reference. It
+  does not mean every listed capability is required for every use.
+
+### Patterns and composition
+
+- Implementation Patterns remain distinct from universal subject Theories.
+- A Pattern describes how a civilization or fabrication ecosystem realizes known
+  Theory; it does not redefine the underlying science.
+- Pattern composition remains explicit through authored relationships such as
+  the current `composesTheoryIds` and binding mappings.
+- Binding mappings express how underlying Theory tags/procedural concepts map to
+  implementation tags/procedural stages. Consider tag-oriented names such as
+  `sourceTag` and `implementationTag`, but do not rename fields yet.
+- A Pattern may use secondary graphs provided by its underlying Theories, but it
+  must not invent those graphs procedurally.
+
+### Worked example to continue tomorrow
+
+Use `ELECTROMAGNETIC_ACTUATION_II` as the first full field-review example.
+Before schema work, decide:
+
+1. The final common tag buckets and where procedural capability tags belong.
+2. The minimum structure of a graph node.
+3. The exact stage-entry contract fields and tag semantics.
+4. Whether graph edges are ordered pairs or richer edge records.
+5. The minimum metadata for a Secondary graph, especially `purpose` and its
+   relationship to the underlying Theory.
+6. Which common Theory sections must be populated for every full Theory versus
+   which may remain empty objects in the simulator.
+7. How item bindings refer to Theory tags/procedural stages.
+
+Do not create or modify `theories.schema.json` until these field decisions are
+reviewed and agreed.

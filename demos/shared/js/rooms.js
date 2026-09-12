@@ -105,7 +105,7 @@ export function validateRooms(data) {
 }
 
 export async function loadRooms(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, {cache: "no-store"});
   if (!response.ok) throw new Error(`Could not load room catalog (${response.status}).`);
   return validateRooms(await response.json());
 }

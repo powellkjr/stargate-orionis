@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stargate-orionis.local/schemas/item.schema.json",
+  "title": "Stargate Orionis Item Table",
+  "description": "Schema for reusable item definitions. Cross-table references to theories and storage services are validated separately.",
+  "type": "object",
+  "patternProperties": {"^[A-Z][A-Z0-9_]*$": {"$ref": "#/$defs/item"}},
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {"type": "string", "minLength": 1, "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "identifierArray": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}},
+    "item": {
+      "type": "object",
+      "required": ["id", "name", "type", "tags", "storage", "processCompatibility", "theoryBindings"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "name": {"type": "string", "minLength": 1},
+        "type": {"const": "ITEM"},
+        "tags": {"$ref": "#/$defs/identifierArray"},
+        "storage": {"$ref": "#/$defs/storage"},
+        "processCompatibility": {"$ref": "#/$defs/processCompatibility"},
+        "theoryBindings": {"type": "array", "items": {"$ref": "#/$defs/theoryBinding"}}
+      }
+    },
+    "storage": {
+      "type": "object",
+      "required": ["storageClasses", "handlingCost", "isUnique", "isStackable", "isCargo"],
+      "additionalProperties": false,
+      "properties": {
+        "storageClasses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}},
+        "handlingCost": {"type": "integer", "minimum": 0},
+        "isUnique": {"type": "boolean"},
+        "isStackable": {"type": "boolean"},
+        "isCargo": {"type": "boolean"}
+      }
+    },
+    "processCompatibility": {
+      "type": "object",
+      "required": ["receiving", "analysis", "construction", "repair", "reverseEngineering", "salvage"],
+      "additionalProperties": false,
+      "properties": {
+        "receiving": {"type": "boolean"}, "analysis": {"type": "boolean"}, "construction": {"type": "boolean"},
+        "repair": {"type": "boolean"}, "reverseEngineering": {"type": "boolean"}, "salvage": {"type": "boolean"}
+      }
+    },
+    "theoryBinding": {
+      "type": "object",
+      "required": ["theoryId", "implementedProperties"],
+      "additionalProperties": false,
+      "properties": {
+        "theoryId": {"$ref": "#/$defs/identifier"},
+        "role": {"$ref": "#/$defs/identifier"},
+        "implementedProperties": {"$ref": "#/$defs/identifierArray"},
+        "implementationTags": {"$ref": "#/$defs/identifierArray"}
+      }
+    }
+  }
+}

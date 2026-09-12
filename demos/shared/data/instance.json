@@ -1,0 +1,179 @@
+{
+  "ITEM_ASGARD_RIFLE_0001": {
+    "instanceId": "ITEM_ASGARD_RIFLE_0001",
+    "itemId": "ASGARD_EM_RIFLE",
+    "state": {
+      "condition": "INTACT",
+      "functionalState": "FUNCTIONAL",
+      "quantity": 1,
+      "percentOfWhole": 1000
+    },
+    "reality": {
+      "theoryBindings": [],
+      "authoredTags": [
+        "WEAPON",
+        "RANGED_WEAPON",
+        "RIFLE",
+        "ASGARD",
+        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+      ]
+    },
+    "knowledge": {
+      "revealedTags": [],
+      "instanceFindings": []
+    },
+    "custody": {
+      "storageId": "INCOMING_INVENTORY",
+      "containerId": "INCOMING_INVENTORY",
+      "leaseId": null,
+      "state": "STANDBY",
+      "nextStorageId": null,
+      "status": "STORED",
+      "reservedBy": null,
+      "committedBy": null,
+      "cost": {
+        "unitCost": 1,
+        "extendedCost": 1
+      }
+    },
+    "processes": {
+      "receiving": {
+        "state": "NOT_STARTED"
+      },
+      "analysis": {
+        "state": "NOT_STARTED"
+      },
+      "reverseEngineering": {
+        "state": "NOT_STARTED"
+      },
+      "salvage": {
+        "state": "NOT_STARTED"
+      }
+    },
+    "history": []
+  },
+  "ITEM_HUMAN_COIL_RIFLE_0001": {
+    "instanceId": "ITEM_HUMAN_COIL_RIFLE_0001",
+    "itemId": "HUMAN_ADVANCED_COIL_RIFLE",
+    "state": {
+      "condition": "INTACT",
+      "functionalState": "FUNCTIONAL",
+      "quantity": 1,
+      "percentOfWhole": 1000
+    },
+    "reality": {
+      "theoryBindings": [],
+      "authoredTags": [
+        "WEAPON",
+        "RANGED_WEAPON",
+        "RIFLE",
+        "HUMAN",
+        "COIL_RIFLE",
+        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+      ]
+    },
+    "knowledge": {
+      "revealedTags": [
+        "WEAPON",
+        "RANGED_WEAPON",
+        "RIFLE",
+        "HUMAN",
+        "COIL_RIFLE"
+      ],
+      "instanceFindings": []
+    },
+    "custody": {
+      "storageId": "SGC_EQUIPMENT_INVENTORY",
+      "containerId": "SGC_EQUIPMENT_INVENTORY",
+      "leaseId": null,
+      "state": "STANDBY",
+      "nextStorageId": null,
+      "status": "STORED",
+      "reservedBy": null,
+      "committedBy": null,
+      "cost": {
+        "unitCost": 1,
+        "extendedCost": 1
+      }
+    },
+    "processes": {
+      "receiving": {
+        "state": "COMPLETE"
+      },
+      "analysis": {
+        "state": "COMPLETE"
+      },
+      "reverseEngineering": {
+        "state": "NOT_STARTED"
+      },
+      "repair": {
+        "state": "NOT_STARTED"
+      },
+      "salvage": {
+        "state": "NOT_STARTED"
+      }
+    },
+    "history": []
+  },
+  "ITEM_HUMAN_EM_IMPACT_VEST_0001": {
+    "instanceId": "ITEM_HUMAN_EM_IMPACT_VEST_0001",
+    "itemId": "HUMAN_EM_IMPACT_VEST",
+    "state": {
+      "condition": "INTACT",
+      "functionalState": "FUNCTIONAL",
+      "quantity": 1,
+      "percentOfWhole": 1000
+    },
+    "reality": {
+      "theoryBindings": [],
+      "authoredTags": [
+        "PROTECTIVE_GEAR",
+        "ARMOR",
+        "VEST",
+        "HUMAN",
+        "ELECTROMAGNETIC_PROTECTION"
+      ]
+    },
+    "knowledge": {
+      "revealedTags": [
+        "PROTECTIVE_GEAR",
+        "ARMOR",
+        "VEST",
+        "HUMAN"
+      ],
+      "instanceFindings": []
+    },
+    "custody": {
+      "storageId": "SGC_EQUIPMENT_INVENTORY",
+      "containerId": "SGC_EQUIPMENT_INVENTORY",
+      "leaseId": null,
+      "state": "STANDBY",
+      "nextStorageId": null,
+      "status": "STORED",
+      "reservedBy": null,
+      "committedBy": null,
+      "cost": {
+        "unitCost": 1,
+        "extendedCost": 1
+      }
+    },
+    "processes": {
+      "receiving": {
+        "state": "COMPLETE"
+      },
+      "analysis": {
+        "state": "COMPLETE"
+      },
+      "reverseEngineering": {
+        "state": "NOT_STARTED"
+      },
+      "repair": {
+        "state": "NOT_STARTED"
+      },
+      "salvage": {
+        "state": "NOT_STARTED"
+      }
+    },
+    "history": []
+  }
+}

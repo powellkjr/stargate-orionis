@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Electromagnetic actuation theory">
+  <path fill="none" stroke="#7dd3fc" stroke-width="7" d="M16 12v25a16 16 0 0 0 32 0V12"/>
+  <path fill="#ef4444" d="M12 8h12v12H12z"/><path fill="#60a5fa" d="M40 8h12v12H40z"/>
+  <path fill="#fff" d="m27 27 14 8-14 8z"/>
+</svg>

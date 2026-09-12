@@ -1,11 +1,16 @@
-import {getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=room-staffing-demo-2";
+import {getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=room-staffing-demo-5";
 
-const ROOM_CATALOG_URL="../shared/data/rooms_schema.json?v=room-staffing-demo-2";
-const CLASS_CATALOG_URL="../shared/data/base-classes.json?v=room-staffing-demo-2";
-const SPECIALIZATION_ICON_URL="../shared/data/specialization-icons.json?v=room-staffing-demo-2";
+const ROOM_CATALOG_URL="../shared/data/rooms_schema.json?v=room-staffing-demo-5";
+const CLASS_CATALOG_URL="../shared/data/base-classes.json?v=room-staffing-demo-5";
+const PERSONNEL_NAMES_URL="../shared/data/personnel-names.json";
+const SPECIALIZATION_ICON_URL="../shared/data/specialization-icons.json?v=room-staffing-demo-5";
+const ITEM_CATALOG_URL="../shared/data/items/asgard_vs_human_em_rifle_items.json?v=room-staffing-demo-5";
+const THEORY_CATALOG_URL="../shared/data/theory/stargate_theory_simulator_import.json?v=room-staffing-demo-5";
+const ITEM_ICONS={ASGARD_EM_RIFLE:"../shared/icons/items/asgard-em-rifle.svg",HUMAN_ADVANCED_COIL_RIFLE:"../shared/icons/items/human-coil-rifle.svg"};
+const THEORY_ICONS={PULSED_POWER:"../shared/icons/theory/pulsed-power.svg",ELECTROMAGNETIC_ACTUATION:"../shared/icons/theory/electromagnetic-actuation.svg",ELECTROMAGNETIC_ACCELERATION:"../shared/icons/theory/electromagnetic-acceleration.svg",HUMAN_MANUFACTURING:"../shared/icons/theory/manufacturing.svg",HUMAN_ROOM_CONSTRUCTION:"../shared/icons/theory/room-construction.svg",ELECTROMAGNETIC_ACCELERATOR:"../shared/icons/theory/electromagnetic-accelerator.svg",RIFLE:"../shared/icons/theory/rifle-pattern.svg"};
 const CT_BORDER_COLORS={1:"#8b949e",2:"#38bdf8",3:"#f59e0b"};
 const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity",joinedStaffingCapacity:"Joined staffing"};
-const MAX_VISIBLE_SLOTS=8;
+const FALLBACK_MAX_VISIBLE_SLOTS=8;
 const BASE_TIER_LABELS=["Untrained","Trained","Advanced","Expert","Master"];
 const BRANCH_TIER_LABELS=["Untrained","Trained","Advanced","Expert"];
 const CLASS_MATRIX={
@@ -27,9 +32,14 @@ let currentCt=1;
 let currentLayout="1x1";
 let revealedSlots=0;
 let assignments=[];
-let dragClassId=null;
+let dragPayload=null;
 let unitRoster=[];
 let specializationIcons={};
+let itemCatalog=[];
+let theoryCatalog=[];
+let roomResources={items:[],theories:[],cores:[]};
+let roomTabResources={};
+let activeRoomTabId=null;
 const iconMarkupCache=new Map();
 
 const roomSelect=document.getElementById("roomSelect");
@@ -47,6 +57,8 @@ const status=document.getElementById("status");
 const roomCard=document.getElementById("roomCard");
 const roomPreview=document.getElementById("roomPreview");
 const classPalette=document.getElementById("classPalette");
+const itemPalette=document.getElementById("itemPalette");
+const theoryPalette=document.getElementById("theoryPalette");
 const layoutPill=document.getElementById("layoutPill");
 const capacityPill=document.getElementById("capacityPill");
 const staffedPill=document.getElementById("staffedPill");
@@ -91,14 +103,8 @@ function resolveIconPath(path){return new URL(path,classCatalogBaseUrl).href}
 function baseTierCap(){return 2}
 function unique(values){return [...new Set(values)]}
 
-const CLASS_NAME_POOLS={
-  soldier:{first:["Jack","Mara","Ronan","Tessa","Vance","Nyra","Grant","Iris"],last:["Kade","Mercer","Stone","Vale","Drake","Rowe","Sloane","Ward"]},
-  scout:{first:["Lena","Orin","Syl","Tarin","Mira","Kellan","Vega","Niko"],last:["Frost","Wren","Ash","Thorne","Pike","Gale","Rook","Flint"]},
-  technician:{first:["Dex","Keira","Milo","Juno","Cal","Petra","Bram","Sera"],last:["Torque","Voss","Hale","Tinker","Maddox","Rivet","Quill","Forge"]},
-  scientist:{first:["Elara","Jonas","Lyra","Adrian","Celia","Tobin","Maeve","Lucan"],last:["Huxley","Kepler","Sagan","Morrow","Venn","Ilyan","Carter","Navid"]},
-  medic:{first:["Nadia","Elias","Talia","Rowan","Mina","Corin","Sabine","Darian"],last:["Reyes","Solis","Vale","Mercy","Arden","Shaw","Blythe","Neris"]},
-  diplomat:{first:["Amara","Julian","Selene","Damon","Leona","Cassian","Nerina","Alaric"],last:["Voss","Maren","Tallis","Corvin","Serrin","Delane","Ivara","Noor"]}
-};
+// Authored presentation data; provenance and extension guide: ../shared/data/personnel-names.md
+let classNamePools={};
 
 function valueNode(value){
   if(Array.isArray(value)){
@@ -121,15 +127,57 @@ function valueNode(value){
 }
 
 async function loadClassCatalog(){
-  const response=await fetch(CLASS_CATALOG_URL);
+  const response=await fetch(CLASS_CATALOG_URL,{cache:"no-store"});
   if(!response.ok)throw new Error(`Could not load base class catalog (${response.status}).`);
   return await response.json();
 }
 
+async function loadPersonnelNames(){
+  const response=await fetch(PERSONNEL_NAMES_URL,{cache:"no-store"});
+  if(!response.ok)throw new Error(`Could not load personnel names (${response.status}).`);
+  const {pools}=await response.json();
+  for(const classId of Object.keys(CLASS_MATRIX)){
+    for(const part of ["first","last"]){
+      const names=pools?.[classId]?.[part];
+      if(!Array.isArray(names) || !names.length || names.some(name=>typeof name!=="string" || !name.trim()))throw new Error(`Personnel names missing valid ${classId}.${part} pool.`);
+    }
+  }
+  return pools;
+}
+
 async function loadSpecializationIcons(){
-  const response=await fetch(SPECIALIZATION_ICON_URL);
+  const response=await fetch(SPECIALIZATION_ICON_URL,{cache:"no-store"});
   if(!response.ok)throw new Error(`Could not load specialization icon catalog (${response.status}).`);
   return await response.json();
+}
+
+async function loadCatalogCollection(url,key,label){
+  const response=await fetch(url,{cache:"no-store"});
+  if(!response.ok)throw new Error(`Could not load ${label} catalog (${response.status}).`);
+  const document=await response.json();
+  if(!Array.isArray(document[key]))throw new Error(`${label} catalog is missing ${key}.`);
+  return document[key];
+}
+
+function beginDrag(event,payload,node){
+  dragPayload=payload;
+  event.dataTransfer.effectAllowed="copy";
+  event.dataTransfer.setData("application/x-stargate-resource",JSON.stringify(payload));
+  event.dataTransfer.setData("text/plain",`${payload.type}:${payload.id}`);
+  node.classList.add("dragging");
+}
+
+function endDrag(node){
+  dragPayload=null;
+  node.classList.remove("dragging");
+}
+
+function droppedPayload(event){
+  try{
+    return JSON.parse(event.dataTransfer.getData("application/x-stargate-resource")) || dragPayload;
+  }catch{
+    return dragPayload;
+  }
 }
 
 async function iconMarkup(path){
@@ -158,7 +206,37 @@ function staffingByLayout(definition){
   return definition?.joinedStaffingCapacity ?? definition?.schema?.rules?.joining?.staffingByLayout ?? null;
 }
 
+function slotConfigFor(type,definition=currentRoom){
+  return definition?.schema?.function?.slotConfig?.[type] ?? null;
+}
+
+function slotCountFromConfig(config,{layout=currentLayout,ct=currentCt}={}){
+  if(!config)return 0;
+  if(config.byLayout && Number.isInteger(config.byLayout[layout]))return config.byLayout[layout];
+  let count=0;
+  if(Array.isArray(config.byConstructionTier) && config.byConstructionTier.length){
+    const tierIndex=Math.max(0,Math.min((ct ?? 1)-1,config.byConstructionTier.length-1));
+    count=Number(config.byConstructionTier[tierIndex] ?? 0);
+  }else if(Number.isInteger(config.fixed))count=config.fixed;
+  else if(Number.isInteger(config.perPhysicalRoom))count=config.perPhysicalRoom;
+  if(config.scaleWithLayout && !config.byLayout)count*=tileCountForLayout(layout);
+  return Math.max(0,count || 0);
+}
+
+function maxStaffSlotsFor(definition=currentRoom){
+  const config=slotConfigFor('staff',definition);
+  if(!config && !definition?.staffed)return 0;
+  if(config?.byLayout)return Math.max(...Object.values(config.byLayout));
+  if(config)return slotCountFromConfig(config,{layout:'2x2',ct:definition?.maxConstructionTier ?? currentCt});
+  const joined=staffingByLayout(definition);
+  if(joined)return Math.max(...Object.values(joined).filter(value=>Number.isInteger(value)));
+  if(Number.isInteger(definition?.staffingPerPhysicalRoom))return definition.staffingPerPhysicalRoom;
+  return FALLBACK_MAX_VISIBLE_SLOTS;
+}
+
 function roomCapacity(definition=currentRoom,layout=currentLayout){
+  const configured=slotCountFromConfig(slotConfigFor('staff',definition),{layout,ct:currentCt});
+  if(configured>0 || slotConfigFor('staff',definition))return configured;
   const joined=staffingByLayout(definition);
   if(joined && Number.isInteger(joined[layout]))return joined[layout];
   if(Number.isInteger(definition?.staffingPerPhysicalRoom))return definition.staffingPerPhysicalRoom;
@@ -170,8 +248,9 @@ function assignedCount(){return assignments.filter(Boolean).length}
 function openSlotCount(){return Math.max(0,Math.min(revealedSlots,roomCapacity())-assignedCount())}
 
 function resetAssignmentsToCapacity(){
-  assignments=Array.from({length:MAX_VISIBLE_SLOTS},(_,index)=>index<roomCapacity()?(assignments[index] ?? null):null);
-  revealedSlots=Math.min(roomCapacity(),MAX_VISIBLE_SLOTS);
+  const size=Math.max(0,maxStaffSlotsFor());
+  assignments=Array.from({length:size},(_,index)=>index<roomCapacity()?(assignments[index] ?? null):null);
+  revealedSlots=Math.min(roomCapacity(),size);
 }
 
 function createAssignment(classId){
@@ -228,6 +307,7 @@ function displayCodeForTrack(value){return classDef(value)?.shortName ?? seconda
 function assignmentToolTracks(assignment){
   const tracks=[{
     key:"base",
+    slotLabel:"tool1",
     label:`${toolCode(assignment.classId)} tools`,
     displayCode:displayCodeForTrack(assignment.classId),
     options:toolOptionsForTrack(toolCode(assignment.classId),assignment.baseTier)
@@ -235,6 +315,7 @@ function assignmentToolTracks(assignment){
   if(assignment.specializationId && assignment.specializationTier>=0){
     tracks.push({
       key:"secondary",
+      slotLabel:"tool2",
       label:`${toolCode(assignment.specializationId)} tools`,
       displayCode:displayCodeForTrack(assignment.specializationId),
       options:toolOptionsForTrack(toolCode(assignment.specializationId),assignment.specializationTier)
@@ -242,18 +323,23 @@ function assignmentToolTracks(assignment){
   }else if(assignment.crossPathId && assignment.crossPathTier>=0){
     tracks.push({
       key:"secondary",
+      slotLabel:"tool2",
       label:`${toolCode(assignment.crossPathId)} tools`,
       displayCode:displayCodeForTrack(assignment.crossPathId),
       options:toolOptionsForTrack(toolCode(assignment.crossPathId),assignment.crossPathTier)
     });
   }
-  return tracks;
+  const eligibleOptions=unique(tracks.flatMap(track=>track.options));
+  return tracks.map(track=>({
+    ...track,
+    eligibleOptions
+  }));
 }
 function normalizeToolSelections(assignment){
   assignment.toolSelections ??= {base:"",secondary:""};
   const tracks=assignmentToolTracks(assignment);
   for(const track of tracks){
-    if(assignment.toolSelections[track.key] && !track.options.includes(assignment.toolSelections[track.key]))assignment.toolSelections[track.key]="";
+    if(assignment.toolSelections[track.key] && !track.eligibleOptions.includes(assignment.toolSelections[track.key]))assignment.toolSelections[track.key]="";
   }
   if(!tracks.some(track=>track.key==="secondary"))assignment.toolSelections.secondary="";
 }
@@ -261,7 +347,7 @@ function normalizeToolSelections(assignment){
 function rosterUnit(id){return unitRoster.find(unit=>unit.id===id) ?? null}
 
 function generatedPersonName(classId,index,variant="base"){
-  const pool=CLASS_NAME_POOLS[classId] ?? CLASS_NAME_POOLS.scientist;
+  const pool=classNamePools[classId] ?? classNamePools.scientist;
   const first=pool.first[index % pool.first.length];
   const last=pool.last[Math.floor(index / pool.first.length) % pool.last.length];
   const suffix=variant==="specialization"?" Sr.":variant==="cross"?" V.":"";
@@ -346,10 +432,66 @@ function filteredRoster(){
   return items.sort(sorters[sortValue] ?? sorters.name);
 }
 
+function coreSlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayout){
+  const config=slotConfigFor('core',definition);
+  const configured=slotCountFromConfig(config,{layout,ct});
+  if(configured>0 || config)return configured;
+  const progression=definition?.schema?.rules?.cores?.slotProgression;
+  if(Array.isArray(progression) && progression.length){
+    const tierIndex=Math.max(0,Math.min((ct ?? 1)-1,progression.length-1));
+    const count=Number(progression[tierIndex] ?? 0);
+    return definition?.schema?.rules?.joining?.supportsJoining ? count*tileCountForLayout(layout) : count;
+  }
+  if(definition?.schema?.rules?.cores?.supportsCores)return 2*tileCountForLayout(layout);
+  return 0;
+}
+
+function itemSlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayout){
+  return slotCountFromConfig(slotConfigFor('item',definition),{layout,ct});
+}
+
+function theorySlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayout){
+  return slotCountFromConfig(slotConfigFor('theory',definition),{layout,ct});
+}
+
+function resizeCollection(collection,size){
+  return Array.from({length:Math.max(0,size)},(_,index)=>collection?.[index] ?? null);
+}
+
 function configurationString(){
   const staff=assignments.filter(Boolean).map(encodeAssignment).join(",");
-  const coreSets=Array.from({length:tileCountForLayout()},()=>"_").join(",");
-  return `${roomCode(currentRoom?.id)}[${currentLayout}]{${staff}|${coreSets}}`;
+  const coreSets=roomResources.cores.length?roomResources.cores.map(value=>value || "_").join(",") : "_";
+  const items=roomResources.items.filter(Boolean).join(",") || "_";
+  const theories=roomResources.theories.filter(Boolean).join(",") || "_";
+  const tabs=Object.entries(roomTabResources).map(([tab,types])=>`${tab}(${Object.entries(types).map(([type,values])=>`${type}:${values.map(value=>value||"_").join(",")}`).join(";")})`).join("|");
+  return `${roomCode(currentRoom?.id)}[${currentLayout}]{${staff}|${coreSets}|I:${items}|T:${theories}${tabs?`|${tabs}`:""}}`;
+}
+
+function resetRoomResources(){
+  roomResources={
+    items:resizeCollection(roomResources.items,itemSlotCapacity()),
+    theories:resizeCollection(roomResources.theories,theorySlotCapacity()),
+    cores:resizeCollection(roomResources.cores,coreSlotCapacity())
+  };
+  const tabs=roomTabs();
+  const next={};
+  for(const tab of tabs){
+    next[tab.id]={};
+    for(const [type,config] of Object.entries(tab.slotConfig ?? {})){
+      const old=roomTabResources[tab.id]?.[type] ?? [];
+      next[tab.id][type]=resizeCollection(old,slotCountFromConfig(config,{layout:currentLayout,ct:currentCt}));
+    }
+  }
+  roomTabResources=next;
+  if(!tabs.some(tab=>tab.id===activeRoomTabId))activeRoomTabId=tabs[0]?.id ?? null;
+}
+
+function roomTabs(definition=currentRoom){
+  const configured=definition?.schema?.function?.subordinateTabs;
+  if(Array.isArray(configured)&&configured.length)return configured;
+  const slotConfig=definition?.schema?.function?.slotConfig ?? {};
+  const functional=Object.fromEntries(Object.entries(slotConfig).filter(([type])=>["item","theory","unit","job"].includes(type)));
+  return Object.keys(functional).length?[{id:"room",name:"Room",notes:"Primary room functions.",slotConfig:functional}]:[];
 }
 
 function loadRoom(id){
@@ -360,8 +502,11 @@ function loadRoom(id){
   currentCt=1;
   ctSelect.value=String(currentCt);
   currentLayout=availableLayouts(definition)[0] ?? "1x1";
+  activeRoomTabId=null;
+  roomTabResources={};
   populateLayoutOptions();
-  assignments=Array.from({length:MAX_VISIBLE_SLOTS},()=>null);
+  assignments=Array.from({length:Math.max(0,maxStaffSlotsFor(definition))},()=>null);
+  resetRoomResources();
   resetAssignmentsToCapacity();
   setSelectionStatus(`Loaded ${definition.name}. Current layout ${currentLayout}, staffing capacity ${roomCapacity()}.`);
   setStatus(`${definition.name} ready for staffing experiments.`);
@@ -393,8 +538,8 @@ function createClassChip(definition){
   chip.className="class-chip";
   chip.draggable=true;
   chip.dataset.unitId=definition.id;
-  chip.addEventListener("dragstart",()=>{dragClassId=definition.id;chip.classList.add("dragging")});
-  chip.addEventListener("dragend",()=>{dragClassId=null;chip.classList.remove("dragging")});
+  chip.addEventListener("dragstart",event=>beginDrag(event,{type:"unit",id:definition.id},chip));
+  chip.addEventListener("dragend",()=>endDrag(chip));
 
   const icon=document.createElement("span");
   icon.className="class-icon";
@@ -421,10 +566,188 @@ function renderClassPalette(){
   classPalette.replaceChildren(...filteredRoster().map(createClassChip));
 }
 
+function createResourceChip(definition,type){
+  const chip=document.createElement("div");
+  chip.className=`resource-chip ${type}`;
+  chip.draggable=true;
+  chip.dataset.resourceId=definition.id;
+  chip.addEventListener("dragstart",event=>beginDrag(event,{type,id:definition.id},chip));
+  chip.addEventListener("dragend",()=>endDrag(chip));
+  const glyph=document.createElement("span");
+  glyph.className="resource-glyph";
+  glyph.style.background=resourceColor(definition,type);
+  const image=document.createElement("img");
+  image.src=resourceIcon(definition,type);
+  image.alt="";
+  glyph.appendChild(image);
+  const copy=document.createElement("div");
+  const name=document.createElement("div");
+  name.className="resource-name";
+  name.textContent=definition.name;
+  const meta=document.createElement("div");
+  meta.className="resource-meta";
+  meta.textContent=type==="item"
+    ? `${titleCaseWords(definition.identity?.civilization ?? "unknown")} · ${titleCaseWords(definition.family ?? "item")} · ${Object.entries(definition.storageCompatibility ?? {}).filter(([,allowed])=>allowed).map(([key])=>key.toUpperCase()).join("/") || "Unclassified"}`
+    : `${titleCaseWords(definition.family ?? "theory")} · Tier ${definition.tier ?? "?"}`;
+  copy.append(name,meta);
+  chip.append(glyph,copy);
+  return chip;
+}
+
+function resourceIcon(definition,type){return type==="item"?ITEM_ICONS[definition.id]:THEORY_ICONS[definition.family]}
+function resourceColor(definition,type){
+  if(type==="item")return definition.id==="ASGARD_EM_RIFLE"?"#0e7490":"#b45309";
+  return Number(definition.tier)>=2?"#7c3aed":"#4338ca";
+}
+
+function renderResourcePalettes(){
+  itemPalette.replaceChildren(...itemCatalog.map(definition=>createResourceChip(definition,"item")));
+  theoryPalette.replaceChildren(...theoryCatalog.map(definition=>createResourceChip(definition,"theory")));
+}
+
 function roomShapeName(){
   if(currentLayout==="1x2")return "Joined pair";
   if(currentLayout==="2x2")return "Joined quad";
   return "Single room";
+}
+
+function resourceDefinition(type,id){
+  const catalog=type==="item"?itemCatalog:theoryCatalog;
+  return catalog.find(definition=>definition.id===id) ?? null;
+}
+
+function resourceCollection(type){
+  if(type==="item")return roomResources.items;
+  if(type==="theory")return roomResources.theories;
+  return roomResources.cores;
+}
+
+function createResourceSlot(type,index,providedCollection=null,acceptsItemClasses=[]){
+  const collection=providedCollection ?? resourceCollection(type);
+  const definition=type==="unit"?rosterUnit(collection[index]):(["item","theory"].includes(type)?resourceDefinition(type,collection[index]):null);
+  const slot=document.createElement("div");
+  slot.className=`resource-slot ${definition||collection[index]?"filled":""}`.trim();
+  if(["item","theory","unit"].includes(type)){
+    slot.addEventListener("dragover",event=>{
+      if(dragPayload?.type!==type)return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect="copy";
+      slot.classList.add("over");
+    });
+    slot.addEventListener("dragleave",()=>slot.classList.remove("over"));
+    slot.addEventListener("drop",event=>{
+      event.preventDefault();
+      slot.classList.remove("over");
+      const payload=droppedPayload(event);
+      const valid=type==="unit"?rosterUnit(payload?.id):resourceDefinition(type,payload?.id);
+      if(payload?.type!==type || !valid)return;
+      if(type==="item" && acceptsItemClasses.length && !acceptsItemClasses.some(itemClass=>valid.storageCompatibility?.[itemClass])){
+        setStatus(`${valid.name} is not compatible with ${acceptsItemClasses.map(value=>value.toUpperCase()).join("/")} storage.`);
+        return;
+      }
+      collection[index]=payload.id;
+      setStatus(`${valid.name} placed in ${type} slot ${index+1}.`);
+      render();
+    });
+  }
+  if(type==="core"){
+    slot.textContent=`Empty core slot ${index+1}`;
+    return slot;
+  }
+  if(type==="job"){
+    slot.textContent=`Empty job slot ${index+1}`;
+    return slot;
+  }
+  if(!definition){
+    slot.textContent=`Drop ${type} here`;
+    return slot;
+  }
+  const glyph=document.createElement("span");
+  glyph.className="resource-slot-icon";
+  if(type==="unit"){
+    glyph.style.background=iconBackground(definition.classId,definition.crossPathId);
+    setIconContent(glyph,iconMarkup(iconPathForRosterUnit(definition)));
+  }else{
+    glyph.style.background=resourceColor(definition,type);
+    const image=document.createElement("img");
+    image.src=resourceIcon(definition,type);
+    image.alt="";
+    glyph.appendChild(image);
+  }
+  const copy=document.createElement("div");
+  const name=document.createElement("div");
+  name.className="resource-slot-name";
+  name.textContent=definition.name;
+  const meta=document.createElement("div");
+  meta.className="resource-slot-meta";
+  meta.textContent=definition.id;
+  copy.append(name,meta);
+  const clear=document.createElement("button");
+  clear.type="button";
+  clear.className="resource-slot-clear";
+  clear.textContent="Clear";
+  clear.title=`Clear ${type} slot`;
+  clear.addEventListener("click",()=>{
+    collection[index]=null;
+    setStatus(`Cleared ${type} slot ${index+1}.`);
+    render();
+  });
+  slot.append(glyph,copy,clear);
+  return slot;
+}
+
+function createResourceGroup(type,title,providedCollection=null,acceptsItemClasses=[]){
+  const collection=providedCollection ?? resourceCollection(type);
+  if(!collection.length)return null;
+  const group=document.createElement("section");
+  group.className="resource-group";
+  const heading=document.createElement("h3");
+  heading.className="resource-group-title";
+  heading.textContent=title;
+  const grid=document.createElement("div");
+  grid.className="resource-slot-grid";
+  if(collection.length>8)grid.classList.add("dense");
+  grid.append(...collection.map((_,index)=>createResourceSlot(type,index,collection,acceptsItemClasses)));
+  group.append(heading,grid);
+  return group;
+}
+
+function renderRoomResources(){
+  const resources=document.createElement("div");
+  resources.className="room-resources";
+  const coreGroup=createResourceGroup("core","Core slots");
+  if(coreGroup)resources.append(coreGroup);
+  const tabs=roomTabs();
+  if(tabs.length){
+    const tabArea=document.createElement("section");
+    tabArea.className="room-tab-area";
+    const tabList=document.createElement("div");
+    tabList.className="room-tabs";
+    tabList.setAttribute("role","tablist");
+    for(const tab of tabs){
+      const button=document.createElement("button");
+      button.type="button";
+      button.className=`room-tab ${tab.id===activeRoomTabId?"active":""}`.trim();
+      button.textContent=tab.name;
+      button.setAttribute("role","tab");
+      button.setAttribute("aria-selected",String(tab.id===activeRoomTabId));
+      button.addEventListener("click",()=>{activeRoomTabId=tab.id;render()});
+      tabList.appendChild(button);
+    }
+    const active=tabs.find(tab=>tab.id===activeRoomTabId) ?? tabs[0];
+    const panel=document.createElement("div");
+    panel.className="room-tab-panel";
+    panel.setAttribute("role","tabpanel");
+    if(active?.notes){const note=document.createElement("p");note.className="room-tab-note";note.textContent=active.notes;panel.appendChild(note)}
+    const labels={item:"Item slots",theory:"Theory slots",unit:"Occupant slots",job:"Work slots"};
+    for(const type of ["item","theory","unit","job"]){
+      const collection=roomTabResources[active?.id]?.[type];
+      if(collection?.length)panel.appendChild(createResourceGroup(type,labels[type],collection,active.acceptsItemClasses ?? []));
+    }
+    tabArea.append(tabList,panel);
+    resources.append(tabArea);
+  }
+  return resources;
 }
 
 function renderRoomCard(){
@@ -451,12 +774,12 @@ function renderRoomCard(){
   const intro=document.createElement("p");
   intro.className="muted";
   intro.style.color="rgba(7,16,24,.76)";
-  intro.textContent=`Drag class icons into visible staff slots. Add Staff Slot reveals one more slot up to the current joined-room capacity of ${roomCapacity()}.`;
+  intro.textContent=`Drag class icons into visible staff slots. Add Staff Slot reveals one more slot up to the current configured staff capacity of ${roomCapacity()}.`;
 
   const slotGrid=document.createElement("div");
   slotGrid.className="slot-grid";
 
-  for(let index=0;index<MAX_VISIBLE_SLOTS;index++){
+  for(let index=0;index<Math.max(0,maxStaffSlotsFor());index++){
     const slot=document.createElement("div");
     const isUnlocked=index<revealedSlots;
     const isAvailable=index<roomCapacity();
@@ -470,13 +793,18 @@ function renderRoomCard(){
     slot.appendChild(indexLabel);
 
     if(isUnlocked&&isAvailable){
-      slot.addEventListener("dragover",event=>{event.preventDefault();slot.classList.add("over")});
+      slot.addEventListener("dragover",event=>{
+        if(dragPayload?.type!=="unit")return;
+        event.preventDefault();
+        slot.classList.add("over");
+      });
       slot.addEventListener("dragleave",()=>slot.classList.remove("over"));
       slot.addEventListener("drop",event=>{
         event.preventDefault();
         slot.classList.remove("over");
-        if(!dragClassId)return;
-        const unit=rosterUnit(dragClassId);
+        const payload=droppedPayload(event);
+        if(payload?.type!=="unit")return;
+        const unit=rosterUnit(payload.id);
         if(!unit)return;
         assignments[index]=createAssignmentFromUnit(unit);
         setStatus(`${unit.name} assigned to slot ${index+1}.`);
@@ -519,13 +847,14 @@ function renderRoomCard(){
         toolSelect.addEventListener("click",event=>event.stopPropagation());
         const emptyOption=document.createElement("option");
         emptyOption.value="";
-        emptyOption.textContent=`unequipped ${track.options.at(-1)?.replace(/\d+$/,"") ?? ""}`;
+        emptyOption.textContent=`unequipped ${track.slotLabel}`;
         toolSelect.appendChild(emptyOption);
-        toolSelect.append(...track.options.map(option=>{
+        toolSelect.append(...track.eligibleOptions.map(option=>{
           const node=document.createElement("option");
           node.value=option;
+          const optionCode=option.replace(/\d+$/,"");
           const tierIndex=Math.max(0,Number(option.match(/(\d+)$/)?.[1] ?? 1)-1);
-          node.textContent=`${track.displayCode} ${romanTier(tierIndex)}`;
+          node.textContent=`${optionCode} ${romanTier(tierIndex)}`;
           return node;
         }));
         toolSelect.value=assignment.toolSelections[track.key] || "";
@@ -703,7 +1032,7 @@ function renderRoomCard(){
     slotGrid.appendChild(slot);
   }
 
-  roomCard.append(title,intro,slotGrid);
+  roomCard.append(title,intro,slotGrid,renderRoomResources());
 }
 
 function renderPreview(){
@@ -720,15 +1049,23 @@ function renderPreview(){
     visibleSlots:revealedSlots,
     joinedStaffingCapacity:currentRoom.joinedStaffingCapacity ?? currentRoom.schema?.rules?.joining?.staffingByLayout ?? null,
     activeCapacity:roomCapacity(),
+    coreSlotCapacity:coreSlotCapacity(),
+    itemSlotCapacity:itemSlotCapacity(),
+    theorySlotCapacity:theorySlotCapacity(),
     assignedCount:assignedCount(),
     openSlots:openSlotCount(),
+    items:roomResources.items.filter(Boolean),
+    theories:roomResources.theories.filter(Boolean),
+    coreSlots:roomResources.cores.map(value=>value || "_"),
+    activeRoomTab:activeRoomTabId,
+    roomTabs:roomTabResources,
     assignedClasses:assignments.filter(Boolean).map(entry=>({
       class:entry.classId,
       label:assignmentLabel(entry),
       name:entry.name,
       specialization:entry.specializationId?`${entry.specializationId} (${branchTierLabel(entry.specializationTier)})`:null,
       crossPath:entry.crossPathId?`${titleCaseWords(entry.crossPathId)} (${branchTierLabel(entry.crossPathTier)})`:null,
-      toolSlots:assignmentToolTracks(entry).map(track=>({track:track.label,available:track.options,selected:(entry.toolSelections ?? {})[track.key] ?? ""}))
+      toolSlots:assignmentToolTracks(entry).map(track=>({track:track.label,available:track.eligibleOptions,selected:(entry.toolSelections ?? {})[track.key] ?? ""}))
     }))
   };
   for(const [key,value] of Object.entries(runtimeData)){
@@ -785,6 +1122,7 @@ function advanceJoin(){
   currentLayout=layouts[index+1];
   populateLayoutOptions();
   resetAssignmentsToCapacity();
+  resetRoomResources();
   setSelectionStatus(`${currentRoom.name} joined to ${currentLayout}; capacity is now ${roomCapacity()}.`);
   setStatus(`Simulated joining ${currentRoom.name}; staffing capacity increased to ${roomCapacity()} and all newly gained slots were revealed.`);
   render();
@@ -798,16 +1136,19 @@ function revealNextSlot(){
 }
 
 function clearAssignments(){
-  assignments=Array.from({length:MAX_VISIBLE_SLOTS},()=>null);
+  assignments=Array.from({length:Math.max(0,maxStaffSlotsFor())},()=>null);
   setStatus("Cleared all staff assignments.");
   render();
 }
 
 function resetRoomState(){
+  roomResources={items:[],theories:[],cores:[]};
+  roomTabResources={};
   currentCt=1;
   currentLayout="1x1";
-  revealedSlots=Math.min(roomCapacity(currentRoom,"1x1"),MAX_VISIBLE_SLOTS);
-  assignments=Array.from({length:MAX_VISIBLE_SLOTS},()=>null);
+  revealedSlots=Math.min(roomCapacity(currentRoom,"1x1"),Math.max(0,maxStaffSlotsFor(currentRoom)));
+  assignments=Array.from({length:Math.max(0,maxStaffSlotsFor(currentRoom))},()=>null);
+  resetRoomResources();
   ctSelect.value="1";
   populateLayoutOptions();
   setSelectionStatus(`${currentRoom.name} reset to single-room staffing state.`);
@@ -820,6 +1161,7 @@ upgradeCtButton.addEventListener("click",()=>{
   if(currentCt>=currentRoom.maxConstructionTier)return;
   currentCt+=1;
   ctSelect.value=String(currentCt);
+  resetRoomResources();
   setStatus(`${currentRoom.name} upgraded to CT${currentCt}.`);
   render();
 });
@@ -833,9 +1175,9 @@ fillScientistButton.addEventListener("click",()=>{
   render();
 });
 clearAssignmentsButton.addEventListener("click",clearAssignments);
-roomSelect.addEventListener("change",()=>{currentLayout="1x1";revealedSlots=0;assignments=Array.from({length:MAX_VISIBLE_SLOTS},()=>null);loadRoom(roomSelect.value)});
-ctSelect.addEventListener("change",()=>{currentCt=Math.min(Number(ctSelect.value),currentRoom.maxConstructionTier);ctSelect.value=String(currentCt);render()});
-layoutSelect.addEventListener("change",()=>{currentLayout=layoutSelect.value;resetAssignmentsToCapacity();setStatus(`Changed layout to ${currentLayout}; capacity ${roomCapacity()}.`);render()});
+roomSelect.addEventListener("change",()=>{currentLayout="1x1";revealedSlots=0;assignments=[];loadRoom(roomSelect.value)});
+ctSelect.addEventListener("change",()=>{currentCt=Math.min(Number(ctSelect.value),currentRoom.maxConstructionTier);ctSelect.value=String(currentCt);resetRoomResources();render()});
+layoutSelect.addEventListener("change",()=>{currentLayout=layoutSelect.value;resetAssignmentsToCapacity();resetRoomResources();setStatus(`Changed layout to ${currentLayout}; capacity ${roomCapacity()}.`);render()});
 for(const control of [rosterBaseFilter,rosterSpecializationFilter,rosterCrossFilter,rosterSort])control.addEventListener("change",renderClassPalette);
 document.getElementById("jsonFile").addEventListener("change",async event=>{
   const file=event.target.files?.[0];
@@ -854,19 +1196,30 @@ document.getElementById("jsonFile").addEventListener("change",async event=>{
 
 async function initialize(){
   try{
-    const [rooms,classes,specializationIconMap]=await Promise.all([loadRooms(ROOM_CATALOG_URL),loadClassCatalog(),loadSpecializationIcons()]);
+    const [rooms,classes,specializationIconMap,items,theories,names]=await Promise.all([
+      loadRooms(ROOM_CATALOG_URL),
+      loadClassCatalog(),
+      loadSpecializationIcons(),
+      loadCatalogCollection(ITEM_CATALOG_URL,"itemDefinitions","item"),
+      loadCatalogCollection(THEORY_CATALOG_URL,"theories","theory"),
+      loadPersonnelNames()
+    ]);
     roomCatalog=rooms;
     classCatalog=classes;
+    classNamePools=names;
     specializationIcons=specializationIconMap;
+    itemCatalog=items;
+    theoryCatalog=theories;
     unitRoster=buildUnitRoster();
     populateRooms();
     populateRosterControls();
     renderClassPalette();
+    renderResourcePalettes();
     currentRoom=roomDef("analysis") ?? roomCatalog[0] ?? null;
     if(!currentRoom)throw new Error("No room definitions loaded.");
     loadRoom(currentRoom.id);
     setSelectionStatus(`Loaded ${currentRoom.name}. Starting capacity ${roomCapacity()} with ${revealedSlots} visible staff slots and ${unitRoster.length} prefab units.`);
-    setStatus(`Loaded ${roomCatalog.length} rooms and ${classCatalog.length} base classes.`);
+    setStatus(`Loaded ${roomCatalog.length} rooms, ${classCatalog.length} base classes, ${itemCatalog.length} items, and ${theoryCatalog.length} theories.`);
   }catch(error){
     roomSelect.disabled=true;
     ctSelect.disabled=true;

@@ -1,0 +1,592 @@
+{
+  "description": "Presentation-only personnel name pools. See personnel-names.md for the repeatable authoring workflow.",
+  "provenance": {
+    "batchId": "profession-reference-v1",
+    "date": "2026-09-09",
+    "author": "Codex",
+    "method": "Locally generated and curated using Fantasy Name Generators category descriptions as style references. These are not captured website-generated outputs.",
+    "scope": "Full replacement: all 192 name components differ from the previous manifest.",
+    "prompt": "For each profession in the recorded reference mapping, create 16 human given names and 16 surnames following its style brief. Use the linked Fantasy Name Generators category description as a style reference, not as a claim that the site generated the results. Keep names readable in an SGC roster. Do not reuse any name component from the prior manifest. Keep given names globally unique and each surname pool internally unique. Omit ranks, titles, middle names, variant suffixes, famous-character full names, and profession jokes. Return ordered first and last arrays, and preserve that order after review.",
+    "websiteButtonOptions": null,
+    "randomSeed": null,
+    "replay": "The ordered pools below are the accepted batch. The prompt repeats the method, not the exact creative output; retain these arrays for exact runtime replay.",
+    "references": {
+      "soldier": {
+        "title": "American English",
+        "url": "https://www.fantasynamegenerators.com/english-names.php",
+        "styleBrief": "Concise contemporary given names and sturdy, ordinary surnames for a military roster; no ranks or callsigns."
+      },
+      "scout": {
+        "title": "Nature",
+        "url": "https://www.fantasynamegenerators.com/nature-names.php",
+        "styleBrief": "Readable nature-related given names and landscape-style human surnames; no fantasy species or titles."
+      },
+      "technician": {
+        "title": "Steampunk",
+        "url": "https://www.fantasynamegenerators.com/steampunk-names.php",
+        "styleBrief": "Victorian-flavored given names with restrained craft or mechanical surnames; omit middle names and exaggerated machine puns."
+      },
+      "scientist": {
+        "title": "Victorian",
+        "url": "https://www.fantasynamegenerators.com/victorian-names.php",
+        "styleBrief": "Classical human given names and understated surnames for an academic tone; no famous-scientist name pairings, titles, or mad-scientist jokes."
+      },
+      "medic": {
+        "title": "American English",
+        "url": "https://www.fantasynamegenerators.com/english-names.php",
+        "styleBrief": "Familiar contemporary human names for a clinical roster; no healing powers, medical puns, or honorifics."
+      },
+      "diplomat": {
+        "title": "Royal/Posh",
+        "url": "https://www.fantasynamegenerators.com/posh-names.php",
+        "styleBrief": "Formal given names and polished surnames for a diplomatic tone; no noble titles or implied rank."
+      }
+    }
+  },
+  "pools": {
+    "soldier": {
+      "first": [
+        "Brett",
+        "Connor",
+        "Logan",
+        "Shane",
+        "Trent",
+        "Wade",
+        "Gavin",
+        "Blake",
+        "Paige",
+        "Brooke",
+        "Kendra",
+        "Ashley",
+        "Erin",
+        "Jillian",
+        "Morgan",
+        "Sydney"
+      ],
+      "last": [
+        "Holt",
+        "Carver",
+        "Prescott",
+        "Donovan",
+        "Ramsey",
+        "Burke",
+        "Callahan",
+        "Griffin",
+        "Malone",
+        "Strickland",
+        "Hartman",
+        "Lawson",
+        "McCoy",
+        "Conrad",
+        "Bowers",
+        "Dalton"
+      ],
+      "nicknames": [
+        "Bulldog",
+        "Tank",
+        "Hammer",
+        "Sarge",
+        "Brick",
+        "Deadbolt",
+        "Knuckles",
+        "Rook",
+        "Fuse",
+        "Ironclad",
+        "Boomer",
+        "Hardcase",
+        "Anchor",
+        "Slugger",
+        "Lockdown",
+        "LastStand"
+      ]
+    },
+    "scout": {
+      "first": [
+        "Aspen",
+        "Briar",
+        "Cedar",
+        "Laurel",
+        "Meadow",
+        "Willow",
+        "Hazel",
+        "Heather",
+        "Jasper",
+        "River",
+        "Robin",
+        "Sage",
+        "Heath",
+        "Forrest",
+        "Clay",
+        "Glenn"
+      ],
+      "last": [
+        "Woodland",
+        "Fielding",
+        "Hawthorn",
+        "Underwood",
+        "Greenwood",
+        "Hill",
+        "Westbrook",
+        "Oakley",
+        "Meadows",
+        "Hollis",
+        "Hartley",
+        "Whitfield",
+        "Brookfield",
+        "Linden",
+        "Fairbanks",
+        "Northwood"
+      ],
+      "nicknames": [
+        "Ghost",
+        "Whisper",
+        "Hawkeye",
+        "Trailblazer",
+        "Pathfinder",
+        "Fox",
+        "Longshot",
+        "Nighthawk",
+        "Shadow",
+        "Quickstep",
+        "Dusty",
+        "Breadcrumb",
+        "Lookout",
+        "Sidewinder",
+        "QuietFeet",
+        "FarSight"
+      ]
+    },
+    "technician": {
+      "first": [
+        "Alfred",
+        "Beatrice",
+        "Chester",
+        "Dorothy",
+        "Ernest",
+        "Florence",
+        "Gilbert",
+        "Harriet",
+        "Herbert",
+        "Imogen",
+        "Norman",
+        "Winifred",
+        "Stanley",
+        "Edith",
+        "Walter",
+        "Agnes"
+      ],
+      "last": [
+        "Arkwright",
+        "Cartwright",
+        "Whitworth",
+        "Crompton",
+        "Turner",
+        "Weaver",
+        "Lockwood",
+        "Millwright",
+        "Goodwin",
+        "Wainwright",
+        "Brass",
+        "Atwood",
+        "Shepherd",
+        "Spindle",
+        "Thatcher",
+        "Copper"
+      ],
+      "nicknames": [
+        "Sparky",
+        "Wrench",
+        "Socket",
+        "Hotwire",
+        "Gizmo",
+        "Ratchet",
+        "Patchwork",
+        "Jumper",
+        "DuctTape",
+        "Gearbox",
+        "Tinker",
+        "Spanner",
+        "ShortCircuit",
+        "Fixit",
+        "Crosswire",
+        "Overclock"
+      ]
+    },
+    "scientist": {
+      "first": [
+        "Ambrose",
+        "Cecily",
+        "Edgar",
+        "Eleanor",
+        "Frederick",
+        "Frances",
+        "Harold",
+        "Henrietta",
+        "Lionel",
+        "Millicent",
+        "Percival",
+        "Rosalind",
+        "Rupert",
+        "Tabitha",
+        "Victor",
+        "Wilhelmina"
+      ],
+      "last": [
+        "Ainsworth",
+        "Bancroft",
+        "Caldwell",
+        "Davenport",
+        "Elwood",
+        "Fenwick",
+        "Godfrey",
+        "Harwood",
+        "Langford",
+        "Osborne",
+        "Pemberton",
+        "Redmond",
+        "Somerville",
+        "Tremaine",
+        "Wilcox",
+        "Yardley"
+      ],
+      "nicknames": [
+        "Brainwave",
+        "ThinkTank",
+        "Quark",
+        "Orbit",
+        "Hypothesis",
+        "Chalkdust",
+        "Numbers",
+        "Eureka",
+        "Paradox",
+        "Neutron",
+        "Footnote",
+        "DoubleCheck",
+        "Beaker",
+        "DeepThought",
+        "Outlier",
+        "WhatIf"
+      ]
+    },
+    "medic": {
+      "first": [
+        "Abigail",
+        "Benjamin",
+        "Chloe",
+        "Daniel",
+        "Emma",
+        "Gabriel",
+        "Hannah",
+        "Jacob",
+        "Leah",
+        "Matthew",
+        "Natalie",
+        "Nathan",
+        "Olivia",
+        "Samuel",
+        "Stella",
+        "Zoe"
+      ],
+      "last": [
+        "Anderson",
+        "Campbell",
+        "Davidson",
+        "Evans",
+        "Fisher",
+        "Graham",
+        "Henderson",
+        "Jennings",
+        "Mitchell",
+        "Palmer",
+        "Robinson",
+        "Sullivan",
+        "Thompson",
+        "Wallace",
+        "Williams",
+        "Young"
+      ],
+      "nicknames": [
+        "Doc",
+        "Stitch",
+        "Lifeline",
+        "Pulse",
+        "Bandage",
+        "SteadyHands",
+        "Patch",
+        "Vitals",
+        "Triage",
+        "Heartbeat",
+        "Lighthouse",
+        "SecondWind",
+        "GoodHands",
+        "NightShift",
+        "Lifeboat",
+        "OnCall"
+      ]
+    },
+    "diplomat": {
+      "first": [
+        "Anastasia",
+        "Benedict",
+        "Cordelia",
+        "Desmond",
+        "Evangeline",
+        "Fabian",
+        "Genevieve",
+        "Maximilian",
+        "Isadora",
+        "Montgomery",
+        "Josephine",
+        "Octavian",
+        "Lavinia",
+        "Reginald",
+        "Valentina",
+        "Sebastian"
+      ],
+      "last": [
+        "Ashford",
+        "Belvedere",
+        "Carrington",
+        "Devereux",
+        "Ellington",
+        "Fairfax",
+        "Grenville",
+        "Harrington",
+        "Kensington",
+        "Langley",
+        "Montague",
+        "Pembroke",
+        "Ravenscroft",
+        "Stanhope",
+        "Wentworth",
+        "Winslow"
+      ],
+      "nicknames": [
+        "theRealDeal",
+        "SilverTongue",
+        "Handshake",
+        "SmoothTalk",
+        "Peacemaker",
+        "FinePrint",
+        "Bridge",
+        "Accord",
+        "LastWord",
+        "PokerFace",
+        "Velvet",
+        "MiddleGround",
+        "OpenDoor",
+        "GoodFaith",
+        "Terms",
+        "Closer"
+      ]
+    }
+  },
+  "populationProvenance": {
+    "batchId": "population-reference-v1",
+    "date": "2026-09-10",
+    "author": "Codex",
+    "method": "Locally authored fictional name candidates inspired by the user-supplied Fantasy Name Generators pool mapping. No website outputs were captured or category pages consulted for this batch. These are not claims of culturally authentic naming.",
+    "source": {
+      "title": "Fantasy Name Generators",
+      "locator": "Search the site by the exact pool labels recorded in each population reference; labels are user-supplied search breadcrumbs, not verified page titles."
+    },
+    "prompt": "Using each population reference and its rationale, author 16 additional readable fictional personnel display names. Use the listed traditions as sound and style inspiration, not as a claim of authentic Earth ancestry. Represent every listed tradition across each major faction pool. Preserve the distinction between Scions, Concord, CLP, and the three independent pools. Return complete display-name candidates; do not require every culture to use a Western first-name/surname structure. Omit ranks, titles, profession jokes, and obvious famous-character full names. Supply current population pools as exclusions and reject case-insensitive duplicates across them. Append accepted candidates in reviewed order without replacing existing entries. Keep Independent A/B/C as placeholder population labels. Record the new batch, exact prompt, references, and any edits.",
+    "randomSeed": null,
+    "websiteButtonOptions": null,
+    "replay": "Retain the accepted ordered arrays for exact replay. The prompt reproduces the authoring method, not exact creative output.",
+    "references": {
+      "scions": {
+        "label": "Scions",
+        "generatorPools": [
+          "Hellenic",
+          "Byzantine",
+          "Roman"
+        ],
+        "rationale": "Old, formal, inherited-civilization feeling without simply using Ancient/Goa'uld-style names. Fits people who see themselves as inheritors of the Ancestors."
+      },
+      "concord": {
+        "label": "Concord",
+        "generatorPools": [
+          "Persian/Iranian",
+          "Sanskrit",
+          "Swahili"
+        ],
+        "rationale": "Softer and more flowing overall, beside Moy'na. Gives Concord a noticeably different sound from Scions without making them the alien-named faction."
+      },
+      "clp": {
+        "label": "CLP",
+        "generatorPools": [
+          "English (American)",
+          "German",
+          "Dutch"
+        ],
+        "rationale": "Familiar, practical names fit a faction that grew out of an ordinary commercial civilization rather than constructing its identity around antiquity or biology."
+      },
+      "independent_a": {
+        "label": "Independent A",
+        "generatorPools": [
+          "Mongolian"
+        ],
+        "rationale": "Very distinctive from all three faction pools and suitable for an isolated Haven culture."
+      },
+      "independent_b": {
+        "label": "Independent B",
+        "generatorPools": [
+          "Akan"
+        ],
+        "rationale": "Another clearly different naming tradition, giving the independent population more global breadth."
+      },
+      "independent_c": {
+        "label": "Independent C",
+        "generatorPools": [
+          "Polynesian/Samoan"
+        ],
+        "rationale": "Strongly recognizable naming sound that does not overlap much with the majors."
+      }
+    }
+  },
+  "populationPools": {
+    "scions": {
+      "names": [
+        "Leontios Varennus",
+        "Damaris Kallene",
+        "Alexios Seravian",
+        "Thaleia Marcellan",
+        "Niketas Orentis",
+        "Ianthe Valerion",
+        "Basileios Dorenus",
+        "Eudokia Calventis",
+        "Theon Aurelian",
+        "Lysandra Petrenis",
+        "Cassian Melanthos",
+        "Heliane Dravennus",
+        "Isidoros Vellant",
+        "Aelia Korentis",
+        "Menas Sevran",
+        "Theodora Lasken"
+      ]
+    },
+    "concord": {
+      "names": [
+        "Navira Mehran",
+        "Soraya Delavi",
+        "Ramin Vashiri",
+        "Parina Roshan",
+        "Darian Navidi",
+        "Minali Saraven",
+        "Anavi Devani",
+        "Kavira Nalin",
+        "Rohani Varuna",
+        "Tavish Amarin",
+        "Samira Nayeli",
+        "Amani Salimu",
+        "Nalia Baraka",
+        "Jabira Kamari",
+        "Zahira Nuru",
+        "Tavari Imani"
+      ]
+    },
+    "clp": {
+      "names": [
+        "Owen Keller",
+        "Maya Brooks",
+        "Evan Mercer",
+        "Claire Bennett",
+        "Dylan Hayes",
+        "Nora Becker",
+        "Lukas Adler",
+        "Greta Neumann",
+        "Felix Weber",
+        "Marta Hoffmann",
+        "Jonas Richter",
+        "Anika Vos",
+        "Bram de Vries",
+        "Lotte Bakker",
+        "Pieter Smit",
+        "Sanne Visser"
+      ]
+    },
+    "independent_a": {
+      "names": [
+        "Altansar",
+        "Narantul",
+        "Temulen",
+        "Sarantai",
+        "Batun",
+        "Oyuntset",
+        "Erdenul",
+        "Bolortu",
+        "Tungalai",
+        "Enkhara",
+        "Bayantur",
+        "Khulanai",
+        "Munkhdel",
+        "Suvdana",
+        "Ganboldar",
+        "Odgerai"
+      ]
+    },
+    "independent_b": {
+      "names": [
+        "Kwesan Adum",
+        "Akosira Mensa",
+        "Kofira Asare",
+        "Abena Dakoa",
+        "Yawen Ofori",
+        "Efuna Badu",
+        "Kwabena Sefa",
+        "Ama Serwa",
+        "Kwadon Owura",
+        "Adwena Boaten",
+        "Afua Dansa",
+        "Kobina Agyen",
+        "Esi Nyame",
+        "Kwaku Bempah",
+        "Akua Ansah",
+        "Yaa Osei"
+      ]
+    },
+    "independent_c": {
+      "names": [
+        "Talani",
+        "Maloa",
+        "Sinalei",
+        "Tavina",
+        "Leomai",
+        "Fetulani",
+        "Aloiva",
+        "Nafanua",
+        "Vailoa",
+        "Tualani",
+        "Meleva",
+        "Lautai",
+        "Savelu",
+        "Iolani",
+        "Manulea",
+        "Tefana"
+      ]
+    }
+  },
+  "nicknameProvenance": {
+    "batchId": "profession-nicknames-v1",
+    "date": "2026-09-10",
+    "author": "Codex",
+    "method": "Locally authored and curated from the user examples; not captured website output.",
+    "userExamples": {
+      "technician": "Jim \"Sparky\" Gagliardi",
+      "diplomat": "Tom \"theRealDeal\" McGee"
+    },
+    "prompt": "Create 16 optional personnel nicknames per existing profession using the recorded style briefs. Follow the tone of Jim \"Sparky\" Gagliardi and Tom \"theRealDeal\" McGee; include Sparky for technician and theRealDeal for diplomat in the initial batch. Allow short words, phrases, and playful mixed-case handles. Store nickname text without surrounding quotation marks, preserving intentional casing. Nicknames are presentation only and confer no rank, skill, trait, or capability. For expansion, supply all existing nicknames as exclusions and append 16 new candidates per profession. Reject case-insensitive duplicates across nickname pools, slurs, and obvious famous-character references. Preserve existing names and pool order; record the batch, exact prompt, and editorial changes.",
+    "styleBriefs": {
+      "soldier": "Punchy squad nicknames suggesting grit, protection, or combat habits; informal labels do not confer rank.",
+      "scout": "Field nicknames suggesting quiet movement, observation, navigation, or a memorable trail habit.",
+      "technician": "Affectionate workshop nicknames involving tools, repairs, wiring, and tinkering; use Sparky as the anchor example.",
+      "scientist": "Playful lab nicknames involving curiosity, calculations, experiments, or persistent questioning.",
+      "medic": "Team nicknames involving care, composure, recovery, and clinical work.",
+      "diplomat": "Confident or wry nicknames involving persuasion, negotiation, trust, and dealmaking; preserve theRealDeal exactly."
+    },
+    "randomSeed": null,
+    "replay": "Retain accepted ordered nickname arrays for exact replay; the prompt repeats the method, not exact output.",
+    "presentation": "Optional display example: {first} \"{nickname}\" {last}. Keep nickname separate from personal-name fields. Assignment and rendering are not implemented by this manifest addition."
+  }
+}

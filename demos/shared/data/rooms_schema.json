@@ -1,6 +1,513 @@
 [
   {
     "identity": {
+      "id": "analysis",
+      "name": "Analysis",
+      "category": "Science & Technology"
+    },
+    "form": {
+      "color": "#4ea8de",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": true,
+        "group": "analysis",
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
+        "staffingByLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Analysis supports the standard 1x1, 1x2, and 2x2 joining model."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Increases Service and Core envelope, not project concurrency"
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": false,
+        "progression": [
+          2
+        ],
+        "notes": "Analysis uses standard staffing by joined layout, starting from 2 seats at 1x1."
+      },
+      "queues": {
+        "supportsQueues": true,
+        "queueTypes": [
+          "analysis"
+        ],
+        "queueSize": 4,
+        "notes": "One active analysis project per joined Analysis Group; additional rooms add project concurrency."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "No storage rule is currently defined in this baseline."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "TBD"
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Deeper characterization of recovered objects and progressive exposure of Research admission requirements.",
+      "activeProjectsPerGroup": 1,
+      "subordinateTabs": [
+        {
+          "id": "analysis",
+          "name": "Analysis",
+          "notes": "Primary characterization workspace.",
+          "slotConfig": {
+            "theory": {
+              "fixed": 1,
+              "scaleWithLayout": false,
+              "notes": "One Theory reference slot."
+            }
+          }
+        },
+        {
+          "id": "queue",
+          "name": "Queue",
+          "notes": "Pending analysis work.",
+          "slotConfig": {
+            "job": {
+              "fixed": 4,
+              "scaleWithLayout": false,
+              "notes": "Four queued analysis jobs."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "byLayout": {
+            "1x1": 2,
+            "1x2": 4,
+            "2x2": 8
+          },
+          "notes": "Analysis staff slots follow joined room layout."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Analysis core slots scale by CT per physical room."
+        },
+        "item": {
+          "fixed": 0,
+          "scaleWithLayout": false,
+          "notes": "Analysis has no general item-storage slots."
+        },
+        "theory": {
+          "fixed": 1,
+          "scaleWithLayout": false,
+          "notes": "Analysis exposes one Theory slot."
+        }
+      }
+    }
+  },
+  {
+    "identity": {
+      "id": "containment",
+      "name": "Containment",
+      "category": "Storage"
+    },
+    "form": {
+      "color": "#52796f",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": true,
+        "group": "containment",
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
+        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Storage room with staffing, joining, and specialized containment/inventory behavior."
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": false,
+        "progression": [
+          2
+        ],
+        "notes": "Staffing is currently modeled as a fixed per-room requirement."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": true,
+        "storageTypes": [
+          "containment"
+        ],
+        "supportsProgression": true,
+        "progression": [
+          2,
+          4,
+          8
+        ],
+        "notes": "Containment provides CC storage for hazardous, abnormal, biological, fauna, flora, and specimen assets."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": true,
+        "inventoryTypes": [
+          "cc"
+        ],
+        "supportsProgression": true,
+        "progression": [20,40,80],
+        "notes": "Containment exposes 20/40/80 CC item-storage capacity by construction tier."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "TBD"
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "Living contained entities remain actors/units where appropriate, but bulk room capability is modeled as containment storage."
+      }
+    },
+    "function": {
+      "base": "Hazardous, abnormal, biological, fauna, flora, and specimen storage",
+      "subordinateTabs": [
+        {
+          "id": "cc_storage",
+          "name": "CC Storage",
+          "notes": "Accepts items explicitly compatible with containment custody.",
+          "acceptsItemClasses": ["cc"],
+          "slotConfig": {
+            "item": {
+              "byConstructionTier": [20,40,80],
+              "scaleWithLayout": false,
+              "notes": "Containment cargo capacity by construction tier."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Containment staffing scales by physical room count."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Containment core slots scale by CT per physical room."
+        },
+        "item": {
+          "byConstructionTier": [20,40,80],
+          "scaleWithLayout": false,
+          "notes": "Containment exposes CC item storage by construction tier."
+        }
+      }
+    }
+  },
+  {
+    "identity": {
+      "id": "data_storage",
+      "name": "Data Storage",
+      "category": "Science & Technology"
+    },
+    "form": {
+      "color": "#355070",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": false,
+        "notes": "This room does not currently participate in the standard joined-room patterns."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Automated science storage room with CT-based core scaling instead of staffing."
+      },
+      "staffing": {
+        "supportsStaffing": false,
+        "notes": "This room currently does not require permanent staffing."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": true,
+        "storageTypes": [
+          "knowledge_cargo"
+        ],
+        "supportsProgression": false,
+        "notes": "Data Storage physically stores and interfaces with knowledge cargo; read/write capability is primarily core-driven, and Discovery is a subordinate tab rather than a separate room."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": true,
+        "coreTypes": [
+          "sgc_read",
+          "sgc_write"
+        ],
+        "supportsProgression": true,
+        "slotProgression": [
+          2,
+          4,
+          6
+        ],
+        "notes": "Base/T1 concept includes SGC Read and SGC Write infrastructure; CT expands core capacity."
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "Data Storage is infrastructure-driven rather than seat/captive/bed capacity driven."
+      }
+    },
+    "function": {
+      "base": "Automated physical Knowledge Cargo read and write infrastructure.",
+      "subordinateTabs": [
+        {
+          "id": "discovery",
+          "name": "Discovery",
+          "notes": "Knowledge synthesis tab associated with Data Storage rather than a separate room.",
+          "slotConfig": {
+            "theory": {
+              "fixed": 3,
+              "notes": "Three discovery knowledge slots."
+            }
+          }
+        },
+        {
+          "id": "read_write",
+          "name": "Read / Write",
+          "notes": "Institutional database interaction tab.",
+          "slotConfig": {
+            "theory": {
+              "fixed": 2,
+              "notes": "Read and write knowledge interface slots."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": false,
+          "notes": "Data Storage core slots match authored core progression."
+        },
+        "theory": {
+          "fixed": 5,
+          "scaleWithLayout": false,
+          "notes": "Data Storage exposes three Discovery, one Read, and one Write Theory slot."
+        }
+      }
+    }
+  },
+  {
+    "identity": {
+      "id": "equipment_storage",
+      "name": "Equipment Storage",
+      "category": "Storage"
+    },
+    "form": {
+      "color": "#607d8b",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": true,
+        "group": "equipment_storage",
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
+        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Automated storage room for equipment with cargo handling and fixed core slots."
+      },
+      "staffing": {
+        "supportsStaffing": false,
+        "notes": "This room currently does not require permanent staffing."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": true,
+        "storageTypes": [
+          "equipment",
+          "weapons",
+          "armor"
+        ],
+        "notes": "Stores equipment cargo through a unified Equipment Storage room with subordinate Weapons and Armor tabs.",
+        "cargoHandled": [
+          "equipment_cargo"
+        ],
+        "supportsProgression": true,
+        "progression": [
+          20,
+          40,
+          80
+        ]
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": true,
+        "inventoryTypes": [
+          "equipment",
+          "weapons",
+          "armor"
+        ],
+        "supportsProgression": false,
+        "notes": "Equipment Storage exposes equipment inventory handling."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "2 Core slots",
+        "supportsProgression": false,
+        "slotProgression": [
+          2
+        ]
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Stores equipment and handles equipment cargo through subordinate Weapons and Armor tabs.",
+      "subordinateTabs": [
+        {
+          "id": "weapons",
+          "name": "Weapons",
+          "notes": "Weapon storage interface within Equipment Storage.",
+          "slotConfig": {
+            "item": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Weapon item slots per physical room."
+            }
+          }
+        },
+        {
+          "id": "armor",
+          "name": "Armor",
+          "notes": "Armor storage interface within Equipment Storage.",
+          "slotConfig": {
+            "item": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Armor item slots per physical room."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "core": {
+          "byConstructionTier": [
+            2
+          ],
+          "scaleWithLayout": true,
+          "notes": "Equipment Storage has two core slots per physical room."
+        },
+        "item": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Equipment Storage exposes weapon/armor item slots per physical room."
+        }
+      }
+    }
+  },
+  {
+    "identity": {
       "id": "gate_room",
       "name": "Gate Room",
       "category": "Command"
@@ -62,238 +569,6 @@
     },
     "function": {
       "base": "Central Stargate operations room and primary emergency ingress/egress point."
-    }
-  },
-  {
-    "identity": {
-      "id": "maintenance",
-      "name": "Maintenance",
-      "category": "Operations"
-    },
-    "form": {
-      "color": "#e07a3f",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": true,
-        "group": "maintenance",
-        "supportedLayouts": [
-          "1x1",
-          "1x2",
-          "2x2"
-        ],
-        "notes": "Joins normally using the standard 1x2 and 2x2 Group rules."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": false,
-        "progression": [
-          1
-        ],
-        "notes": "Maintenance must perform its own Construction Tier upgrade."
-      },
-      "staffing": {
-        "supportsStaffing": true,
-        "supportsProgression": false,
-        "progression": [
-          2
-        ],
-        "notes": "Staffing is currently modeled as a fixed per-room requirement.",
-        "joinedCapacity": {
-          "1x1": 2,
-          "1x2": 4,
-          "2x2": 8
-        },
-        "notes": "Joined Maintenance Groups may operate understaffed or overstaffed."
-      },
-      "queues": {
-        "supportsQueues": true,
-        "queueTypes": [
-          "maintenance"
-        ],
-        "queueSize": 4,
-        "notes": "Maintenance handles excavation, construction, removal, repairs, and core install/uninstall work."
-      },
-      "storage": {
-        "supportsStorage": false,
-        "notes": "No storage rule is currently defined in this baseline."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "Maintenance does not specialize; capability improves by installing better Cores."
-      },
-      "inventory": {
-        "supportsInventory": false,
-        "notes": "No inventory interface is currently defined in this baseline."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "Construction Core",
-        "coreTypes": [
-          "construction"
-        ]
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Construction, excavation, room removal, core installation/removal, and repairs."
-    }
-  },
-  {
-    "identity": {
-      "id": "tech_platform",
-      "name": "Tech Platform",
-      "category": "Science & Technology"
-    },
-    "form": {
-      "color": "#9b5de5",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": false,
-        "notes": "This room does not currently participate in the standard joined-room patterns."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Core-focused science room with no staffing and no joining; core layout matters more than workforce."
-      },
-      "staffing": {
-        "supportsStaffing": false,
-        "notes": "This room currently does not require permanent staffing."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": false,
-        "notes": "No storage rule is currently defined in this baseline."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": false,
-        "notes": "No inventory interface is currently defined in this baseline."
-      },
-      "cores": {
-        "supportsCores": true,
-        "coreTypes": [
-          "focus",
-          "support"
-        ],
-        "supportsProgression": true,
-        "fixedLayout": {
-          "focusSlots": 1
-        },
-        "progressionLayout": [
-          {
-            "supportSlots": 2
-          },
-          {
-            "supportSlots": 4
-          },
-          {
-            "supportSlots": 6
-          }
-        ],
-        "notes": "Tech Platform always has 1 Focus slot; CT progression expands Support slots from 2 to 4 to 6."
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Configurable science/technology core platform with expandable support slots by CT."
-    }
-  },
-  {
-    "identity": {
-      "id": "response_room",
-      "name": "Response Room",
-      "category": "Command"
-    },
-    "form": {
-      "color": "#c94c4c",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": false,
-        "notes": "This room does not currently participate in the standard joined-room patterns."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Command room that scales through staffing and CT progression but does not join."
-      },
-      "staffing": {
-        "supportsStaffing": true,
-        "supportsProgression": true,
-        "progression": [
-          2,
-          3,
-          4
-        ],
-        "notes": "Staffing scales by tiered values defined directly in the source data."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": false,
-        "notes": "No storage rule is currently defined in this baseline."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": false,
-        "notes": "No inventory interface is currently defined in this baseline."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "TBD"
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Assigns deliberate local response staffing and Base Response doctrine support."
     }
   },
   {
@@ -373,7 +648,42 @@
     },
     "function": {
       "base": "Captive slots and containment management.",
-      "degradableProperty": "Containment quality and habitability"
+      "degradableProperty": "Containment quality and habitability",
+      "subordinateTabs": [
+        {
+          "id": "captives",
+          "name": "Captives",
+          "notes": "Captive occupancy is separate from room staffing.",
+          "slotConfig": {
+            "unit": {
+              "perPhysicalRoom": 4,
+              "scaleWithLayout": true,
+              "notes": "Four captive inventory slots per physical room."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Two staff operate each physical Holding room."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Holding starts with two core slots per physical room."
+        },
+        "unit": {
+          "perPhysicalRoom": 4,
+          "scaleWithLayout": true,
+          "notes": "Four captive slots per physical room."
+        }
+      }
     }
   },
   {
@@ -444,18 +754,51 @@
         "capacityTypes": [
           "patients"
         ],
-        "supportsProgression": true,
+        "supportsProgression": false,
         "progression": [
-          2,
-          4,
-          8
+          4
         ],
-        "notes": "Infirmary provides patient beds and recovery capacity in the standard joined-room progression."
+        "notes": "Infirmary provides four patient inventory slots per physical room; joined rooms add their patient slots."
       }
     },
     "function": {
       "base": "Patient beds and recovery capacity.",
-      "degradableProperty": "Passive HP recovery rate"
+      "degradableProperty": "Passive HP recovery rate",
+      "subordinateTabs": [
+        {
+          "id": "patients",
+          "name": "Patients",
+          "notes": "Patient occupancy is separate from medical staffing.",
+          "slotConfig": {
+            "unit": {
+              "perPhysicalRoom": 4,
+              "scaleWithLayout": true,
+              "notes": "Four patient inventory slots per physical room."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Infirmary staffing scales by physical room count."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Infirmary core slots scale by CT per physical room."
+        },
+        "unit": {
+          "perPhysicalRoom": 4,
+          "scaleWithLayout": true,
+          "notes": "Infirmary exposes four patient slots per physical room."
+        }
+      }
     }
   },
   {
@@ -547,94 +890,67 @@
     "function": {
       "base": "Residential recovery space for assigned and off-duty units.",
       "residentSlots": 4,
-      "inventoryRole": "Personal lockers and equipment custody."
+      "inventoryRole": "Personal lockers and equipment custody.",
+      "subordinateTabs": [
+        {
+          "id": "residents",
+          "name": "Residents",
+          "notes": "Residential occupancy.",
+          "slotConfig": {
+            "unit": {
+              "perPhysicalRoom": 4,
+              "scaleWithLayout": true,
+              "notes": "Four resident inventory slots per physical room."
+            }
+          }
+        },
+        {
+          "id": "lockers",
+          "name": "Lockers",
+          "notes": "Personal tool and equipment custody scales with CT.",
+          "slotConfig": {
+            "item": {
+              "byConstructionTier": [
+                2,
+                4,
+                6
+              ],
+              "scaleWithLayout": false,
+              "notes": "Locker tool slots follow inventory progression."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Living Quarters core slots scale by CT per physical room."
+        },
+        "item": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": false,
+          "notes": "Living Quarters locker slots follow CT progression."
+        }
+      }
     }
   },
   {
     "identity": {
-      "id": "receiving",
-      "name": "Receiving",
+      "id": "maintenance",
+      "name": "Maintenance",
       "category": "Operations"
     },
     "form": {
-      "color": "#f2a65a",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": false,
-        "notes": "This room does not currently participate in the standard joined-room patterns."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Unique intake room with staffing and inventory behavior but no joining."
-      },
-      "staffing": {
-        "supportsStaffing": true,
-        "supportsProgression": true,
-        "progression": [
-          2,
-          4,
-          6
-        ],
-        "notes": "Receiving staffing grows with construction tier."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "Receiving clearly processes intake work, but queue size is not locked in this baseline."
-      },
-      "storage": {
-        "supportsStorage": false,
-        "notes": "Receiving is intake/triage, not long-term storage."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": true,
-        "inventoryTypes": [
-          "receiving_inv"
-        ],
-        "supportsProgression": true,
-        "progression": [
-          40,
-          60,
-          80
-        ],
-        "notes": "Receiving throughput and generic intake inventory/custody capacity grow with construction tier."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "TBD"
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "Receiving uses validation and inventory handling rather than dedicated slot capacity in this baseline."
-      }
-    },
-    "function": {
-      "base": "Universal entry point for recovered physical objects, custody creation, inspection, classification, and temporary handling."
-    }
-  },
-  {
-    "identity": {
-      "id": "containment",
-      "name": "Containment",
-      "category": "Storage"
-    },
-    "form": {
-      "color": "#52796f",
+      "color": "#e07a3f",
       "footprint": {
         "width": 1,
         "height": 1
@@ -643,24 +959,22 @@
     "rules": {
       "joining": {
         "supportsJoining": true,
-        "group": "containment",
+        "group": "maintenance",
         "supportedLayouts": [
           "1x1",
           "1x2",
           "2x2"
         ],
-        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
+        "notes": "Joins normally using the standard 1x2 and 2x2 Group rules."
       },
       "construction": {
         "supportsConstruction": true,
         "constructionLimit": "limited",
-        "supportsProgression": true,
+        "supportsProgression": false,
         "progression": [
-          1,
-          2,
-          3
+          1
         ],
-        "notes": "Storage room with staffing, joining, and specialized containment/inventory behavior."
+        "notes": "Maintenance must perform its own Construction Tier upgrade."
       },
       "staffing": {
         "supportsStaffing": true,
@@ -668,105 +982,20 @@
         "progression": [
           2
         ],
-        "notes": "Staffing is currently modeled as a fixed per-room requirement."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": true,
-        "storageTypes": [
-          "containment"
-        ],
-        "supportsProgression": true,
-        "progression": [
-          2,
-          4,
-          8
-        ],
-        "notes": "Containment provides CC storage for hazardous, abnormal, biological, fauna, flora, and specimen assets."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": true,
-        "inventoryTypes": [
-          "cc"
-        ],
-        "supportsProgression": false,
-        "notes": "Containment exposes CC inventory handling."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "TBD"
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "Living contained entities remain actors/units where appropriate, but bulk room capability is modeled as containment storage."
-      }
-    },
-    "function": {
-      "base": "Hazardous, abnormal, biological, fauna, flora, and specimen storage"
-    }
-  },
-  {
-    "identity": {
-      "id": "analysis",
-      "name": "Analysis",
-      "category": "Science & Technology"
-    },
-    "form": {
-      "color": "#4ea8de",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": true,
-        "group": "analysis",
-        "supportedLayouts": [
-          "1x1",
-          "1x2",
-          "2x2"
-        ],
-        "staffingByLayout": {
+        "notes": "Joined Maintenance Groups may operate understaffed or overstaffed.",
+        "joinedCapacity": {
           "1x1": 2,
           "1x2": 4,
           "2x2": 8
-        },
-        "notes": "Analysis supports the standard 1x1, 1x2, and 2x2 joining model."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Increases Service and Core envelope, not project concurrency"
-      },
-      "staffing": {
-        "supportsStaffing": true,
-        "supportsProgression": false,
-        "progression": [
-          2
-        ],
-        "notes": "Analysis uses standard staffing by joined layout, starting from 2 seats at 1x1."
+        }
       },
       "queues": {
         "supportsQueues": true,
         "queueTypes": [
-          "analysis"
+          "maintenance"
         ],
         "queueSize": 4,
-        "notes": "One active analysis project per joined Analysis Group; additional rooms add project concurrency."
+        "notes": "Maintenance handles excavation, construction, removal, repairs, and core install/uninstall work."
       },
       "storage": {
         "supportsStorage": false,
@@ -774,7 +1003,7 @@
       },
       "specialization": {
         "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
+        "notes": "Maintenance does not specialize; capability improves by installing better Cores."
       },
       "inventory": {
         "supportsInventory": false,
@@ -782,253 +1011,9 @@
       },
       "cores": {
         "supportsCores": true,
-        "notes": "TBD"
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Deeper characterization of recovered objects and progressive exposure of Research admission requirements.",
-      "activeProjectsPerGroup": 1
-    }
-  },
-  {
-    "identity": {
-      "id": "research",
-      "name": "Research",
-      "category": "Science & Technology"
-    },
-    "form": {
-      "color": "#4361ee",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": true,
-        "group": "research",
-        "supportedLayouts": [
-          "1x1",
-          "1x2",
-          "2x2"
-        ],
-        "staffingByLayout": {
-          "1x1": 2,
-          "1x2": 4,
-          "2x2": 8
-        },
-        "notes": "Research supports the standard 1x1, 1x2, and 2x2 joining model."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Increases capability and Core Service envelope, not project concurrency"
-      },
-      "staffing": {
-        "supportsStaffing": true,
-        "supportsProgression": false,
-        "progression": [
-          2
-        ],
-        "notes": "Research uses standard staffing by joined layout, starting from 2 seats at 1x1."
-      },
-      "queues": {
-        "supportsQueues": true,
-        "queueTypes": [
-          "research"
-        ],
-        "queueSize": 4,
-        "notes": "Research runs destructive investigation work on artifacts and hypothesis cargo."
-      },
-      "storage": {
-        "supportsStorage": false,
-        "notes": "No storage rule is currently defined in this baseline."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": false,
-        "notes": "No inventory interface is currently defined in this baseline."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "TBD"
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Destructive investigation and extraction of Knowledge from artifacts and hypothesis cargo.",
-      "activeProjectsPerGroup": 1
-    }
-  },
-  {
-    "identity": {
-      "id": "data_storage",
-      "name": "Data Storage",
-      "category": "Science & Technology"
-    },
-    "form": {
-      "color": "#355070",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": false,
-        "notes": "This room does not currently participate in the standard joined-room patterns."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Automated science storage room with CT-based core scaling instead of staffing."
-      },
-      "staffing": {
-        "supportsStaffing": false,
-        "notes": "This room currently does not require permanent staffing."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": true,
-        "storageTypes": [
-          "knowledge_cargo"
-        ],
-        "supportsProgression": false,
-        "notes": "Data Storage physically stores and interfaces with knowledge cargo; read/write capability is primarily core-driven."
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": false,
-        "notes": "No inventory interface is currently defined in this baseline."
-      },
-      "cores": {
-        "supportsCores": true,
+        "notes": "Construction Core",
         "coreTypes": [
-          "sgc_read",
-          "sgc_write"
-        ],
-        "supportsProgression": true,
-        "slotProgression": [
-          2,
-          4,
-          6
-        ],
-        "notes": "Base/T1 concept includes SGC Read and SGC Write infrastructure; CT expands core capacity."
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "Data Storage is infrastructure-driven rather than seat/captive/bed capacity driven."
-      }
-    },
-    "function": {
-      "base": "Automated physical Knowledge Cargo read and write infrastructure."
-    }
-  },
-  {
-    "identity": {
-      "id": "ration_storage",
-      "name": "Ration Storage",
-      "category": "Storage"
-    },
-    "form": {
-      "color": "#c9a66b",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": true,
-        "group": "ration_storage",
-        "supportedLayouts": [
-          "1x1",
-          "1x2",
-          "2x2"
-        ],
-        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Automated storage room for food and water with cargo handling and fixed core slots."
-      },
-      "staffing": {
-        "supportsStaffing": false,
-        "notes": "This room currently does not require permanent staffing."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": true,
-        "storageTypes": [
-          "rations"
-        ],
-        "notes": "Stores bulk rations and handles ration cargo.",
-        "cargoHandled": [
-          "ration_cargo"
-        ],
-        "supportsProgression": true,
-        "progression": [
-          2,
-          4,
-          8
-        ]
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": true,
-        "inventoryTypes": [
-          "rations_fw"
-        ],
-        "supportsProgression": false,
-        "notes": "Ration Storage exposes rations_fw inventory handling."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "2 Core slots",
-        "supportsProgression": false,
-        "slotProgression": [
-          2
+          "construction"
         ]
       },
       "capacity": {
@@ -1037,7 +1022,48 @@
       }
     },
     "function": {
-      "base": "Stores bulk rations and handles ration cargo."
+      "base": "Construction, excavation, room removal, core installation/removal, and repairs.",
+      "subordinateTabs": [
+        {
+          "id": "queue",
+          "name": "Queue",
+          "notes": "Pending maintenance work.",
+          "slotConfig": {
+            "job": {
+              "fixed": 4,
+              "scaleWithLayout": false,
+              "notes": "Four queued job slots."
+            }
+          }
+        },
+        {
+          "id": "active",
+          "name": "Active",
+          "notes": "Currently executing maintenance work.",
+          "slotConfig": {
+            "job": {
+              "fixed": 1,
+              "scaleWithLayout": false,
+              "notes": "One active job slot."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "byLayout": {
+            "1x1": 2,
+            "1x2": 4,
+            "2x2": 8
+          },
+          "notes": "Maintenance staffing follows joined room layout."
+        },
+        "core": {
+          "fixed": 2,
+          "scaleWithLayout": true,
+          "notes": "Maintenance starts with two construction core slots per physical room."
+        }
+      }
     }
   },
   {
@@ -1135,6 +1161,393 @@
   },
   {
     "identity": {
+      "id": "ration_storage",
+      "name": "Ration Storage",
+      "category": "Storage"
+    },
+    "form": {
+      "color": "#c9a66b",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": true,
+        "group": "ration_storage",
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
+        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Automated storage room for food and water with cargo handling and fixed core slots."
+      },
+      "staffing": {
+        "supportsStaffing": false,
+        "notes": "This room currently does not require permanent staffing."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": true,
+        "storageTypes": [
+          "rations"
+        ],
+        "notes": "Stores bulk rations and handles ration cargo.",
+        "cargoHandled": [
+          "ration_cargo"
+        ],
+        "supportsProgression": true,
+        "progression": [
+          2,
+          4,
+          8
+        ]
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": true,
+        "inventoryTypes": [
+          "rations_fw"
+        ],
+        "supportsProgression": false,
+        "notes": "Ration Storage exposes rations_fw inventory handling."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "2 Core slots",
+        "supportsProgression": false,
+        "slotProgression": [
+          2
+        ]
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Stores bulk rations and handles ration cargo."
+    }
+  },
+  {
+    "identity": {
+      "id": "receiving",
+      "name": "Receiving",
+      "category": "Operations"
+    },
+    "form": {
+      "color": "#f2a65a",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": false,
+        "notes": "This room does not currently participate in the standard joined-room patterns."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Unique intake room with staffing and inventory behavior but no joining."
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": true,
+        "progression": [
+          2,
+          4,
+          6
+        ],
+        "notes": "Receiving staffing grows with construction tier."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "Receiving clearly processes intake work, but queue size is not locked in this baseline."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "Receiving is intake/triage, not long-term storage."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": true,
+        "inventoryTypes": [
+          "receiving_inv"
+        ],
+        "supportsProgression": true,
+        "progression": [
+          40,
+          60,
+          80
+        ],
+        "notes": "Receiving throughput and generic intake inventory/custody capacity grow with construction tier."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "TBD"
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "Receiving uses validation and inventory handling rather than dedicated slot capacity in this baseline."
+      }
+    },
+    "function": {
+      "base": "Universal entry point for recovered physical objects, custody creation, inspection, classification, and temporary handling.",
+      "subordinateTabs": [
+        {
+          "id": "intake",
+          "name": "Intake",
+          "notes": "Temporary receiving inventory and custody.",
+          "slotConfig": {
+            "item": {
+              "byConstructionTier": [
+                40,
+                60,
+                80
+              ],
+              "scaleWithLayout": false,
+              "notes": "Receiving item slots follow authored inventory progression."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "fixed": 2,
+          "scaleWithLayout": false,
+          "notes": "Receiving uses two visible staff slots in the staffing demo."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": false,
+          "notes": "Receiving core slots scale by construction tier."
+        },
+        "item": {
+          "byConstructionTier": [
+            40,
+            60,
+            80
+          ],
+          "scaleWithLayout": false,
+          "notes": "Receiving item slots match authored inventory progression."
+        }
+      }
+    }
+  },
+  {
+    "identity": {
+      "id": "research",
+      "name": "Research",
+      "category": "Science & Technology"
+    },
+    "form": {
+      "color": "#4361ee",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": true,
+        "group": "research",
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
+        "staffingByLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Research supports the standard 1x1, 1x2, and 2x2 joining model."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Increases capability and Core Service envelope, not project concurrency"
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": false,
+        "progression": [
+          2
+        ],
+        "notes": "Research uses standard staffing by joined layout, starting from 2 seats at 1x1."
+      },
+      "queues": {
+        "supportsQueues": true,
+        "queueTypes": [
+          "research"
+        ],
+        "queueSize": 4,
+        "notes": "Research runs destructive investigation work on artifacts and hypothesis cargo."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "No storage rule is currently defined in this baseline."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "TBD"
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Destructive investigation and extraction of Knowledge from artifacts and hypothesis cargo.",
+      "activeProjectsPerGroup": 1,
+      "slotConfig": {
+        "staff": {
+          "byLayout": {
+            "1x1": 2,
+            "1x2": 4,
+            "2x2": 8
+          },
+          "notes": "Research staff slots follow joined room layout."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Research core slots scale by CT per physical room."
+        },
+        "item": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Research accepts physical artifacts and hypothesis-linked materials."
+        },
+        "theory": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Research holds Theory or Hypothesis references during work."
+        }
+      }
+    }
+  },
+  {
+    "identity": {
+      "id": "response_room",
+      "name": "Response Room",
+      "category": "Command"
+    },
+    "form": {
+      "color": "#c94c4c",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": false,
+        "notes": "This room does not currently participate in the standard joined-room patterns."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Command room that scales through staffing and CT progression but does not join."
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": true,
+        "progression": [
+          2,
+          3,
+          4
+        ],
+        "notes": "Staffing scales by tiered values defined directly in the source data."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "No storage rule is currently defined in this baseline."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "TBD"
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Assigns deliberate local response staffing and Base Response doctrine support."
+    }
+  },
+  {
+    "identity": {
       "id": "supply_storage",
       "name": "Supply Storage",
       "category": "Storage"
@@ -1228,188 +1641,12 @@
   },
   {
     "identity": {
-      "id": "equipment_storage",
-      "name": "Equipment Storage",
-      "category": "Storage"
-    },
-    "form": {
-      "color": "#607d8b",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": true,
-        "group": "equipment_storage",
-        "supportedLayouts": [
-          "1x1",
-          "1x2",
-          "2x2"
-        ],
-        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Automated storage room for equipment with cargo handling and fixed core slots."
-      },
-      "staffing": {
-        "supportsStaffing": false,
-        "notes": "This room currently does not require permanent staffing."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": true,
-        "storageTypes": [
-          "equipment"
-        ],
-        "notes": "Stores equipment and handles equipment cargo.",
-        "cargoHandled": [
-          "equipment_cargo"
-        ],
-        "supportsProgression": true,
-        "progression": [
-          20,
-          40,
-          80
-        ]
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": true,
-        "inventoryTypes": [
-          "equipment"
-        ],
-        "supportsProgression": false,
-        "notes": "Equipment Storage exposes equipment inventory handling."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "2 Core slots",
-        "supportsProgression": false,
-        "slotProgression": [
-          2
-        ]
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Stores equipment and handles equipment cargo."
-    }
-  },
-  {
-    "identity": {
-      "id": "armor_storage",
-      "name": "Armor Storage",
-      "category": "Storage"
-    },
-    "form": {
-      "color": "#455a64",
-      "footprint": {
-        "width": 1,
-        "height": 1
-      }
-    },
-    "rules": {
-      "joining": {
-        "supportsJoining": true,
-        "group": "armor_storage",
-        "supportedLayouts": [
-          "1x1",
-          "1x2",
-          "2x2"
-        ],
-        "notes": "This room uses the standard joined-room patterns when adjacent compatible rooms are present."
-      },
-      "construction": {
-        "supportsConstruction": true,
-        "constructionLimit": "limited",
-        "supportsProgression": true,
-        "progression": [
-          1,
-          2,
-          3
-        ],
-        "notes": "Automated storage room for armor with cargo handling and fixed core slots."
-      },
-      "staffing": {
-        "supportsStaffing": false,
-        "notes": "This room currently does not require permanent staffing."
-      },
-      "queues": {
-        "supportsQueues": false,
-        "notes": "No queue behavior is currently defined in this baseline."
-      },
-      "storage": {
-        "supportsStorage": true,
-        "storageTypes": [
-          "armor"
-        ],
-        "notes": "Stores armor and handles armor cargo.",
-        "cargoHandled": [
-          "armor_cargo"
-        ],
-        "supportsProgression": true,
-        "progression": [
-          20,
-          40,
-          80
-        ]
-      },
-      "specialization": {
-        "supportsSpecialization": false,
-        "notes": "No specialization path is currently defined."
-      },
-      "inventory": {
-        "supportsInventory": true,
-        "inventoryTypes": [
-          "equipment"
-        ],
-        "supportsProgression": false,
-        "notes": "Armor Storage exposes equipment inventory handling."
-      },
-      "cores": {
-        "supportsCores": true,
-        "notes": "2 Core slots",
-        "supportsProgression": false,
-        "slotProgression": [
-          2
-        ]
-      },
-      "capacity": {
-        "supportsCapacity": false,
-        "notes": "No explicit capacity rule is currently defined."
-      }
-    },
-    "function": {
-      "base": "Stores armor and handles armor cargo."
-    }
-  },
-  {
-    "identity": {
-      "id": "discovery",
-      "name": "Discovery",
+      "id": "tech_platform",
+      "name": "Tech Platform",
       "category": "Science & Technology"
     },
     "form": {
-      "color": "#7b61d1",
+      "color": "#9b5de5",
       "footprint": {
         "width": 1,
         "height": 1
@@ -1418,20 +1655,22 @@
     "rules": {
       "joining": {
         "supportsJoining": false,
-        "notes": "Discovery is currently treated as a non-joining specialist room in this baseline."
+        "notes": "This room does not currently participate in the standard joined-room patterns."
       },
       "construction": {
         "supportsConstruction": true,
-        "constructionLimit": "unquie",
-        "supportsProgression": false,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
         "progression": [
-          1
+          1,
+          2,
+          3
         ],
-        "notes": "Partially defined science room preserved here with knowledge-focused function and unresolved gameplay details collapsed into reasoning."
+        "notes": "Core-focused science room with no staffing and no joining; core layout matters more than workforce."
       },
       "staffing": {
         "supportsStaffing": false,
-        "notes": "Discovery staffing is not locked in this baseline yet."
+        "notes": "This room currently does not require permanent staffing."
       },
       "queues": {
         "supportsQueues": false,
@@ -1439,7 +1678,7 @@
       },
       "storage": {
         "supportsStorage": false,
-        "notes": "Discovery synthesizes knowledge relationships; it is not storage."
+        "notes": "No storage rule is currently defined in this baseline."
       },
       "specialization": {
         "supportsSpecialization": false,
@@ -1451,23 +1690,198 @@
       },
       "cores": {
         "supportsCores": true,
-        "notes": "TBD"
+        "coreTypes": [
+          "focus",
+          "support"
+        ],
+        "supportsProgression": true,
+        "fixedLayout": {
+          "focusSlots": 1
+        },
+        "progressionLayout": [
+          {
+            "supportSlots": 2
+          },
+          {
+            "supportSlots": 4
+          },
+          {
+            "supportSlots": 6
+          }
+        ],
+        "notes": "Tech Platform always has 1 Focus slot; CT progression expands Support slots from 2 to 4 to 6."
       },
       "capacity": {
-        "supportsCapacity": true,
-        "capacityTypes": [
-          "knowledge_slots"
-        ],
-        "supportsProgression": false,
-        "progression": [
-          3
-        ],
-        "notes": "Discovery uses two primary knowledge slots plus a possible third requirement slot."
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
       }
     },
     "function": {
-      "base": "Knowledge synthesis that identifies valid research relationships between known concepts.",
-      "knowledgeSlots": 3
+      "base": "Configurable science/technology core platform with expandable support slots by CT."
+    }
+  },
+  {
+    "identity": {
+      "id": "workshop",
+      "name": "Workshop",
+      "category": "Science & Technology"
+    },
+    "form": {
+      "color": "#6c757d",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": true,
+        "group": "workshop",
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
+        "staffingByLayout": {
+          "1x1": 2,
+          "1x2": 4,
+          "2x2": 8
+        },
+        "notes": "Workshop supports the standard 1x1, 1x2, and 2x2 joining model."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Increases Workshop service and Core envelope, not project concurrency."
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": false,
+        "progression": [
+          2
+        ],
+        "notes": "Workshop uses standard staffing by joined layout, starting from 2 seats at 1x1."
+      },
+      "queues": {
+        "supportsQueues": true,
+        "queueTypes": [
+          "workshop"
+        ],
+        "queueSize": 4,
+        "notes": "Workshop runs physical fabrication, modification, equipment handling, and reverse engineering work."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "No storage rule is currently defined in this baseline."
+      },
+      "specialization": {
+        "supportsSpecialization": true,
+        "notes": "Workshop specialization is supported; exact specialization progression remains to be defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "TBD"
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Physical fabrication, modification, equipment handling, and reverse engineering workspace aligned with Analysis-like room behavior.",
+      "activeProjectsPerGroup": 1,
+      "subordinateTabs": [
+        {
+          "id": "weapons",
+          "name": "Weapons",
+          "notes": "Weapon-focused workshop tab.",
+          "slotConfig": {
+            "item": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Weapon work item slots per physical room."
+            },
+            "theory": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Weapon theory slots per physical room."
+            }
+          }
+        },
+        {
+          "id": "armor",
+          "name": "Armor",
+          "notes": "Armor-focused workshop tab.",
+          "slotConfig": {
+            "item": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Armor work item slots per physical room."
+            },
+            "theory": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Armor theory slots per physical room."
+            }
+          }
+        },
+        {
+          "id": "reverse_engineering",
+          "name": "Reverse Engineering",
+          "notes": "Reverse engineering tab for physical investigation and breakdown workflows.",
+          "slotConfig": {
+            "item": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Reverse engineering target item slots per physical room."
+            },
+            "theory": {
+              "perPhysicalRoom": 1,
+              "scaleWithLayout": true,
+              "notes": "Reverse engineering theory/hypothesis slots per physical room."
+            }
+          }
+        }
+      ],
+      "slotConfig": {
+        "staff": {
+          "byLayout": {
+            "1x1": 2,
+            "1x2": 4,
+            "2x2": 8
+          },
+          "notes": "Workshop staff slots follow joined room layout."
+        },
+        "core": {
+          "byConstructionTier": [
+            2,
+            4,
+            6
+          ],
+          "scaleWithLayout": true,
+          "notes": "Workshop core slots scale by CT per physical room."
+        },
+        "item": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Workshop accepts physical items for fabrication and reverse engineering."
+        },
+        "theory": {
+          "perPhysicalRoom": 2,
+          "scaleWithLayout": true,
+          "notes": "Workshop uses Theory references for implementation and reverse engineering work."
+        }
+      }
     }
   }
 ]

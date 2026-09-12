@@ -1,0 +1,44 @@
+{
+  "ASGARD_EM_RIFLE": {
+    "id": "ASGARD_EM_RIFLE",
+    "name": "Asgard Electromagnetic Rifle",
+    "type": "ITEM",
+    "tags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD"],
+    "storage": {"storageClasses": ["INV", "CC"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
+    "processCompatibility": {"receiving": true, "analysis": true, "construction": false, "repair": true, "reverseEngineering": true, "salvage": true},
+    "theoryBindings": [
+      {"theoryId": "ELECTROMAGNETIC_ACCELERATION_II", "implementedProperties": [], "implementationTags": ["ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"]}
+    ]
+  },
+  "HUMAN_ADVANCED_COIL_RIFLE": {
+    "id": "HUMAN_ADVANCED_COIL_RIFLE",
+    "name": "Human Advanced Coil Rifle",
+    "type": "ITEM",
+    "tags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE"],
+    "storage": {"storageClasses": ["INV", "CC", "EQ"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
+    "processCompatibility": {"receiving": true, "analysis": true, "construction": true, "repair": true, "reverseEngineering": true, "salvage": true},
+    "theoryBindings": [
+      {"theoryId": "PULSED_POWER_II", "implementedProperties": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"], "implementationTags": ["PULSED_POWER_II_IMPLEMENTATION"]},
+      {"theoryId": "ELECTROMAGNETIC_ACTUATION_II", "implementedProperties": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"], "implementationTags": ["ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"]},
+      {"theoryId": "ELECTROMAGNETIC_ACCELERATION_II", "implementedProperties": [], "implementationTags": ["ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"]},
+      {"theoryId": "HUMAN_MANUFACTURING_II", "implementedProperties": [], "implementationTags": ["HUMAN_MANUFACTURING_II_IMPLEMENTATION"]},
+      {"theoryId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II", "implementedProperties": ["FABRICATE_FIELD_COMPONENTS", "FABRICATE_POWER_CONTROL_COMPONENTS", "ASSEMBLE_ACCELERATOR_STAGES", "INTEGRATE_POWER_CONTROL", "ALIGN_STAGES", "CALIBRATE_SEQUENCING", "POWERED_VALIDATION"], "implementationTags": ["HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION"]},
+      {"theoryId": "HUMAN_ADVANCED_RIFLE_PATTERN", "implementedProperties": ["FABRICATE_STRUCTURAL_COMPONENTS", "FABRICATE_FEED_CONTROL_COMPONENTS", "ASSEMBLE_RIFLE_BODY", "INTEGRATE_PRIMARY_WEAPON_SYSTEM", "FIT_ALIGN", "FUNCTION_CHECK"], "implementationTags": ["HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"]}
+    ]
+  },
+  "HUMAN_EM_IMPACT_VEST": {
+    "id": "HUMAN_EM_IMPACT_VEST",
+    "name": "Human EM Impact Vest",
+    "type": "ITEM",
+    "tags": ["PROTECTIVE_GEAR", "ARMOR", "VEST", "HUMAN", "ELECTROMAGNETIC_PROTECTION"],
+    "storage": {"storageClasses": ["INV", "CC", "EQ"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
+    "processCompatibility": {"receiving": true, "analysis": true, "construction": true, "repair": true, "reverseEngineering": true, "salvage": true},
+    "theoryBindings": [
+      {"theoryId": "HUMAN_ARMOR_VEST_PATTERN_II", "role": "FORM_FACTOR", "implementedProperties": ["BODY_INTERFACE", "PROTECTIVE_STRUCTURE", "ATTACHMENT_RETENTION", "FIT"], "implementationTags": ["HUMAN_ARMOR_VEST_PATTERN_II_IMPLEMENTATION"]},
+      {"theoryId": "HUMAN_EM_IMPACT_ARMOR_PATTERN_II", "role": "ACTIVE_PROTECTION", "implementedProperties": ["PROTECTIVE_STRUCTURE", "FIELD_ELEMENTS", "POWER_CONTROL", "LOAD_DISTRIBUTION_STRUCTURE", "INTEGRATE_FIELD_ELEMENTS", "INTEGRATE_POWER_CONTROL", "ALIGN_PROTECTIVE_ARRAY", "CALIBRATE_IMPACT_RESPONSE", "POWERED_IMPACT_VALIDATION"], "implementationTags": ["HUMAN_EM_IMPACT_ARMOR_PATTERN_II_IMPLEMENTATION"]},
+      {"theoryId": "KINETIC_IMPACT_DISSIPATION_II", "role": "SEMANTIC_FUNCTION", "implementedProperties": ["DISTRIBUTE", "REDIRECT", "DISSIPATE", "LIMIT_TRANSMISSION", "RECOVER", "CONTROLLED_TRANSMITTED_LOAD"], "implementationTags": ["KINETIC_IMPACT_DISSIPATION_II_IMPLEMENTATION"]},
+      {"theoryId": "ELECTROMAGNETIC_ACTUATION_II", "role": "IMPLEMENTATION_DEPENDENCY", "implementedProperties": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"], "implementationTags": ["ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"]},
+      {"theoryId": "PULSED_POWER_II", "role": "IMPLEMENTATION_DEPENDENCY", "implementedProperties": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"], "implementationTags": ["PULSED_POWER_II_IMPLEMENTATION"]}
+    ]
+  }
+}

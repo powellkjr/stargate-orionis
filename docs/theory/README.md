@@ -49,6 +49,12 @@ Reserved for foundational non-Profession Theories.
 
 Reserved for worked Theory examples and reference compositions.
 
+### Simulator
+
+Provisional implementation contracts and test content for exercising Theory flows in the room simulator.
+
+Start with the [Theory Simulator Documentation](./simulator/README.md) before implementing simulator data or UI.
+
 ## Authoring Rule
 
 Do not infer new universal systems from an individual Profession document.

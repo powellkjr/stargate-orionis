@@ -1,0 +1,363 @@
+{
+  "schemaVersion": "item-0.1",
+  "contentStatus": "SIMULATOR_TEST",
+  "itemDefinitions": [
+    {
+      "id": "ASGARD_EM_RIFLE",
+      "name": "Asgard Electromagnetic Rifle",
+      "type": "ITEM",
+      "family": "RIFLE",
+      "version": 1,
+      "identity": {
+        "description": "A handheld Asgard ranged weapon using Tier-II electromagnetic acceleration.",
+        "civilization": "ASGARD",
+        "formFactor": "RIFLE",
+        "subjectTags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "ASGARD"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isUnique": false,
+        "isStackable": false,
+        "isContainer": false,
+        "isTool": false,
+        "isCore": false,
+        "isCargo": true
+      },
+      "storageCompatibility": {
+        "cc": true,
+        "inv": false,
+        "eq": false
+      },
+      "possibleReality": {
+        "inherentTags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "ASGARD",
+          "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+        ],
+        "possibleTags": [
+          "FUNCTIONAL",
+          "DAMAGED",
+          "CHARGED",
+          "DISCHARGED",
+          "CONTAMINATED",
+          "UNSTABLE"
+        ]
+      },
+      "processCompatibility": {
+        "receiving": true,
+        "analysis": true,
+        "repair": true,
+        "reverseEngineering": true,
+        "salvage": true,
+        "construction": false
+      },
+      "salvageGuidance": {
+        "preserveMass": true
+      },
+      "extension": {
+        "ordinaryAsgardPatternsAreImplicitInFabricationCapability": true
+      }
+    },
+    {
+      "id": "HUMAN_ADVANCED_COIL_RIFLE",
+      "name": "Human Advanced Coil Rifle",
+      "type": "ITEM",
+      "family": "RIFLE",
+      "version": 1,
+      "identity": {
+        "description": "A Human Technology Tier-II rifle using a Human electromagnetic accelerator implementation.",
+        "civilization": "HUMAN",
+        "formFactor": "RIFLE",
+        "subjectTags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "HUMAN",
+          "COIL_RIFLE"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isUnique": false,
+        "isStackable": false,
+        "isContainer": false,
+        "isTool": false,
+        "isCore": false,
+        "isCargo": true
+      },
+      "storageCompatibility": {
+        "cc": false,
+        "inv": true,
+        "eq": true
+      },
+      "possibleReality": {
+        "inherentTags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "HUMAN",
+          "COIL_RIFLE",
+          "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+        ],
+        "possibleTags": [
+          "FUNCTIONAL",
+          "DAMAGED",
+          "CHARGED",
+          "DISCHARGED"
+        ]
+      },
+      "processCompatibility": {
+        "receiving": true,
+        "analysis": true,
+        "repair": true,
+        "reverseEngineering": true,
+        "salvage": true,
+        "construction": true
+      },
+      "salvageGuidance": {
+        "preserveMass": true
+      },
+      "extension": {
+        "sourceRecipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"
+      }
+    }
+  ],
+  "itemInstances": [
+    {
+      "instanceId": "ITEM_ASGARD_RIFLE_0001",
+      "definitionId": "ASGARD_EM_RIFLE",
+      "state": {
+        "condition": "INTACT",
+        "functionalState": "FUNCTIONAL",
+        "powerState": "CHARGED",
+        "constructionState": "COMPLETE",
+        "damage": [],
+        "quantity": 1,
+        "percentOfWhole": 100
+      },
+      "reality": {
+        "tags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "ASGARD",
+          "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+          "FUNCTIONAL",
+          "CHARGED"
+        ],
+        "technology": [
+          "ELECTROMAGNETIC_ACCELERATION_II"
+        ],
+        "fabricationEcosystem": [
+          "ASGARD_FABRICATION_II"
+        ],
+        "materials": []
+      },
+      "knowledge": {
+        "revealedTags": [],
+        "recognizedIdentity": null,
+        "recognizedCivilization": null,
+        "recognizedItemClass": null,
+        "instanceFindings": [],
+        "handlingKnowledge": [],
+        "knownProcessRequirements": []
+      },
+      "custody": {
+        "holderType": "STORAGE",
+        "holderId": "INCOMING_INVENTORY",
+        "roomGroupId": null,
+        "status": "STORED",
+        "reservedBy": null
+      },
+      "processes": {
+        "receiving": {
+          "state": "NOT_STARTED",
+          "completedSteps": [],
+          "currentStep": null
+        },
+        "analysis": {
+          "state": "NOT_STARTED",
+          "completedSteps": [],
+          "currentStep": null,
+          "findingsProduced": []
+        },
+        "construction": null,
+        "repair": null,
+        "reverseEngineering": {
+          "state": "NOT_STARTED",
+          "recipeId": null,
+          "completedBubbles": [],
+          "currentBubble": null,
+          "partialProgress": 0
+        },
+        "salvage": null
+      },
+      "relationships": {
+        "parentInstanceId": null,
+        "childInstanceIds": [],
+        "createdFrom": [],
+        "sourceRecipeId": null,
+        "derivedKnowledge": []
+      },
+      "history": [
+        {
+          "event": "RECOVERED",
+          "source": "OFFWORLD"
+        },
+        {
+          "event": "ENTERED_SGC_CUSTODY",
+          "location": "INCOMING_INVENTORY"
+        }
+      ]
+    },
+    {
+      "instanceId": "ITEM_HUMAN_COIL_RIFLE_0001",
+      "definitionId": "HUMAN_ADVANCED_COIL_RIFLE",
+      "state": {
+        "condition": "INTACT",
+        "functionalState": "FUNCTIONAL",
+        "powerState": "CHARGED",
+        "constructionState": "COMPLETE",
+        "damage": [],
+        "quantity": 1,
+        "percentOfWhole": 100
+      },
+      "reality": {
+        "tags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "HUMAN",
+          "COIL_RIFLE",
+          "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+          "FUNCTIONAL",
+          "CHARGED"
+        ],
+        "technology": [
+          "ELECTROMAGNETIC_ACCELERATION_II"
+        ],
+        "implementationPatterns": [
+          "HUMAN_ADVANCED_RIFLE_PATTERN",
+          "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+        ],
+        "fabricationEcosystem": [
+          "HUMAN_MANUFACTURING_II"
+        ],
+        "materials": []
+      },
+      "knowledge": {
+        "revealedTags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "HUMAN",
+          "COIL_RIFLE",
+          "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+          "FUNCTIONAL",
+          "CHARGED"
+        ],
+        "recognizedIdentity": "HUMAN_ADVANCED_COIL_RIFLE",
+        "recognizedCivilization": "HUMAN",
+        "recognizedItemClass": "RANGED_WEAPON",
+        "instanceFindings": [],
+        "handlingKnowledge": [
+          "STANDARD_HUMAN_WEAPON_HANDLING"
+        ],
+        "knownProcessRequirements": [
+          {
+            "process": "REPAIR",
+            "knowledgeRequirements": [
+              "HUMAN_ADVANCED_RIFLE_PATTERN",
+              "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+            ]
+          },
+          {
+            "process": "SALVAGE",
+            "knowledgeRequirements": [
+              "HUMAN_ADVANCED_RIFLE_PATTERN",
+              "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+            ]
+          }
+        ]
+      },
+      "custody": {
+        "holderType": "STORAGE",
+        "holderId": "ARMORY_INVENTORY",
+        "roomGroupId": null,
+        "status": "STORED",
+        "reservedBy": null
+      },
+      "processes": {
+        "receiving": {
+          "state": "COMPLETE",
+          "completedSteps": [
+            "DETERMINE_HANDLING",
+            "DETERMINE_ITEM_CLASS"
+          ],
+          "currentStep": null
+        },
+        "analysis": {
+          "state": "NOT_REQUIRED",
+          "completedSteps": [],
+          "currentStep": null,
+          "findingsProduced": []
+        },
+        "construction": {
+          "state": "COMPLETE",
+          "recipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+          "completedBubbles": [
+            "FABRICATE_RIFLE_COMPONENTS",
+            "FABRICATE_ACCELERATOR_COMPONENTS",
+            "ASSEMBLE_RIFLE_BODY",
+            "ASSEMBLE_ACCELERATOR",
+            "INTEGRATE_ACCELERATOR",
+            "CALIBRATE_ACCELERATOR",
+            "TECHNICAL_VALIDATION",
+            "FIELD_TEST"
+          ],
+          "currentBubble": null,
+          "partialProgress": 0
+        },
+        "repair": null,
+        "reverseEngineering": null,
+        "salvage": null
+      },
+      "relationships": {
+        "parentInstanceId": null,
+        "childInstanceIds": [],
+        "createdFrom": [],
+        "sourceRecipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+        "derivedKnowledge": []
+      },
+      "history": [
+        {
+          "event": "CONSTRUCTION_COMPLETED",
+          "recipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"
+        },
+        {
+          "event": "ENTERED_INVENTORY",
+          "location": "ARMORY_INVENTORY"
+        }
+      ]
+    }
+  ],
+  "comparisonNotes": {
+    "sharedReality": [
+      "Both are physical rifle instances.",
+      "Both use ELECTROMAGNETIC_ACCELERATION_II in Reality.",
+      "Both can be damaged, repaired, transferred, stored, and salvaged."
+    ],
+    "keyDifference": [
+      "The Asgard rifle's Reality is advanced even while SGC instance Knowledge begins almost empty.",
+      "The Human coil rifle is fully recognized because the SGC already knows the Theory, Patterns, and Recipe used to manufacture it.",
+      "The Asgard rifle does not grant an Asgard implementation Pattern merely by entering inventory."
+    ]
+  }
+}

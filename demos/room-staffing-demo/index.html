@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Stargate Room Staffing Demo</title>
 <style>
 :root{
@@ -37,6 +40,14 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .ct-legend{display:flex;gap:10px;margin-top:8px;color:var(--muted);font-size:.75rem}.ct-key{display:flex;align-items:center;gap:4px}.ct-line{width:18px;height:10px;border:3px solid var(--key-color);border-radius:3px}
 .roster-filters{display:grid;gap:8px;margin-top:12px}
 .class-palette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.palette-section{margin-top:14px;border:1px solid var(--line);border-radius:12px;background:#11161d;overflow:hidden}
+.palette-section summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;cursor:pointer;font-weight:800;user-select:none;list-style:none}
+.palette-section summary::-webkit-details-marker{display:none}.palette-section summary::after{content:"+";color:var(--muted);font-size:1.1rem}.palette-section[open] summary::after{content:"−"}
+.palette-content{padding:0 12px 12px}.palette-content>.muted{margin-top:0}
+.resource-palette{display:grid;gap:8px;margin-top:10px}
+.resource-chip{display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;gap:9px;padding:9px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);cursor:grab;user-select:none}
+.resource-chip:active{cursor:grabbing}.resource-glyph{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;overflow:hidden}.resource-glyph img{width:30px;height:30px;object-fit:contain}
+.resource-name{font-size:.78rem;font-weight:800}.resource-meta{font-size:.66rem;color:var(--muted);margin-top:2px}.dragging{opacity:.48}
 .class-chip{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);cursor:grab;user-select:none}
 .class-chip:active{cursor:grabbing}
 .class-icon{width:30px;height:30px;border-radius:999px;display:grid;place-items:center;flex:0 0 auto;overflow:hidden;border:1px solid rgba(15,23,42,.35)}
@@ -69,6 +80,9 @@ main{display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-width:0}
 .slot-control{width:100%;min-height:34px;margin-top:0;padding:6px 10px;font-size:.8rem;border-radius:8px;white-space:normal;background:rgba(255,255,255,.82);color:#071018;border:1px solid rgba(7,16,24,.18)}
 .slot-actions .slot-control,.slot-clear-row .slot-control{background:#232b36;color:#f3f4f6;border:1px solid #3d4653}
 .slot-tier{font-size:.68rem;font-weight:700;color:rgba(7,16,24,.84)}
+.room-resources{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.resource-group{padding:10px;border-radius:12px;background:rgba(7,16,24,.1)}.resource-group-title{font-size:.74rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:rgba(7,16,24,.72);margin-bottom:8px}.resource-slot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.resource-slot{min-height:70px;border:2px dashed rgba(7,16,24,.32);border-radius:10px;background:rgba(255,255,255,.14);display:grid;place-items:center;padding:8px;text-align:center;transition:transform .12s ease,border-color .12s ease,background .12s ease}.resource-slot.over{transform:translateY(-2px);border-color:#f8fafc;background:rgba(255,255,255,.32)}.resource-slot.filled{grid-template-columns:34px minmax(0,1fr);gap:7px;border-style:solid;background:rgba(7,16,24,.16)}.resource-slot-icon{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;overflow:hidden}.resource-slot-icon img{width:29px;height:29px;object-fit:contain}.resource-slot-name{font-size:.7rem;font-weight:850;color:#071018}.resource-slot-meta{font-size:.6rem;color:rgba(7,16,24,.68);margin-top:3px}.resource-slot-clear{grid-column:1 / -1;min-height:26px;margin-top:2px;padding:3px 7px;font-size:.64rem;background:#232b36;color:#f3f4f6;border-color:#3d4653}
+.room-tab-area{grid-column:1 / -1;min-width:0}.room-tabs{display:flex;gap:5px;overflow-x:auto;padding:0 4px}.room-tab{min-height:34px;padding:7px 12px;border-radius:9px 9px 0 0;background:rgba(7,16,24,.28);color:#17202a;border:1px solid rgba(7,16,24,.22);border-bottom:0;white-space:nowrap}.room-tab.active{background:#f8fafc;color:#071018}.room-tab-panel{padding:10px;border:1px solid rgba(7,16,24,.22);border-radius:10px;background:rgba(248,250,252,.72)}.room-tab-note{margin:0 0 8px;font-size:.7rem;color:rgba(7,16,24,.68)}.room-tab-panel>.resource-group{margin-top:8px}.room-tab-panel>.resource-group:first-of-type{margin-top:0}
+.resource-slot-grid.dense{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));max-height:350px;overflow:auto}.resource-slot-grid.dense .resource-slot{min-height:52px;font-size:.68rem}
 .layout-strip{display:flex;gap:10px;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;background:#11161d;border:1px solid rgba(255,255,255,.1);font-size:.78rem;color:var(--muted)}
 .preview dl{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:0}
@@ -77,7 +91,7 @@ main{display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-width:0}
 .swatch{width:16px;height:16px;border-radius:4px;border:1px solid rgba(255,255,255,.35);display:inline-block;vertical-align:middle;margin-right:8px}
 .config-output{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#11161d;color:#dbe4f0;font:12px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap;overflow:auto;max-height:220px}
 @media (max-width:1200px){.app{grid-template-columns:320px minmax(0,1fr)}.preview{grid-column:1 / -1;border-left:0;border-top:1px solid var(--line)}}
-@media (max-width:900px){.app{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}.preview{border-top:1px solid var(--line)}.slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.app{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}.preview{border-top:1px solid var(--line)}.slot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.room-resources{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -132,31 +146,51 @@ if (window.location.protocol === "file:") {
     <div id="selectionStatus" class="status">Loading Analysis room…</div>
     <div id="status" class="status">Loading shared room catalog...</div>
 
-    <h2>Unit roster</h2>
-    <p class="muted">Prefab units cover base tiers plus specialization and cross-path variants. Drag one into an available staff slot.</p>
-    <div class="roster-filters">
-      <div class="row">
-        <div>
-          <label for="rosterBaseFilter">Base class</label>
-          <select id="rosterBaseFilter"></select>
+    <details class="palette-section" open>
+      <summary>Unit roster</summary>
+      <div class="palette-content">
+        <p class="muted">Prefab units cover base tiers plus specialization and cross-path variants. Drag one into an available staff slot.</p>
+        <div class="roster-filters">
+          <div class="row">
+            <div>
+              <label for="rosterBaseFilter">Base class</label>
+              <select id="rosterBaseFilter"></select>
+            </div>
+            <div>
+              <label for="rosterSort">Sort</label>
+              <select id="rosterSort"></select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="rosterSpecializationFilter">Specialization</label>
+              <select id="rosterSpecializationFilter"></select>
+            </div>
+            <div>
+              <label for="rosterCrossFilter">Cross path</label>
+              <select id="rosterCrossFilter"></select>
+            </div>
+          </div>
         </div>
-        <div>
-          <label for="rosterSort">Sort</label>
-          <select id="rosterSort"></select>
-        </div>
+        <div id="classPalette" class="class-palette"></div>
       </div>
-      <div class="row">
-        <div>
-          <label for="rosterSpecializationFilter">Specialization</label>
-          <select id="rosterSpecializationFilter"></select>
-        </div>
-        <div>
-          <label for="rosterCrossFilter">Cross path</label>
-          <select id="rosterCrossFilter"></select>
-        </div>
+    </details>
+
+    <details class="palette-section" open>
+      <summary>Mock item storage</summary>
+      <div class="palette-content">
+        <p class="muted">Representative persistent items. Drag a rifle into an item slot in the room mockup.</p>
+        <div id="itemPalette" class="resource-palette"></div>
       </div>
-    </div>
-    <div id="classPalette" class="class-palette"></div>
+    </details>
+
+    <details class="palette-section">
+      <summary>Theory library</summary>
+      <div class="palette-content">
+        <p class="muted">Simulator-test Theory definitions. Drag known Theory into a Theory slot.</p>
+        <div id="theoryPalette" class="resource-palette"></div>
+      </div>
+    </details>
   </aside>
 
   <main>
@@ -187,6 +221,6 @@ if (window.location.protocol === "file:") {
   </section>
 </div>
 
-<script type="module" src="./room-staffing-demo.js?v=room-staffing-demo-3"></script>
+<script type="module" src="./room-staffing-demo.js?v=room-staffing-demo-9"></script>
 </body>
 </html>
