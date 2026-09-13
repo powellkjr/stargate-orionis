@@ -1,6 +1,14 @@
 {
   "PULSED_POWER_II": {
     "id": "PULSED_POWER_II",
+    "version": 1,
+    "summary": "Pulsed-power behavior at approximately the next order-of-magnitude capability class.",
+    "identity": {"description": "Advanced pulsed-power behavior requiring control of substantially greater electrical, thermal, switching, and recovery demands.", "scope": "Universal pulsed-power theory.", "subjectTags": ["PULSED_POWER", "HIGH_POWER", "PULSE_SEQUENCING", "LOAD_RESPONSE"]},
+    "relationships": {"derivesFrom": ["PULSED_POWER_I"], "requiresTheories": ["PULSED_POWER_I"], "supersedes": ["PULSED_POWER_I"], "commonlyAssociatedWith": ["ELECTROMAGNETIC_ACTUATION_II"], "compatibleWith": [], "incompatibleWith": [], "discoveryPartners": ["ELECTROMAGNETIC_ACTUATION_II"]},
+    "knowledge": {"recognition": {"requirements": ["PULSED_POWER_I"], "enablesRecognitionOf": ["PULSED_POWER_II_BEHAVIOR"]}, "interpretation": {"requirements": ["PULSED_POWER_I"], "enablesInterpretationOf": ["PULSED_POWER_II_BEHAVIOR"]}, "implicitlyGrants": []},
+    "tags": {"inherent": ["PULSED_POWER", "TIER_II_CAPABILITY"], "possible": ["THERMAL_ACCUMULATION", "HIGH_CURRENT_DENSITY", "LOAD_RESPONSE_VARIATION"], "implied": [], "incompatible": [], "hiddenByDefault": [], "revealRules": []},
+    "capabilities": {"provides": [], "supportsProcesses": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"], "supportsInteractions": []},
+    "extension": {"provisionalServiceNames": ["PULSED_POWER_PROCESSING_II"]},
     "name": "Pulsed Power II",
     "type": "THEORY",
     "family": "PULSED_POWER",
@@ -10,6 +18,14 @@
   },
   "ELECTROMAGNETIC_ACTUATION_II": {
     "id": "ELECTROMAGNETIC_ACTUATION_II",
+    "version": 1,
+    "summary": "Controlled use of electromagnetic fields to generate useful mechanical force and motion at Technology Tier II.",
+    "identity": {"description": "Electromagnetic field generation and control sufficient to produce controlled mechanical force and motion.", "scope": "Universal electromagnetic actuation theory.", "subjectTags": ["ELECTROMAGNETIC_ACTUATION", "CONTROLLED_FORCE", "CONTROLLED_MOTION"]},
+    "relationships": {"derivesFrom": [], "requiresTheories": [], "supersedes": [], "commonlyAssociatedWith": ["PULSED_POWER_II"], "compatibleWith": [], "incompatibleWith": [], "discoveryPartners": ["PULSED_POWER_II"]},
+    "knowledge": {"recognition": {"requirements": [], "enablesRecognitionOf": ["ELECTROMAGNETIC_ACTUATION_II_BEHAVIOR"]}, "interpretation": {"requirements": [], "enablesInterpretationOf": ["ELECTROMAGNETIC_ACTUATION_II_BEHAVIOR"]}, "implicitlyGrants": []},
+    "tags": {"inherent": ["ELECTROMAGNETIC_ACTUATION", "TIER_II_CAPABILITY"], "possible": [], "implied": [], "incompatible": [], "hiddenByDefault": [], "revealRules": []},
+    "capabilities": {"provides": ["CONTROLLED_ELECTROMAGNETIC_FORCE"], "supportsProcesses": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"], "supportsInteractions": []},
+    "extension": {"provisionalServiceNames": ["ELECTROMAGNETIC_PROCESSING_II"]},
     "name": "Electromagnetic Actuation II",
     "type": "THEORY",
     "family": "ELECTROMAGNETIC_ACTUATION",
@@ -19,6 +35,14 @@
   },
   "ELECTROMAGNETIC_ACCELERATION_II": {
     "id": "ELECTROMAGNETIC_ACCELERATION_II",
+    "version": 1,
+    "summary": "Controlled electromagnetic acceleration at the Tier-II capability envelope.",
+    "identity": {"description": "Predictable acceleration through coordinated electromagnetic force, pulsed-energy delivery, timing, staging, and controlled system response.", "scope": "Universal electromagnetic acceleration theory.", "subjectTags": ["ELECTROMAGNETIC_ACCELERATION", "TIER_II_CAPABILITY", "KINETIC_ACCELERATION"]},
+    "relationships": {"derivesFrom": ["ELECTROMAGNETIC_ACCELERATION_I"], "requiresTheories": ["ELECTROMAGNETIC_ACCELERATION_I"], "supersedes": ["ELECTROMAGNETIC_ACCELERATION_I"], "commonlyAssociatedWith": ["PULSED_POWER_II", "ELECTROMAGNETIC_ACTUATION_II"], "compatibleWith": [], "incompatibleWith": [], "discoveryPartners": ["HUMAN_MANUFACTURING_II"]},
+    "knowledge": {"recognition": {"requirements": ["ELECTROMAGNETIC_ACCELERATION_I"], "enablesRecognitionOf": ["ELECTROMAGNETIC_ACCELERATION_II_BEHAVIOR"]}, "interpretation": {"requirements": ["ELECTROMAGNETIC_ACCELERATION_I"], "enablesInterpretationOf": ["ELECTROMAGNETIC_ACCELERATION_II_BEHAVIOR"]}, "implicitlyGrants": []},
+    "tags": {"inherent": ["ELECTROMAGNETIC_ACCELERATION", "TIER_II_CAPABILITY"], "possible": [], "implied": [], "incompatible": [], "hiddenByDefault": [], "revealRules": []},
+    "capabilities": {"provides": [], "supportsProcesses": [], "supportsInteractions": []},
+    "researchGuidance": {"validHypothesisDefinitions": ["HYP_EM_ACCELERATION_II_HORIZONTAL", "HYP_EM_ACCELERATION_II_EXTRACTION"]},
     "name": "Electromagnetic Acceleration II",
     "type": "THEORY",
     "family": "ELECTROMAGNETIC_ACCELERATION",
@@ -29,6 +53,14 @@
   },
   "HUMAN_MANUFACTURING_II": {
     "id": "HUMAN_MANUFACTURING_II",
+    "version": 1,
+    "summary": "Institutional Human knowledge for manufacturing and integrating ordinary Human Technology Tier-II systems.",
+    "identity": {"description": "The Human Tier-II manufacturing ecosystem and its ordinary material-working practices.", "scope": "Human civilization-specific manufacturing knowledge.", "subjectTags": ["HUMAN", "MANUFACTURING", "TIER_II"]},
+    "relationships": {"derivesFrom": [], "requiresTheories": [], "supersedes": [], "commonlyAssociatedWith": [], "compatibleWith": [], "incompatibleWith": [], "discoveryPartners": ["ELECTROMAGNETIC_ACCELERATION_II"]},
+    "knowledge": {"recognition": {"requirements": [], "enablesRecognitionOf": ["HUMAN_TIER_II_MANUFACTURING"]}, "interpretation": {"requirements": [], "enablesInterpretationOf": ["HUMAN_TIER_II_MANUFACTURING"]}, "implicitlyGrants": []},
+    "tags": {"inherent": ["HUMAN_MANUFACTURING", "TIER_II_CAPABILITY"], "possible": [], "implied": [], "incompatible": [], "hiddenByDefault": [], "revealRules": []},
+    "capabilities": {"provides": [], "supportsProcesses": ["FABRICATE", "ASSEMBLE", "INTEGRATE", "ALIGN", "CALIBRATE"], "supportsInteractions": []},
+    "compositionGuidance": {"ordinaryTierMaterialWorkingImplicit": true},
     "name": "Human Manufacturing II",
     "type": "THEORY",
     "family": "HUMAN_MANUFACTURING",
@@ -39,6 +71,14 @@
   },
   "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II": {
     "id": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+    "version": 1,
+    "summary": "The reproducible Human Tier-II implementation of electromagnetic acceleration.",
+    "identity": {"description": "How Humans manufacture, assemble, integrate, calibrate, and validate a Tier-II electromagnetic accelerator.", "scope": "Human civilization-specific implementation pattern.", "subjectTags": ["HUMAN", "ELECTROMAGNETIC_ACCELERATOR", "IMPLEMENTATION_PATTERN", "TIER_II"]},
+    "relationships": {"derivesFrom": ["ELECTROMAGNETIC_ACCELERATION_II", "HUMAN_MANUFACTURING_II"], "requiresTheories": ["ELECTROMAGNETIC_ACCELERATION_II", "HUMAN_MANUFACTURING_II"], "supersedes": [], "commonlyAssociatedWith": ["HUMAN_ADVANCED_RIFLE_PATTERN"], "compatibleWith": [], "incompatibleWith": [], "discoveryPartners": ["HUMAN_ADVANCED_RIFLE_PATTERN"]},
+    "knowledge": {"recognition": {"requirements": ["ELECTROMAGNETIC_ACCELERATION_II", "HUMAN_MANUFACTURING_II"], "enablesRecognitionOf": ["HUMAN_ELECTROMAGNETIC_ACCELERATOR_IMPLEMENTATION_II"]}, "interpretation": {"requirements": ["ELECTROMAGNETIC_ACCELERATION_II", "HUMAN_MANUFACTURING_II"], "enablesInterpretationOf": ["HUMAN_ELECTROMAGNETIC_ACCELERATOR_IMPLEMENTATION_II"]}, "implicitlyGrants": []},
+    "tags": {"inherent": ["HUMAN", "IMPLEMENTATION_PATTERN", "ELECTROMAGNETIC_ACCELERATOR"], "possible": [], "implied": [], "incompatible": [], "hiddenByDefault": [], "revealRules": []},
+    "capabilities": {"provides": ["PRIMARY_WEAPON_SYSTEM"], "supportsProcesses": ["FABRICATE", "ASSEMBLE", "INTEGRATE", "ALIGN", "CALIBRATE", "VALIDATE"], "supportsInteractions": []},
+    "compositionGuidance": {"patternComposition": {"providesRoles": ["PRIMARY_WEAPON_SYSTEM"], "requiresRoles": [], "compatibleRoleTags": ["RIFLE_SCALE", "LINEAR_WEAPON", "KINETIC_PROJECTILE"], "incompatibleRoleTags": []}},
     "name": "Human Electromagnetic Accelerator Pattern II",
     "type": "IMPLEMENTATION_PATTERN",
     "family": "ELECTROMAGNETIC_ACCELERATOR",
@@ -48,6 +88,15 @@
   },
   "HUMAN_ADVANCED_RIFLE_PATTERN": {
     "id": "HUMAN_ADVANCED_RIFLE_PATTERN",
+    "version": 1,
+    "summary": "Human Tier-II rifle form-factor implementation knowledge.",
+    "identity": {"description": "How Humans manufacture a Tier-II rifle form factor while leaving the primary weapon technology as an implementation role.", "scope": "Human civilization-specific rifle implementation pattern.", "subjectTags": ["HUMAN", "RIFLE", "IMPLEMENTATION_PATTERN", "TIER_II"]},
+    "relationships": {"derivesFrom": ["HUMAN_MANUFACTURING_II"], "requiresTheories": ["HUMAN_MANUFACTURING_II"], "supersedes": [], "commonlyAssociatedWith": ["HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"], "compatibleWith": [], "incompatibleWith": [], "discoveryPartners": ["HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"]},
+    "knowledge": {"recognition": {"requirements": ["HUMAN_MANUFACTURING_II"], "enablesRecognitionOf": ["HUMAN_ADVANCED_RIFLE_IMPLEMENTATION"]}, "interpretation": {"requirements": ["HUMAN_MANUFACTURING_II"], "enablesInterpretationOf": ["HUMAN_ADVANCED_RIFLE_IMPLEMENTATION"]}, "implicitlyGrants": []},
+    "tags": {"inherent": ["HUMAN", "RIFLE", "IMPLEMENTATION_PATTERN"], "possible": [], "implied": [], "incompatible": [], "hiddenByDefault": [], "revealRules": []},
+    "capabilities": {"provides": [], "supportsProcesses": ["FABRICATE", "ASSEMBLE", "INTEGRATE", "FIT", "ALIGN", "FUNCTION_CHECK"], "supportsInteractions": []},
+    "compositionGuidance": {"patternComposition": {"providesRoles": [], "requiresRoles": ["PRIMARY_WEAPON_SYSTEM"], "compatibleRoleTags": ["RIFLE_SCALE", "HANDHELD", "LINEAR_WEAPON"], "incompatibleRoleTags": []}},
+    "extension": {"advancedMeansTechnologyTier": 2},
     "name": "Human Advanced Rifle Pattern",
     "type": "IMPLEMENTATION_PATTERN",
     "family": "RIFLE",
@@ -111,5 +160,198 @@
       "secondary": []
     },
     "authoringNote": "Minimal table record for the existing Human construction curriculum referenced by the impact vest."
+  },
+  "PULSED_POWER_I": {
+    "id": "PULSED_POWER_I",
+    "name": "Pulsed Power I",
+    "type": "THEORY",
+    "family": "PULSED_POWER",
+    "tier": 1,
+    "version": 1,
+    "summary": "Controlled accumulation, storage, and release of electrical energy as discrete pulses within a Tier-I operating envelope.",
+    "identity": {
+      "description": "Basic pulsed-power behavior within the Tier-I capability envelope.",
+      "scope": "Universal pulsed-power theory.",
+      "subjectTags": [
+        "PULSED_POWER",
+        "ENERGY_STORAGE",
+        "CONTROLLED_DISCHARGE"
+      ]
+    },
+    "relationships": {
+      "derivesFrom": [],
+      "requiresTheories": [],
+      "supersedes": [],
+      "commonlyAssociatedWith": [],
+      "compatibleWith": [],
+      "incompatibleWith": [],
+      "discoveryPartners": []
+    },
+    "knowledge": {
+      "recognition": {
+        "requirements": [],
+        "enablesRecognitionOf": [
+          "PULSED_POWER_I_BEHAVIOR"
+        ]
+      },
+      "interpretation": {
+        "requirements": [],
+        "enablesInterpretationOf": [
+          "PULSED_POWER_I_BEHAVIOR"
+        ]
+      },
+      "implicitlyGrants": []
+    },
+    "tags": {
+      "inherent": [
+        "PULSED_POWER"
+      ],
+      "possible": [],
+      "implied": [],
+      "incompatible": [],
+      "hiddenByDefault": [],
+      "revealRules": []
+    },
+    "capabilities": {
+      "provides": [],
+      "supportsProcesses": [
+        "ACCUMULATE",
+        "STORE",
+        "CONTROL_DISCHARGE",
+        "DELIVER_PULSE",
+        "RECOVER"
+      ],
+      "supportsInteractions": []
+    },
+    "researchGuidance": {
+      "verticalAdvancementTarget": "PULSED_POWER_II",
+      "targetScaleClass": 10
+    }
+  },
+  "ELECTROMAGNETIC_ACCELERATION_I": {
+    "id": "ELECTROMAGNETIC_ACCELERATION_I",
+    "name": "Electromagnetic Acceleration I",
+    "type": "THEORY",
+    "family": "ELECTROMAGNETIC_ACCELERATION",
+    "tier": 1,
+    "version": 1,
+    "summary": "Basic understanding that controlled electromagnetic force can accelerate a physical mass.",
+    "identity": {
+      "description": "Tier-I electromagnetic acceleration theory.",
+      "scope": "Universal electromagnetic acceleration theory.",
+      "subjectTags": [
+        "ELECTROMAGNETIC_ACCELERATION",
+        "KINETIC_ACCELERATION"
+      ]
+    },
+    "relationships": {
+      "derivesFrom": [],
+      "requiresTheories": [],
+      "supersedes": [],
+      "commonlyAssociatedWith": [],
+      "compatibleWith": [],
+      "incompatibleWith": [],
+      "discoveryPartners": []
+    },
+    "knowledge": {
+      "recognition": {
+        "requirements": [],
+        "enablesRecognitionOf": [
+          "ELECTROMAGNETIC_ACCELERATION_I_BEHAVIOR"
+        ]
+      },
+      "interpretation": {
+        "requirements": [],
+        "enablesInterpretationOf": [
+          "ELECTROMAGNETIC_ACCELERATION_I_BEHAVIOR"
+        ]
+      },
+      "implicitlyGrants": []
+    },
+    "tags": {
+      "inherent": [
+        "ELECTROMAGNETIC_ACCELERATION"
+      ],
+      "possible": [],
+      "implied": [],
+      "incompatible": [],
+      "hiddenByDefault": [],
+      "revealRules": []
+    },
+    "capabilities": {
+      "provides": [],
+      "supportsProcesses": [],
+      "supportsInteractions": []
+    },
+    "analysisGuidance": {
+      "canRecognizeHigherTierEvidence": true,
+      "higherTierRecognitionRequiresKnownPreviousTier": true
+    }
+  },
+  "HUMAN_ROOM_CONSTRUCTION_II": {
+    "id": "HUMAN_ROOM_CONSTRUCTION_II",
+    "name": "Human Room Construction II",
+    "type": "THEORY",
+    "family": "HUMAN_ROOM_CONSTRUCTION",
+    "tier": 2,
+    "version": 1,
+    "summary": "Human Technology Tier-II room construction capability.",
+    "identity": {
+      "description": "Human Tier-II room construction knowledge including ordinary structural and utility implementation knowledge.",
+      "scope": "Human civilization-specific room construction.",
+      "subjectTags": [
+        "HUMAN",
+        "ROOM_CONSTRUCTION",
+        "TIER_II"
+      ]
+    },
+    "relationships": {
+      "derivesFrom": [],
+      "requiresTheories": [],
+      "supersedes": [],
+      "commonlyAssociatedWith": [],
+      "compatibleWith": [],
+      "incompatibleWith": [],
+      "discoveryPartners": []
+    },
+    "knowledge": {
+      "recognition": {
+        "requirements": [],
+        "enablesRecognitionOf": [
+          "HUMAN_ROOM_CONSTRUCTION_II"
+        ]
+      },
+      "interpretation": {
+        "requirements": [],
+        "enablesInterpretationOf": [
+          "HUMAN_ROOM_CONSTRUCTION_II"
+        ]
+      },
+      "implicitlyGrants": [
+        "HUMAN_WALL_PATTERN_II",
+        "HUMAN_DOOR_PATTERN_II",
+        "HUMAN_UTILITY_PATTERN_II",
+        "HUMAN_WORKSPACE_PATTERN_II"
+      ]
+    },
+    "tags": {
+      "inherent": [
+        "HUMAN_ROOM_CONSTRUCTION",
+        "TIER_II_CAPABILITY"
+      ],
+      "possible": [],
+      "implied": [],
+      "incompatible": [],
+      "hiddenByDefault": [],
+      "revealRules": []
+    },
+    "capabilities": {
+      "provides": [],
+      "supportsProcesses": [],
+      "supportsInteractions": []
+    },
+    "extension": {
+      "implicitGrantListStatus": "ILLUSTRATIVE"
+    }
   }
 }

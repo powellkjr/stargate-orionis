@@ -51,6 +51,31 @@ Tier III remains ordinary senior Profession competency.
 
 Specializations must retain distinct exceptional territory and should not simply duplicate base Tier III.
 
+## First Specialization Onboarding
+
+The first time a Unit selects a Specialization, that choice should initiate a
+Profession onboarding mission chain. The Unit works alongside an experienced
+person of the relevant Profession for several missions, allowing the new
+Specialization to be introduced through supervised field practice rather than
+being treated as an instantaneous menu-only unlock.
+
+This onboarding chain is a progression consequence of the first
+Specialization choice. It is not a replacement for Profession Curriculum
+certification, does not grant missing subject Theory, and does not transfer the
+mentor's competency to the Unit. The ordinary Profession, Service, state,
+availability, and mission rules still apply to each mission.
+
+The following details remain to be authored:
+
+- the exact definition of an eligible mentor;
+- the number and structure of the onboarding missions;
+- whether the chain is blocking, pausable, or resumable;
+- the completion state that marks the Specialization as fully onboarded.
+
+This rule applies to a Unit's first Specialization selection. It should not be
+silently applied to Cross-Path selection unless that progression is explicitly
+given the same onboarding rule.
+
 ## Profession Curriculum Is a Theory Type
 
 Profession Curriculum should not be a separate disconnected progression data format.

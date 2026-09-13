@@ -81,16 +81,28 @@
       "activeProjectsPerGroup": 1,
       "subordinateTabs": [
         {
-          "id": "analysis",
-          "name": "Analysis",
-          "notes": "Primary characterization workspace.",
+          "id": "process",
+          "name": "Process",
+          "notes": "Physical item processing workspace.",
           "slotConfig": {
-            "theory": {
-              "fixed": 1,
-              "scaleWithLayout": false,
-              "notes": "One Theory reference slot."
+            "item": {
+              "fixed": 1
             }
-          }
+          },
+          "buttons": [
+            {
+              "name": "Send to Containment",
+              "process": "send_to_containment"
+            },
+            {
+              "name": "Send to Workshop",
+              "process": "send_to_workshop"
+            },
+            {
+              "name": "Send to Storage",
+              "process": "send_to_storage"
+            }
+          ]
         },
         {
           "id": "queue",
@@ -124,14 +136,7 @@
           "notes": "Analysis core slots scale by CT per physical room."
         },
         "item": {
-          "fixed": 0,
-          "scaleWithLayout": false,
-          "notes": "Analysis has no general item-storage slots."
-        },
-        "theory": {
-          "fixed": 1,
-          "scaleWithLayout": false,
-          "notes": "Analysis exposes one Theory slot."
+          "fixed": 1
         }
       }
     }
@@ -206,7 +211,11 @@
           "cc"
         ],
         "supportsProgression": true,
-        "progression": [20,40,80],
+        "progression": [
+          20,
+          40,
+          80
+        ],
         "notes": "Containment exposes 20/40/80 CC item-storage capacity by construction tier."
       },
       "cores": {
@@ -225,12 +234,15 @@
           "id": "cc_storage",
           "name": "CC Storage",
           "notes": "Accepts items explicitly compatible with containment custody.",
-          "acceptsItemClasses": ["cc"],
+          "storage": {
+            "storageClasses": [
+              "CC"
+            ]
+          },
           "slotConfig": {
             "item": {
-              "byConstructionTier": [20,40,80],
-              "scaleWithLayout": false,
-              "notes": "Containment cargo capacity by construction tier."
+              "progressionSource": "inventory",
+              "scaleWithLayout": false
             }
           }
         }
@@ -251,7 +263,11 @@
           "notes": "Containment core slots scale by CT per physical room."
         },
         "item": {
-          "byConstructionTier": [20,40,80],
+          "byConstructionTier": [
+            20,
+            40,
+            80
+          ],
           "scaleWithLayout": false,
           "notes": "Containment exposes CC item storage by construction tier."
         }
@@ -300,8 +316,13 @@
         "storageTypes": [
           "knowledge_cargo"
         ],
-        "supportsProgression": false,
-        "notes": "Data Storage physically stores and interfaces with knowledge cargo; read/write capability is primarily core-driven, and Discovery is a subordinate tab rather than a separate room."
+        "supportsProgression": true,
+        "notes": "Data Storage physically stores and interfaces with knowledge cargo; read/write capability is primarily core-driven, and Discovery is a subordinate tab rather than a separate room.",
+        "progression": [
+          40,
+          60,
+          80
+        ]
       },
       "specialization": {
         "supportsSpecialization": false,
@@ -352,6 +373,16 @@
             "theory": {
               "fixed": 2,
               "notes": "Read and write knowledge interface slots."
+            }
+          }
+        },
+        {
+          "id": "theories",
+          "name": "Theories",
+          "slotConfig": {
+            "theory": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
             }
           }
         }
@@ -467,25 +498,33 @@
       "subordinateTabs": [
         {
           "id": "weapons",
+          "storage": {
+            "storageClasses": [
+              "EQ"
+            ]
+          },
           "name": "Weapons",
           "notes": "Weapon storage interface within Equipment Storage.",
           "slotConfig": {
             "item": {
-              "perPhysicalRoom": 1,
-              "scaleWithLayout": true,
-              "notes": "Weapon item slots per physical room."
+              "progressionSource": "storage",
+              "scaleWithLayout": false
             }
           }
         },
         {
           "id": "armor",
+          "storage": {
+            "storageClasses": [
+              "EQ"
+            ]
+          },
           "name": "Armor",
           "notes": "Armor storage interface within Equipment Storage.",
           "slotConfig": {
             "item": {
-              "perPhysicalRoom": 1,
-              "scaleWithLayout": true,
-              "notes": "Armor item slots per physical room."
+              "progressionSource": "storage",
+              "scaleWithLayout": false
             }
           }
         }
@@ -910,13 +949,8 @@
           "notes": "Personal tool and equipment custody scales with CT.",
           "slotConfig": {
             "item": {
-              "byConstructionTier": [
-                2,
-                4,
-                6
-              ],
-              "scaleWithLayout": false,
-              "notes": "Locker tool slots follow inventory progression."
+              "progressionSource": "inventory",
+              "scaleWithLayout": false
             }
           }
         }
@@ -1120,9 +1154,9 @@
         ],
         "supportsProgression": true,
         "progression": [
-          2,
-          4,
-          8
+          4000,
+          6000,
+          8000
         ]
       },
       "specialization": {
@@ -1156,7 +1190,96 @@
       }
     },
     "function": {
-      "base": "Stores bulk materials by tier and handles material cargo."
+      "base": "Stores bulk materials by tier and handles material cargo.",
+      "subordinateTabs": [
+        {
+          "id": "m1",
+          "name": "M1",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        },
+        {
+          "id": "m2",
+          "name": "M2",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        },
+        {
+          "id": "m3",
+          "name": "M3",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        }
+      ]
     }
   },
   {
@@ -1213,9 +1336,9 @@
         ],
         "supportsProgression": true,
         "progression": [
-          2,
-          4,
-          8
+          4000,
+          6000,
+          8000
         ]
       },
       "specialization": {
@@ -1244,7 +1367,38 @@
       }
     },
     "function": {
-      "base": "Stores bulk rations and handles ration cargo."
+      "base": "Stores bulk rations and handles ration cargo.",
+      "subordinateTabs": [
+        {
+          "id": "rations",
+          "name": "Rations",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        }
+      ]
     }
   },
   {
@@ -1325,26 +1479,62 @@
       "subordinateTabs": [
         {
           "id": "intake",
-          "name": "Intake",
+          "arrival": {
+            "storageId": "RECEIVING_INTAKE",
+            "initialState": {
+              "condition": "INTACT",
+              "functionalState": "UNKNOWN",
+              "quantity": 1,
+              "percentOfWhole": 1000
+            }
+          },
+          "storage": {
+            "storageClasses": [
+              "INV"
+            ]
+          },
+          "name": "Receiving Queue",
           "notes": "Temporary receiving inventory and custody.",
           "slotConfig": {
             "item": {
-              "byConstructionTier": [
-                40,
-                60,
-                80
-              ],
-              "scaleWithLayout": false,
-              "notes": "Receiving item slots follow authored inventory progression."
+              "progressionSource": "inventory",
+              "scaleWithLayout": false
             }
           }
+        },
+        {
+          "id": "processing",
+          "name": "Processing",
+          "queueSource": "intake",
+          "slotConfig": {
+            "item": {
+              "fixed": 1
+            }
+          },
+          "buttons": [
+            {
+              "name": "Process",
+              "process": "process"
+            },
+            {
+              "name": "Send to Containment",
+              "process": "send_to_containment"
+            },
+            {
+              "name": "Send to Storage",
+              "process": "send_to_storage"
+            },
+            {
+              "name": "Send to Workshop",
+              "process": "send_to_workshop"
+            }
+          ]
         }
       ],
       "slotConfig": {
         "staff": {
-          "fixed": 2,
-          "scaleWithLayout": false,
-          "notes": "Receiving uses two visible staff slots in the staffing demo."
+          "progressionSource": "staffing",
+          "scaleWithLayout": false
         },
         "core": {
           "byConstructionTier": [
@@ -1421,7 +1611,7 @@
           "research"
         ],
         "queueSize": 4,
-        "notes": "Research runs destructive investigation work on artifacts and hypothesis cargo."
+        "notes": "Research operates on persistent Thesis records, not physical items; the staffing demo exposes Theory reference slots."
       },
       "storage": {
         "supportsStorage": false,
@@ -1445,7 +1635,7 @@
       }
     },
     "function": {
-      "base": "Destructive investigation and extraction of Knowledge from artifacts and hypothesis cargo.",
+      "base": "Institutional Research establishes Theory Knowledge through Thesis work; the staffing demo accepts Theory references only.",
       "activeProjectsPerGroup": 1,
       "slotConfig": {
         "staff": {
@@ -1465,15 +1655,10 @@
           "scaleWithLayout": true,
           "notes": "Research core slots scale by CT per physical room."
         },
-        "item": {
-          "perPhysicalRoom": 2,
-          "scaleWithLayout": true,
-          "notes": "Research accepts physical artifacts and hypothesis-linked materials."
-        },
         "theory": {
           "perPhysicalRoom": 2,
           "scaleWithLayout": true,
-          "notes": "Research holds Theory or Hypothesis references during work."
+          "notes": "Research accepts Theory references only in the staffing demo."
         }
       }
     }
@@ -1600,9 +1785,9 @@
         ],
         "supportsProgression": true,
         "progression": [
-          2,
-          4,
-          8
+          4000,
+          6000,
+          8000
         ]
       },
       "specialization": {
@@ -1636,7 +1821,96 @@
       }
     },
     "function": {
-      "base": "Stores bulk supplies by tier and handles supply cargo."
+      "base": "Stores bulk supplies by tier and handles supply cargo.",
+      "subordinateTabs": [
+        {
+          "id": "s1",
+          "name": "S1",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "name": "S2",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        },
+        {
+          "id": "s3",
+          "name": "S3",
+          "quantity": {
+            "capacity": {
+              "progressionSource": "storage",
+              "scaleWithLayout": false
+            },
+            "initialRange": [
+              1000,
+              5000
+            ],
+            "capacityGroup": "storage"
+          },
+          "buttons": [
+            {
+              "name": "Increase",
+              "process": "increase"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            },
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            }
+          ]
+        }
+      ]
     }
   },
   {

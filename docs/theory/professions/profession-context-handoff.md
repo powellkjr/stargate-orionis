@@ -125,6 +125,16 @@ DI3 Diplomatic Requirements or Framework
 
 A handoff passes a finding, Requirement, plan, constraint, or state. It does not transfer competency.
 
+## Specialization Onboarding
+
+When a Unit selects a Specialization for the first time, the Profession
+progression plan should start a multi-mission onboarding chain in which the
+Unit works with an experienced person of the relevant Profession. This is
+supervised field practice, not an automatic transfer of competency or subject
+Theory, and it is separate from Curriculum certification. Mentor eligibility,
+mission count, chain behavior, and the final onboarding state remain to be
+authored in the Profession progression plan.
+
 ```text
 Profession A output
 + Profession B competency

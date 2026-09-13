@@ -64,19 +64,41 @@
         },
         "history": {
           "$ref": "#/$defs/history"
+        },
+        "relationships": {
+          "$ref": "#/$defs/relationships"
+        },
+        "processingTags": {
+          "$ref": "#/$defs/processingTags"
         }
       }
     },
     "physicalState": {
       "type": "object",
-      "required": ["condition", "functionalState", "quantity", "percentOfWhole"],
+      "required": [
+        "condition",
+        "functionalState",
+        "quantity",
+        "percentOfWhole"
+      ],
       "additionalProperties": false,
       "properties": {
         "condition": {
-          "enum": ["INTACT", "DAMAGED", "DESTROYED"]
+          "enum": [
+            "UNKNOWN",
+            "INTACT",
+            "DAMAGED",
+            "DESTROYED"
+          ],
+          "description": "UNKNOWN is valid before Receiving establishes condition. Condition remains structured Physical State, not a Processing Tag."
         },
         "functionalState": {
-          "enum": ["FUNCTIONAL", "DEGRADED", "NONFUNCTIONAL", "UNKNOWN"]
+          "enum": [
+            "FUNCTIONAL",
+            "DEGRADED",
+            "NONFUNCTIONAL",
+            "UNKNOWN"
+          ]
         },
         "quantity": {
           "type": "integer",
@@ -86,12 +108,25 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 1000
+        },
+        "powerState": {
+          "$ref": "#/$defs/identifier"
+        },
+        "constructionState": {
+          "$ref": "#/$defs/identifier"
+        },
+        "damage": {
+          "$ref": "#/$defs/stringArray"
         }
-      }
+      },
+      "description": "Physical condition, functional state, and quantity, with existing physical fields retained. Processing permission and completion belong in processingTags/processes."
     },
     "theoryBinding": {
       "type": "object",
-      "required": ["theoryId", "implementedProperties"],
+      "required": [
+        "theoryId",
+        "implementedProperties"
+      ],
       "additionalProperties": false,
       "properties": {
         "theoryId": {
@@ -107,7 +142,10 @@
     },
     "reality": {
       "type": "object",
-      "required": ["theoryBindings", "authoredTags"],
+      "required": [
+        "theoryBindings",
+        "authoredTags"
+      ],
       "additionalProperties": false,
       "properties": {
         "theoryBindings": {
@@ -117,13 +155,32 @@
           }
         },
         "authoredTags": {
+          "$ref": "#/$defs/stringArray",
+          "description": "Reality Tags initialized from authored Item Definition truth. Learning does not mutate these tags; physical transitions remain distinct from recognition."
+        },
+        "technology": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "implementationPatterns": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "fabricationEcosystem": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "materials": {
           "$ref": "#/$defs/stringArray"
         }
       }
     },
     "instanceFinding": {
       "type": "object",
-      "required": ["id", "type", "claim", "scope", "status"],
+      "required": [
+        "id",
+        "type",
+        "claim",
+        "scope",
+        "status"
+      ],
       "additionalProperties": false,
       "properties": {
         "id": {
@@ -150,23 +207,81 @@
     },
     "knowledge": {
       "type": "object",
-      "required": ["revealedTags"],
+      "required": [
+        "revealedTags"
+      ],
       "additionalProperties": false,
       "properties": {
         "revealedTags": {
-          "$ref": "#/$defs/stringArray"
+          "$ref": "#/$defs/stringArray",
+          "description": "Known Tags: instance recognition/interpretation derived from retained evidence and current SGC Theory/Pattern Knowledge. Re-evaluate when relevant institutional Knowledge changes; do not reveal Reality merely because its definition is loaded."
         },
         "instanceFindings": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/instanceFinding"
           }
+        },
+        "recognizedIdentity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recognizedCivilization": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recognizedItemClass": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "handlingKnowledge": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "knownProcessRequirements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "process": {
+                "$ref": "#/$defs/identifier"
+              },
+              "knowledgeRequirements": {
+                "$ref": "#/$defs/stringArray"
+              }
+            },
+            "required": [
+              "process",
+              "knowledgeRequirements"
+            ]
+          }
         }
       }
     },
     "cost": {
       "type": "object",
-      "required": ["unitCost", "extendedCost"],
+      "required": [
+        "unitCost",
+        "extendedCost"
+      ],
       "additionalProperties": false,
       "properties": {
         "unitCost": {
@@ -181,7 +296,17 @@
     },
     "custody": {
       "type": "object",
-      "required": ["storageId", "containerId", "leaseId", "state", "nextStorageId", "status", "reservedBy", "committedBy", "cost"],
+      "required": [
+        "storageId",
+        "containerId",
+        "leaseId",
+        "state",
+        "nextStorageId",
+        "status",
+        "reservedBy",
+        "committedBy",
+        "cost"
+      ],
       "additionalProperties": false,
       "properties": {
         "storageId": {
@@ -191,44 +316,109 @@
           "$ref": "#/$defs/identifier"
         },
         "leaseId": {
-          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "state": {
-          "enum": ["ACTIVE", "INACTIVE", "DROPPED", "LOST", "EQUIPPED", "STANDBY"]
+          "enum": [
+            "ACTIVE",
+            "INACTIVE",
+            "DROPPED",
+            "LOST",
+            "EQUIPPED",
+            "STANDBY"
+          ]
         },
         "nextStorageId": {
-          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "status": {
-          "enum": ["STORED", "IN_TRANSIT", "INBOUND", "OUTBOUND", "DELIVERED", "PENDING_STORAGE"]
+          "enum": [
+            "STORED",
+            "IN_TRANSIT",
+            "INBOUND",
+            "OUTBOUND",
+            "DELIVERED",
+            "PENDING_STORAGE"
+          ]
         },
         "reservedBy": {
-          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "committedBy": {
-          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "cost": {
           "$ref": "#/$defs/cost"
         }
-      }
+      },
+      "description": "Physical location and custody claims. containerId identifies the current physical location; custody alone does not authorize processing."
     },
     "process": {
       "type": "object",
-      "required": ["state"],
+      "required": [
+        "state"
+      ],
       "additionalProperties": false,
       "properties": {
         "state": {
-          "enum": ["NOT_STARTED", "IN_PROGRESS", "COMPLETE", "BLOCKED", "CANCELLED"]
+          "enum": [
+            "NOT_STARTED",
+            "IN_PROGRESS",
+            "COMPLETE",
+            "BLOCKED",
+            "CANCELLED"
+          ]
         },
         "recipeId": {
-          "$ref": "#/$defs/identifier"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "completedBubbles": {
           "$ref": "#/$defs/stringArray"
         },
         "currentBubble": {
-          "anyOf": [{"$ref": "#/$defs/identifier"}, {"type": "null"}]
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "partialProgress": {
           "type": "integer",
@@ -237,29 +427,68 @@
         },
         "findingsProduced": {
           "$ref": "#/$defs/stringArray"
+        },
+        "completedSteps": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "currentStep": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
     "processes": {
       "type": "object",
-      "required": ["receiving", "analysis", "reverseEngineering", "salvage"],
+      "required": [
+        "receiving",
+        "analysis",
+        "reverseEngineering",
+        "salvage"
+      ],
       "additionalProperties": false,
       "properties": {
-        "receiving": {"$ref": "#/$defs/process"},
-        "analysis": {"$ref": "#/$defs/process"},
-        "construction": {"$ref": "#/$defs/process"},
-        "repair": {"$ref": "#/$defs/process"},
-        "reverseEngineering": {"$ref": "#/$defs/process"},
-        "salvage": {"$ref": "#/$defs/process"}
+        "receiving": {
+          "$ref": "#/$defs/process"
+        },
+        "analysis": {
+          "$ref": "#/$defs/process"
+        },
+        "construction": {
+          "$ref": "#/$defs/process"
+        },
+        "repair": {
+          "$ref": "#/$defs/process"
+        },
+        "reverseEngineering": {
+          "$ref": "#/$defs/process"
+        },
+        "salvage": {
+          "$ref": "#/$defs/process"
+        }
       }
     },
     "historyEvent": {
       "type": "array",
       "prefixItems": [
-        {"type": "integer", "minimum": 0},
-        {"$ref": "#/$defs/identifier"},
-        {"$ref": "#/$defs/identifier"},
-        {"$ref": "#/$defs/identifier"}
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "$ref": "#/$defs/identifier"
+        },
+        {
+          "$ref": "#/$defs/identifier"
+        },
+        {
+          "$ref": "#/$defs/identifier"
+        }
       ],
       "items": false,
       "minItems": 4,
@@ -268,8 +497,80 @@
     "history": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/historyEvent"
+        "oneOf": [
+          {
+            "$ref": "#/$defs/historyEvent"
+          },
+          {
+            "$ref": "#/$defs/authoredHistoryEvent"
+          }
+        ]
       }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "parentInstanceId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "childInstanceIds": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "createdFrom": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "sourceRecipeId": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "derivedKnowledge": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "authoredHistoryEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "$ref": "#/$defs/identifier"
+        },
+        "source": {
+          "$ref": "#/$defs/identifier"
+        },
+        "location": {
+          "$ref": "#/$defs/identifier"
+        },
+        "recipeId": {
+          "$ref": "#/$defs/identifier"
+        }
+      },
+      "required": [
+        "event"
+      ],
+      "description": "Authored fixture event without a runtime timestamp; retained without inventing a timestamp or actor."
+    },
+    "processingTags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      },
+      "description": "Flat array of authored processing tag IDs, including requirements, authorization, identity, availability, selection, active processing, and completion. Contracts define prerequisites and tag additions/removals. Optional during migration; absence does not grant permission. Detailed execution remains in processes and location in custody. Runtime must not invent canonical tags."
     }
   }
 }

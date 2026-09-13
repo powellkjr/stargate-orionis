@@ -1,10 +1,17 @@
 {
   "ASGARD_EM_RIFLE": {
     "id": "ASGARD_EM_RIFLE",
+    "family": "RIFLE",
+    "version": 1,
+    "identity": {"description": "A handheld Asgard ranged weapon using Tier-II electromagnetic acceleration.", "civilization": "ASGARD", "formFactor": "RIFLE", "subjectTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD"]},
+    "possibleReality": {"inherentTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD", "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"], "possibleTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED", "CONTAMINATED", "UNSTABLE"]},
+    "salvageGuidance": {"preserveMass": true},
+    "extension": {"ordinaryAsgardPatternsAreImplicitInFabricationCapability": true},
+    "physical": {"inventoryClass": "EQUIPMENT", "isContainer": false, "isTool": false},
     "name": "Asgard Electromagnetic Rifle",
     "type": "ITEM",
     "tags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD"],
-    "storage": {"storageClasses": ["INV", "CC"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
+    "storage": {"storageClasses": ["INV", "CC", "EQ"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
     "processCompatibility": {"receiving": true, "analysis": true, "construction": false, "repair": true, "reverseEngineering": true, "salvage": true},
     "theoryBindings": [
       {"theoryId": "ELECTROMAGNETIC_ACCELERATION_II", "implementedProperties": [], "implementationTags": ["ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"]}
@@ -12,6 +19,13 @@
   },
   "HUMAN_ADVANCED_COIL_RIFLE": {
     "id": "HUMAN_ADVANCED_COIL_RIFLE",
+    "family": "RIFLE",
+    "version": 1,
+    "identity": {"description": "A Human Technology Tier-II rifle using a Human electromagnetic accelerator implementation.", "civilization": "HUMAN", "formFactor": "RIFLE", "subjectTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE"]},
+    "possibleReality": {"inherentTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE", "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"], "possibleTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED"]},
+    "salvageGuidance": {"preserveMass": true},
+    "extension": {"sourceRecipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"},
+    "physical": {"inventoryClass": "EQUIPMENT", "isContainer": false, "isTool": false},
     "name": "Human Advanced Coil Rifle",
     "type": "ITEM",
     "tags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE"],

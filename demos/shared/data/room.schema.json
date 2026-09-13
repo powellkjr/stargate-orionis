@@ -155,6 +155,17 @@
         },
         "slotConfig": {
           "$ref": "#/$defs/functionSlotConfig"
+        },
+        "roomServices": {
+          "$ref": "#/$defs/roomServices"
+        },
+        "processingCapabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/roomProcessingCapability"
+          },
+          "description": "Authored rules for deriving processing capabilities from configured Services. They do not directly grant capability, create Services, or authorize an instance. Capacity must be validated/reserved before authorization and source custody release."
         }
       }
     }
@@ -405,7 +416,14 @@
           "type": "boolean"
         },
         "progression": {
-          "$ref": "#/$defs/intProgression"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/intProgression"
+            },
+            {
+              "$ref": "#/$defs/stringArray"
+            }
+          ]
         },
         "notes": {
           "$ref": "#/$defs/notesString"
@@ -503,12 +521,130 @@
         "slotConfig": {
           "$ref": "#/$defs/functionSlotConfig"
         },
-        "acceptsItemClasses": {
+        "storage": {
+          "type": "object",
+          "required": [
+            "storageClasses"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "storageClasses": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*$"
+              }
+            }
+          }
+        },
+        "arrival": {
+          "type": "object",
+          "required": [
+            "storageId",
+            "initialState"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "storageId": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]*$"
+            },
+            "initialState": {
+              "type": "object",
+              "required": [
+                "condition",
+                "functionalState",
+                "quantity",
+                "percentOfWhole"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "condition": {
+                  "enum": [
+                    "INTACT",
+                    "DAMAGED",
+                    "DESTROYED"
+                  ]
+                },
+                "functionalState": {
+                  "enum": [
+                    "FUNCTIONAL",
+                    "DEGRADED",
+                    "NONFUNCTIONAL",
+                    "UNKNOWN"
+                  ]
+                },
+                "quantity": {
+                  "const": 1
+                },
+                "percentOfWhole": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1000
+                }
+              }
+            }
+          }
+        },
+        "queueSource": {
+          "type": "string",
+          "minLength": 1
+        },
+        "buttons": {
           "type": "array",
           "items": {
-            "enum": ["cc", "inv", "eq", "tool"]
-          },
-          "uniqueItems": true
+            "type": "object",
+            "required": [
+              "name",
+              "process"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "process": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "quantity": {
+          "type": "object",
+          "required": [
+            "capacity",
+            "initialRange"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "capacity": {
+              "$ref": "#/$defs/roomSlotConfig"
+            },
+            "initialRange": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              ],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "capacityGroup": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
         }
       }
     },
@@ -553,8 +689,56 @@
         },
         "notes": {
           "$ref": "#/$defs/notesString"
+        },
+        "progressionSource": {
+          "enum": [
+            "inventory",
+            "storage",
+            "capacity",
+            "staffing"
+          ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "progressionSource"
+            ]
+          },
+          "then": {
+            "properties": {
+              "scaleWithLayout": {
+                "const": false
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "fixed"
+                  ]
+                },
+                {
+                  "required": [
+                    "byConstructionTier"
+                  ]
+                },
+                {
+                  "required": [
+                    "byLayout"
+                  ]
+                },
+                {
+                  "required": [
+                    "perPhysicalRoom"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     "functionSlotConfig": {
       "type": "object",
@@ -577,6 +761,48 @@
         },
         "job": {
           "$ref": "#/$defs/roomSlotConfig"
+        }
+      }
+    },
+    "contractIdentifier": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "roomServices": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/contractIdentifier"
+      },
+      "description": "Configured functional Service IDs for this physical room. Does not mean resources are currently available. Room Groups resolve from their physical child rooms."
+    },
+    "roomProcessingCapability": {
+      "type": "object",
+      "required": [
+        "processingContractId",
+        "requiredRoomServices"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "processingContractId": {
+          "$ref": "#/$defs/contractIdentifier",
+          "description": "Reference to an authored processing contract, not a new Recipe or executable UI action."
+        },
+        "requiredRoomServices": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/contractIdentifier"
+          },
+          "description": "Configured Services needed to support this contract. Cross-record resolution must verify the Services in the destination Room Group; this is not a multi-Service Recipe bubble."
+        },
+        "providesCapabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/contractIdentifier"
+          },
+          "description": "Authored processing capability IDs exposed only when requiredRoomServices resolve from configured room Services. Used for instance admission; room names do not determine validity."
         }
       }
     }

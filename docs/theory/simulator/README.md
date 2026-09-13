@@ -20,6 +20,7 @@ Simulator documents may narrow or stage an established rule, but they do not ove
 2. [Established test content](./established-theory-pattern-recipe-content.md)
 3. [Physical item schema](./physical-item-schema.md)
 4. [Room simulator integration](./room-simulator-integration.md)
+5. [Item Processing / Room Flow](./item-processing-room-flow.md)
 
 ## Implementation Rule
 

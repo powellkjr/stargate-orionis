@@ -1,11 +1,12 @@
+import {createArrivalStore} from "../shared/js/item-instances.mjs";
 import {getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=room-staffing-demo-5";
 
 const ROOM_CATALOG_URL="../shared/data/rooms_schema.json?v=room-staffing-demo-5";
 const CLASS_CATALOG_URL="../shared/data/base-classes.json?v=room-staffing-demo-5";
 const PERSONNEL_NAMES_URL="../shared/data/personnel-names.json";
 const SPECIALIZATION_ICON_URL="../shared/data/specialization-icons.json?v=room-staffing-demo-5";
-const ITEM_CATALOG_URL="../shared/data/items/asgard_vs_human_em_rifle_items.json?v=room-staffing-demo-5";
-const THEORY_CATALOG_URL="../shared/data/theory/stargate_theory_simulator_import.json?v=room-staffing-demo-5";
+const ITEM_CATALOG_URL="../shared/data/item.json";
+const THEORY_CATALOG_URL="../shared/data/theories.json";
 const ITEM_ICONS={ASGARD_EM_RIFLE:"../shared/icons/items/asgard-em-rifle.svg",HUMAN_ADVANCED_COIL_RIFLE:"../shared/icons/items/human-coil-rifle.svg"};
 const THEORY_ICONS={PULSED_POWER:"../shared/icons/theory/pulsed-power.svg",ELECTROMAGNETIC_ACTUATION:"../shared/icons/theory/electromagnetic-actuation.svg",ELECTROMAGNETIC_ACCELERATION:"../shared/icons/theory/electromagnetic-acceleration.svg",HUMAN_MANUFACTURING:"../shared/icons/theory/manufacturing.svg",HUMAN_ROOM_CONSTRUCTION:"../shared/icons/theory/room-construction.svg",ELECTROMAGNETIC_ACCELERATOR:"../shared/icons/theory/electromagnetic-accelerator.svg",RIFLE:"../shared/icons/theory/rifle-pattern.svg"};
 const CT_BORDER_COLORS={1:"#8b949e",2:"#38bdf8",3:"#f59e0b"};
@@ -39,6 +40,10 @@ let itemCatalog=[];
 let theoryCatalog=[];
 let roomResources={items:[],theories:[],cores:[]};
 let roomTabResources={};
+const arrivals=createArrivalStore();
+let arrivalCt=1;
+const roomQuantities={};
+const quantityRoomCt={};
 let activeRoomTabId=null;
 const iconMarkupCache=new Map();
 
@@ -151,12 +156,39 @@ async function loadSpecializationIcons(){
   return await response.json();
 }
 
-async function loadCatalogCollection(url,key,label){
-  const response=await fetch(url,{cache:"no-store"});
-  if(!response.ok)throw new Error(`Could not load ${label} catalog (${response.status}).`);
-  const document=await response.json();
-  if(!Array.isArray(document[key]))throw new Error(`${label} catalog is missing ${key}.`);
-  return document[key];
+async function loadTheoryCatalog(){
+  const response=await fetch(THEORY_CATALOG_URL,{cache:"no-store"});
+  if(!response.ok)throw new Error(`Could not load Theory catalog (${response.status}).`);
+  const table=await response.json();
+  if(!table || typeof table!=="object" || Array.isArray(table))throw new Error("Theory catalog must be a table keyed by Theory ID.");
+  for(const [id,theory] of Object.entries(table)){
+    if(theory?.id!==id || !["THEORY","IMPLEMENTATION_PATTERN"].includes(theory.type))throw new Error(`Invalid Theory definition: ${id}.`);
+  }
+  return Object.values(table);
+}
+
+async function loadItemCatalog(){
+  const response=await fetch(ITEM_CATALOG_URL,{cache:"no-store"});
+  if(!response.ok)throw new Error(`Could not load item catalog (${response.status}).`);
+  const table=await response.json();
+  if(!table || typeof table!=="object" || Array.isArray(table))throw new Error("Item catalog must be a table keyed by item ID.");
+  for(const [id,item] of Object.entries(table)){
+    if(item?.id!==id || !Array.isArray(item.storage?.storageClasses) || !item.storage.storageClasses.length || item.storage.storageClasses.some(value=>typeof value!=="string" || !/^[A-Z][A-Z0-9_]*$/.test(value)))throw new Error(`Invalid item storage definition: ${id}.`);
+  }
+  return Object.values(table);
+}
+
+function acceptsStoredItem(item,storageClasses=[]){
+  return !storageClasses.length || storageClasses.some(value=>item.storage?.storageClasses?.includes(value));
+}
+
+function setResourceImage(container,definition,type){
+  const path=resourceIcon(definition,type);
+  if(!path){container.textContent=type==="item"?"I":"T";return;}
+  const image=document.createElement("img");
+  image.src=path;
+  image.alt="";
+  container.appendChild(image);
 }
 
 function beginDrag(event,payload,node){
@@ -210,8 +242,13 @@ function slotConfigFor(type,definition=currentRoom){
   return definition?.schema?.function?.slotConfig?.[type] ?? null;
 }
 
-function slotCountFromConfig(config,{layout=currentLayout,ct=currentCt}={}){
+function slotCountFromConfig(config,{layout=currentLayout,ct=currentCt,definition=currentRoom}={}){
   if(!config)return 0;
+  if(config.progressionSource){
+    const progression=definition?.schema?.rules?.[config.progressionSource]?.progression;
+    if(!Array.isArray(progression) || !progression.length || progression.some(value=>!Number.isInteger(value) || value<0))throw new Error(`Missing numeric ${config.progressionSource} progression for ${definition?.id}.`);
+    return progression[Math.max(0,Math.min(ct-1,progression.length-1))];
+  }
   if(config.byLayout && Number.isInteger(config.byLayout[layout]))return config.byLayout[layout];
   let count=0;
   if(Array.isArray(config.byConstructionTier) && config.byConstructionTier.length){
@@ -227,7 +264,7 @@ function maxStaffSlotsFor(definition=currentRoom){
   const config=slotConfigFor('staff',definition);
   if(!config && !definition?.staffed)return 0;
   if(config?.byLayout)return Math.max(...Object.values(config.byLayout));
-  if(config)return slotCountFromConfig(config,{layout:'2x2',ct:definition?.maxConstructionTier ?? currentCt});
+  if(config)return slotCountFromConfig(config,{layout:'2x2',ct:definition?.maxConstructionTier ?? currentCt,definition});
   const joined=staffingByLayout(definition);
   if(joined)return Math.max(...Object.values(joined).filter(value=>Number.isInteger(value)));
   if(Number.isInteger(definition?.staffingPerPhysicalRoom))return definition.staffingPerPhysicalRoom;
@@ -235,7 +272,7 @@ function maxStaffSlotsFor(definition=currentRoom){
 }
 
 function roomCapacity(definition=currentRoom,layout=currentLayout){
-  const configured=slotCountFromConfig(slotConfigFor('staff',definition),{layout,ct:currentCt});
+  const configured=slotCountFromConfig(slotConfigFor('staff',definition),{layout,ct:currentCt,definition});
   if(configured>0 || slotConfigFor('staff',definition))return configured;
   const joined=staffingByLayout(definition);
   if(joined && Number.isInteger(joined[layout]))return joined[layout];
@@ -447,11 +484,15 @@ function coreSlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayo
 }
 
 function itemSlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayout){
-  return slotCountFromConfig(slotConfigFor('item',definition),{layout,ct});
+  const tabs=definition?.schema?.function?.subordinateTabs;
+  if(tabs?.length)return tabs.filter(tab=>!tab.queueSource).reduce((sum,tab)=>sum+slotCountFromConfig(tab.slotConfig?.item,{layout,ct,definition}),0);
+  return slotCountFromConfig(slotConfigFor('item',definition),{layout,ct,definition});
 }
 
 function theorySlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayout){
-  return slotCountFromConfig(slotConfigFor('theory',definition),{layout,ct});
+  const tabs=definition?.schema?.function?.subordinateTabs;
+  if(tabs?.length)return tabs.filter(tab=>!tab.queueSource).reduce((sum,tab)=>sum+slotCountFromConfig(tab.slotConfig?.theory,{layout,ct,definition}),0);
+  return slotCountFromConfig(slotConfigFor('theory',definition),{layout,ct,definition});
 }
 
 function resizeCollection(collection,size){
@@ -467,7 +508,59 @@ function configurationString(){
   return `${roomCode(currentRoom?.id)}[${currentLayout}]{${staff}|${coreSets}|I:${items}|T:${theories}${tabs?`|${tabs}`:""}}`;
 }
 
+function compactQueue(collection){
+  const occupied=collection.filter(Boolean);
+  collection.splice(0,collection.length,...occupied,...Array(collection.length-occupied.length).fill(null));
+  return collection;
+}
+
+function quantityPeers(tab){
+  return roomTabs().filter(other=>other.quantity && (tab.quantity.capacityGroup?other.quantity.capacityGroup===tab.quantity.capacityGroup:other.id===tab.id));
+}
+
+function tabQuantity(tab){
+  const peers=quantityPeers(tab);
+  const capacity=slotCountFromConfig(tab.quantity.capacity);
+  for(let index=0;index<peers.length;index++){
+    const peer=peers[index],key=`${currentRoom.id}:${peer.id}`;
+    if(key in roomQuantities)continue;
+    const used=peers.reduce((sum,t)=>sum+(roomQuantities[`${currentRoom.id}:${t.id}`] ?? 0),0);
+    const reserve=peers.slice(index+1).filter(t=>!(`${currentRoom.id}:${t.id}` in roomQuantities)).reduce((sum,t)=>sum+t.quantity.initialRange[0],0);
+    const [minimum,maximum]=peer.quantity.initialRange;
+    const upper=Math.max(0,Math.min(maximum,capacity-used-reserve));
+    const lower=Math.min(minimum,upper);
+    roomQuantities[key]=lower+Math.floor(Math.random()*(upper-lower+1));
+  }
+  return roomQuantities[`${currentRoom.id}:${tab.id}`];
+}
+
+function quantityTotal(tab){
+  tabQuantity(tab);
+  return quantityPeers(tab).reduce((sum,t)=>sum+roomQuantities[`${currentRoom.id}:${t.id}`],0);
+}
+
+function adjustQuantity(tab,process){
+  const quantity=tabQuantity(tab);
+  const available=process==="increase"?slotCountFromConfig(tab.quantity.capacity)-quantityTotal(tab):quantity;
+  if(available<=0)return;
+  const amount=1+Math.floor(Math.random()*Math.min(1000,available));
+  roomQuantities[`${currentRoom.id}:${tab.id}`]+=process==="increase"?amount:-amount;
+  setStatus(`${tab.name}: ${process==="increase"?"added":"destroyed"} ${amount}.`);
+  render();
+}
+
+function renderInstanceInspector(){
+  const inspector=document.getElementById("instanceInspector");
+  const tab=roomTabs().find(t=>t.id===activeRoomTabId);
+  const slots=tab?.queueSource?[roomTabResources[tab.queueSource]?.item?.find(Boolean) ?? null]:roomTabResources[tab?.id]?.item;
+  const instance=slots?.length===1?arrivals.instances[slots[0]]:null;
+  inspector.value=instance?JSON.stringify(instance,null,2):"";
+}
+
 function resetRoomResources(){
+  for(const tab of roomTabs().filter(tab=>tab.quantity)){
+    if(quantityTotal(tab)>slotCountFromConfig(tab.quantity.capacity))throw new Error("Stored quantities exceed that CT capacity; destroy stock before reducing CT.");
+  }
   roomResources={
     items:resizeCollection(roomResources.items,itemSlotCapacity()),
     theories:resizeCollection(roomResources.theories,theorySlotCapacity()),
@@ -476,10 +569,17 @@ function resetRoomResources(){
   const tabs=roomTabs();
   const next={};
   for(const tab of tabs){
+    if(tab.quantity)tabQuantity(tab);
     next[tab.id]={};
     for(const [type,config] of Object.entries(tab.slotConfig ?? {})){
+      if(type==="item" && tab.arrival){
+        arrivals.resize(slotCountFromConfig(config,{layout:currentLayout,ct:currentCt}));
+        next[tab.id][type]=arrivals.queue;
+        continue;
+      }
+      if(tab.queueSource)continue;
       const old=roomTabResources[tab.id]?.[type] ?? [];
-      next[tab.id][type]=resizeCollection(old,slotCountFromConfig(config,{layout:currentLayout,ct:currentCt}));
+      next[tab.id][type]=resizeCollection(compactQueue(old),slotCountFromConfig(config,{layout:currentLayout,ct:currentCt}));
     }
   }
   roomTabResources=next;
@@ -499,7 +599,7 @@ function loadRoom(id){
   if(!definition)return;
   currentRoom=definition;
   roomSelect.value=definition.id;
-  currentCt=1;
+  currentCt=roomTabs(definition).some(tab=>tab.arrival)?arrivalCt:(quantityRoomCt[id] ?? 1);
   ctSelect.value=String(currentCt);
   currentLayout=availableLayouts(definition)[0] ?? "1x1";
   activeRoomTabId=null;
@@ -576,10 +676,7 @@ function createResourceChip(definition,type){
   const glyph=document.createElement("span");
   glyph.className="resource-glyph";
   glyph.style.background=resourceColor(definition,type);
-  const image=document.createElement("img");
-  image.src=resourceIcon(definition,type);
-  image.alt="";
-  glyph.appendChild(image);
+  setResourceImage(glyph,definition,type);
   const copy=document.createElement("div");
   const name=document.createElement("div");
   name.className="resource-name";
@@ -587,7 +684,7 @@ function createResourceChip(definition,type){
   const meta=document.createElement("div");
   meta.className="resource-meta";
   meta.textContent=type==="item"
-    ? `${titleCaseWords(definition.identity?.civilization ?? "unknown")} Â· ${titleCaseWords(definition.family ?? "item")} Â· ${Object.entries(definition.storageCompatibility ?? {}).filter(([,allowed])=>allowed).map(([key])=>key.toUpperCase()).join("/") || "Unclassified"}`
+    ? `${definition.storage.storageClasses.join("/")} · Handling cost ${definition.storage.handlingCost}`
     : `${titleCaseWords(definition.family ?? "theory")} Â· Tier ${definition.tier ?? "?"}`;
   copy.append(name,meta);
   chip.append(glyph,copy);
@@ -612,6 +709,7 @@ function roomShapeName(){
 }
 
 function resourceDefinition(type,id){
+  if(type==="item" && arrivals.instances[id])id=arrivals.instances[id].itemId;
   const catalog=type==="item"?itemCatalog:theoryCatalog;
   return catalog.find(definition=>definition.id===id) ?? null;
 }
@@ -622,12 +720,12 @@ function resourceCollection(type){
   return roomResources.cores;
 }
 
-function createResourceSlot(type,index,providedCollection=null,acceptsItemClasses=[]){
+function createResourceSlot(type,index,providedCollection=null,storageClasses=[],readOnly=false){
   const collection=providedCollection ?? resourceCollection(type);
   const definition=type==="unit"?rosterUnit(collection[index]):(["item","theory"].includes(type)?resourceDefinition(type,collection[index]):null);
   const slot=document.createElement("div");
   slot.className=`resource-slot ${definition||collection[index]?"filled":""}`.trim();
-  if(["item","theory","unit"].includes(type)){
+  if(!readOnly && ["item","theory","unit"].includes(type)){
     slot.addEventListener("dragover",event=>{
       if(dragPayload?.type!==type)return;
       event.preventDefault();
@@ -641,11 +739,24 @@ function createResourceSlot(type,index,providedCollection=null,acceptsItemClasse
       const payload=droppedPayload(event);
       const valid=type==="unit"?rosterUnit(payload?.id):resourceDefinition(type,payload?.id);
       if(payload?.type!==type || !valid)return;
-      if(type==="item" && acceptsItemClasses.length && !acceptsItemClasses.some(itemClass=>valid.storageCompatibility?.[itemClass])){
-        setStatus(`${valid.name} is not compatible with ${acceptsItemClasses.map(value=>value.toUpperCase()).join("/")} storage.`);
+      if(type==="item" && !acceptsStoredItem(valid,storageClasses)){
+        setStatus(`${valid.name} is not compatible with ${storageClasses.map(value=>value.toUpperCase()).join("/")} storage.`);
         return;
       }
-      collection[index]=payload.id;
+      const tab=roomTabs().find(tab=>roomTabResources[tab.id]?.item===collection);
+      if(type==="item" && tab?.arrival){
+        try{
+          event.stopPropagation();
+          const instance=arrivals.receive(valid,{...tab.arrival,storageClasses:tab.storage.storageClasses});
+          setStatus(`Offworld object ${instance.instanceId} added to Receiving queue.`);
+          render();
+        }catch(error){setStatus(error.message)}
+        return;
+      }
+      compactQueue(collection);
+      const empty=collection.indexOf(null);
+      if(empty<0){setStatus("This queue is full.");return;}
+      collection[empty]=payload.id;
       setStatus(`${valid.name} placed in ${type} slot ${index+1}.`);
       render();
     });
@@ -669,19 +780,18 @@ function createResourceSlot(type,index,providedCollection=null,acceptsItemClasse
     setIconContent(glyph,iconMarkup(iconPathForRosterUnit(definition)));
   }else{
     glyph.style.background=resourceColor(definition,type);
-    const image=document.createElement("img");
-    image.src=resourceIcon(definition,type);
-    image.alt="";
-    glyph.appendChild(image);
+    setResourceImage(glyph,definition,type);
   }
   const copy=document.createElement("div");
   const name=document.createElement("div");
   name.className="resource-slot-name";
-  name.textContent=definition.name;
+  name.textContent=arrivals.instances[collection[index]]?"Unidentified offworld object":definition.name;
   const meta=document.createElement("div");
   meta.className="resource-slot-meta";
-  meta.textContent=definition.id;
+  meta.textContent=collection[index];
   copy.append(name,meta);
+  if(arrivals.instances[collection[index]]){glyph.textContent="?";glyph.style.background="#64748b";slot.append(glyph,copy);return slot;}
+  if(readOnly){slot.append(glyph,copy);return slot;}
   const clear=document.createElement("button");
   clear.type="button";
   clear.className="resource-slot-clear";
@@ -689,6 +799,7 @@ function createResourceSlot(type,index,providedCollection=null,acceptsItemClasse
   clear.title=`Clear ${type} slot`;
   clear.addEventListener("click",()=>{
     collection[index]=null;
+    compactQueue(collection);
     setStatus(`Cleared ${type} slot ${index+1}.`);
     render();
   });
@@ -696,18 +807,39 @@ function createResourceSlot(type,index,providedCollection=null,acceptsItemClasse
   return slot;
 }
 
-function createResourceGroup(type,title,providedCollection=null,acceptsItemClasses=[]){
+function createResourceGroup(type,title,providedCollection=null,storageClasses=[],readOnly=false){
   const collection=providedCollection ?? resourceCollection(type);
   if(!collection.length)return null;
   const group=document.createElement("section");
   group.className="resource-group";
+  const arrivalTab=type==="item"?roomTabs().find(tab=>tab.arrival && roomTabResources[tab.id]?.item===collection):null;
+  if(arrivalTab && !readOnly){
+    group.addEventListener("dragover",event=>{
+      if(dragPayload?.type!=="item")return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect="copy";
+    });
+    group.addEventListener("drop",event=>{
+      event.preventDefault();
+      event.stopPropagation();
+      const payload=droppedPayload(event);
+      if(payload?.type!=="item")return;
+      const item=itemCatalog.find(entry=>entry.id===payload.id);
+      if(!item)return;
+      try{
+        const instance=arrivals.receive(item,{...arrivalTab.arrival,storageClasses:arrivalTab.storage.storageClasses});
+        setStatus(`Offworld object ${instance.instanceId} added to Receiving queue.`);
+        render();
+      }catch(error){setStatus(error.message)}
+    });
+  }
   const heading=document.createElement("h3");
   heading.className="resource-group-title";
   heading.textContent=title;
   const grid=document.createElement("div");
   grid.className="resource-slot-grid";
   if(collection.length>8)grid.classList.add("dense");
-  grid.append(...collection.map((_,index)=>createResourceSlot(type,index,collection,acceptsItemClasses)));
+  grid.append(...collection.map((_,index)=>createResourceSlot(type,index,collection,storageClasses,readOnly)));
   group.append(heading,grid);
   return group;
 }
@@ -741,9 +873,28 @@ function renderRoomResources(){
     if(active?.notes){const note=document.createElement("p");note.className="room-tab-note";note.textContent=active.notes;panel.appendChild(note)}
     const labels={item:"Item slots",theory:"Theory slots",unit:"Occupant slots",job:"Work slots"};
     for(const type of ["item","theory","unit","job"]){
-      const collection=roomTabResources[active?.id]?.[type];
-      if(collection?.length)panel.appendChild(createResourceGroup(type,labels[type],collection,active.acceptsItemClasses ?? []));
+      const collection=active.queueSource && type==="item"?[roomTabResources[active.queueSource]?.item?.find(Boolean) ?? null]:roomTabResources[active?.id]?.[type];
+      if(collection?.length)panel.appendChild(createResourceGroup(type,labels[type],collection,active.storage?.storageClasses ?? [],Boolean(active.queueSource)));
     }
+    if(active.quantity){
+      const quantity=document.createElement("p");
+      quantity.className="tab-quantity";
+      quantity.textContent=`${active.name}: ${tabQuantity(active)} · Total: ${quantityTotal(active)} / ${slotCountFromConfig(active.quantity.capacity)}`;
+      panel.appendChild(quantity);
+    }
+    const actions=document.createElement("div");
+    actions.className="tab-actions";
+    for(const action of active.buttons ?? []){
+      const button=document.createElement("button");
+      button.type="button";button.textContent=action.name;
+      button.dataset.process=action.process;button.disabled=true;
+      if(active.quantity && ["increase","destroy"].includes(action.process)){
+        button.disabled=action.process==="increase"?quantityTotal(active)>=slotCountFromConfig(active.quantity.capacity):tabQuantity(active)===0;
+        button.addEventListener("click",()=>adjustQuantity(active,action.process));
+      }
+      actions.appendChild(button);
+    }
+    panel.appendChild(actions);
     tabArea.append(tabList,panel);
     resources.append(tabArea);
   }
@@ -1059,6 +1210,8 @@ function renderPreview(){
     coreSlots:roomResources.cores.map(value=>value || "_"),
     activeRoomTab:activeRoomTabId,
     roomTabs:roomTabResources,
+    quantities:Object.fromEntries(roomTabs().filter(tab=>tab.quantity).map(tab=>[tab.id,{quantity:tabQuantity(tab),capacity:slotCountFromConfig(tab.quantity.capacity)}])),
+    receivedInstances:Object.values(arrivals.instances).map(({instanceId,knowledge,custody,processes})=>({instanceId,knowledge,custody,processes})),
     assignedClasses:assignments.filter(Boolean).map(entry=>({
       class:entry.classId,
       label:assignmentLabel(entry),
@@ -1110,6 +1263,7 @@ function updateControls(){
 }
 
 function render(){
+  renderInstanceInspector();
   updateControls();
   renderRoomCard();
   renderPreview();
@@ -1142,6 +1296,8 @@ function clearAssignments(){
 }
 
 function resetRoomState(){
+  if(roomTabs().some(tab=>tab.quantity)){setStatus("Reload the page to reset stored quantities.");return;}
+  if(roomTabs().some(tab=>tab.arrival) && arrivals.queue.some(Boolean)){setStatus("Receiving contains physical instances. Reload the page to restart this simulation.");return;}
   roomResources={items:[],theories:[],cores:[]};
   roomTabResources={};
   currentCt=1;
@@ -1160,6 +1316,9 @@ joinButton.addEventListener("click",advanceJoin);
 upgradeCtButton.addEventListener("click",()=>{
   if(currentCt>=currentRoom.maxConstructionTier)return;
   currentCt+=1;
+  if(roomTabs().some(tab=>tab.quantity))quantityRoomCt[currentRoom.id]=currentCt;
+  resetAssignmentsToCapacity();
+  if(roomTabs().some(tab=>tab.arrival))arrivalCt=currentCt;
   ctSelect.value=String(currentCt);
   resetRoomResources();
   setStatus(`${currentRoom.name} upgraded to CT${currentCt}.`);
@@ -1176,7 +1335,13 @@ fillScientistButton.addEventListener("click",()=>{
 });
 clearAssignmentsButton.addEventListener("click",clearAssignments);
 roomSelect.addEventListener("change",()=>{currentLayout="1x1";revealedSlots=0;assignments=[];loadRoom(roomSelect.value)});
-ctSelect.addEventListener("change",()=>{currentCt=Math.min(Number(ctSelect.value),currentRoom.maxConstructionTier);ctSelect.value=String(currentCt);resetRoomResources();render()});
+ctSelect.addEventListener("change",()=>{
+  const previous=currentCt;
+  currentCt=Math.min(Number(ctSelect.value),currentRoom.maxConstructionTier);
+  try{resetRoomResources();if(roomTabs().some(tab=>tab.arrival))arrivalCt=currentCt;if(roomTabs().some(tab=>tab.quantity))quantityRoomCt[currentRoom.id]=currentCt;}
+  catch(error){currentCt=previous;resetRoomResources();setStatus(error.message)}
+  resetAssignmentsToCapacity();ctSelect.value=String(currentCt);render();
+});
 layoutSelect.addEventListener("change",()=>{currentLayout=layoutSelect.value;resetAssignmentsToCapacity();resetRoomResources();setStatus(`Changed layout to ${currentLayout}; capacity ${roomCapacity()}.`);render()});
 for(const control of [rosterBaseFilter,rosterSpecializationFilter,rosterCrossFilter,rosterSort])control.addEventListener("change",renderClassPalette);
 document.getElementById("jsonFile").addEventListener("change",async event=>{
@@ -1200,8 +1365,8 @@ async function initialize(){
       loadRooms(ROOM_CATALOG_URL),
       loadClassCatalog(),
       loadSpecializationIcons(),
-      loadCatalogCollection(ITEM_CATALOG_URL,"itemDefinitions","item"),
-      loadCatalogCollection(THEORY_CATALOG_URL,"theories","theory"),
+      loadItemCatalog(),
+      loadTheoryCatalog(),
       loadPersonnelNames()
     ]);
     roomCatalog=rooms;

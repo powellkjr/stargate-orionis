@@ -4,55 +4,241 @@
   "title": "Stargate Orionis Item Table",
   "description": "Schema for reusable item definitions. Cross-table references to theories and storage services are validated separately.",
   "type": "object",
-  "patternProperties": {"^[A-Z][A-Z0-9_]*$": {"$ref": "#/$defs/item"}},
+  "patternProperties": {
+    "^[A-Z][A-Z0-9_]*$": {
+      "$ref": "#/$defs/item"
+    }
+  },
   "additionalProperties": false,
   "$defs": {
-    "identifier": {"type": "string", "minLength": 1, "pattern": "^[A-Z][A-Z0-9_]*$"},
-    "identifierArray": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}},
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "identifierArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
     "item": {
       "type": "object",
-      "required": ["id", "name", "type", "tags", "storage", "processCompatibility", "theoryBindings"],
+      "required": [
+        "id",
+        "name",
+        "type",
+        "tags",
+        "storage",
+        "processCompatibility",
+        "theoryBindings"
+      ],
       "additionalProperties": false,
       "properties": {
-        "id": {"$ref": "#/$defs/identifier"},
-        "name": {"type": "string", "minLength": 1},
-        "type": {"const": "ITEM"},
-        "tags": {"$ref": "#/$defs/identifierArray"},
-        "storage": {"$ref": "#/$defs/storage"},
-        "processCompatibility": {"$ref": "#/$defs/processCompatibility"},
-        "theoryBindings": {"type": "array", "items": {"$ref": "#/$defs/theoryBinding"}}
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "const": "ITEM"
+        },
+        "tags": {
+          "$ref": "#/$defs/identifierArray",
+          "description": "Authored Reality tags for the item definition, not automatically Known Tags on a recovered instance."
+        },
+        "storage": {
+          "$ref": "#/$defs/storage"
+        },
+        "processCompatibility": {
+          "$ref": "#/$defs/processCompatibility",
+          "description": "Item-kind process compatibility only. Does not establish an instance processing requirement, authorization, active state, or completion."
+        },
+        "theoryBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/theoryBinding"
+          }
+        },
+        "family": {
+          "$ref": "#/$defs/identifier"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "identity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "description": {
+              "type": "string",
+              "minLength": 1
+            },
+            "civilization": {
+              "$ref": "#/$defs/identifier"
+            },
+            "formFactor": {
+              "$ref": "#/$defs/identifier"
+            },
+            "subjectTags": {
+              "$ref": "#/$defs/identifierArray"
+            }
+          }
+        },
+        "physical": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "inventoryClass": {
+              "$ref": "#/$defs/identifier"
+            },
+            "isContainer": {
+              "type": "boolean"
+            },
+            "isTool": {
+              "type": "boolean"
+            }
+          }
+        },
+        "possibleReality": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "inherentTags": {
+              "$ref": "#/$defs/identifierArray"
+            },
+            "possibleTags": {
+              "$ref": "#/$defs/identifierArray"
+            }
+          }
+        },
+        "salvageGuidance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "preserveMass": {
+              "type": "boolean"
+            }
+          }
+        },
+        "extension": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ordinaryAsgardPatternsAreImplicitInFabricationCapability": {
+              "type": "boolean"
+            },
+            "sourceRecipeId": {
+              "$ref": "#/$defs/identifier"
+            }
+          }
+        },
+        "salvageClass": {
+          "type": "string",
+          "enum": [
+            "M1",
+            "M2",
+            "M3",
+            "S1",
+            "S2",
+            "S3",
+            "RATION",
+            "KNOWLEDGE"
+          ],
+          "description": "Single authored resource classification produced by destructive salvage. Independent of storage.storageClasses and all Reality, Known, and Processing Tags. No inferred default. Required by a destructive salvage contract before execution; optional here while existing definitions are migrated."
+        }
       }
     },
     "storage": {
       "type": "object",
-      "required": ["storageClasses", "handlingCost", "isUnique", "isStackable", "isCargo"],
+      "required": [
+        "storageClasses",
+        "handlingCost",
+        "isUnique",
+        "isStackable",
+        "isCargo"
+      ],
       "additionalProperties": false,
       "properties": {
-        "storageClasses": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}},
-        "handlingCost": {"type": "integer", "minimum": 0},
-        "isUnique": {"type": "boolean"},
-        "isStackable": {"type": "boolean"},
-        "isCargo": {"type": "boolean"}
+        "storageClasses": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/identifier"
+          }
+        },
+        "handlingCost": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isUnique": {
+          "type": "boolean"
+        },
+        "isStackable": {
+          "type": "boolean"
+        },
+        "isCargo": {
+          "type": "boolean"
+        }
       }
     },
     "processCompatibility": {
       "type": "object",
-      "required": ["receiving", "analysis", "construction", "repair", "reverseEngineering", "salvage"],
+      "required": [
+        "receiving",
+        "analysis",
+        "construction",
+        "repair",
+        "reverseEngineering",
+        "salvage"
+      ],
       "additionalProperties": false,
       "properties": {
-        "receiving": {"type": "boolean"}, "analysis": {"type": "boolean"}, "construction": {"type": "boolean"},
-        "repair": {"type": "boolean"}, "reverseEngineering": {"type": "boolean"}, "salvage": {"type": "boolean"}
+        "receiving": {
+          "type": "boolean"
+        },
+        "analysis": {
+          "type": "boolean"
+        },
+        "construction": {
+          "type": "boolean"
+        },
+        "repair": {
+          "type": "boolean"
+        },
+        "reverseEngineering": {
+          "type": "boolean"
+        },
+        "salvage": {
+          "type": "boolean"
+        }
       }
     },
     "theoryBinding": {
       "type": "object",
-      "required": ["theoryId", "implementedProperties"],
+      "required": [
+        "theoryId",
+        "implementedProperties"
+      ],
       "additionalProperties": false,
       "properties": {
-        "theoryId": {"$ref": "#/$defs/identifier"},
-        "role": {"$ref": "#/$defs/identifier"},
-        "implementedProperties": {"$ref": "#/$defs/identifierArray"},
-        "implementationTags": {"$ref": "#/$defs/identifierArray"}
+        "theoryId": {
+          "$ref": "#/$defs/identifier"
+        },
+        "role": {
+          "$ref": "#/$defs/identifier"
+        },
+        "implementedProperties": {
+          "$ref": "#/$defs/identifierArray"
+        },
+        "implementationTags": {
+          "$ref": "#/$defs/identifierArray"
+        }
       }
     }
   }

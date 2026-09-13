@@ -259,3 +259,121 @@ that ordinary vest construction knowledge.
 4. Keep changing physical state on `instance`, never on `item` or `theories`.
 5. Treat these tables as a working model; validation and runtime loaders can be
    added after the shape is exercised by simulator flows.
+
+## Current simulator integration and metadata migration
+
+The staffing demo reads item.json and theories.json for its palettes. Approved
+item, Theory, and instance metadata has been migrated. Item and instance schemas
+accept the imported fields. Authored history may contain event objects without
+timestamps; runtime history retains its four-value tuple format. Historical
+locations remain historical rather than being rewritten to current custody.
+
+PULSED_POWER_I, ELECTROMAGNETIC_ACCELERATION_I, and HUMAN_ROOM_CONSTRUCTION_II
+are metadata-only additions. Existing graphs and bindings were preserved. Graphs,
+profession envelopes, Discovery, Hypotheses, Recipes, and Core migration remain
+deferred; old packs are retained for the pending definitions.
+
+## Processing contract field mapping
+
+| Layer | JSON path | Meaning |
+| --- | --- | --- |
+| Reality Tags | Item tags; instance reality.authoredTags and bindings | Authored physical truth, independent of recognition |
+| Known Tags | Instance knowledge.revealedTags | What the SGC currently recognizes or understands |
+| Processing Tags | Instance processingTags | Required, allowed, authorized, active, complete processing |
+| Physical State | state.condition, state.functionalState, state.quantity | Physical condition, functionality and amount |
+| Custody | custody, especially containerId | Current physical location and custody claims |
+| Room Services | function.roomServices | Configured functional Service IDs |
+| Room Processing Capabilities | function.processingCapabilities | Authored contracts supported by configured Services |
+
+Existing physical fields such as percentOfWhole remain supported. No duplicate
+realityTags, knownTags, or physicalState aliases are introduced.
+
+`processingTags` is an optional flat array of unique uppercase authored tag IDs:
+
+```json
+{
+  "processingTags": ["RECEIVING_REQUIRED", "IDENTITY_UNKNOWN"]
+}
+```
+
+There are no required/allowed/authorized/active/complete subgroups. Tags can express
+identity, availability, selection, authorization, requirements, or results without
+being forced into a lifecycle category. Authored contracts define required tags,
+forbidden combinations, additions, and removals; code must not infer transitions
+from tag suffixes alone. For example, selection is not authorization.
+
+Detailed execution progress remains in `processes`; location remains in `custody`.
+Omission or an empty array does not grant unrestricted permission. Item
+`processCompatibility` remains kind-level compatibility, not instance approval.
+Agreement between tags and process records must be checked by contract logic.
+The schema validates identifier format and uniqueness, not canonical membership
+or contract transitions. No instance records are populated by this schema change.
+
+function.roomServices lists configured Service IDs. Each processingCapabilities
+record contains processingContractId and requiredRoomServices. These references
+do not define new contracts, mount Cores, create Services, imply current resource
+availability, or authorize processing an instance. Service resolution remains
+within the destination Room Group while physical child rooms retain configuration.
+Actor and Tool requirements remain separate. Contract-level Service lists do not
+change the single-Actor, at-most-one-Tool-Service, at-most-one-Room-Service bubble
+rule. Simultaneous environmental requirements require the appropriate authored
+emergent Service or separate bubbles.
+
+Schemas validate structure, identifier syntax, and unique entries. Future
+cross-record validation must check that referenced tags, Services, and contracts
+exist and agree with configuration and execution state. Actual exit conditions,
+destination admission, authorization policy, and tag transitions remain unauthored.
+UI button process strings remain loose hooks, not canonical contract IDs.
+
+## Salvage Class
+
+salvageClass is a typed property directly on the authored Item Definition. Its
+single value is M1, M2, M3, S1, S2, S3, RATION, or KNOWLEDGE. It is not a Reality,
+Known, or Processing Tag and is not an instance override.
+
+storage.storageClasses lists valid storage systems for intact instances.
+salvageClass identifies the resource classification produced by destructive
+salvage. Never derive either from the other. In the current table shape:
+
+```json
+{
+  "storage": {
+    "storageClasses": ["WEAPON_RACK", "SECURE_EQUIPMENT_STORAGE"]
+  },
+  "salvageClass": "M3"
+}
+```
+
+This is an illustrative fragment, not a complete record or newly configured
+storage Service. Existing items are not assigned values by this change. The field
+remains optional during migration, but destructive salvage must validate an
+authored salvageClass before execution. Missing values are a content gap, not a
+reason to infer a class from tags, storage, civilization, or Theory.
+
+### Destructive Reverse Engineering
+
+1. Reverse Engineering reaches completion.
+2. The instance becomes condition DESTROYED and functionalState NONFUNCTIONAL.
+3. The Item Definition's salvageClass determines the single salvage resource class.
+4. Consume/remove the destroyed physical instance only after outputs successfully
+   commit. Retain provenance/history as required by the existing process model.
+
+Use resolve -> validate -> execute -> commit. Validate output capacity and
+resulting-state constraints before commit. Failure must not lose the input or
+leave partially committed outputs. Yield and quantity require authored Recipe
+outputs; the class alone does not specify them. Preserve mass where applicable.
+
+Knowledge exposure is independent of the salvage result. An Asgard rifle may
+produce M3 while its authored Reverse Engineering path separately exposes a
+pre-authored Hypothesis or triggers Rediscovery. This example assigns no value
+to the current rifle data. Even KNOWLEDGE as a salvage resource classification
+does not automatically grant institutional Theory, a Hypothesis, or Rediscovery.
+
+## Room-flow target contract
+
+See [Item Processing / Room Flow](./item-processing-room-flow.md) for the authored
+Asgard rifle paper test, admission/exit ordering, Known Tag re-evaluation, and
+destructive Reverse Engineering completion. It specifies target processing
+semantics beyond the earlier schema preparation; runtime behavior and fixture
+records are not changed by documenting it. Processing Tags use the agreed flat array. Concrete Service mappings remain
+an explicit integration decision.

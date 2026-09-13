@@ -6,7 +6,10 @@
       "condition": "INTACT",
       "functionalState": "FUNCTIONAL",
       "quantity": 1,
-      "percentOfWhole": 1000
+      "percentOfWhole": 1000,
+      "powerState": "CHARGED",
+      "constructionState": "COMPLETE",
+      "damage": []
     },
     "reality": {
       "theoryBindings": [],
@@ -15,12 +18,26 @@
         "RANGED_WEAPON",
         "RIFLE",
         "ASGARD",
-        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
-      ]
+        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+        "FUNCTIONAL",
+        "CHARGED"
+      ],
+      "technology": [
+        "ELECTROMAGNETIC_ACCELERATION_II"
+      ],
+      "fabricationEcosystem": [
+        "ASGARD_FABRICATION_II"
+      ],
+      "materials": []
     },
     "knowledge": {
       "revealedTags": [],
-      "instanceFindings": []
+      "instanceFindings": [],
+      "recognizedIdentity": null,
+      "recognizedCivilization": null,
+      "recognizedItemClass": null,
+      "handlingKnowledge": [],
+      "knownProcessRequirements": []
     },
     "custody": {
       "storageId": "INCOMING_INVENTORY",
@@ -38,19 +55,44 @@
     },
     "processes": {
       "receiving": {
-        "state": "NOT_STARTED"
+        "state": "NOT_STARTED",
+        "completedSteps": [],
+        "currentStep": null
       },
       "analysis": {
-        "state": "NOT_STARTED"
+        "state": "NOT_STARTED",
+        "completedSteps": [],
+        "currentStep": null,
+        "findingsProduced": []
       },
       "reverseEngineering": {
-        "state": "NOT_STARTED"
+        "state": "NOT_STARTED",
+        "recipeId": null,
+        "completedBubbles": [],
+        "currentBubble": null,
+        "partialProgress": 0
       },
       "salvage": {
         "state": "NOT_STARTED"
       }
     },
-    "history": []
+    "history": [
+      {
+        "event": "RECOVERED",
+        "source": "OFFWORLD"
+      },
+      {
+        "event": "ENTERED_SGC_CUSTODY",
+        "location": "INCOMING_INVENTORY"
+      }
+    ],
+    "relationships": {
+      "parentInstanceId": null,
+      "childInstanceIds": [],
+      "createdFrom": [],
+      "sourceRecipeId": null,
+      "derivedKnowledge": []
+    }
   },
   "ITEM_HUMAN_COIL_RIFLE_0001": {
     "instanceId": "ITEM_HUMAN_COIL_RIFLE_0001",
@@ -59,7 +101,10 @@
       "condition": "INTACT",
       "functionalState": "FUNCTIONAL",
       "quantity": 1,
-      "percentOfWhole": 1000
+      "percentOfWhole": 1000,
+      "powerState": "CHARGED",
+      "constructionState": "COMPLETE",
+      "damage": []
     },
     "reality": {
       "theoryBindings": [],
@@ -69,8 +114,21 @@
         "RIFLE",
         "HUMAN",
         "COIL_RIFLE",
-        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
-      ]
+        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+        "FUNCTIONAL",
+        "CHARGED"
+      ],
+      "technology": [
+        "ELECTROMAGNETIC_ACCELERATION_II"
+      ],
+      "implementationPatterns": [
+        "HUMAN_ADVANCED_RIFLE_PATTERN",
+        "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+      ],
+      "fabricationEcosystem": [
+        "HUMAN_MANUFACTURING_II"
+      ],
+      "materials": []
     },
     "knowledge": {
       "revealedTags": [
@@ -78,9 +136,34 @@
         "RANGED_WEAPON",
         "RIFLE",
         "HUMAN",
-        "COIL_RIFLE"
+        "COIL_RIFLE",
+        "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+        "FUNCTIONAL",
+        "CHARGED"
       ],
-      "instanceFindings": []
+      "instanceFindings": [],
+      "recognizedIdentity": "HUMAN_ADVANCED_COIL_RIFLE",
+      "recognizedCivilization": "HUMAN",
+      "recognizedItemClass": "RANGED_WEAPON",
+      "handlingKnowledge": [
+        "STANDARD_HUMAN_WEAPON_HANDLING"
+      ],
+      "knownProcessRequirements": [
+        {
+          "process": "REPAIR",
+          "knowledgeRequirements": [
+            "HUMAN_ADVANCED_RIFLE_PATTERN",
+            "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+          ]
+        },
+        {
+          "process": "SALVAGE",
+          "knowledgeRequirements": [
+            "HUMAN_ADVANCED_RIFLE_PATTERN",
+            "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"
+          ]
+        }
+      ]
     },
     "custody": {
       "storageId": "SGC_EQUIPMENT_INVENTORY",
@@ -98,10 +181,18 @@
     },
     "processes": {
       "receiving": {
-        "state": "COMPLETE"
+        "state": "COMPLETE",
+        "completedSteps": [
+          "DETERMINE_HANDLING",
+          "DETERMINE_ITEM_CLASS"
+        ],
+        "currentStep": null
       },
       "analysis": {
-        "state": "COMPLETE"
+        "state": "COMPLETE",
+        "completedSteps": [],
+        "currentStep": null,
+        "findingsProduced": []
       },
       "reverseEngineering": {
         "state": "NOT_STARTED"
@@ -111,9 +202,41 @@
       },
       "salvage": {
         "state": "NOT_STARTED"
+      },
+      "construction": {
+        "state": "COMPLETE",
+        "recipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+        "completedBubbles": [
+          "FABRICATE_RIFLE_COMPONENTS",
+          "FABRICATE_ACCELERATOR_COMPONENTS",
+          "ASSEMBLE_RIFLE_BODY",
+          "ASSEMBLE_ACCELERATOR",
+          "INTEGRATE_ACCELERATOR",
+          "CALIBRATE_ACCELERATOR",
+          "TECHNICAL_VALIDATION",
+          "FIELD_TEST"
+        ],
+        "currentBubble": null,
+        "partialProgress": 0
       }
     },
-    "history": []
+    "history": [
+      {
+        "event": "CONSTRUCTION_COMPLETED",
+        "recipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"
+      },
+      {
+        "event": "ENTERED_INVENTORY",
+        "location": "ARMORY_INVENTORY"
+      }
+    ],
+    "relationships": {
+      "parentInstanceId": null,
+      "childInstanceIds": [],
+      "createdFrom": [],
+      "sourceRecipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+      "derivedKnowledge": []
+    }
   },
   "ITEM_HUMAN_EM_IMPACT_VEST_0001": {
     "instanceId": "ITEM_HUMAN_EM_IMPACT_VEST_0001",

@@ -135,3 +135,16 @@ The first implementation is ready to expand only when it demonstrates:
 - Analysis reveals Reality rather than manufacturing it;
 - destructive work records physical and salvage consequences;
 - Room Service and Profession requirements resolve through existing contracts.
+
+## Processing contract schema preparation
+
+The [processing contract field mapping](./instance-item-theory-tables.md#processing-contract-field-mapping)
+separates Reality Tags, Known Tags, Processing Tags, physical state, custody,
+configured Room Services, and supported processing contracts. These fields prepare
+the data model; they do not yet implement room exit or transfer rules.
+
+Room configuration may declare `function.roomServices` and
+`function.processingCapabilities`. Instance `processingTags` is a flat array of unique authored tag IDs covering
+requirements, identity, availability, selection, authorization, and completion. Keep these separate from runtime
+Service availability and detailed `processes` execution state. No existing fixture
+records are populated automatically by the schema change.

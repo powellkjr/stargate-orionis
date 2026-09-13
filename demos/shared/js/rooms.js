@@ -42,6 +42,13 @@ function normalizeRoom(room) {
   assert(form && typeof form === "object", `${identity?.id ?? "room"}: every room needs a form block.`);
   assert(rules && typeof rules === "object", `${identity?.id ?? "room"}: every room needs a rules block.`);
 
+  for (const tab of room.function?.subordinateTabs ?? []) {
+    if (tab.storage === undefined) continue;
+    const classes = tab.storage?.storageClasses;
+    assert(Array.isArray(classes) && classes.length > 0 && classes.every(value => typeof value === "string" && /^[A-Z][A-Z0-9_]*$/.test(value)) && new Set(classes).size === classes.length,
+      `${identity.id}/${tab.id}: storage.storageClasses must contain unique uppercase identifiers.`);
+  }
+
   const id = identity.id;
   assert(isNonEmptyString(id), "Every room needs identity.id.");
   assert(isNonEmptyString(identity.name), `${id}: every room needs identity.name.`);

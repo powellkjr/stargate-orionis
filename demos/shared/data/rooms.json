@@ -443,15 +443,10 @@
         "scaleWithLayout": true,
         "notes": "Research core slots scale by CT per physical room."
       },
-      "item": {
-        "perPhysicalRoom": 2,
-        "scaleWithLayout": true,
-        "notes": "Research accepts physical artifacts and hypothesis-linked materials."
-      },
       "theory": {
         "perPhysicalRoom": 2,
         "scaleWithLayout": true,
-        "notes": "Research holds Theory or Hypothesis references during work."
+        "notes": "Research accepts Theory references only in the staffing demo."
       }
     }
   },
