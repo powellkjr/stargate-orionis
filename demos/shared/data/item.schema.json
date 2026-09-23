@@ -32,7 +32,8 @@
         "tags",
         "storage",
         "processCompatibility",
-        "theoryBindings"
+        "theoryBindings",
+        "materials"
       ],
       "additionalProperties": false,
       "properties": {
@@ -116,6 +117,14 @@
             }
           }
         },
+        "processingExposure": {
+          "$ref": "#/$defs/processingExposure",
+          "description": "Authored room-specific Knowledge exposure. It does not change Reality or institutional Knowledge."
+        },
+        "nameResolution": {
+          "$ref": "#/$defs/nameResolution",
+          "description": "Authored display labels applied when a process exits. These labels are presentation and do not independently grant Knowledge."
+        },
         "salvageGuidance": {
           "type": "object",
           "additionalProperties": false,
@@ -137,19 +146,9 @@
             }
           }
         },
-        "salvageClass": {
-          "type": "string",
-          "enum": [
-            "M1",
-            "M2",
-            "M3",
-            "S1",
-            "S2",
-            "S3",
-            "RATION",
-            "KNOWLEDGE"
-          ],
-          "description": "Single authored resource classification produced by destructive salvage. Independent of storage.storageClasses and all Reality, Known, and Processing Tags. No inferred default. Required by a destructive salvage contract before execution; optional here while existing definitions are migrated."
+        "materials": {
+          "$ref": "#/$defs/materials",
+          "description": "Authored construction and destructive-salvage material economics. Independent of storage.storageClasses and all Reality, Known, and Processing Tags."
         }
       }
     },
@@ -184,6 +183,36 @@
         },
         "isCargo": {
           "type": "boolean"
+        }
+      }
+    },
+    "materials": {
+      "type": "object",
+      "required": [
+        "baseCost",
+        "materialClass"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "baseCost": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000,
+          "description": "Fixed-point base construction cost. 123 represents 12.3 cost units, using the same 0-1000 convention as percentOfWhole."
+        },
+        "materialClass": {
+          "type": "string",
+          "enum": [
+            "M1",
+            "M2",
+            "M3",
+            "S1",
+            "S2",
+            "S3",
+            "RATION",
+            "KNOWLEDGE"
+          ],
+          "description": "Authored material resource classification used by construction and destructive salvage."
         }
       }
     },
@@ -238,6 +267,45 @@
         },
         "implementationTags": {
           "$ref": "#/$defs/identifierArray"
+        }
+      }
+    }
+    ,"processingExposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "receiving": {"$ref": "#/$defs/receivingExposure"},
+        "analysis": {"$ref": "#/$defs/analysisExposure"}
+      }
+    },
+    "receivingExposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "identityTags": {"$ref": "#/$defs/identifierArray"},
+        "conditionTags": {"$ref": "#/$defs/identifierArray"}
+      }
+    },
+    "analysisExposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "orderedFunctionalityTags": {"$ref": "#/$defs/identifierArray"}
+      }
+    },
+    "nameResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "initialName": {"type": "string", "minLength": 1},
+        "processExitNames": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "receiving": {"type": "string", "minLength": 1},
+            "analysis": {"type": "string", "minLength": 1},
+            "workshop": {"type": "string", "minLength": 1}
+          }
         }
       }
     }

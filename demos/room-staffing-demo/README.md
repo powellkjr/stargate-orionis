@@ -93,8 +93,8 @@ CT alone. Receiving uses inventory progression; Containment and Lockers use thei
 inventory progression; Equipment Weapons and Armor each use storage progression.
 Data Storage Theories uses 40/60/80. Fixed work/reference slots remain fixed.
 
-M1�M3, S1�S3, and Rations each show a quantity and CT capacity 4000/6000/8000.
-All tabs are visible. Session quantities initialize randomly in 1000�5000, capped
+M1â€“M3, S1â€“S3, and Rations each show a quantity and CT capacity 4000/6000/8000.
+All tabs are visible. Session quantities initialize randomly in 1000â€“5000, capped
 at current capacity (4000 at CT1), and persist when switching rooms. Their Increase,
 Donate, and Destroy buttons are placeholders.
 
@@ -107,7 +107,7 @@ These existing Core configurations have not been changed by the tab work.
 Material tiers share one Material Storage capacity; Supply tiers share one Supply
 Storage capacity. Rations has its own capacity. `quantity.capacityGroup` identifies
 the shared pool within a room. Initial quantities fit the total CT capacity.
-Increase and Destroy change the selected tier by a random 1�1000 units, bounded by
+Increase and Destroy change the selected tier by a random 1â€“1000 units, bounded by
 free shared capacity or current stock. Donate remains disabled. CT reductions
 that would put the room over capacity are rejected; the selected CT persists
 across room switching for quantity rooms.
@@ -117,3 +117,60 @@ resize. The read-only Instance data box below the room shows the actual instance
 record when the active tab has one item slot containing an instance. This is a
 simulator debug view including hidden Reality, not player Knowledge. It clears
 for empty or multiple-slot tabs and catalog tiles without an instance.
+
+## Physical transfer controls
+
+Configured custody tabs declare admissionMatrixId, authorizationTransitionId, and
+custodyId. Analysis and Workshop now have persistent physical queues, with their
+single-item processing tabs viewing the queue head. Selecting a stored instance
+in a queue chooses it for transfer. Generated destination buttons use the process
+matrix; transfers validate storage class and capacity, preserve IDs, and compact
+both queues. Room queues and CT/layout configurations survive navigation.
+
+Boundary-result resolution remains pending. Fresh arrivals have RECEIVING_REQUIRED
+and IDENTITY_UNKNOWN; they cannot automatically satisfy Analysis/Workshop exit
+requirements. Manual simulator boundary controls require a separate decision.
+Equipment Storage/Containment admission boundaries and destructive output handling
+are not yet wired. Existing disabled action placeholders remain separate from the
+new matrix-driven physical transfer buttons.
+
+## Manual boundary controls
+
+Buttons labeled **Simulate:** assert boundary outcomes explicitly, without running
+the future Item Base Model resolver. Known equipment cleared completes basic
+Receiving and asserts intact/functional recognized equipment; it requires EQ
+compatibility and no outstanding Analysis/Workshop requirement. Analysis required
+routes toward Analysis. Analysis complete requires prior admission authorization
+and enables the authored Workshop/Reverse Engineering route. Containment required
+asserts the containment route. Each assertion records a simulator history event.
+
+Use the generated Send to buttons afterward. Equipment Storage and Containment
+now have configured admission/custody targets. Select a queue object to operate on
+it; single-slot process tabs operate on the queue head. Storage, capacity, and
+matrix checks still apply. No Theory Knowledge or assignment eligibility is
+automatically granted. Destructive Reverse Engineering completion remains deferred
+until salvage yield and output contracts are authored.
+
+## Containment-first Analysis and optional Reverse Engineering
+
+For the Analysis-required simulator path, Receiving routes to Containment first.
+Containment Processing shows its first stored object. Reorder the storage queue by
+local drag/drop to bring the desired object to the front.
+Real Room actions and Simulator controls render in separate blocks. Containment
+Processing offers the Analysis queue destination plus disabled Destroy/Donate
+placeholders; destructive yields and donation effects remain unauthored.
+
+Analysis and Workshop change containerId while retaining storageId as the primary
+storage reservation. Admission checks primary storage class and total reserved
+cost before changing custody. Reserved cost includes objects physically away in
+processing rooms and is displayed in storage tabs. A successful CC-to-EQ transfer
+changes the primary storage only after EQ capacity is validated. Failed transfers
+leave the reservation, queues, and instance unchanged.
+
+Simulate: Next tag reveal copies one existing authored Reality tag into instance
+Known Tags. Queue names show revealed facts progressively and the recognized item
+name once all authored tags are revealed. Analysis completion requires those
+reveals, marks the item functional for this simulator path, and permits EQ custody
+for EQ-compatible objects. Reverse Engineering remains available but is optional;
+WORKSHOP_REQUIRED is no longer added by Analysis completion. Its Process button is
+a visible action placeholder and does not destroy the item or generate outputs.

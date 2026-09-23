@@ -25,3 +25,5 @@ Simulator documents may narrow or stage an established rule, but they do not ove
 ## Implementation Rule
 
 Keep canonical definitions, runtime institutional Knowledge, physical instance Reality, revealed instance Knowledge, process state, and custody separate even if the prototype stores them in one JSON file.
+
+6. [Receiving to Equipment Storage handoff](./receiving-equipment-storage-handoff.md)

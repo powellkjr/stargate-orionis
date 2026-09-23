@@ -1,3 +1,4 @@
+import {matchesProcessMatrix,transferInstance,simulateBoundary,resolveDisplayName} from "../shared/js/process-transfers.mjs";
 import {createArrivalStore} from "../shared/js/item-instances.mjs";
 import {getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=room-staffing-demo-5";
 
@@ -40,6 +41,11 @@ let itemCatalog=[];
 let theoryCatalog=[];
 let roomResources={items:[],theories:[],cores:[]};
 let roomTabResources={};
+const persistentRoomTabs={};
+const roomConfigurations={};
+let processMatrix={};
+let processingContracts={};
+let selectedInstanceId=null;
 const arrivals=createArrivalStore();
 let arrivalCt=1;
 const roomQuantities={};
@@ -551,13 +557,20 @@ function adjustQuantity(tab,process){
 
 function renderInstanceInspector(){
   const inspector=document.getElementById("instanceInspector");
+  const itemInspector=document.getElementById("itemInspector");
   const tab=roomTabs().find(t=>t.id===activeRoomTabId);
   const slots=tab?.queueSource?[roomTabResources[tab.queueSource]?.item?.find(Boolean) ?? null]:roomTabResources[tab?.id]?.item;
   const instance=slots?.length===1?arrivals.instances[slots[0]]:null;
   inspector.value=instance?JSON.stringify(instance,null,2):"";
+  const item=instance&&itemCatalog.find(value=>value.id===instance.itemId);
+  itemInspector.value=item?JSON.stringify(item,null,2):"";
 }
 
 function resetRoomResources(){
+  for(const tab of roomTabs().filter(t=>t.storage && t.custodyId)){
+    const reserved=Object.values(arrivals.instances).filter(i=>i.custody.storageId===tab.custodyId).reduce((sum,i)=>sum+i.custody.cost.extendedCost,0);
+    if(reserved>slotCountFromConfig(tab.slotConfig.item))throw new Error("Primary storage reservations exceed the requested capacity.");
+  }
   for(const tab of roomTabs().filter(tab=>tab.quantity)){
     if(quantityTotal(tab)>slotCountFromConfig(tab.quantity.capacity))throw new Error("Stored quantities exceed that CT capacity; destroy stock before reducing CT.");
   }
@@ -579,10 +592,14 @@ function resetRoomResources(){
       }
       if(tab.queueSource)continue;
       const old=roomTabResources[tab.id]?.[type] ?? [];
-      next[tab.id][type]=resizeCollection(compactQueue(old),slotCountFromConfig(config,{layout:currentLayout,ct:currentCt}));
+      const capacity=slotCountFromConfig(config,{layout:currentLayout,ct:currentCt});
+      if(type==="item" && old.filter(id=>arrivals.instances[id]).length>capacity)throw new Error("Cannot reduce capacity below stored instances.");
+      next[tab.id][type]=resizeCollection(compactQueue(old),capacity);
     }
   }
   roomTabResources=next;
+  persistentRoomTabs[currentRoom.id]=next;
+  roomConfigurations[currentRoom.id]={ct:currentCt,layout:currentLayout};
   if(!tabs.some(tab=>tab.id===activeRoomTabId))activeRoomTabId=tabs[0]?.id ?? null;
 }
 
@@ -599,11 +616,12 @@ function loadRoom(id){
   if(!definition)return;
   currentRoom=definition;
   roomSelect.value=definition.id;
-  currentCt=roomTabs(definition).some(tab=>tab.arrival)?arrivalCt:(quantityRoomCt[id] ?? 1);
+  currentCt=roomConfigurations[id]?.ct ?? (roomTabs(definition).some(tab=>tab.arrival)?arrivalCt:(quantityRoomCt[id] ?? 1));
   ctSelect.value=String(currentCt);
-  currentLayout=availableLayouts(definition)[0] ?? "1x1";
+  currentLayout=roomConfigurations[id]?.layout ?? availableLayouts(definition)[0] ?? "1x1";
   activeRoomTabId=null;
-  roomTabResources={};
+  selectedInstanceId=null;
+  roomTabResources=persistentRoomTabs[id] ?? {};
   populateLayoutOptions();
   assignments=Array.from({length:Math.max(0,maxStaffSlotsFor(definition))},()=>null);
   resetRoomResources();
@@ -653,7 +671,7 @@ function createClassChip(definition){
   name.textContent=definition.name;
   const short=document.createElement("div");
   short.className="class-short";
-  short.textContent=`${titleCaseWords(definition.classId)} · ${baseTierLabel(definition.baseTier)}`;
+  short.textContent=`${titleCaseWords(definition.classId)} Ã‚Â· ${baseTierLabel(definition.baseTier)}`;
   const meta=document.createElement("div");
   meta.className="class-meta";
   meta.textContent=definition.specializationId?`Spec: ${definition.specializationId}`:definition.crossPathId?`Cross: ${titleCaseWords(definition.crossPathId)}`:"Base path";
@@ -684,8 +702,8 @@ function createResourceChip(definition,type){
   const meta=document.createElement("div");
   meta.className="resource-meta";
   meta.textContent=type==="item"
-    ? `${definition.storage.storageClasses.join("/")} � Handling cost ${definition.storage.handlingCost}`
-    : `${titleCaseWords(definition.family ?? "theory")} · Tier ${definition.tier ?? "?"}`;
+    ? `${definition.storage.storageClasses.join("/")} Â· Handling cost ${definition.storage.handlingCost}`
+    : `${titleCaseWords(definition.family ?? "theory")} Ã‚Â· Tier ${definition.tier ?? "?"}`;
   copy.append(name,meta);
   chip.append(glyph,copy);
   return chip;
@@ -724,10 +742,11 @@ function createResourceSlot(type,index,providedCollection=null,storageClasses=[]
   const collection=providedCollection ?? resourceCollection(type);
   const definition=type==="unit"?rosterUnit(collection[index]):(["item","theory"].includes(type)?resourceDefinition(type,collection[index]):null);
   const slot=document.createElement("div");
-  slot.className=`resource-slot ${definition||collection[index]?"filled":""}`.trim();
+  const processingSlot=type==="item" && readOnly && index===0;
+  slot.className=`resource-slot ${definition||collection[index]?"filled":""} ${processingSlot?"processing-slot":""}`.trim();
   if(!readOnly && ["item","theory","unit"].includes(type)){
     slot.addEventListener("dragover",event=>{
-      if(dragPayload?.type!==type)return;
+      if(dragPayload?.type!==type && !(type==="item" && dragPayload?.type==="instance"))return;
       event.preventDefault();
       event.dataTransfer.dropEffect="copy";
       slot.classList.add("over");
@@ -737,6 +756,14 @@ function createResourceSlot(type,index,providedCollection=null,storageClasses=[]
       event.preventDefault();
       slot.classList.remove("over");
       const payload=droppedPayload(event);
+      if(payload?.type==="instance"){
+        event.stopPropagation();
+        const source=collection.indexOf(payload.id);
+        if(source<0){setStatus("Reordering is limited to this storage queue.");return;}
+        const ids=collection.filter(Boolean);ids.splice(ids.indexOf(payload.id),1);ids.splice(Math.min(index,ids.length),0,payload.id);
+        collection.splice(0,collection.length,...ids,...Array(collection.length-ids.length).fill(null));
+        selectedInstanceId=payload.id;render();return;
+      }
       const valid=type==="unit"?rosterUnit(payload?.id):resourceDefinition(type,payload?.id);
       if(payload?.type!==type || !valid)return;
       if(type==="item" && !acceptsStoredItem(valid,storageClasses)){
@@ -756,6 +783,7 @@ function createResourceSlot(type,index,providedCollection=null,storageClasses=[]
       compactQueue(collection);
       const empty=collection.indexOf(null);
       if(empty<0){setStatus("This queue is full.");return;}
+      if(tab?.admissionMatrixId){setStatus("Transfer a physical instance here from its current room.");return;}
       collection[empty]=payload.id;
       setStatus(`${valid.name} placed in ${type} slot ${index+1}.`);
       render();
@@ -785,12 +813,18 @@ function createResourceSlot(type,index,providedCollection=null,storageClasses=[]
   const copy=document.createElement("div");
   const name=document.createElement("div");
   name.className="resource-slot-name";
-  name.textContent=arrivals.instances[collection[index]]?"Unidentified offworld object":definition.name;
+   name.textContent=arrivals.instances[collection[index]]?resolveDisplayName(arrivals.instances[collection[index]],definition):definition.name;
   const meta=document.createElement("div");
   meta.className="resource-slot-meta";
   meta.textContent=collection[index];
   copy.append(name,meta);
-  if(arrivals.instances[collection[index]]){glyph.textContent="?";glyph.style.background="#64748b";slot.append(glyph,copy);return slot;}
+  if(arrivals.instances[collection[index]]){glyph.textContent="?";glyph.style.background="#64748b";slot.append(glyph,copy);
+    if(!readOnly){
+      slot.draggable=true;
+      slot.addEventListener("dragstart",event=>beginDrag(event,{type:"instance",id:collection[index]},slot));
+      slot.addEventListener("dragend",()=>endDrag(slot));
+    }
+    slot.addEventListener("click",()=>{selectedInstanceId=collection[index];render()});return slot;}
   if(readOnly){slot.append(glyph,copy);return slot;}
   const clear=document.createElement("button");
   clear.type="button";
@@ -844,6 +878,53 @@ function createResourceGroup(type,title,providedCollection=null,storageClasses=[
   return group;
 }
 
+function activeInstance(tab){
+  const queue=roomTabResources[tab.queueSource ?? tab.id]?.item ?? [];
+  const id=tab.queueSource?queue.find(Boolean):(queue.includes(selectedInstanceId)?selectedInstanceId:queue.find(id=>arrivals.instances[id]));
+  return {instance:arrivals.instances[id],queue};
+}
+
+function storageDescriptor(storageId){
+  for(const room of roomCatalog)for(const tab of roomTabs(room)){
+    if(tab.custodyId!==storageId || !tab.storage)continue;
+    const config=roomConfigurations[room.id] ?? {ct:1,layout:"1x1"};
+    return {containerId:storageId,storageClasses:tab.storage.storageClasses,capacity:slotCountFromConfig(tab.slotConfig.item,{...config,definition:room})};
+  }
+  return null;
+}
+
+function transferControls(tab){
+  const controls=document.createElement("div");
+  const {instance,queue}=activeInstance(tab);
+  if(!instance)return controls;
+  for(const room of roomCatalog){
+    for(const target of roomTabs(room).filter(t=>t.admissionMatrixId && !t.queueSource)){
+      if(room.id===currentRoom.id && target.id===(tab.queueSource ?? tab.id))continue;
+      const button=document.createElement("button");button.type="button";
+      button.textContent=`Send to ${room.name} / ${target.name}`;
+      const matrix=processMatrix[target.admissionMatrixId];
+      button.disabled=!matchesProcessMatrix(instance,room.schema.function.processingCapabilities,matrix);
+      button.title=button.disabled?`Requires ${matrix?.requiredProcessingTags?.join(", ") ?? "authored admission rules"}`:"Transfer this physical instance";
+      button.addEventListener("click",()=>{
+        try{
+          const config=roomConfigurations[room.id] ?? {ct:1,layout:"1x1"};
+          const capacity=slotCountFromConfig(target.slotConfig.item,{...config,definition:room});
+          persistentRoomTabs[room.id] ??= {};
+          persistentRoomTabs[room.id][target.id] ??= {};
+          const destinationQueue=target.arrival?arrivals.queue:(persistentRoomTabs[room.id][target.id].item ?? Array(capacity).fill(null));
+          if(target.arrival)arrivals.resize(capacity);
+          const transition=Object.values(processingContracts).flatMap(c=>c.transitions).find(t=>t.id===target.authorizationTransitionId);
+          const result=transferInstance({instance,sourceQueue:queue,destinationQueue,destination:{containerId:target.custodyId,processingCapabilities:room.schema.function.processingCapabilities,capacity,storageClasses:target.storage?.storageClasses,preservePrimaryStorage:target.preservePrimaryStorage},primaryStorage:storageDescriptor(instance.custody.storageId),matrixEntry:matrix,authorizationTransition:transition,instances:arrivals.instances,itemDefinition:itemCatalog.find(i=>i.id===instance.itemId)});
+          arrivals.instances[result.instanceId]=result;
+          persistentRoomTabs[room.id][target.id].item=destinationQueue;
+          selectedInstanceId=result.instanceId;loadRoom(room.id);activeRoomTabId=target.id;setStatus(`Transferred ${result.instanceId} to ${room.name}.`);render();
+        }catch(error){setStatus(error.message)}
+      });controls.appendChild(button);
+    }
+  }
+  return controls;
+}
+
 function renderRoomResources(){
   const resources=document.createElement("div");
   resources.className="room-resources";
@@ -871,6 +952,10 @@ function renderRoomResources(){
     panel.className="room-tab-panel";
     panel.setAttribute("role","tabpanel");
     if(active?.notes){const note=document.createElement("p");note.className="room-tab-note";note.textContent=active.notes;panel.appendChild(note)}
+    if(active.storage && active.custodyId){
+      const reserved=Object.values(arrivals.instances).filter(i=>i.custody.storageId===active.custodyId).reduce((sum,i)=>sum+i.custody.cost.extendedCost,0);
+      const usage=document.createElement("p");usage.textContent=`Primary storage reserved: ${reserved} / ${slotCountFromConfig(active.slotConfig.item)} (includes items in processing rooms)`;panel.appendChild(usage);
+    }
     const labels={item:"Item slots",theory:"Theory slots",unit:"Occupant slots",job:"Work slots"};
     for(const type of ["item","theory","unit","job"]){
       const collection=active.queueSource && type==="item"?[roomTabResources[active.queueSource]?.item?.find(Boolean) ?? null]:roomTabResources[active?.id]?.[type];
@@ -879,22 +964,46 @@ function renderRoomResources(){
     if(active.quantity){
       const quantity=document.createElement("p");
       quantity.className="tab-quantity";
-      quantity.textContent=`${active.name}: ${tabQuantity(active)} � Total: ${quantityTotal(active)} / ${slotCountFromConfig(active.quantity.capacity)}`;
+      quantity.textContent=`${active.name}: ${tabQuantity(active)} Â· Total: ${quantityTotal(active)} / ${slotCountFromConfig(active.quantity.capacity)}`;
       panel.appendChild(quantity);
     }
-    const actions=document.createElement("div");
+    const simulation=document.createElement("fieldset");
+    const simLegend=document.createElement("legend");simLegend.textContent="Simulator controls";simulation.appendChild(simLegend);
+    const actions=document.createElement("fieldset");
+    const actionLegend=document.createElement("legend");actionLegend.textContent="Room actions";actions.appendChild(actionLegend);
     actions.className="tab-actions";
     for(const action of active.buttons ?? []){
       const button=document.createElement("button");
       button.type="button";button.textContent=action.name;
       button.dataset.process=action.process;button.disabled=true;
+      if(action.process==="reverse_engineer"){
+        button.disabled=!activeInstance(active).instance;
+        button.title="Process control placeholder; destructive execution is not wired.";
+        button.addEventListener("click",()=>setStatus("Reverse Engineering Process selected. Execution and salvage outputs are not wired yet."));
+      }
+      if(action.process.startsWith("simulate_")){
+        const {instance}=activeInstance(active);
+        const item=itemCatalog.find(i=>i.id===instance?.itemId);
+        try{simulateBoundary(instance,item,action.process,processingContracts);button.disabled=false;}
+        catch(error){button.title=error.message;}
+        button.addEventListener("click",()=>{
+          try{
+            const result=simulateBoundary(instance,item,action.process,processingContracts);
+            arrivals.instances[result.instanceId]=result;
+            setStatus(`${action.name}: ${result.instanceId}. This is a manual simulator result.`);
+            render();
+          }catch(error){setStatus(error.message)}
+        });
+      }
       if(active.quantity && ["increase","destroy"].includes(action.process)){
         button.disabled=action.process==="increase"?quantityTotal(active)>=slotCountFromConfig(active.quantity.capacity):tabQuantity(active)===0;
         button.addEventListener("click",()=>adjustQuantity(active,action.process));
       }
-      actions.appendChild(button);
+      (action.process.startsWith("simulate_")?simulation:actions).appendChild(button);
     }
     panel.appendChild(actions);
+    actions.appendChild(transferControls(active));
+    if((active.buttons??[]).some(a=>a.process.startsWith("simulate_")))panel.appendChild(simulation);
     tabArea.append(tabList,panel);
     resources.append(tabArea);
   }
@@ -919,7 +1028,7 @@ function renderRoomCard(){
   heading.textContent=currentRoom.name;
   const meta=document.createElement("div");
   meta.className="room-meta";
-  meta.textContent=`${roomShapeName()} · CT${currentCt}`;
+  meta.textContent=`${roomShapeName()} Ã‚Â· CT${currentCt}`;
   title.append(heading,meta);
 
   const intro=document.createElement("p");
@@ -1017,7 +1126,10 @@ function renderRoomCard(){
         toolRows.push(toolSelect);
       }
 
-      const actions=document.createElement("div");
+      const simulation=document.createElement("fieldset");
+    const simLegend=document.createElement("legend");simLegend.textContent="Simulator controls";simulation.appendChild(simLegend);
+    const actions=document.createElement("fieldset");
+    const actionLegend=document.createElement("legend");actionLegend.textContent="Room actions";actions.appendChild(actionLegend);
       actions.className="slot-actions";
       const clearRow=document.createElement("div");
       clearRow.className="slot-clear-row";
@@ -1296,6 +1408,7 @@ function clearAssignments(){
 }
 
 function resetRoomState(){
+  if(Object.values(roomTabResources).some(types=>types.item?.some(id=>arrivals.instances[id]))){setStatus("Reload the page to restart physical-instance simulation.");return;}
   if(roomTabs().some(tab=>tab.quantity)){setStatus("Reload the page to reset stored quantities.");return;}
   if(roomTabs().some(tab=>tab.arrival) && arrivals.queue.some(Boolean)){setStatus("Receiving contains physical instances. Reload the page to restart this simulation.");return;}
   roomResources={items:[],theories:[],cores:[]};
@@ -1361,14 +1474,17 @@ document.getElementById("jsonFile").addEventListener("change",async event=>{
 
 async function initialize(){
   try{
-    const [rooms,classes,specializationIconMap,items,theories,names]=await Promise.all([
+    const [rooms,classes,specializationIconMap,items,theories,names,matrix,contracts]=await Promise.all([
       loadRooms(ROOM_CATALOG_URL),
       loadClassCatalog(),
       loadSpecializationIcons(),
       loadItemCatalog(),
       loadTheoryCatalog(),
-      loadPersonnelNames()
+      loadPersonnelNames(),
+      fetch("../shared/data/process-matrix.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("Could not load process matrix");return r.json()}),
+      fetch("../shared/data/processing-contracts.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("Could not load processing contracts");return r.json()})
     ]);
+    processMatrix=matrix;processingContracts=contracts;
     roomCatalog=rooms;
     classCatalog=classes;
     classNamePools=names;

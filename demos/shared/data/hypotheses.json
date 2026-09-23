@@ -1,0 +1,39 @@
+{
+  "HYP_PULSED_POWER_II_VERTICAL": {
+    "id": "HYP_PULSED_POWER_II_VERTICAL",
+    "name": "Pulsed Power II",
+    "contributingKnowledge": ["PULSED_POWER_I"],
+    "targetKnowledge": "PULSED_POWER_II",
+    "sourceTypes": ["DISCOVERY"],
+    "advancement": {"mode": "VERTICAL", "targetScaleClass": 10}
+  },
+  "HYP_EM_ACCELERATION_II_HORIZONTAL": {
+    "id": "HYP_EM_ACCELERATION_II_HORIZONTAL",
+    "name": "Electromagnetic Acceleration II",
+    "contributingKnowledge": ["PULSED_POWER_II", "ELECTROMAGNETIC_ACTUATION_II"],
+    "targetKnowledge": "ELECTROMAGNETIC_ACCELERATION_II",
+    "sourceTypes": ["DISCOVERY"],
+    "derivedRequirements": {
+      "roomServices": ["PULSED_POWER_PROCESSING_II", "ELECTROMAGNETIC_PROCESSING_II"],
+      "preserveIndependentParentConstraints": true
+    }
+  },
+  "HYP_HUMAN_EM_ACCELERATOR_PATTERN_II": {
+    "id": "HYP_HUMAN_EM_ACCELERATOR_PATTERN_II",
+    "name": "Human Electromagnetic Accelerator Pattern II",
+    "contributingKnowledge": ["ELECTROMAGNETIC_ACCELERATION_II", "HUMAN_MANUFACTURING_II"],
+    "targetKnowledge": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+    "sourceTypes": ["DISCOVERY"]
+  },
+  "HYP_EM_ACCELERATION_II_EXTRACTION": {
+    "id": "HYP_EM_ACCELERATION_II_EXTRACTION",
+    "name": "Electromagnetic Acceleration II",
+    "contributingKnowledge": ["ELECTROMAGNETIC_ACCELERATION_I"],
+    "targetKnowledge": "ELECTROMAGNETIC_ACCELERATION_II",
+    "sourceTypes": ["REVERSE_ENGINEERING"],
+    "sourceRequirements": {
+      "previousTierKnowledge": "ELECTROMAGNETIC_ACCELERATION_I",
+      "evidenceClass": "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+    }
+  }
+}

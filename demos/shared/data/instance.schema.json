@@ -216,6 +216,9 @@
           "$ref": "#/$defs/stringArray",
           "description": "Known Tags: instance recognition/interpretation derived from retained evidence and current SGC Theory/Pattern Knowledge. Re-evaluate when relevant institutional Knowledge changes; do not reveal Reality merely because its definition is loaded."
         },
+        "identityTags": {"$ref": "#/$defs/stringArray"},
+        "conditionTags": {"$ref": "#/$defs/stringArray"},
+        "functionalityTags": {"$ref": "#/$defs/stringArray"},
         "instanceFindings": {
           "type": "array",
           "items": {

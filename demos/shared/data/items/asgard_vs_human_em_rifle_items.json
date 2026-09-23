@@ -50,6 +50,19 @@
           "UNSTABLE"
         ]
       },
+      "processingExposure": {
+        "receiving": {
+          "identityTags": ["WEAPON", "RANGED_WEAPON", "RIFLE"],
+          "conditionTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED", "CONTAMINATED", "UNSTABLE"]
+        },
+        "analysis": {
+          "orderedFunctionalityTags": ["ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"]
+        }
+      },
+      "nameResolution": {
+        "initialName": "Unknown object",
+        "processExitNames": {"receiving": "Unknown rifle", "analysis": "Unknown electromagnetic rifle"}
+      },
       "processCompatibility": {
         "receiving": true,
         "analysis": true,
@@ -112,6 +125,26 @@
           "CHARGED",
           "DISCHARGED"
         ]
+      },
+      "processingExposure": {
+        "receiving": {
+          "identityTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "COIL_RIFLE"],
+          "conditionTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED"]
+        },
+        "analysis": {
+          "orderedFunctionalityTags": [
+            "PULSED_POWER_II_IMPLEMENTATION",
+            "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+            "HUMAN_MANUFACTURING_II_IMPLEMENTATION",
+            "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION",
+            "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+          ]
+        }
+      },
+      "nameResolution": {
+        "initialName": "Unknown object",
+        "processExitNames": {"receiving": "Unknown coil rifle", "analysis": "Human advanced coil rifle"}
       },
       "processCompatibility": {
         "receiving": true,

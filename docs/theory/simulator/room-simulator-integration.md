@@ -143,8 +143,24 @@ separates Reality Tags, Known Tags, Processing Tags, physical state, custody,
 configured Room Services, and supported processing contracts. These fields prepare
 the data model; they do not yet implement room exit or transfer rules.
 
-Room configuration may declare `function.roomServices` and
-`function.processingCapabilities`. Instance `processingTags` is a flat array of unique authored tag IDs covering
-requirements, identity, availability, selection, authorization, and completion. Keep these separate from runtime
-Service availability and detailed `processes` execution state. No existing fixture
-records are populated automatically by the schema change.
+Room configuration declares `function.processingCapabilities` as authored processing
+categories and `function.roomServices` as current technical configuration. The
+The shared `process-matrix.json` matches instance Processing Tags against room
+Processing Capabilities. `processing-contracts.json` defines the tag transitions
+that follow successful admission. Services are checked separately against
+`technical-requirements.json`, derived from the authored Theories, Patterns, and
+Recipe bubbles. Cores and power can change Services without changing the room's
+processing category.
+
+Instance `processingTags` is a flat array of unique authored IDs. Keep execution
+progress in `processes`. No existing fixture records are populated automatically
+by this schema change. Discovery, Hypothesis, and Recipe definitions are maintained
+in separate normalized tables. Salvage class/yield content remains unassigned.
+
+## Direct Receiving custody exit
+
+[Receiving to Equipment Storage](./receiving-equipment-storage-handoff.md) defines
+the known, intact Human EM Impact Vest fixture. Analysis is conditional, not a
+universal next stage. Item Base Model boundaries determine routing using only
+knowledge needed for the current Receiving path. Equipment Storage is custody;
+assignment eligibility is evaluated separately by the equipment system.

@@ -163,9 +163,9 @@
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "$ref": "#/$defs/roomProcessingCapability"
+            "$ref": "#/$defs/contractIdentifier"
           },
-          "description": "Authored rules for deriving processing capabilities from configured Services. They do not directly grant capability, create Services, or authorize an instance. Capacity must be validated/reserved before authorization and source custody release."
+          "description": "Authored room processing-category capabilities matched by the process matrix against instance Processing Tags. Independent of configured Services, equipped Cores, and power. No room-name inference."
         }
       }
     }
@@ -645,6 +645,21 @@
               "minLength": 1
             }
           }
+        },
+        "admissionMatrixId": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "authorizationTransitionId": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "custodyId": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$"
+        },
+        "preservePrimaryStorage": {
+          "type": "boolean"
         }
       }
     },
@@ -774,37 +789,7 @@
       "items": {
         "$ref": "#/$defs/contractIdentifier"
       },
-      "description": "Configured functional Service IDs for this physical room. Does not mean resources are currently available. Room Groups resolve from their physical child rooms."
-    },
-    "roomProcessingCapability": {
-      "type": "object",
-      "required": [
-        "processingContractId",
-        "requiredRoomServices"
-      ],
-      "additionalProperties": false,
-      "properties": {
-        "processingContractId": {
-          "$ref": "#/$defs/contractIdentifier",
-          "description": "Reference to an authored processing contract, not a new Recipe or executable UI action."
-        },
-        "requiredRoomServices": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/contractIdentifier"
-          },
-          "description": "Configured Services needed to support this contract. Cross-record resolution must verify the Services in the destination Room Group; this is not a multi-Service Recipe bubble."
-        },
-        "providesCapabilities": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "$ref": "#/$defs/contractIdentifier"
-          },
-          "description": "Authored processing capability IDs exposed only when requiredRoomServices resolve from configured room Services. Used for instance admission; room names do not determine validity."
-        }
-      }
+      "description": "Current configured functional Service IDs, affected by equipped Cores and power state. Compared with separate technical requirements derived from Theories and Patterns; these do not generate room Processing Capabilities."
     }
   }
 }

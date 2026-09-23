@@ -78,6 +78,9 @@
     },
     "function": {
       "base": "Deeper characterization of recovered objects and progressive exposure of Research admission requirements.",
+      "processingCapabilities": [
+        "CAN_ACCEPT_ANALYSIS"
+      ],
       "activeProjectsPerGroup": 1,
       "subordinateTabs": [
         {
@@ -91,30 +94,29 @@
           },
           "buttons": [
             {
-              "name": "Send to Containment",
-              "process": "send_to_containment"
+              "name": "Simulate: Next tag reveal",
+              "process": "simulate_next_tag_reveal"
             },
             {
-              "name": "Send to Workshop",
-              "process": "send_to_workshop"
-            },
-            {
-              "name": "Send to Storage",
-              "process": "send_to_storage"
+              "name": "Simulate: Analysis complete",
+              "process": "simulate_analysis_complete"
             }
-          ]
+          ],
+          "queueSource": "queue"
         },
         {
           "id": "queue",
           "name": "Queue",
-          "notes": "Pending analysis work.",
+          "notes": "Physical instances waiting for Analysis.",
           "slotConfig": {
-            "job": {
-              "fixed": 4,
-              "scaleWithLayout": false,
-              "notes": "Four queued analysis jobs."
+            "item": {
+              "fixed": 4
             }
-          }
+          },
+          "admissionMatrixId": "ANALYSIS_ADMISSION",
+          "authorizationTransitionId": "ANALYSIS_AUTHORIZE",
+          "custodyId": "ANALYSIS_QUEUE",
+          "preservePrimaryStorage": true
         }
       ],
       "slotConfig": {
@@ -244,7 +246,30 @@
               "progressionSource": "inventory",
               "scaleWithLayout": false
             }
-          }
+          },
+          "admissionMatrixId": "CONTAINMENT_ADMISSION",
+          "custodyId": "CONTAINMENT_STORAGE",
+          "buttons": []
+        },
+        {
+          "id": "processing",
+          "name": "Processing",
+          "queueSource": "cc_storage",
+          "slotConfig": {
+            "item": {
+              "fixed": 1
+            }
+          },
+          "buttons": [
+            {
+              "name": "Destroy",
+              "process": "destroy"
+            },
+            {
+              "name": "Donate",
+              "process": "donate"
+            }
+          ]
         }
       ],
       "slotConfig": {
@@ -271,7 +296,10 @@
           "scaleWithLayout": false,
           "notes": "Containment exposes CC item storage by construction tier."
         }
-      }
+      },
+      "processingCapabilities": [
+        "CAN_ACCEPT_CONTAINMENT"
+      ]
     }
   },
   {
@@ -510,7 +538,19 @@
               "progressionSource": "storage",
               "scaleWithLayout": false
             }
-          }
+          },
+          "admissionMatrixId": "EQUIPMENT_STORAGE_ADMISSION",
+          "custodyId": "EQUIPMENT_STORAGE_WEAPONS",
+          "buttons": [
+            {
+              "name": "Simulate: Analysis required",
+              "process": "simulate_analysis_required"
+            },
+            {
+              "name": "Simulate: Containment required",
+              "process": "simulate_containment_required"
+            }
+          ]
         },
         {
           "id": "armor",
@@ -526,7 +566,19 @@
               "progressionSource": "storage",
               "scaleWithLayout": false
             }
-          }
+          },
+          "admissionMatrixId": "EQUIPMENT_STORAGE_ADMISSION",
+          "custodyId": "EQUIPMENT_STORAGE_ARMOR",
+          "buttons": [
+            {
+              "name": "Simulate: Analysis required",
+              "process": "simulate_analysis_required"
+            },
+            {
+              "name": "Simulate: Containment required",
+              "process": "simulate_containment_required"
+            }
+          ]
         }
       ],
       "slotConfig": {
@@ -542,7 +594,10 @@
           "scaleWithLayout": true,
           "notes": "Equipment Storage exposes weapon/armor item slots per physical room."
         }
-      }
+      },
+      "processingCapabilities": [
+        "CAN_ACCEPT_EQUIPMENT_STORAGE"
+      ]
     }
   },
   {
@@ -1476,6 +1531,9 @@
     },
     "function": {
       "base": "Universal entry point for recovered physical objects, custody creation, inspection, classification, and temporary handling.",
+      "processingCapabilities": [
+        "CAN_ACCEPT_RECEIVING"
+      ],
       "subordinateTabs": [
         {
           "id": "intake",
@@ -1500,7 +1558,10 @@
               "progressionSource": "inventory",
               "scaleWithLayout": false
             }
-          }
+          },
+          "admissionMatrixId": "RECEIVING_ADMISSION",
+          "authorizationTransitionId": "RECEIVING_AUTHORIZE",
+          "custodyId": "RECEIVING_INTAKE"
         },
         {
           "id": "processing",
@@ -1513,20 +1574,20 @@
           },
           "buttons": [
             {
-              "name": "Process",
-              "process": "process"
+              "name": "Process: Next Receiving tag",
+              "process": "simulate_next_receiving_reveal"
             },
             {
-              "name": "Send to Containment",
-              "process": "send_to_containment"
+              "name": "Simulate: Known equipment cleared",
+              "process": "simulate_known_equipment"
             },
             {
-              "name": "Send to Storage",
-              "process": "send_to_storage"
+              "name": "Simulate: Analysis required",
+              "process": "simulate_analysis_required"
             },
             {
-              "name": "Send to Workshop",
-              "process": "send_to_workshop"
+              "name": "Simulate: Containment required",
+              "process": "simulate_containment_required"
             }
           ]
         }
@@ -2073,6 +2134,10 @@
     },
     "function": {
       "base": "Physical fabrication, modification, equipment handling, and reverse engineering workspace aligned with Analysis-like room behavior.",
+      "processingCapabilities": [
+        "CAN_ACCEPT_WORKSHOP",
+        "CAN_REVERSE_ENGINEER"
+      ],
       "activeProjectsPerGroup": 1,
       "subordinateTabs": [
         {
@@ -2115,16 +2180,34 @@
           "notes": "Reverse engineering tab for physical investigation and breakdown workflows.",
           "slotConfig": {
             "item": {
-              "perPhysicalRoom": 1,
-              "scaleWithLayout": true,
-              "notes": "Reverse engineering target item slots per physical room."
+              "fixed": 1
             },
             "theory": {
               "perPhysicalRoom": 1,
               "scaleWithLayout": true,
               "notes": "Reverse engineering theory/hypothesis slots per physical room."
             }
-          }
+          },
+          "queueSource": "queue",
+          "buttons": [
+            {
+              "name": "Process",
+              "process": "reverse_engineer"
+            }
+          ]
+        },
+        {
+          "id": "queue",
+          "name": "Queue",
+          "slotConfig": {
+            "item": {
+              "fixed": 4
+            }
+          },
+          "admissionMatrixId": "REVERSE_ENGINEERING_ADMISSION",
+          "authorizationTransitionId": "WORKSHOP_AUTHORIZE",
+          "custodyId": "WORKSHOP_QUEUE",
+          "preservePrimaryStorage": true
         }
       ],
       "slotConfig": {

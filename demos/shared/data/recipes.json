@@ -1,0 +1,28 @@
+{
+  "HUMAN_ADVANCED_COIL_RIFLE_RECIPE": {
+    "id": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+    "name": "Human Advanced Coil Rifle",
+    "type": "RECIPE",
+    "knowledgeRequirements": ["HUMAN_ADVANCED_RIFLE_PATTERN", "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II"],
+    "output": {"object": "HUMAN_ADVANCED_COIL_RIFLE"},
+    "bubbles": [
+      {"id": "FABRICATE_RIFLE_COMPONENTS", "actorRequirement": "TE2", "toolRequirement": "TET2_MODIFY", "roomServiceRequirement": "HUMAN_WORKSHOP_II"},
+      {"id": "FABRICATE_ACCELERATOR_COMPONENTS", "actorRequirement": "TE2", "toolRequirement": "TET2_MODIFY", "roomServiceRequirement": "ELECTRODYNAMICS_FABRICATION_II"},
+      {"id": "ASSEMBLE_RIFLE_BODY", "actorRequirement": "TE2", "toolRequirement": "TET2_MODIFY", "roomServiceRequirement": "HUMAN_WORKSHOP_II"},
+      {"id": "ASSEMBLE_ACCELERATOR", "actorRequirement": "TE2", "toolRequirement": "TET2_MODIFY", "roomServiceRequirement": "HUMAN_WORKSHOP_II"},
+      {"id": "INTEGRATE_ACCELERATOR", "actorRequirement": "TE2", "toolRequirement": "TET2_MODIFY", "roomServiceRequirement": "HUMAN_WORKSHOP_II"},
+      {"id": "CALIBRATE_ACCELERATOR", "actorRequirement": "TE2", "toolRequirement": "TET2_MODIFY", "roomServiceRequirement": "SHIELDED_ELECTRODYNAMICS_TEST_II"},
+      {"id": "TECHNICAL_VALIDATION", "actorRequirement": "SC2", "toolRequirement": "SCT2", "roomServiceRequirement": "SHIELDED_ELECTRODYNAMICS_TEST_II"},
+      {"id": "FIELD_TEST", "actorRequirement": "SO1", "toolRequirement": null, "roomServiceRequirement": null}
+    ],
+    "edges": [
+      ["FABRICATE_RIFLE_COMPONENTS", "FABRICATE_ACCELERATOR_COMPONENTS"],
+      ["FABRICATE_ACCELERATOR_COMPONENTS", "ASSEMBLE_RIFLE_BODY"],
+      ["ASSEMBLE_RIFLE_BODY", "ASSEMBLE_ACCELERATOR"],
+      ["ASSEMBLE_ACCELERATOR", "INTEGRATE_ACCELERATOR"],
+      ["INTEGRATE_ACCELERATOR", "CALIBRATE_ACCELERATOR"],
+      ["CALIBRATE_ACCELERATOR", "TECHNICAL_VALIDATION"],
+      ["TECHNICAL_VALIDATION", "FIELD_TEST"]
+    ]
+  }
+}

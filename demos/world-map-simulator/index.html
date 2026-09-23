@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stargate World Map Simulator</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div><h1>World Map Simulator <span>v1</span></h1><p class="muted">Stargate network geometry · routing · campaign starts</p></div><div id="status" role="status">Generating galaxy…</div></header>
+<div class="app">
+  <aside>
+    <details open class="developer"><summary>Geometry & campaign</summary>
+      <label>Geometry seed<input id="geometrySeed" value="orionis-1"></label>
+      <div class="row"><button id="generate">Generate geometry</button><button id="randomGeometry">Random seed</button></div>
+      <label><input type="checkbox" id="lock"> Lock geometry controls</label>
+      <details><summary>Generation settings · provisional</summary><div id="settings" class="row"></div></details>
+      <label>Campaign seed<input id="campaignSeed" value="campaign-1"></label>
+      <label>Infected zones<input type="number" id="threatCount" value="4" min="0" max="20"></label>
+      <div class="row"><button id="campaign">Generate campaign</button><button id="randomCampaign">Random seed</button></div>
+      <button id="export">Export geometry + campaign + diagnostics</button>
+    </details>
+    <h2>Dialing table <span id="gateCount"></span></h2>
+    <label>Find address / Haven<input id="search" placeholder="Gate ID, faction, address…" type="search"></label>
+    <label>Origin Gate<select id="source"></select></label>
+    <p class="muted">Six destination glyphs, followed by the source Gate’s local Origin. Hover a record to highlight its correlated location.</p>
+    <div id="dialing" aria-label="Known Gate addresses"></div>
+  </aside>
+  <main>
+    <div class="toolbar">
+      <label>Information mode<select id="mode"><option value="god">God View</option><option value="sgc">SGC View</option></select></label>
+      <label>Projection<select id="projection"><option value="3d">3D orbit</option><option value="top">Top / QRS</option><option value="side">Side / depth</option></select></label>
+      <button id="resetCamera">Fit galaxy</button>
+      <label class="developer">Hop limit <output id="hopValue">43</output><input id="hop" type="range" min="1" max="80" value="43"></label>
+    </div>
+    <div id="mapFrame"><canvas id="map" aria-label="Rotatable Stargate network map"></canvas><div id="mapHint">Drag to orbit · wheel to zoom · click to inspect</div><div id="mapBadge">GOD VIEW · hidden truth</div></div>
+    <div id="legend"></div>
+    <details open><summary>Map layers</summary><div id="layers"></div><label>Faction filter<select id="factionFilter"><option value="">All factions</option><option>Scions</option><option>CLP</option><option>Moy’na</option><option>Independent</option></select></label></details>
+    <div class="row"><label>Resource layer filter<select id="resourceFilter"><option>Food</option><option>Supply</option><option>Material</option></select></label><label>Resource balance<select id="resourceState"><option value="">All known states</option><option value="deficit">↓ Deficit</option><option value="stable">→ Stable</option><option value="surplus">↑ Surplus</option></select></label></div>
+    <section id="tradePanel" hidden><h2>Potential Haven trade</h2><p class="muted">Select a Haven as the trade origin. Lines indicate possible direct connections, not cargo flows or guaranteed capacity. Unreachable partners remain unavailable; deficits remain local.</p><div id="tradeDetails"></div></section>
+    <section class="developer"><h2>Haven population & capacity</h2><div id="populationSummary"></div></section>
+    <section class="developer"><h2>Geometry diagnostics</h2><div id="metrics" class="metrics"></div><p id="recommendation"></p>
+      <details><summary>Hop analysis · exact unordered active Gate pairs</summary><div class="scroll"><table><thead><tr><th>Hops</th><th>All pairs</th><th>Connected pairs</th><th>Over-limit pairs¹</th><th>Locally isolated Gates</th></tr></thead><tbody id="hopRows"></tbody></table></div><p class="muted">¹ Longer connected routes; actual Gate staging is checked separately for the selected source. Connectivity is symmetric for a fixed pair; reachability varies by source.</p></details>
+    </section>
+    <details class="developer"><summary>Batch seed evaluation</summary>
+      <div class="row"><label>Seed prefix<input id="batchPrefix" value="candidate"></label><label>Count<input id="batchCount" type="number" value="10" min="1" max="10000"></label></div>
+      <div class="row"><button id="batch">Run batch</button><button id="cancelBatch" disabled>Stop batch</button></div>
+      <div class="row"><label>Sort<select id="batchSort"><option value="connectivity">Connectivity ↓</option><option value="components">Components ↑</option><option value="recommendedHop">Recommended hops ↑</option><option value="averageHops">Average hops ↑</option><option value="maximumHops">Maximum hops ↑</option><option value="chokepoints">Chokepoints ↑</option><option value="regionalIsolation">Regional isolation ↑</option><option value="pairDependence">Edge Pair dependence ↑</option><option value="resilience">Failure resilience ↓</option></select></label><label>Minimum connectivity %<input id="batchMin" type="number" value="0" min="0" max="100"></label></div>
+      <button id="exportBatch" disabled>Download batch JSON</button><div id="batchResults" class="scroll"></div>
+    </details>
+  </main>
+  <section class="preview">
+    <h2>Details</h2><div id="details">Select a Gate, network disc, or routing object.</div>
+    <section><h2>Dialing inspection</h2><div id="route"></div></section>
+    <details><summary>DHD glyph vocabulary</summary><div id="glyphVocabulary"></div></details>
+    <details open class="developer"><summary>Failure testing</summary>
+      <p class="muted">Failures are reversible overlays. The seeded geometry remains unchanged.</p>
+      <button id="toggleFailure" disabled>Disable selected infrastructure</button>
+      <label>Automated test<select id="failureType"><option>1%</option><option>5%</option><option value="pair">One Edge Pair</option><option value="critical">One critical routing node</option></select></label>
+      <label>Failure seed<input id="failureSeed" value="failure-1"></label>
+      <div class="row"><button id="failure">Run failure test</button><button id="restore">Restore all</button></div><p id="failureSummary" class="muted"></p>
+    </details>
+    <section class="developer"><h2>Campaign diagnostics</h2><div id="campaignReport"></div></section>
+  </section>
+</div>
+<noscript>This simulator requires JavaScript. Serve the repository over HTTP.</noscript>
+<script type="module" src="app.mjs"></script>
+</body></html>

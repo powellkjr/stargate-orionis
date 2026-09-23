@@ -5,6 +5,8 @@
     "version": 1,
     "identity": {"description": "A handheld Asgard ranged weapon using Tier-II electromagnetic acceleration.", "civilization": "ASGARD", "formFactor": "RIFLE", "subjectTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD"]},
     "possibleReality": {"inherentTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD", "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"], "possibleTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED", "CONTAMINATED", "UNSTABLE"]},
+    "processingExposure": {"receiving": {"identityTags": ["WEAPON", "RANGED_WEAPON", "RIFLE"], "conditionTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED", "CONTAMINATED", "UNSTABLE"]}, "analysis": {"orderedFunctionalityTags": ["ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"]}},
+    "nameResolution": {"initialName": "Unknown object", "processExitNames": {"receiving": "Unknown rifle", "analysis": "Unknown electromagnetic rifle"}},
     "salvageGuidance": {"preserveMass": true},
     "extension": {"ordinaryAsgardPatternsAreImplicitInFabricationCapability": true},
     "physical": {"inventoryClass": "EQUIPMENT", "isContainer": false, "isTool": false},
@@ -13,6 +15,7 @@
     "tags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "ASGARD"],
     "storage": {"storageClasses": ["INV", "CC", "EQ"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
     "processCompatibility": {"receiving": true, "analysis": true, "construction": false, "repair": true, "reverseEngineering": true, "salvage": true},
+    "materials": {"baseCost": 251, "materialClass": "M2"},
     "theoryBindings": [
       {"theoryId": "ELECTROMAGNETIC_ACCELERATION_II", "implementedProperties": [], "implementationTags": ["ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"]}
     ]
@@ -23,6 +26,8 @@
     "version": 1,
     "identity": {"description": "A Human Technology Tier-II rifle using a Human electromagnetic accelerator implementation.", "civilization": "HUMAN", "formFactor": "RIFLE", "subjectTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE"]},
     "possibleReality": {"inherentTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE", "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"], "possibleTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED"]},
+    "processingExposure": {"receiving": {"identityTags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "COIL_RIFLE"], "conditionTags": ["FUNCTIONAL", "DAMAGED", "CHARGED", "DISCHARGED"]}, "analysis": {"orderedFunctionalityTags": ["PULSED_POWER_II_IMPLEMENTATION", "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION", "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION", "HUMAN_MANUFACTURING_II_IMPLEMENTATION", "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION", "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"]}},
+    "nameResolution": {"initialName": "Unknown object", "processExitNames": {"receiving": "Unknown coil rifle", "analysis": "Human advanced coil rifle"}},
     "salvageGuidance": {"preserveMass": true},
     "extension": {"sourceRecipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"},
     "physical": {"inventoryClass": "EQUIPMENT", "isContainer": false, "isTool": false},
@@ -31,6 +36,7 @@
     "tags": ["WEAPON", "RANGED_WEAPON", "RIFLE", "HUMAN", "COIL_RIFLE"],
     "storage": {"storageClasses": ["INV", "CC", "EQ"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
     "processCompatibility": {"receiving": true, "analysis": true, "construction": true, "repair": true, "reverseEngineering": true, "salvage": true},
+    "materials": {"baseCost": 171, "materialClass": "M2"},
     "theoryBindings": [
       {"theoryId": "PULSED_POWER_II", "implementedProperties": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"], "implementationTags": ["PULSED_POWER_II_IMPLEMENTATION"]},
       {"theoryId": "ELECTROMAGNETIC_ACTUATION_II", "implementedProperties": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"], "implementationTags": ["ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"]},
@@ -45,8 +51,11 @@
     "name": "Human EM Impact Vest",
     "type": "ITEM",
     "tags": ["PROTECTIVE_GEAR", "ARMOR", "VEST", "HUMAN", "ELECTROMAGNETIC_PROTECTION"],
+    "processingExposure": {"receiving": {"identityTags": ["PROTECTIVE_GEAR", "ARMOR", "VEST"], "conditionTags": ["FUNCTIONAL", "DAMAGED"]}, "analysis": {"orderedFunctionalityTags": ["HUMAN_EM_IMPACT_ARMOR_PATTERN_II_IMPLEMENTATION", "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION", "PULSED_POWER_II_IMPLEMENTATION", "KINETIC_IMPACT_DISSIPATION_II_IMPLEMENTATION"]}},
+    "nameResolution": {"initialName": "Unknown object", "processExitNames": {"receiving": "Unknown vest", "analysis": "Human EM impact vest"}},
     "storage": {"storageClasses": ["INV", "CC", "EQ"], "handlingCost": 1, "isUnique": false, "isStackable": false, "isCargo": true},
     "processCompatibility": {"receiving": true, "analysis": true, "construction": true, "repair": true, "reverseEngineering": true, "salvage": true},
+    "materials": {"baseCost": 166, "materialClass": "M2"},
     "theoryBindings": [
       {"theoryId": "HUMAN_ARMOR_VEST_PATTERN_II", "role": "FORM_FACTOR", "implementedProperties": ["BODY_INTERFACE", "PROTECTIVE_STRUCTURE", "ATTACHMENT_RETENTION", "FIT"], "implementationTags": ["HUMAN_ARMOR_VEST_PATTERN_II_IMPLEMENTATION"]},
       {"theoryId": "HUMAN_EM_IMPACT_ARMOR_PATTERN_II", "role": "ACTIVE_PROTECTION", "implementedProperties": ["PROTECTIVE_STRUCTURE", "FIELD_ELEMENTS", "POWER_CONTROL", "LOAD_DISTRIBUTION_STRUCTURE", "INTEGRATE_FIELD_ELEMENTS", "INTEGRATE_POWER_CONTROL", "ALIGN_PROTECTIVE_ARRAY", "CALIBRATE_IMPACT_RESPONSE", "POWERED_IMPACT_VALIDATION"], "implementationTags": ["HUMAN_EM_IMPACT_ARMOR_PATTERN_II_IMPLEMENTATION"]},

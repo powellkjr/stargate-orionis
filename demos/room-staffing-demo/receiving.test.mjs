@@ -1,3 +1,4 @@
+import {matchesProcessMatrix,transferInstance,simulateBoundary,resolveDisplayName,revealNextReceivingTag} from "../shared/js/process-transfers.mjs";
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -6,13 +7,28 @@ const read=name=>JSON.parse(readFileSync(new URL('../shared/data/'+name,import.m
 const item=read('item.json').ASGARD_EM_RIFLE;
 const tab=read('rooms_schema.json').find(r=>r.identity.id==='receiving').function.subordinateTabs.find(t=>t.arrival);
 const config={...tab.arrival,storageClasses:tab.storage.storageClasses};
+const contracts=read('processing-contracts.json');
+test('Receiving reveals authored identity and condition tags one at a time before completing',()=>{
+ const instance={instanceId:'RECEIVING_TEST',itemId:item.id,reality:{authoredTags:['WEAPON','RANGED_WEAPON','RIFLE','ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION','FUNCTIONAL','CHARGED']},knowledge:{revealedTags:['PHYSICAL_OBJECT'],identityTags:[],conditionTags:[],functionalityTags:[]},processingTags:['RECEIVING_REQUIRED','IDENTITY_UNKNOWN'],processes:{receiving:{state:'NOT_STARTED'}}};
+ let result=revealNextReceivingTag(instance,item,contracts);
+ assert.deepEqual(result.knowledge.identityTags,['WEAPON']);
+ assert.equal(result.processes.receiving.state,'NOT_STARTED');
+ result=revealNextReceivingTag(result,item,contracts);
+ result=revealNextReceivingTag(result,item,contracts);
+ result=revealNextReceivingTag(result,item,contracts);
+ result=revealNextReceivingTag(result,item,contracts);
+ assert.equal(result.processes.receiving.state,'COMPLETE');
+ assert.equal(result.displayName,'Unknown rifle');
+ assert(!result.knowledge.functionalityTags.includes('ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION'));
+});
 test('each arrival creates an independent unknown object, preserving authored data',()=>{
  const store=createArrivalStore();store.resize(4);const before=JSON.stringify(item);
  const first=store.receive(item,config),second=store.receive(item,config);
  assert.notEqual(first.instanceId,second.instanceId);
  assert.equal(first.itemId,item.id);assert.equal(first.state.quantity,1);
- assert.equal(first.state.percentOfWhole,1000);assert.equal(first.state.functionalState,'UNKNOWN');
- assert.deepEqual(first.knowledge,{revealedTags:[],instanceFindings:[]});
+  assert.equal(first.state.percentOfWhole,1000);assert.equal(first.state.condition,'UNKNOWN');assert.equal(first.state.functionalState,'UNKNOWN');
+  assert.deepEqual(first.knowledge,{revealedTags:['PHYSICAL_OBJECT'],identityTags:[],conditionTags:[],functionalityTags:[],instanceFindings:[]});
+  assert.deepEqual(first.processingTags,['RECEIVING_REQUIRED','IDENTITY_UNKNOWN']);
  assert.equal(first.custody.containerId,config.storageId);
  assert.equal(first.processes.receiving.state,'NOT_STARTED');
  first.reality.authoredTags.push('TEST');assert(!second.reality.authoredTags.includes('TEST'));
@@ -45,7 +61,7 @@ test('UI drops append once on occupied slots and queue background; room switchin
  const elements=new Map();
  function node(){return {style:{},dataset:{},classList:{add(){},remove(){}},handlers:{},children:[],addEventListener(k,f){this.handlers[k]=f},append(...v){this.children.push(...v)},appendChild(v){this.children.push(v)},replaceChildren(...v){this.children=v},setAttribute(){}};}
  const document={getElementById(id){if(!elements.has(id))elements.set(id,node());return elements.get(id)},createElement:node};
- const ctx=vm.createContext({document,URL,structuredClone,createArrivalStore,console});
+  const ctx=vm.createContext({document,URL,structuredClone,createArrivalStore,matchesProcessMatrix,transferInstance,simulateBoundary,resolveDisplayName,console});
  vm.runInContext(readFileSync(new URL('../shared/js/rooms.js',import.meta.url),'utf8').replaceAll('export ',''),ctx);
  let source=readFileSync(new URL('./room-staffing-demo.js',import.meta.url),'utf8');
  source=source.replace(/^import .*;\r?\n/gm,'').replaceAll('import.meta.url',JSON.stringify(new URL('./room-staffing-demo.js',import.meta.url).href)).replace(/initialize\(\);\s*$/,'');
@@ -65,14 +81,27 @@ test('UI drops append once on occupied slots and queue background; room switchin
  vm.runInContext('loadRoom("workshop");loadRoom("receiving");',ctx);
  assert.equal(vm.runInContext('JSON.stringify(arrivals)',ctx),before);
  assert.equal(vm.runInContext('roomTabResources.intake.item===arrivals.queue',ctx),true);
+ ctx.matrixFixture=read('process-matrix.json');ctx.contractFixture=read('processing-contracts.json');
+ vm.runInContext('processMatrix=matrixFixture;processingContracts=contractFixture;arrivals.instances[arrivals.queue[0]].processingTags=["ANALYSIS_REQUIRED"]',ctx);
+ const movingId=vm.runInContext('arrivals.queue[0]',ctx);
+ const transfers=vm.runInContext('transferControls(roomTabs().find(t=>t.id==="processing"))',ctx);
+ const send=transfers.children.find(n=>n.textContent==='Send to Analysis / Queue');
+ assert(send && !send.disabled);send.handlers.click();
+ assert.equal(vm.runInContext('arrivals.queue.includes('+JSON.stringify(movingId)+')',ctx),false);
+ vm.runInContext('loadRoom("analysis")',ctx);
+ assert.equal(vm.runInContext('roomTabResources.queue.item[0]',ctx),movingId);
+ assert.equal(vm.runInContext('arrivals.instances[roomTabResources.queue.item[0]].custody.containerId',ctx),'ANALYSIS_QUEUE');
+ vm.runInContext('loadRoom("workshop");loadRoom("analysis")',ctx);
+ assert.equal(vm.runInContext('roomTabResources.queue.item[0]',ctx),movingId);
+
  const compacted=vm.runInContext('compactQueue([null,"A",null,"B"])',ctx);
  assert.equal(JSON.stringify(compacted),JSON.stringify(["A","B",null,null]));
  function descendants(n){return [n,...(n.children??[]).flatMap(descendants)];}
- vm.runInContext('activeRoomTabId="processing"',ctx);
+ vm.runInContext('loadRoom("receiving");activeRoomTabId="processing"',ctx);
  const processing=vm.runInContext('renderRoomResources()',ctx);
  const nodes=descendants(processing);
- assert.equal(nodes.filter(n=>n.dataset?.process).length,4);
- assert(nodes.filter(n=>n.dataset?.process).every(n=>n.disabled));
+  assert.equal(nodes.filter(n=>n.dataset?.process).length,4);
+ assert(nodes.filter(n=>n.dataset?.process).some(n=>!n.disabled));
  const first=vm.runInContext('arrivals.queue[0]',ctx);
  vm.runInContext('renderInstanceInspector()',ctx);
  assert.equal(JSON.parse(elements.get('instanceInspector').value).instanceId,first);
@@ -87,7 +116,7 @@ test('UI drops append once on occupied slots and queue background; room switchin
   assert.equal(vm.runInContext('roomTabResources[selectedTab][selectedType].length',ctx),expected);
  }
  vm.runInContext('loadRoom("analysis")',ctx);
- assert.equal(vm.runInContext('roomTabResources.process.item.length',ctx),1);
+ assert.equal(vm.runInContext('roomTabs().find(t=>t.id==="process").slotConfig.item.fixed',ctx),1);
  assert.equal(vm.runInContext('roomTabResources.process.theory',ctx),undefined);
  for(const room of ['material_storage','supply_storage','ration_storage']){
   ctx.selectedRoom=room;vm.runInContext('loadRoom(selectedRoom)',ctx);

@@ -1,0 +1,22 @@
+{
+  "HUMAN_ADVANCED_COIL_RIFLE_RECIPE": {
+    "id": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE",
+    "requirements": [
+      {"bubbleId": "FABRICATE_RIFLE_COMPONENTS", "roomService": "HUMAN_WORKSHOP_II"},
+      {"bubbleId": "FABRICATE_ACCELERATOR_COMPONENTS", "roomService": "ELECTRODYNAMICS_FABRICATION_II"},
+      {"bubbleId": "ASSEMBLE_RIFLE_BODY", "roomService": "HUMAN_WORKSHOP_II"},
+      {"bubbleId": "ASSEMBLE_ACCELERATOR", "roomService": "HUMAN_WORKSHOP_II"},
+      {"bubbleId": "INTEGRATE_ACCELERATOR", "roomService": "HUMAN_WORKSHOP_II"},
+      {"bubbleId": "CALIBRATE_ACCELERATOR", "roomService": "SHIELDED_ELECTRODYNAMICS_TEST_II"},
+      {"bubbleId": "TECHNICAL_VALIDATION", "roomService": "SHIELDED_ELECTRODYNAMICS_TEST_II"}
+    ]
+  },
+  "HYP_EM_ACCELERATION_II_HORIZONTAL": {
+    "id": "HYP_EM_ACCELERATION_II_HORIZONTAL",
+    "requirements": [
+      {"context": "RESEARCH", "roomService": "PULSED_POWER_PROCESSING_II"},
+      {"context": "RESEARCH", "roomService": "ELECTROMAGNETIC_PROCESSING_II"}
+    ],
+    "notes": "These are independent parent constraints from the authored hypothesis; they are not one executable bubble requiring two Room Services."
+  }
+}

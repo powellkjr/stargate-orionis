@@ -54,19 +54,24 @@ quantity:
 
 **Room Services**
 
-* Rooms are Service-based, not room-name-based.
-* Installed/configured Cores provide Services.
+* Services describe current technical configuration, separately from room Processing Capabilities.
+* Installed/configured Cores and current power state determine Services.
 
 **Room Processing Capabilities**
 
-* Derived from the room's currently available Services.
-* Define which Item processing contracts that configured room can accept/perform.
+* Authored properties of the room, independent of its current Services.
+* Define processing categories the room supports; the process matrix matches these to instance Processing Tags.
 * Examples: `CAN_ACCEPT_RECEIVING`, `CAN_ACCEPT_ANALYSIS`, `CAN_ACCEPT_WORKSHOP`, `CAN_REVERSE_ENGINEER`.
 * Item Processing Tags match against Room Processing Capabilities.
 
 ---
 
 # Asgard Rifle Paper Test
+
+This is the unresolved-object path, not a universal Receiving sequence.
+ANALYSIS_REQUIRED below is an outcome of this Item Base Model boundary.
+Known usable equipment can instead leave directly for Equipment Storage; see
+[the known-vest handoff](./receiving-equipment-storage-handoff.md).
 
 ## 1. Initialize recovered rifle
 
@@ -371,9 +376,9 @@ Processing Tags
   + REVERSE_ENGINEERING_COMPLETE
 ```
 
-The destroyed Item Instance then produces physical salvage according to the Item Definition's authored `salvageClass`.
+The destroyed Item Instance then produces physical salvage according to the Item Definition's authored `materials.materialClass` and `materials.baseCost`.
 
-`salvageClass` is a property, not a Reality/Known/Processing Tag.
+`materials` is a property, not a Reality/Known/Processing Tag.
 
 It is separate from `storageClasses[]`:
 
@@ -381,8 +386,11 @@ It is separate from `storageClasses[]`:
 storageClasses[]
   = where the intact Item can validly be stored
 
-salvageClass
-  = the resource classification produced when the Item is destructively converted
+materials.materialClass
+  = the resource classification produced when the item is destructively converted
+
+materials.baseCost
+  = the fixed-point construction/salvage base, where 123 means 12.3 units
 ```
 
 Current salvage-class vocabulary:
@@ -398,10 +406,11 @@ RATION
 KNOWLEDGE
 ```
 
-For an Asgard rifle, for example:
+For the current items:
 
 ```text
-salvageClass: M3
+materialClass: M2
+baseCost: 150-300
 ```
 
 Knowledge exposure from Reverse Engineering remains separate from physical salvage. The same destructive process can produce M3 salvage and expose a pre-authored Hypothesis/Rediscovery result.
@@ -461,29 +470,30 @@ Room Services
   What the configured room provides.
 
 Room Processing Capabilities
-  Which processing contracts those Services allow the room to handle.
+  Which processing categories the room supports, independently of Services.
 ```
 
-Do not use room names to determine processing validity. Processing validity comes from the room's Service-derived Processing Capabilities.
+Do not use room names to determine processing validity. The process matrix matches Item Processing Tags to authored Room Processing Capabilities. Separately compare current Services with technical requirements derived from Theories and Patterns.
 
 
 ## Schema integration status
 
 This is the authored target contract for the next simulator pass. Existing item,
 instance, and room data has not been migrated to the paper-test tags or custody
-IDs. Actor/Tool/Room Service bubble execution is deferred for this pass; Service-
-derived room admission is still part of the target contract.
+IDs. Actor/Tool/Room Service bubble execution is deferred for this pass; processing-category admission through the process matrix is still part of the target contract.
 
 The current schema retains `reality.authoredTags`, `knowledge.revealedTags`,
 structured `state`, and `custody`. Known Tag re-evaluation requires retained
 evidence and current institutional Knowledge; the resolver must not reveal
 Reality merely because it is present on a definition.
 
-Room `function.processingCapabilities` records reference a contract, its
-`requiredRoomServices`, and optional `providesCapabilities` IDs. The latter are
-outputs of Service resolution, not unconditional room permissions. A declaration
-without its required configured Services does not expose those capabilities.
-Exact Service-to-capability mappings remain to be authored.
+Rooms declare `function.processingCapabilities` for process-matrix matching and
+`function.roomServices` for separate technical requirement checks. The shared
+`process-matrix.json` matches required/forbidden instance Processing Tags against
+required room Processing Capabilities. Services do not generate capabilities;
+Core/power changes affect technical readiness instead. The current matrix contains
+Receiving, Analysis, and Reverse Engineering admission entries. Processing-tag
+transitions are authored separately in `processing-contracts.json`.
 
 `processingTags` uses a flat array of unique authored tag IDs. Identity,
 selection, availability, exhaustion, requirements, authorization, and completion
@@ -498,6 +508,10 @@ as a target: condition UNKNOWN and Known Tag PHYSICAL_OBJECT. Existing runtime
 defaults are unchanged until the implementation/data pass. Physical condition
 is a structured field even when its initial value is UNKNOWN.
 
-Salvage yield, destination resource capacity, knowledge-exposure rules, and
-Rediscovery behavior must resolve through authored data before destructive
-completion can commit. The M3 example does not silently assign item data.
+Technical Service requirements are authored separately in `technical-requirements.json`.
+Discovery, Hypothesis, and Recipe definitions are retained as separate authored
+tables; Reverse Engineering extraction references the pre-authored
+`HYP_EM_ACCELERATION_II_EXTRACTION` Hypothesis. Salvage yield, destination resource
+capacity, and Rediscovery behavior must still resolve through authored data before
+destructive completion can commit. Current items have material classes and base
+costs, but salvage quantity/output handling is not yet implemented.

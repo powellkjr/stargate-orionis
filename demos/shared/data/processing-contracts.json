@@ -1,0 +1,121 @@
+{
+  "RECEIVING_PROCESS": {
+    "id": "RECEIVING_PROCESS",
+    "admissionMatrixId": "RECEIVING_ADMISSION",
+    "transitions": [
+      {
+        "id": "RECEIVING_AUTHORIZE",
+        "requiredProcessingTags": [
+          "RECEIVING_REQUIRED"
+        ],
+        "addProcessingTags": [
+          "RECEIVING_AUTHORIZED"
+        ]
+      },
+      {
+        "id": "RECEIVING_COMPLETE",
+        "requiredProcessingTags": [
+          "RECEIVING_REQUIRED",
+          "RECEIVING_AUTHORIZED"
+        ],
+        "removeProcessingTags": [
+          "RECEIVING_REQUIRED",
+          "RECEIVING_AUTHORIZED",
+          "IDENTITY_UNKNOWN"
+        ],
+        "addProcessingTags": [
+          "RECEIVING_COMPLETE",
+          "IDENTITY_ESTABLISHED"
+        ]
+      }
+    ]
+  },
+  "ANALYSIS_PROCESS": {
+    "id": "ANALYSIS_PROCESS",
+    "admissionMatrixId": "ANALYSIS_ADMISSION",
+    "transitions": [
+      {
+        "id": "ANALYSIS_AUTHORIZE",
+        "requiredProcessingTags": [
+          "ANALYSIS_REQUIRED"
+        ],
+        "addProcessingTags": [
+          "ANALYSIS_AUTHORIZED"
+        ]
+      },
+      {
+        "id": "ANALYSIS_COMPLETE",
+        "requiredProcessingTags": [
+          "ANALYSIS_REQUIRED",
+          "ANALYSIS_AUTHORIZED"
+        ],
+        "removeProcessingTags": [
+          "ANALYSIS_REQUIRED",
+          "ANALYSIS_AUTHORIZED",
+          "CONTAINMENT_REQUIRED"
+        ],
+        "addProcessingTags": [
+          "ANALYSIS_COMPLETE",
+          "NONDESTRUCTIVE_ANALYSIS_EXHAUSTED",
+          "REVERSE_ENGINEERING_AVAILABLE"
+        ]
+      }
+    ]
+  },
+  "REVERSE_ENGINEERING_PROCESS": {
+    "id": "REVERSE_ENGINEERING_PROCESS",
+    "admissionMatrixId": "REVERSE_ENGINEERING_ADMISSION",
+    "transitions": [
+      {
+        "id": "WORKSHOP_AUTHORIZE",
+        "requiredProcessingTags": [
+          "ANALYSIS_COMPLETE",
+          "REVERSE_ENGINEERING_AVAILABLE"
+        ],
+        "addProcessingTags": [
+          "WORKSHOP_AUTHORIZED",
+          "REVERSE_ENGINEERING_AUTHORIZED"
+        ]
+      },
+      {
+        "id": "REVERSE_ENGINEERING_SELECT",
+        "requiredProcessingTags": [
+          "WORKSHOP_AUTHORIZED",
+          "REVERSE_ENGINEERING_AUTHORIZED"
+        ],
+        "addProcessingTags": [
+          "REVERSE_ENGINEERING_SELECTED"
+        ]
+      },
+      {
+        "id": "REVERSE_ENGINEERING_START",
+        "requiredProcessingTags": [
+          "REVERSE_ENGINEERING_SELECTED"
+        ],
+        "addProcessingTags": [
+          "REVERSE_ENGINEERING_IN_PROGRESS"
+        ]
+      },
+      {
+        "id": "REVERSE_ENGINEERING_COMPLETE",
+        "requiredProcessingTags": [
+          "WORKSHOP_REQUIRED",
+          "WORKSHOP_AUTHORIZED",
+          "REVERSE_ENGINEERING_AUTHORIZED",
+          "REVERSE_ENGINEERING_SELECTED",
+          "REVERSE_ENGINEERING_IN_PROGRESS"
+        ],
+        "removeProcessingTags": [
+          "WORKSHOP_REQUIRED",
+          "WORKSHOP_AUTHORIZED",
+          "REVERSE_ENGINEERING_AUTHORIZED",
+          "REVERSE_ENGINEERING_SELECTED",
+          "REVERSE_ENGINEERING_IN_PROGRESS"
+        ],
+        "addProcessingTags": [
+          "REVERSE_ENGINEERING_COMPLETE"
+        ]
+      }
+    ]
+  }
+}

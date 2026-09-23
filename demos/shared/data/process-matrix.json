@@ -1,0 +1,59 @@
+{
+  "RECEIVING_ADMISSION": {
+    "id": "RECEIVING_ADMISSION",
+    "requiredProcessingTags": [
+      "RECEIVING_REQUIRED"
+    ],
+    "requiredRoomCapabilities": [
+      "CAN_ACCEPT_RECEIVING"
+    ]
+  },
+  "ANALYSIS_ADMISSION": {
+    "id": "ANALYSIS_ADMISSION",
+    "requiredProcessingTags": [
+      "ANALYSIS_REQUIRED"
+    ],
+    "requiredRoomCapabilities": [
+      "CAN_ACCEPT_ANALYSIS"
+    ],
+    "forbiddenProcessingTags": [
+      "CONTAINMENT_REQUIRED"
+    ]
+  },
+  "REVERSE_ENGINEERING_ADMISSION": {
+    "id": "REVERSE_ENGINEERING_ADMISSION",
+    "requiredProcessingTags": [
+      "ANALYSIS_COMPLETE",
+      "REVERSE_ENGINEERING_AVAILABLE"
+    ],
+    "requiredRoomCapabilities": [
+      "CAN_ACCEPT_WORKSHOP",
+      "CAN_REVERSE_ENGINEER"
+    ]
+  },
+  "EQUIPMENT_STORAGE_ADMISSION": {
+    "id": "EQUIPMENT_STORAGE_ADMISSION",
+    "requiredProcessingTags": [
+      "RECEIVING_COMPLETE",
+      "IDENTITY_ESTABLISHED",
+      "RECEIVING_TO_EQUIPMENT_STORAGE"
+    ],
+    "forbiddenProcessingTags": [
+      "ANALYSIS_REQUIRED",
+      "WORKSHOP_REQUIRED",
+      "CONTAINMENT_REQUIRED"
+    ],
+    "requiredRoomCapabilities": [
+      "CAN_ACCEPT_EQUIPMENT_STORAGE"
+    ]
+  },
+  "CONTAINMENT_ADMISSION": {
+    "id": "CONTAINMENT_ADMISSION",
+    "requiredProcessingTags": [
+      "CONTAINMENT_REQUIRED"
+    ],
+    "requiredRoomCapabilities": [
+      "CAN_ACCEPT_CONTAINMENT"
+    ]
+  }
+}

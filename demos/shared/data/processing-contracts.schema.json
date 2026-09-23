@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stargate-orionis.local/schemas/processing-contracts.schema.json",
+  "title": "Item Processing Contracts",
+  "description": "Authored processing-tag transitions. Admission is resolved separately through the process matrix.",
+  "type": "object",
+  "patternProperties": {
+    "^[A-Z][A-Z0-9_]*$": {"$ref": "#/$defs/contract"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+    "identifiers": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}},
+    "transition": {
+      "type": "object",
+      "required": ["id", "requiredProcessingTags"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "requiredProcessingTags": {"$ref": "#/$defs/identifiers"},
+        "forbiddenProcessingTags": {"$ref": "#/$defs/identifiers"},
+        "removeProcessingTags": {"$ref": "#/$defs/identifiers"},
+        "addProcessingTags": {"$ref": "#/$defs/identifiers"}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "required": ["id", "admissionMatrixId", "transitions"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "admissionMatrixId": {"$ref": "#/$defs/identifier"},
+        "transitions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/transition"}}
+      }
+    }
+  }
+}

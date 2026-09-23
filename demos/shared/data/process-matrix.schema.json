@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stargate-orionis.local/schemas/process-matrix.schema.json",
+  "title": "Item-to-Room Process Matrix",
+  "description": "Authored processing compatibility entries keyed by ID. Matches instance Processing Tags to room Processing Capabilities. Technical Service requirements are a separate check.",
+  "type": "object",
+  "patternProperties": {
+    "^[A-Z][A-Z0-9_]*$": {
+      "$ref": "#/$defs/entry"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9_]*$"
+    },
+    "identifiers": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "entry": {
+      "type": "object",
+      "required": [
+        "id",
+        "requiredProcessingTags",
+        "requiredRoomCapabilities"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "requiredProcessingTags": {
+          "$ref": "#/$defs/identifiers",
+          "minItems": 1,
+          "description": "All listed instance Processing Tags must be present."
+        },
+        "forbiddenProcessingTags": {
+          "$ref": "#/$defs/identifiers",
+          "description": "None of these instance Processing Tags may be present."
+        },
+        "requiredRoomCapabilities": {
+          "$ref": "#/$defs/identifiers",
+          "minItems": 1,
+          "description": "All listed authored room Processing Capabilities must be present. Does not supply or validate technical Services."
+        }
+      }
+    }
+  }
+}

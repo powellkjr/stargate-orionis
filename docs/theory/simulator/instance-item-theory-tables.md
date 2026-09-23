@@ -283,7 +283,7 @@ deferred; old packs are retained for the pending definitions.
 | Physical State | state.condition, state.functionalState, state.quantity | Physical condition, functionality and amount |
 | Custody | custody, especially containerId | Current physical location and custody claims |
 | Room Services | function.roomServices | Configured functional Service IDs |
-| Room Processing Capabilities | function.processingCapabilities | Authored contracts supported by configured Services |
+| Room Processing Capabilities | Room function.processingCapabilities | Authored processing categories matched through the process matrix |
 
 Existing physical fields such as percentOfWhole remain supported. No duplicate
 realityTags, knownTags, or physicalState aliases are introduced.
@@ -309,52 +309,80 @@ Agreement between tags and process records must be checked by contract logic.
 The schema validates identifier format and uniqueness, not canonical membership
 or contract transitions. No instance records are populated by this schema change.
 
-function.roomServices lists configured Service IDs. Each processingCapabilities
-record contains processingContractId and requiredRoomServices. These references
-do not define new contracts, mount Cores, create Services, imply current resource
-availability, or authorize processing an instance. Service resolution remains
-within the destination Room Group while physical child rooms retain configuration.
-Actor and Tool requirements remain separate. Contract-level Service lists do not
-change the single-Actor, at-most-one-Tool-Service, at-most-one-Room-Service bubble
-rule. Simultaneous environmental requirements require the appropriate authored
-emergent Service or separate bubbles.
+`function.processingCapabilities` is a unique array of authored room capability
+IDs. For example, `CAN_REVERSE_ENGINEER` describes Workshop processing capability.
+It is not produced by Cores, power, or Room Services. Use declared capabilities,
+not room-name checks, to decide processing-category compatibility.
 
-Schemas validate structure, identifier syntax, and unique entries. Future
-cross-record validation must check that referenced tags, Services, and contracts
-exist and agree with configuration and execution state. Actual exit conditions,
-destination admission, authorization policy, and tag transitions remain unauthored.
+`demos/shared/data/process-matrix.json` contains shared authored matrix entries,
+validated by `process-matrix.schema.json`. Each entry has `id`,
+`requiredProcessingTags`, `requiredRoomCapabilities`, and optional
+`forbiddenProcessingTags`. All required tags and capabilities must be present;
+no forbidden tag may be present. The table key must equal its entry ID, enforced
+by cross-record validation. The table starts empty pending authored entries.
+
+The matrix determines whether the item and room are compatible for a processing
+category. It does not authorize execution, mutate tags, move custody, reserve
+capacity, or supply technical Services. Those remain separate contract checks.
+`processing-contracts.json` defines the explicit authorization and completion tag
+transitions after admission succeeds.
+
+`function.roomServices` describes currently configured functional capabilities,
+such as `HUMAN_CONSTRUCTION_TIER_I`. Equipped Cores and current power can change
+these Services without changing the room's processing category. Compare Services
+against separate technical requirements derived from Theories and Patterns.
+Thus a Workshop may retain `CAN_REVERSE_ENGINEER` while lacking the Services
+needed to reverse engineer a particular object. The exact technical-requirement
+tag representation remains to be authored; do not overload Processing Tags.
+
+The previous Service-to-Processing-Capability table is superseded and removed.
+Technical requirements are authored in `technical-requirements.json`; they do not
+generate Processing Capabilities. The normalized `discovery.json`,
+`hypotheses.json`, and `recipes.json` tables preserve the corresponding authored
+records from the retained theory pack. Existing Actor/Tool and bubble execution
+resolution remain separate from item admission. Room Groups retain physical
+child-room identity and configuration.
+
+Schemas validate structure, identifier syntax, and unique entries. Cross-record
+validation must check that referenced tags, Services, and contracts exist and agree
+with configuration and execution state. Actual runtime exit conditions, custody
+reservation, and destructive output commit remain unimplemented.
 UI button process strings remain loose hooks, not canonical contract IDs.
 
-## Salvage Class
+## Material Economics
 
-salvageClass is a typed property directly on the authored Item Definition. Its
-single value is M1, M2, M3, S1, S2, S3, RATION, or KNOWLEDGE. It is not a Reality,
-Known, or Processing Tag and is not an instance override.
+`materials` is a typed property directly on the authored Item Definition. It
+contains the construction `baseCost` and the resulting `materialClass`. It is not
+a Reality, Known, or Processing Tag and is not an instance override.
 
 storage.storageClasses lists valid storage systems for intact instances.
-salvageClass identifies the resource classification produced by destructive
-salvage. Never derive either from the other. In the current table shape:
+`materials.materialClass` identifies the resource classification used by
+construction and produced by destructive salvage. Never derive it from storage,
+tags, origin, or Theory. `baseCost` is an integer in the same 0-1000 fixed-point
+style as `percentOfWhole`: `123` represents 12.3 cost units.
 
 ```json
 {
   "storage": {
     "storageClasses": ["WEAPON_RACK", "SECURE_EQUIPMENT_STORAGE"]
   },
-  "salvageClass": "M3"
+  "materials": {
+    "baseCost": 123,
+    "materialClass": "M2"
+  },
 }
 ```
 
-This is an illustrative fragment, not a complete record or newly configured
-storage Service. Existing items are not assigned values by this change. The field
-remains optional during migration, but destructive salvage must validate an
-authored salvageClass before execution. Missing values are a content gap, not a
-reason to infer a class from tags, storage, civilization, or Theory.
+The current three item definitions are assigned `materialClass: M2` and randomly
+authored base costs in the 150-300 range. These represent approximately 15-30
+base cost units, providing an initial construction target of roughly 20 M2
+resources before bonuses are applied.
 
 ### Destructive Reverse Engineering
 
 1. Reverse Engineering reaches completion.
 2. The instance becomes condition DESTROYED and functionalState NONFUNCTIONAL.
-3. The Item Definition's salvageClass determines the single salvage resource class.
+3. The Item Definition's `materials.materialClass` determines the single salvage resource class.
 4. Consume/remove the destroyed physical instance only after outputs successfully
    commit. Retain provenance/history as required by the existing process model.
 
@@ -377,3 +405,11 @@ destructive Reverse Engineering completion. It specifies target processing
 semantics beyond the earlier schema preparation; runtime behavior and fixture
 records are not changed by documenting it. Processing Tags use the agreed flat array. Concrete Service mappings remain
 an explicit integration decision.
+
+## Direct Receiving custody exit
+
+[Receiving to Equipment Storage](./receiving-equipment-storage-handoff.md) defines
+the known, intact Human EM Impact Vest fixture. Analysis is conditional, not a
+universal next stage. Item Base Model boundaries determine routing using only
+knowledge needed for the current Receiving path. Equipment Storage is custody;
+assignment eligibility is evaluated separately by the equipment system.

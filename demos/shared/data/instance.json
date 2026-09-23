@@ -2,8 +2,12 @@
   "ITEM_ASGARD_RIFLE_0001": {
     "instanceId": "ITEM_ASGARD_RIFLE_0001",
     "itemId": "ASGARD_EM_RIFLE",
+    "processingTags": [
+      "RECEIVING_REQUIRED",
+      "IDENTITY_UNKNOWN"
+    ],
     "state": {
-      "condition": "INTACT",
+      "condition": "UNKNOWN",
       "functionalState": "FUNCTIONAL",
       "quantity": 1,
       "percentOfWhole": 1000,
@@ -31,7 +35,9 @@
       "materials": []
     },
     "knowledge": {
-      "revealedTags": [],
+      "revealedTags": [
+        "PHYSICAL_OBJECT"
+      ],
       "instanceFindings": [],
       "recognizedIdentity": null,
       "recognizedCivilization": null,
@@ -97,6 +103,14 @@
   "ITEM_HUMAN_COIL_RIFLE_0001": {
     "instanceId": "ITEM_HUMAN_COIL_RIFLE_0001",
     "itemId": "HUMAN_ADVANCED_COIL_RIFLE",
+    "processingTags": [
+      "RECEIVING_COMPLETE",
+      "IDENTITY_ESTABLISHED",
+      "ANALYSIS_COMPLETE",
+      "NONDESTRUCTIVE_ANALYSIS_EXHAUSTED",
+      "WORKSHOP_REQUIRED",
+      "REVERSE_ENGINEERING_AVAILABLE"
+    ],
     "state": {
       "condition": "INTACT",
       "functionalState": "FUNCTIONAL",
@@ -241,6 +255,14 @@
   "ITEM_HUMAN_EM_IMPACT_VEST_0001": {
     "instanceId": "ITEM_HUMAN_EM_IMPACT_VEST_0001",
     "itemId": "HUMAN_EM_IMPACT_VEST",
+    "processingTags": [
+      "RECEIVING_COMPLETE",
+      "IDENTITY_ESTABLISHED",
+      "ANALYSIS_COMPLETE",
+      "NONDESTRUCTIVE_ANALYSIS_EXHAUSTED",
+      "WORKSHOP_REQUIRED",
+      "REVERSE_ENGINEERING_AVAILABLE"
+    ],
     "state": {
       "condition": "INTACT",
       "functionalState": "FUNCTIONAL",

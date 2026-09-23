@@ -20,9 +20,10 @@ export function createArrivalStore(){
     if(used+cost>queue.length)throw new Error("Receiving has insufficient handling capacity.");
     const instanceId=`ITEM_OFFWORLD_${String(serial+1).padStart(6,"0")}`;
     const instance={
-      instanceId,itemId:item.id,state:structuredClone(config.initialState),
-      reality:{theoryBindings:[],authoredTags:[...(item.possibleReality?.inherentTags ?? item.tags)]},
-      knowledge:{revealedTags:[],instanceFindings:[]},
+      instanceId,itemId:item.id,displayName:item.nameResolution?.initialName??"Unknown object",state:{...structuredClone(config.initialState),condition:"UNKNOWN"},
+      reality:{theoryBindings:[],authoredTags:[...new Set([...(item.possibleReality?.inherentTags ?? item.tags),...(item.theoryBindings??[]).flatMap(binding=>binding.implementationTags??[])])]},
+      knowledge:{revealedTags:["PHYSICAL_OBJECT"],identityTags:[],conditionTags:[],functionalityTags:[],instanceFindings:[]},
+      processingTags:["RECEIVING_REQUIRED","IDENTITY_UNKNOWN"],
       custody:{storageId:config.storageId,containerId:config.storageId,leaseId:null,state:"STANDBY",nextStorageId:null,status:"STORED",reservedBy:null,committedBy:null,cost:{unitCost:cost,extendedCost:cost}},
       processes:Object.fromEntries(["receiving","analysis","reverseEngineering","salvage"].map(name=>[name,{state:"NOT_STARTED"}])),
       history:[{event:"RECOVERED",source:"OFFWORLD"},{event:"ENTERED_SGC_CUSTODY",location:config.storageId}]
