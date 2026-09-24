@@ -1,6 +1,7 @@
 import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-2";
 
-const COLS=12, ROWS=10, CELL=80, PAD=8;
+const COLS=12, ROWS=10;
+let CELL=80, PAD=8;
 const CATALOG_URL="../shared/data/rooms_schema.json?v=continuous-room-2";
 const BASE_TILE_URL="../shared/data/base_tiles.json";
 
@@ -35,6 +36,28 @@ const selectionStatus=document.getElementById("selectionStatus");
 const actionLog=document.getElementById("actionLog");
 const toggleBaseButton=document.getElementById("toggleBase");
 const toggleModeButton=document.getElementById("toggleMode");
+
+function syncGridScale(){
+  const gridWrap=grid.parentElement;
+  if(!gridWrap)return false;
+  const availableWidth=gridWrap.clientWidth-24;
+  const nextCell=Math.max(24,Math.min(80,Math.floor(availableWidth/COLS)));
+  const changed=nextCell!==CELL;
+  CELL=nextCell;
+  PAD=Math.max(4,Math.round(CELL*.1));
+  document.documentElement.style.setProperty("--cell",`${CELL}px`);
+  document.documentElement.style.setProperty("--pad",`${PAD}px`);
+  return changed;
+}
+
+let resizeFrame=null;
+window.addEventListener("resize",()=>{
+  if(resizeFrame)cancelAnimationFrame(resizeFrame);
+  resizeFrame=requestAnimationFrame(()=>{
+    resizeFrame=null;
+    if(syncGridScale()&&catalog.length)render();
+  });
+});
 
 const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity",subordinateTabs:"Subordinate tabs"};
 const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
@@ -713,6 +736,7 @@ function addRoomNumber(element,room){
 }
 
 function render(){
+  syncGridScale();
   grid.replaceChildren();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
     const cell=document.createElement("button");cell.type="button";cell.className="cell";cell.setAttribute("aria-label",`Grid column ${col+1}, row ${row+1}`);

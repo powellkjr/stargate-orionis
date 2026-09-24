@@ -16,7 +16,7 @@
   --muted:#9ca3af;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
 .app{display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);min-height:100vh}
 aside{padding:16px;background:var(--panel);border-right:1px solid #30363d}
 main{padding:16px;min-width:0}
@@ -132,7 +132,24 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
 .log{margin:8px 0 0;padding:8px 8px 8px 28px;max-height:210px;overflow:auto;background:#090d12;border:1px solid #30363d;border-radius:7px;font:0.72rem/1.35 ui-monospace,Consolas,monospace}
 .log li+li{margin-top:5px}.log-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 @media(max-width:1100px){.workspace{grid-template-columns:1fr}.preview{max-height:none}}
-@media(max-width:760px){.app{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid #30363d}}
+@media(max-width:760px){
+  .app{grid-template-columns:1fr}
+  aside{border-right:0;border-bottom:1px solid #30363d;padding:12px}
+  main{padding:12px}
+  h1{font-size:1.08rem}
+  .row{grid-template-columns:1fr}
+  .action-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .toolbar button{width:100%;font-size:.82rem;padding-inline:6px}
+  .grid-wrap{padding:8px;overscroll-behavior-x:contain}
+  .preview{padding:12px}
+}
+@media(max-width:380px){
+  .toolbar,.action-row{grid-template-columns:1fr}
+  .ct-legend{gap:6px;font-size:.7rem}
+  .preview dl{grid-template-columns:1fr;gap:3px}
+  .preview dd{margin-bottom:6px}
+}
 </style>
 </head>
 <body>

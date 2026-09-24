@@ -12,6 +12,7 @@ Browser prototype for testing Stargate base room footprints.
 ## Current rules
 
 - 80x80 px grid cells.
+- On smaller screens, the same 12x10 logical grid scales its cells down to fit the available width; desktop remains at 80px cells.
 - Rooms visually occupy most of their tile footprint, leaving implied navigable space around them rather than using dedicated hallway cells.
 - Same non-null join group and matching Construction Tier (CT) make adjacent rooms compatible candidates for a deliberate join.
 - Rooms with `constructionLimit: "unique"` can only be placed once and cannot join.
