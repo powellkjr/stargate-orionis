@@ -1,0 +1,277 @@
+{
+  "format": "simulator-base-1",
+  "revision": 1,
+  "name": "Default test base",
+  "rooms": [
+    {
+      "instanceId": "r1",
+      "roomId": "gate_room",
+      "col": 1,
+      "row": 3,
+      "width": 3,
+      "height": 3,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r2",
+      "roomId": "receiving",
+      "col": 4,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r3",
+      "roomId": "holding",
+      "col": 5,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r4",
+      "roomId": "analysis",
+      "col": 6,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r5",
+      "roomId": "workshop",
+      "col": 7,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    }
+  ],
+  "groups": [],
+  "baseMap": [],
+  "reservations": [
+    {
+      "instanceId": "mcguffin-01",
+      "destination": "HOLDING",
+      "status": "AWAITING_ADMISSION",
+      "cost": 1,
+      "key": "66f2402d-4cb0-4fda-a0c1-d1cd6e41f35b:mcguffin-01"
+    },
+    {
+      "instanceId": "advanced-component-01",
+      "destination": "RECEIVING",
+      "status": "AWAITING_ADMISSION",
+      "cost": 1,
+      "cargo": [],
+      "key": "66f2402d-4cb0-4fda-a0c1-d1cd6e41f35b:advanced-component-01"
+    },
+    {
+      "instanceId": "supply-cache-01",
+      "destination": "RECEIVING",
+      "status": "AWAITING_ADMISSION",
+      "cost": 1,
+      "cargo": [],
+      "key": "66f2402d-4cb0-4fda-a0c1-d1cd6e41f35b:supply-cache-01"
+    },
+    {
+      "instanceId": "equipment-crate-01",
+      "destination": "RECEIVING",
+      "status": "AWAITING_ADMISSION",
+      "cost": 1,
+      "cargo": [
+        {
+          "instanceId": "missing-operative-rifle-01",
+          "itemId": "ASGARD_EM_RIFLE",
+          "displayName": "Unknown object",
+          "state": {
+            "condition": "UNKNOWN",
+            "quantity": 1,
+            "percentOfWhole": 1000
+          },
+          "reality": {
+            "theoryBindings": [
+              {
+                "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                ]
+              }
+            ],
+            "authoredTags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE",
+              "ASGARD",
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          },
+          "knowledge": {
+            "revealedTags": [
+              "PHYSICAL_OBJECT"
+            ],
+            "identityTags": [],
+            "conditionTags": [],
+            "functionalityTags": [],
+            "instanceFindings": []
+          },
+          "processingTags": [
+            "RECEIVING_REQUIRED",
+            "IDENTITY_UNKNOWN"
+          ],
+          "custody": {
+            "storageId": "equipment-crate-01",
+            "containerId": "equipment-crate-01",
+            "status": "STORED",
+            "cost": {
+              "unitCost": 1,
+              "extendedCost": 1
+            }
+          }
+        }
+      ],
+      "key": "66f2402d-4cb0-4fda-a0c1-d1cd6e41f35b:equipment-crate-01"
+    },
+    {
+      "instanceId": "equipment-crate-02",
+      "destination": "RECEIVING",
+      "status": "AWAITING_ADMISSION",
+      "cost": 1,
+      "cargo": [
+        {
+          "instanceId": "missing-operative-rifle-02",
+          "itemId": "HUMAN_ADVANCED_COIL_RIFLE",
+          "displayName": "Unknown object",
+          "state": {
+            "condition": "UNKNOWN",
+            "quantity": 1,
+            "percentOfWhole": 1000
+          },
+          "reality": {
+            "theoryBindings": [
+              {
+                "theoryId": "PULSED_POWER_II",
+                "implementedProperties": [
+                  "ACCUMULATE",
+                  "STORE",
+                  "SHAPE_DISCHARGE",
+                  "SYNCHRONIZE",
+                  "DELIVER_CONTROLLED_PULSE",
+                  "MONITOR_LOAD_RESPONSE",
+                  "RECOVER_COMPENSATE"
+                ],
+                "implementationTags": [
+                  "PULSED_POWER_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "ELECTROMAGNETIC_ACTUATION_II",
+                "implementedProperties": [
+                  "RECEIVE_CONTROL_INPUT",
+                  "GENERATE_FIELD",
+                  "APPLY_ELECTROMAGNETIC_FORCE",
+                  "PRODUCE_CONTROLLED_MOTION",
+                  "RETURN_OR_HOLD"
+                ],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_MANUFACTURING_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "HUMAN_MANUFACTURING_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+                "implementedProperties": [
+                  "FABRICATE_FIELD_COMPONENTS",
+                  "FABRICATE_POWER_CONTROL_COMPONENTS",
+                  "ASSEMBLE_ACCELERATOR_STAGES",
+                  "INTEGRATE_POWER_CONTROL",
+                  "ALIGN_STAGES",
+                  "CALIBRATE_SEQUENCING",
+                  "POWERED_VALIDATION"
+                ],
+                "implementationTags": [
+                  "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_ADVANCED_RIFLE_PATTERN",
+                "implementedProperties": [
+                  "FABRICATE_STRUCTURAL_COMPONENTS",
+                  "FABRICATE_FEED_CONTROL_COMPONENTS",
+                  "ASSEMBLE_RIFLE_BODY",
+                  "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+                  "FIT_ALIGN",
+                  "FUNCTION_CHECK"
+                ],
+                "implementationTags": [
+                  "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+                ]
+              }
+            ],
+            "authoredTags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE",
+              "HUMAN",
+              "COIL_RIFLE",
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          },
+          "knowledge": {
+            "revealedTags": [
+              "PHYSICAL_OBJECT"
+            ],
+            "identityTags": [],
+            "conditionTags": [],
+            "functionalityTags": [],
+            "instanceFindings": []
+          },
+          "processingTags": [
+            "RECEIVING_REQUIRED",
+            "IDENTITY_UNKNOWN"
+          ],
+          "custody": {
+            "storageId": "equipment-crate-02",
+            "containerId": "equipment-crate-02",
+            "status": "STORED",
+            "cost": {
+              "unitCost": 1,
+              "extendedCost": 1
+            }
+          }
+        }
+      ],
+      "key": "66f2402d-4cb0-4fda-a0c1-d1cd6e41f35b:equipment-crate-02"
+    }
+  ]
+}

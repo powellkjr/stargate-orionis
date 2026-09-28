@@ -1,0 +1,1202 @@
+{
+  "version": 1,
+  "units": {
+    "unit-1": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#dda87f",
+          "hairStyle": "bun",
+          "hairColor": "#4a3328",
+          "browStyle": "level",
+          "eyeStyle": "wide",
+          "eyeColor": "#33414f",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#2f3742",
+          "collarStyle": "split",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-2": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#c9976d",
+          "hairStyle": "curls",
+          "hairColor": "#d8d5cd",
+          "browStyle": "raised",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#26323d",
+          "collarStyle": "band",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-3": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#c9976d",
+          "hairStyle": "swept",
+          "hairColor": "#a2a29c",
+          "browStyle": "raised",
+          "eyeStyle": "narrow",
+          "eyeColor": "#33414f",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "band",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-4": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "tied",
+          "hairColor": "#1c1a1f",
+          "browStyle": "raised",
+          "eyeStyle": "wide",
+          "eyeColor": "#5b3a28",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "stand",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-5": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#dda87f",
+          "hairStyle": "braid",
+          "hairColor": "#1c1a1f",
+          "browStyle": "arched",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#343a44",
+          "collarStyle": "split",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-6": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#8d5b3c",
+          "hairStyle": "tied",
+          "hairColor": "#4a3328",
+          "browStyle": "level",
+          "eyeStyle": "neutral",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#394150",
+          "collarStyle": "band",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-7": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#5d3b28",
+          "hairStyle": "swept",
+          "hairColor": "#4a3328",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "stand",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-8": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#b58558",
+          "hairStyle": "braid",
+          "hairColor": "#342c30",
+          "browStyle": "raised",
+          "eyeStyle": "narrow",
+          "eyeColor": "#4a3126",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#343a44",
+          "collarStyle": "stand",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-9": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#dda87f",
+          "hairStyle": "bob",
+          "hairColor": "#b88752",
+          "browStyle": "raised",
+          "eyeStyle": "wide",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#2f3742",
+          "collarStyle": "stand",
+          "collarColor": "#d1495b"
+        }
+      }
+    },
+    "unit-10": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#a9714a",
+          "hairStyle": "braid",
+          "hairColor": "#6f4426",
+          "browStyle": "arched",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#33414f",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "band",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-11": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#c9976d",
+          "hairStyle": "swept",
+          "hairColor": "#1c1a1f",
+          "browStyle": "level",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "firm",
+          "facialHairStyle": "goatee",
+          "facialHairColor": "#1c1a1f",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "split",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-12": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#dda87f",
+          "hairStyle": "receding",
+          "hairColor": "#d8d5cd",
+          "browStyle": "raised",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "band",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-13": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#b58558",
+          "hairStyle": "curls",
+          "hairColor": "#b88752",
+          "browStyle": "arched",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "stand",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-14": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#dda87f",
+          "hairStyle": "swept",
+          "hairColor": "#d8d5cd",
+          "browStyle": "angled",
+          "eyeStyle": "narrow",
+          "eyeColor": "#5b3a28",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "band",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-15": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#c9976d",
+          "hairStyle": "crop",
+          "hairColor": "#3a2a30",
+          "browStyle": "angled",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#343a44",
+          "collarStyle": "split",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-16": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#7b4f34",
+          "hairStyle": "bun",
+          "hairColor": "#d8d5cd",
+          "browStyle": "raised",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "stand",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-17": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#dda87f",
+          "hairStyle": "curls",
+          "hairColor": "#3a2a30",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#28313a",
+          "collarStyle": "split",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-18": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#c9976d",
+          "hairStyle": "crop",
+          "hairColor": "#b88752",
+          "browStyle": "arched",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#5b3a28",
+          "mouthStyle": "firm",
+          "facialHairStyle": "beard",
+          "facialHairColor": "#b88752",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "stand",
+          "collarColor": "#2a9d8f"
+        }
+      }
+    },
+    "unit-19": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "swept",
+          "hairColor": "#4a3328",
+          "browStyle": "level",
+          "eyeStyle": "neutral",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#2f3742",
+          "collarStyle": "stand",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-20": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#7b4f34",
+          "hairStyle": "curls",
+          "hairColor": "#6f4426",
+          "browStyle": "level",
+          "eyeStyle": "wide",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "firm",
+          "facialHairStyle": "beard",
+          "facialHairColor": "#6f4426",
+          "uniformStyle": "field",
+          "uniformColor": "#2f3742",
+          "collarStyle": "stand",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-21": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#5d3b28",
+          "hairStyle": "curls",
+          "hairColor": "#4a3328",
+          "browStyle": "arched",
+          "eyeStyle": "wide",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "band",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-22": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#dda87f",
+          "hairStyle": "bob",
+          "hairColor": "#6f4426",
+          "browStyle": "level",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#26323d",
+          "collarStyle": "stand",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-23": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "swept",
+          "hairColor": "#1c1a1f",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#2f3742",
+          "collarStyle": "split",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-24": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#dda87f",
+          "hairStyle": "swept",
+          "hairColor": "#d8d5cd",
+          "browStyle": "raised",
+          "eyeStyle": "wide",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#28313a",
+          "collarStyle": "stand",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-25": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "bob",
+          "hairColor": "#b0522c",
+          "browStyle": "level",
+          "eyeStyle": "narrow",
+          "eyeColor": "#3a2b24",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#26323d",
+          "collarStyle": "split",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-26": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#8d5b3c",
+          "hairStyle": "tied",
+          "hairColor": "#241f22",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#33414f",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "split",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-27": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#dda87f",
+          "hairStyle": "bun",
+          "hairColor": "#4a3328",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#4a3126",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#26323d",
+          "collarStyle": "stand",
+          "collarColor": "#f4a261"
+        }
+      }
+    },
+    "unit-28": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#8d5b3c",
+          "hairStyle": "receding",
+          "hairColor": "#b88752",
+          "browStyle": "arched",
+          "eyeStyle": "narrow",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#26323d",
+          "collarStyle": "split",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-29": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#a9714a",
+          "hairStyle": "bun",
+          "hairColor": "#1c1a1f",
+          "browStyle": "angled",
+          "eyeStyle": "neutral",
+          "eyeColor": "#33414f",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "split",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-30": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#8d5b3c",
+          "hairStyle": "tied",
+          "hairColor": "#8a4b26",
+          "browStyle": "level",
+          "eyeStyle": "wide",
+          "eyeColor": "#33414f",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "band",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-31": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#b58558",
+          "hairStyle": "braid",
+          "hairColor": "#4a3328",
+          "browStyle": "level",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "stand",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-32": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#5d3b28",
+          "hairStyle": "curls",
+          "hairColor": "#5a3a24",
+          "browStyle": "level",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#33414f",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "stand",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-33": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#5d3b28",
+          "hairStyle": "bun",
+          "hairColor": "#342c30",
+          "browStyle": "level",
+          "eyeStyle": "wide",
+          "eyeColor": "#4a3126",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "stand",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-34": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#7b4f34",
+          "hairStyle": "tied",
+          "hairColor": "#8a4b26",
+          "browStyle": "raised",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "frown",
+          "facialHairStyle": "stubble",
+          "facialHairColor": "#8a4b26",
+          "uniformStyle": "plate",
+          "uniformColor": "#2f3742",
+          "collarStyle": "band",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-35": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#dda87f",
+          "hairStyle": "receding",
+          "hairColor": "#b88752",
+          "browStyle": "raised",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "smile",
+          "facialHairStyle": "beard",
+          "facialHairColor": "#b88752",
+          "uniformStyle": "jacket",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "stand",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-36": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#a9714a",
+          "hairStyle": "crop",
+          "hairColor": "#241f22",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#2f3742",
+          "collarStyle": "band",
+          "collarColor": "#7b6ef6"
+        }
+      }
+    },
+    "unit-37": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#5d3b28",
+          "hairStyle": "receding",
+          "hairColor": "#6f4426",
+          "browStyle": "level",
+          "eyeStyle": "wide",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "stand",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-38": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#5d3b28",
+          "hairStyle": "bun",
+          "hairColor": "#5a3a24",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "split",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-39": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#5d3b28",
+          "hairStyle": "tied",
+          "hairColor": "#3a2a30",
+          "browStyle": "arched",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "stand",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-40": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#dda87f",
+          "hairStyle": "crop",
+          "hairColor": "#5a3a24",
+          "browStyle": "angled",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "band",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-41": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#8d5b3c",
+          "hairStyle": "tied",
+          "hairColor": "#a2a29c",
+          "browStyle": "arched",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "frown",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#2f3742",
+          "collarStyle": "split",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-42": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#c9976d",
+          "hairStyle": "receding",
+          "hairColor": "#b0522c",
+          "browStyle": "arched",
+          "eyeStyle": "wide",
+          "eyeColor": "#5b3a28",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "stand",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-43": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#a9714a",
+          "hairStyle": "bun",
+          "hairColor": "#1c1a1f",
+          "browStyle": "angled",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#343a44",
+          "collarStyle": "split",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-44": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#b58558",
+          "hairStyle": "crop",
+          "hairColor": "#b0522c",
+          "browStyle": "arched",
+          "eyeStyle": "wide",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "stand",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-45": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "bun",
+          "hairColor": "#342c30",
+          "browStyle": "angled",
+          "eyeStyle": "narrow",
+          "eyeColor": "#4a3126",
+          "mouthStyle": "firm",
+          "facialHairStyle": "beard",
+          "facialHairColor": "#342c30",
+          "uniformStyle": "field",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "band",
+          "collarColor": "#4cc9f0"
+        }
+      }
+    },
+    "unit-46": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#dda87f",
+          "hairStyle": "tied",
+          "hairColor": "#6f4426",
+          "browStyle": "arched",
+          "eyeStyle": "narrow",
+          "eyeColor": "#33414f",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#343a44",
+          "collarStyle": "stand",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-47": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "braid",
+          "hairColor": "#b0522c",
+          "browStyle": "angled",
+          "eyeStyle": "wide",
+          "eyeColor": "#5b3a28",
+          "mouthStyle": "smile",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#2f3742",
+          "collarStyle": "stand",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-48": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#dda87f",
+          "hairStyle": "tied",
+          "hairColor": "#5a3a24",
+          "browStyle": "angled",
+          "eyeStyle": "narrow",
+          "eyeColor": "#273d5c",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#3b4c57",
+          "collarStyle": "stand",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-49": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "square",
+          "skinColor": "#b58558",
+          "hairStyle": "receding",
+          "hairColor": "#d8d5cd",
+          "browStyle": "arched",
+          "eyeStyle": "narrow",
+          "eyeColor": "#4a3126",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "beard",
+          "facialHairColor": "#d8d5cd",
+          "uniformStyle": "field",
+          "uniformColor": "#26323d",
+          "collarStyle": "band",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-50": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "oval",
+          "skinColor": "#5d3b28",
+          "hairStyle": "curls",
+          "hairColor": "#b0522c",
+          "browStyle": "angled",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2f3d32",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "goatee",
+          "facialHairColor": "#b0522c",
+          "uniformStyle": "field",
+          "uniformColor": "#2f3742",
+          "collarStyle": "stand",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-51": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#f0c8a8",
+          "hairStyle": "swept",
+          "hairColor": "#241f22",
+          "browStyle": "arched",
+          "eyeStyle": "neutral",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "field",
+          "uniformColor": "#394150",
+          "collarStyle": "split",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-52": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#a9714a",
+          "hairStyle": "curls",
+          "hairColor": "#241f22",
+          "browStyle": "angled",
+          "eyeStyle": "narrow",
+          "eyeColor": "#5b3a28",
+          "mouthStyle": "firm",
+          "facialHairStyle": "none",
+          "uniformStyle": "plate",
+          "uniformColor": "#2f3742",
+          "collarStyle": "split",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-53": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "soft",
+          "skinColor": "#c9976d",
+          "hairStyle": "braid",
+          "hairColor": "#8a4b26",
+          "browStyle": "angled",
+          "eyeStyle": "narrow",
+          "eyeColor": "#2a1d18",
+          "mouthStyle": "neutral",
+          "facialHairStyle": "none",
+          "uniformStyle": "jacket",
+          "uniformColor": "#394150",
+          "collarStyle": "band",
+          "collarColor": "#b8a14f"
+        }
+      }
+    },
+    "unit-54": {
+      "favorite": false,
+      "portrait": {
+        "renderer": "bust",
+        "appearance": {
+          "backgroundColor": "#000000",
+          "faceStyle": "angular",
+          "skinColor": "#7b4f34",
+          "hairStyle": "curls",
+          "hairColor": "#a2a29c",
+          "browStyle": "raised",
+          "eyeStyle": "relaxed",
+          "eyeColor": "#4a3126",
+          "mouthStyle": "frown",
+          "facialHairStyle": "stubble",
+          "facialHairColor": "#a2a29c",
+          "uniformStyle": "field",
+          "uniformColor": "#28313a",
+          "collarStyle": "split",
+          "collarColor": "#b8a14f"
+        }
+      }
+    }
+  }
+}

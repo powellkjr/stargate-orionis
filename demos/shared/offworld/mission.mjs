@@ -1,0 +1,131 @@
+import {resolvePartyTools} from './party-tools.mjs?v=dialogue-doors-1';
+export const clone = value => structuredClone(value);
+export function freeze(value) {
+  if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+  return value;
+}
+export const groups = {
+  stages:['stage','stageId'], transitions:['transition','transitionId'], instances:['instance','instanceId'],
+  observations:['observation','observationId'], interactionTargets:['interactionTarget','targetId'], recipes:['recipe','recipeInstanceId'],
+  incidents:['incident','incidentId'], objectives:[null,'objectiveId'], discoveries:[null,'discoveryId'],
+  eventBindings:[null,'bindingId'], resultBindings:[null,'bindingId']
+};
+export const directions={NORTH:[0,-1],EAST:[1,0],SOUTH:[0,1],WEST:[-1,0]};
+export const opposite={NORTH:'SOUTH',SOUTH:'NORTH',EAST:'WEST',WEST:'EAST'};
+const typeOf=v=>Array.isArray(v)?'array':v===null?'null':typeof v;
+export function compileMission(input,catalog) {
+  const m=clone(input),errors=[],indexes={};
+  const fail=(p,msg)=>errors.push(`${p}: ${msg}`);
+  for(const [group,[kind,idKey]] of Object.entries(groups)) {
+    indexes[group]=Object.create(null);
+    if(!Array.isArray(m[group])) {fail(group,'required array');m[group]=[];}
+    m[group]=m[group].map(row=>{
+      const path=`${group}.${row[idKey]}`;let result=clone(row);
+      if(kind) {
+        const base=catalog.archetypes?.[kind]?.[row.archetypeId];
+        if(!base) fail(`${path}.archetypeId`,`unknown ${row.archetypeId}`);
+        else {
+          result={...clone(base.defaults),...result};
+          for(const key of new Set([...Object.keys(base.defaults),...Object.keys(base.tunableFields)])) if(Object.hasOwn(row,key))fail(`${path}.${key}`,'use legal overrides');
+          for(const [key,value] of Object.entries(row.overrides??{})) {
+            if(!Object.hasOwn(base.tunableFields,key))fail(`${path}.overrides.${key}`,'not tunable');
+            else if(typeOf(value)!==base.tunableFields[key]||(typeof value==='number'&&!Number.isFinite(value)))fail(`${path}.overrides.${key}`,`expected ${base.tunableFields[key]}`);
+            else result[key]=clone(value);
+          }
+          delete result.overrides;
+        }
+      }
+      if(typeof row[idKey]!=='string'||!row[idKey]||indexes[group][row[idKey]])fail(path,'missing or duplicate ID');
+      indexes[group][row[idKey]]=result;return result;
+    });
+  }
+  const ref=(g,id,p)=>{if(!Object.hasOwn(indexes[g],id))fail(p,`unknown ${g} reference ${id}`);};
+  const eventRef=(id,p)=>{if(!Object.hasOwn(catalog.archetypes?.event??{},id))fail(p,`unknown event ${id}`);};
+  for(const [kind,ids] of Object.entries(m.archetypeDependencies??{}))for(const id of ids)if(!Object.hasOwn(catalog.archetypes?.[kind]??{},id))fail(`archetypeDependencies.${kind}`,`missing ${id}`);
+  if(!m.mission?.missionId||!m.mission?.title)fail('mission','ID and title required');
+  if(!Number.isInteger(m.map?.width)||!Number.isInteger(m.map?.height)||m.map.width<1||m.map.height<1)fail('map','positive integer dimensions required');
+  const occupied=new Set();
+  for(const s of m.stages) {
+    if(!Array.isArray(s.cells)||!s.cells.length){fail(s.stageId,'nonempty cells required');continue;}
+    const local=new Set(s.cells.map(c=>`${c.x},${c.y}`)),seen=new Set(),queue=[s.cells[0]];
+    for(let i=0;i<queue.length;i++) {
+      const c=queue[i],key=`${c.x},${c.y}`;if(seen.has(key))continue;seen.add(key);
+      for(const [dx,dy]of Object.values(directions))if(local.has(`${c.x+dx},${c.y+dy}`)&&!seen.has(`${c.x+dx},${c.y+dy}`))queue.push({x:c.x+dx,y:c.y+dy});
+    }
+    if(seen.size!==local.size)fail(s.stageId,'footprint must be connected');
+    for(const c of s.cells) {
+      const key=`${c.x},${c.y}`;
+      if(!Number.isInteger(c.x)||!Number.isInteger(c.y)||c.x<0||c.y<0||c.x>=m.map.width||c.y>=m.map.height||occupied.has(key))fail(`${s.stageId}.cells`,'invalid, outside map, or overlapping cell');
+      occupied.add(key);
+    }
+    if(!['HIDDEN','PARTIAL','VISIBLE'].includes(s.initialVisibility))fail(s.stageId,'invalid initial visibility');
+    if(!['UNKNOWN','UNSECURE','SECURE'].includes(s.initialSecurityState))fail(s.stageId,'invalid security');
+    for(const [field,g]of Object.entries({instanceIds:'instances',observationIds:'observations',interactionTargetIds:'interactionTargets',incidentIds:'incidents'}))for(const id of s[field]??[]) {
+      ref(g,id,`${s.stageId}.${field}`);if(indexes[g][id]?.stageId!==s.stageId)fail(`${s.stageId}.${field}`,`${id} belongs to another stage`);
+    }
+  }
+  for(const t of m.transitions) {
+    ref('stages',t.fromStageId,`${t.transitionId}.fromStageId`);ref('stages',t.toStageId,`${t.transitionId}.toStageId`);
+    const d=directions[t.directionFrom];
+    if(!d||opposite[t.directionFrom]!==t.directionTo)fail(t.transitionId,'invalid cardinal directions');
+    else if(!indexes.stages[t.fromStageId]?.cells?.some(a=>indexes.stages[t.toStageId]?.cells?.some(b=>b.x===a.x+d[0]&&b.y===a.y+d[1])))fail(t.transitionId,'stages do not touch in declared direction');
+    if(!['OPEN','CLOSED','LOCKED'].includes(t.initialState)||typeof t.routine!=='boolean')fail(t.transitionId,'invalid transition state');
+  }
+  const singles={stageId:'stages',fromStageId:'stages',toStageId:'stages',instanceId:'instances',subjectInstanceId:'instances',sourceInstanceId:'instances',assetInstanceId:'instances',boundPersonId:'instances',linkedSystemId:'instances',targetId:'interactionTargets',objectiveId:'objectives',incidentId:'incidents',createsDiscoveryId:'discoveries',transitionId:'transitions'};
+  const plural={stageIds:'stages',fromStageIds:'stages',instanceIds:'instances',sourceInstanceIds:'instances',participantIds:'instances',observationIds:'observations',supportsObservationIds:'observations',interactionTargetIds:'interactionTargets',revealsInteractionIds:'interactionTargets',recipeInstanceIds:'recipes',incidentIds:'incidents'};
+  const cargoIds=new Set(m.instances.map(i=>i.instanceId));
+  for(const container of m.instances)for(const item of container.cargo??[]){
+    if(typeof item.instanceId!=='string'||cargoIds.has(item.instanceId)||!item.itemId||!item.reality||!item.knowledge||item.custody?.containerId!==container.instanceId||!Number.isInteger(item.custody?.cost?.extendedCost)||item.custody.cost.extendedCost<1)fail(container.instanceId,'invalid or duplicate cargo instance');
+    cargoIds.add(item.instanceId);
+  }
+  function walk(value,path) {
+    if(!value||typeof value!=='object')return;
+    for(const [key,item]of Object.entries(value)) {
+      if(['__proto__','constructor','prototype'].includes(key))fail(path,'unsafe key');
+      if(singles[key]&&!(key==='instanceId'&&/\.cargo\.\d+$/.test(path)))ref(singles[key],item,`${path}.${key}`);
+      if(plural[key]){if(!Array.isArray(item))fail(`${path}.${key}`,'expected array');else item.forEach(id=>ref(plural[key],id,`${path}.${key}`));}
+      if(['eventArchetypeId','onEscapeEvent','onMaxDurationEvent'].includes(key))eventRef(item,`${path}.${key}`);
+      walk(item,`${path}.${key}`);
+    }
+  }
+  walk(m,'mission');
+  for(const i of m.incidents)if(i.implemented&&i.kind==='COMBAT'){
+    if(!Array.isArray(i.participantIds)||!i.participantIds.length)fail(i.incidentId,'combat needs participants');
+    for(const key of ['roundSeconds','hostileHealth','hostileDamage'])if(!(i[key]>0))fail(i.incidentId,`invalid ${key}`);
+  }
+  if(m.incidents.some(i=>i.implemented&&i.kind==='COMBAT')){
+    const combat=m.simulatorArtifact?.combat;
+    if(!(combat?.partyHealth>0)||!(combat?.partyWeapon?.damage>0)||!['RANGED','MELEE'].includes(combat?.partyWeapon?.mode))fail('combat','authored prototype weapon and health required');
+  }
+  function campaignEffects(list,path){for(const e of list??[]){
+    if(!['SET_INSTANCE_STATE','EMIT_EVENT','SCHEDULE_EVENT','ACTIVATE_OBJECTIVE'].includes(e.type))fail(path,`unsupported campaign effect ${e.type}`);
+    if(e.type==='SET_INSTANCE_STATE'&&(!e.field||['__proto__','constructor','prototype'].includes(e.field)))fail(path,'invalid state field');
+    if(e.type==='SCHEDULE_EVENT'&&!(e.delayMinutes>0))fail(path,'scheduled delay must be positive');
+  }}
+  for(const b of m.eventBindings)campaignEffects(b.effects,b.bindingId);
+  for(const o of m.objectives)campaignEffects(o.onComplete,o.objectiveId);
+  for(const e of m.scheduledEvents){eventRef(e.event,'scheduledEvents');if(!Number.isFinite(e.atSeconds)||e.atSeconds<0)fail('scheduledEvents','invalid event time');}
+  for(const r of m.recipes){
+    if(!indexes.interactionTargets[r.targetId]?.recipeInstanceIds?.includes(r.recipeInstanceId))fail(r.recipeInstanceId,'target must list recipe');
+    if(!(r.durationMinutes>0)||!(r.minimumTier>=0))fail(r.recipeInstanceId,'invalid duration or tier');
+    for(const mod of r.durationModifiers??[])if(!mod.when||!(mod.durationMinutes>0)||typeof mod.label!=='string')fail(r.recipeInstanceId,'invalid duration modifier');
+    if(r.implemented){
+      if(!['UNTRAINED','SOLDIER','SCOUT','TECHNICIAN','SCIENTIST','MEDIC','DIPLOMAT'].includes(r.profession)||!Number.isInteger(r.chargeCost)||r.chargeCost<0)fail(r.recipeInstanceId,'invalid Profession or charge cost');
+      for(const e of r.effects??[]){
+        if(!['SET_TARGET_STATE','SET_INSTANCE_STATE','OPEN_TARGET_TRANSITION','CARRY_TARGET','ADD_KNOWLEDGE','SEND_TARGET_TO_GATE'].includes(e.type))fail(r.recipeInstanceId,`unsupported field effect ${e.type}`);
+        if(e.type.startsWith('SET_')&&(!e.field||['__proto__','constructor','prototype'].includes(e.field)))fail(r.recipeInstanceId,'invalid state field');
+        if(e.type==='OPEN_TARGET_TRANSITION'&&!indexes.interactionTargets[r.targetId]?.transitionId)fail(r.recipeInstanceId,'transition effect needs a transition target');
+      }
+    }
+  }
+  for(const t of m.interactionTargets){
+    if(t.transitionId){const edge=indexes.transitions[t.transitionId];if(edge&&edge.fromStageId!==t.stageId&&edge.toStageId!==t.stageId)fail(t.targetId,'target is not beside transition');}
+    else if(indexes.instances[t.instanceId]?.stageId!==t.stageId)fail(t.targetId,'target and instance stages differ');
+  }
+  if(indexes.instances[m.gate?.instanceId]?.stageId!==m.gate?.stageId)fail('gate','instance must be on Gate stage');
+  if(m.stages.filter(s=>s.initialVisibility==='VISIBLE').length!==1||indexes.stages[m.gate?.stageId]?.initialVisibility!=='VISIBLE')fail('stages','Wave 1 starts with exactly the Gate stage visible');
+  if(m.gate?.maxContinuousConnectionMinutes!==37)fail('gate','expected 37 minute connection limit');
+  if(!Array.isArray(m.startingKnowledge)||!Array.isArray(m.scheduledEvents))fail('mission','startingKnowledge and scheduledEvents arrays required');
+  if(errors.length)throw new Error(`MISSION VALIDATION ERROR\n${errors.join('\n')}`);
+  return freeze({...m,partyTools:resolvePartyTools(m,catalog),indexes,toolCatalog:clone(catalog)});
+}

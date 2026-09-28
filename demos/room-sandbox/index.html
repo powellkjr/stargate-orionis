@@ -150,6 +150,7 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
   .preview dl{grid-template-columns:1fr;gap:3px}
   .preview dd{margin-bottom:6px}
 }
+.shared-surface-room::after{content:none}.room-map-surface{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}.shared-surface-room .room-fill{background:transparent;border:0;outline:none;box-shadow:none}
 </style>
 </head>
 <body>
@@ -223,6 +224,7 @@ if (window.location.protocol === "file:") {
 <main>
   <div class="toolbar">
     <button id="resetGrid" type="button">Reset grid</button>
+    <span id="baseSummary" role="status"></span><button id="saveBase" type="button">Save shared base</button><button id="loadBase" type="button">Reload shared base</button>
     <button id="generateLayout" type="button">Generate Layout</button>
     <button id="toggleBase" type="button">Hide Rooms</button>
     <button id="toggleMode" type="button">Mode: Interact</button>
@@ -241,6 +243,6 @@ if (window.location.protocol === "file:") {
 </div>
 
 
-<script type="module" src="./room-sandbox.js?v=continuous-room-2"></script>
+<script type="module" src="./room-sandbox.js?v=save-response-1"></script>
 </body>
 </html>

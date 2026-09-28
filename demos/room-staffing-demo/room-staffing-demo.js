@@ -1,3 +1,5 @@
+import {personnelPanel} from '../shared/js/personnel-panel.mjs?v=personnel-20260925-2';
+import {buildPersonnelRoster,setPersonnelFavorite} from '../shared/js/personnel-roster.mjs?v=personnel-20260925-2';
 import {matchesProcessMatrix,transferInstance,simulateBoundary,resolveDisplayName} from "../shared/js/process-transfers.mjs";
 import {createArrivalStore} from "../shared/js/item-instances.mjs";
 import {getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=room-staffing-demo-5";
@@ -389,58 +391,8 @@ function normalizeToolSelections(assignment){
 
 function rosterUnit(id){return unitRoster.find(unit=>unit.id===id) ?? null}
 
-function generatedPersonName(classId,index,variant="base"){
-  const pool=classNamePools[classId] ?? classNamePools.scientist;
-  const first=pool.first[index % pool.first.length];
-  const last=pool.last[Math.floor(index / pool.first.length) % pool.last.length];
-  const suffix=variant==="specialization"?" Sr.":variant==="cross"?" V.":"";
-  return `${first} ${last}${suffix}`;
-}
-
 function buildUnitRoster(){
-  const roster=[];
-  let serial=1;
-  const classCounters=Object.fromEntries(classCatalog.map(entry=>[entry.id,0]));
-  for(const baseClass of classCatalog){
-    roster.push({
-      id:`unit-${serial++}`,
-      name:generatedPersonName(baseClass.id,classCounters[baseClass.id]++,"base"),
-      classId:baseClass.id,
-      baseTier:0,
-      specializationId:null,
-      specializationTier:-1,
-      crossPathId:null,
-      crossPathTier:-1,
-      sortGroup:"base"
-    });
-    for(const specializationId of CLASS_MATRIX[baseClass.id] ?? []){
-      roster.push({
-        id:`unit-${serial++}`,
-        name:generatedPersonName(baseClass.id,classCounters[baseClass.id]++,"specialization"),
-        classId:baseClass.id,
-        baseTier:2,
-        specializationId,
-        specializationTier:0,
-        crossPathId:null,
-        crossPathTier:-1,
-        sortGroup:"specialization"
-      });
-    }
-    for(const crossClass of classCatalog.filter(entry=>entry.id!==baseClass.id)){
-      roster.push({
-        id:`unit-${serial++}`,
-        name:generatedPersonName(baseClass.id,classCounters[baseClass.id]++,"cross"),
-        classId:baseClass.id,
-        baseTier:2,
-        specializationId:null,
-        specializationTier:-1,
-        crossPathId:crossClass.id,
-        crossPathTier:0,
-        sortGroup:"cross"
-      });
-    }
-  }
-  return roster;
+  return buildPersonnelRoster(classCatalog,classNamePools,CLASS_MATRIX);
 }
 
 function populateRosterControls(){
@@ -472,7 +424,7 @@ function filteredRoster(){
     specialization:(a,b)=>(a.specializationId??"zzz").localeCompare(b.specializationId??"zzz")||a.name.localeCompare(b.name),
     cross:(a,b)=>(a.crossPathId??"zzz").localeCompare(b.crossPathId??"zzz")||a.name.localeCompare(b.name)
   };
-  return items.sort(sorters[sortValue] ?? sorters.name);
+  return items.sort((a,b)=>Number(b.favorite)-Number(a.favorite)||(sorters[sortValue] ?? sorters.name)(a,b));
 }
 
 function coreSlotCapacity(definition=currentRoom,ct=currentCt,layout=currentLayout){
@@ -659,24 +611,10 @@ function createClassChip(definition){
   chip.addEventListener("dragstart",event=>beginDrag(event,{type:"unit",id:definition.id},chip));
   chip.addEventListener("dragend",()=>endDrag(chip));
 
-  const icon=document.createElement("span");
-  icon.className="class-icon";
-  icon.style.background=iconBackground(definition.classId,definition.crossPathId);
-  setIconContent(icon,iconMarkup(iconPathForRosterUnit(definition)));
-
-  const copy=document.createElement("div");
-  copy.className="class-copy";
-  const name=document.createElement("div");
-  name.className="class-name";
-  name.textContent=definition.name;
-  const short=document.createElement("div");
-  short.className="class-short";
-  short.textContent=`${titleCaseWords(definition.classId)} Ã‚Â· ${baseTierLabel(definition.baseTier)}`;
-  const meta=document.createElement("div");
-  meta.className="class-meta";
-  meta.textContent=definition.specializationId?`Spec: ${definition.specializationId}`:definition.crossPathId?`Cross: ${titleCaseWords(definition.crossPathId)}`:"Base path";
-  copy.append(name,short,meta);
-  chip.append(icon,copy);
+  chip.innerHTML=personnelPanel(definition,{profession:`${titleCaseWords(definition.classId)} · ${baseTierLabel(definition.baseTier)}`,branch:definition.specializationId?`Spec: ${definition.specializationId}`:definition.crossPathId?`Cross: ${titleCaseWords(definition.crossPathId)}`:'Base path'});
+  chip.querySelector('[data-field=favorite]').addEventListener('change',event=>{
+    setPersonnelFavorite(definition.id,event.target.checked);definition.favorite=event.target.checked;renderClassPalette();
+  });
   return chip;
 }
 

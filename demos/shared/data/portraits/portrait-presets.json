@@ -1,0 +1,133 @@
+{
+  "formatVersion": "0.1.0",
+  "note": "Presentation-only part studies for the portrait simulator. These are not personnel records: the authored deployment roster stays in offworld/party-presets.json, and no competency is encoded here. Collar accents reuse the existing base-class colors only to check the palette.",
+  "presets": [
+    {
+      "id": "study-crop",
+      "label": "Short crop",
+      "accentSource": "soldier #d1495b",
+      "appearance": {
+        "backgroundColor": "#000000",
+        "faceStyle": "square",
+        "skinColor": "#8d5b3c",
+        "hairStyle": "crop",
+        "hairColor": "#241f22",
+        "browStyle": "angled",
+        "eyeStyle": "neutral",
+        "eyeColor": "#2a1d18",
+        "mouthStyle": "firm",
+        "facialHairStyle": "none",
+        "uniformStyle": "field",
+        "uniformColor": "#343a44",
+        "collarStyle": "split",
+        "collarColor": "#d1495b"
+      }
+    },
+    {
+      "id": "study-braid",
+      "label": "Braided sweep",
+      "accentSource": "scout #2a9d8f",
+      "appearance": {
+        "backgroundColor": "#000000",
+        "faceStyle": "soft",
+        "skinColor": "#d9a887",
+        "hairStyle": "braid",
+        "hairColor": "#b0522c",
+        "browStyle": "level",
+        "eyeStyle": "neutral",
+        "eyeColor": "#4a3126",
+        "mouthStyle": "neutral",
+        "facialHairStyle": "none",
+        "uniformStyle": "field",
+        "uniformColor": "#343a44",
+        "collarStyle": "split",
+        "collarColor": "#2a9d8f"
+      }
+    },
+    {
+      "id": "study-crop-side",
+      "label": "Side-part crop",
+      "accentSource": "technician #f4a261",
+      "appearance": {
+        "backgroundColor": "#000000",
+        "faceStyle": "oval",
+        "skinColor": "#c9976d",
+        "hairStyle": "swept",
+        "hairColor": "#191a20",
+        "browStyle": "level",
+        "eyeStyle": "narrow",
+        "eyeColor": "#2b201b",
+        "mouthStyle": "firm",
+        "facialHairStyle": "none",
+        "uniformStyle": "field",
+        "uniformColor": "#343a44",
+        "collarStyle": "split",
+        "collarColor": "#f4a261"
+      }
+    },
+    {
+      "id": "study-curls",
+      "label": "Loose curls",
+      "accentSource": "scientist #7b6ef6",
+      "appearance": {
+        "backgroundColor": "#000000",
+        "faceStyle": "soft",
+        "skinColor": "#7b4f34",
+        "hairStyle": "curls",
+        "hairColor": "#221a1c",
+        "browStyle": "arched",
+        "eyeStyle": "wide",
+        "eyeColor": "#2c1d19",
+        "mouthStyle": "neutral",
+        "facialHairStyle": "none",
+        "uniformStyle": "field",
+        "uniformColor": "#343a44",
+        "collarStyle": "split",
+        "collarColor": "#7b6ef6"
+      }
+    },
+    {
+      "id": "study-veteran",
+      "label": "Grey veteran",
+      "accentSource": "medic #4cc9f0",
+      "appearance": {
+        "backgroundColor": "#000000",
+        "faceStyle": "angular",
+        "skinColor": "#b58558",
+        "hairStyle": "receding",
+        "hairColor": "#9a9a95",
+        "browStyle": "level",
+        "eyeStyle": "relaxed",
+        "eyeColor": "#3a2b24",
+        "mouthStyle": "frown",
+        "facialHairStyle": "beard",
+        "facialHairColor": "#a2a29c",
+        "uniformStyle": "plate",
+        "uniformColor": "#343a44",
+        "collarStyle": "stand",
+        "collarColor": "#4cc9f0"
+      }
+    },
+    {
+      "id": "study-tied",
+      "label": "Tied back",
+      "accentSource": "diplomat #b8a14f",
+      "appearance": {
+        "backgroundColor": "#000000",
+        "faceStyle": "soft",
+        "skinColor": "#e0b48f",
+        "hairStyle": "tied",
+        "hairColor": "#1c1a1f",
+        "browStyle": "raised",
+        "eyeStyle": "neutral",
+        "eyeColor": "#2a211d",
+        "mouthStyle": "smile",
+        "facialHairStyle": "none",
+        "uniformStyle": "jacket",
+        "uniformColor": "#343a44",
+        "collarStyle": "band",
+        "collarColor": "#b8a14f"
+      }
+    }
+  ]
+}

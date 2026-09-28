@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Stargate Orionis browser prototypes and simulator demos.">
+  <title>Stargate Orionis Demos</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#0d1117;
+      --panel:#161b22;
+      --panel2:#20262f;
+      --text:#f3f4f6;
+      --muted:#9ca3af;
+      --line:#30363d;
+      --blue:#38bdf8;
+      --green:#4ade80;
+      --gold:#fbbf24;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top right,rgba(56,189,248,.13),transparent 34rem),
+        radial-gradient(circle at bottom left,rgba(74,222,128,.08),transparent 30rem),
+        var(--bg);
+      color:var(--text);
+      font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    a{color:inherit}
+    .page{width:min(1120px,100%);margin:0 auto;padding:clamp(24px,6vw,72px) 20px}
+    header{max-width:760px;margin-bottom:34px}
+    .eyebrow{margin:0 0 8px;color:var(--blue);font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    h1{margin:0;font-size:clamp(2rem,6vw,4.2rem);line-height:1.02;letter-spacing:-.045em}
+    .intro{max-width:680px;margin:18px 0 0;color:var(--muted);font-size:1.02rem}
+    .intro strong{color:var(--text)}
+    .demo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .demo-card{
+      display:flex;
+      flex-direction:column;
+      min-height:250px;
+      padding:22px;
+      background:linear-gradient(145deg,rgba(32,38,47,.96),rgba(22,27,34,.96));
+      border:1px solid var(--line);
+      border-radius:18px;
+      text-decoration:none;
+      box-shadow:0 16px 34px rgba(0,0,0,.18);
+      transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease;
+    }
+    .demo-card:hover,.demo-card:focus-visible{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 20px 40px rgba(0,0,0,.3);outline:none}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .icon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(56,189,248,.13);color:var(--blue);font-size:1.3rem}
+    .status{padding:5px 8px;border:1px solid rgba(74,222,128,.35);border-radius:999px;color:var(--green);font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+    h2{margin:20px 0 8px;font-size:1.25rem;line-height:1.15}
+    .demo-card p{margin:0;color:var(--muted)}
+    .card-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:24px;color:var(--blue);font-weight:800}
+    .arrow{font-size:1.25rem;transition:transform .15s ease}.demo-card:hover .arrow,.demo-card:focus-visible .arrow{transform:translateX(4px)}
+    footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
+    footer code{color:#dbeafe}
+    @media(max-width:680px){
+      .page{padding:28px 14px}
+      header{margin-bottom:24px}
+      .demo-grid{grid-template-columns:1fr}
+      .demo-card{min-height:0;padding:18px}
+      .card-footer{padding-top:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="eyebrow">Stargate Orionis / Browser Prototypes</p>
+      <h1>Simulation demos</h1>
+      <p class="intro"><strong>Explore the current prototypes.</strong> These small instruments test room architecture, staffing, strategic map generation, and offworld mission flow before production implementation.</p>
+    </header>
+
+    <main class="demo-grid" aria-label="Available demos">
+      <a class="demo-card" href="./offworld-sandbox/">
+        <div class="card-top"><span class="icon" aria-hidden="true">✦</span><span class="status">Playable</span></div>
+        <h2>Offworld Mission Sandbox</h2>
+        <p>Assemble an expedition party, deploy through the Gate, explore a mission map, manage the connection, and extract the team.</p>
+        <div class="card-footer"><span>Open mission sandbox</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="demo-card" href="./room-sandbox/">
+        <div class="card-top"><span class="icon" aria-hidden="true">▦</span><span class="status">Playable</span></div>
+        <h2>Room Sandbox</h2>
+        <p>Place physical rooms, inspect base tiles, join compatible rooms, upgrade construction tiers, and generate procedural layouts.</p>
+        <div class="card-footer"><span>Open room sandbox</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="demo-card" href="./room-staffing-demo/">
+        <div class="card-top"><span class="icon" aria-hidden="true">◎</span><span class="status">Playable</span></div>
+        <h2>Room Staffing Demo</h2>
+        <p>Experiment with joined-room capacity, staff slots, prefab personnel, resources, theories, and room configuration state.</p>
+        <div class="card-footer"><span>Open staffing demo</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="demo-card" href="./world-map-simulator/">
+        <div class="card-top"><span class="icon" aria-hidden="true">◌</span><span class="status">Playable</span></div>
+        <h2>World Map Simulator</h2>
+        <p>Generate Stargate network geometry, inspect routes and Havens, test failures, evaluate campaigns, and explore map projections.</p>
+        <div class="card-footer"><span>Open world map</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+
+      <a class="demo-card" href="./portrait-simulator/">
+        <div class="card-top"><span class="icon" aria-hidden="true">☺</span><span class="status">Instrument</span></div>
+        <h2>Portrait Simulator</h2>
+        <p>Compose personnel busts from interchangeable pixel parts, tune skin, hair, uniform and collar colors, and export the appearance record the roster icon and map token already read.</p>
+        <div class="card-footer"><span>Open portrait simulator</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+    </main>
+
+    <footer>Serve from the repository root with <code>python -m http.server 8000</code>, then visit <code>/demos/</code>.</footer>
+  </div>
+</body>
+</html>

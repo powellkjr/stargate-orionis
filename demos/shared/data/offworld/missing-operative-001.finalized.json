@@ -1,0 +1,2726 @@
+{
+  "formatVersion": "0.1.0",
+  "mission": {
+    "missionId": "missing-operative-001",
+    "title": "Missing Operative",
+    "missionType": [
+      "INVESTIGATION",
+      "LOCATE",
+      "EXTRACTION"
+    ],
+    "source": {
+      "type": "HAVEN_REQUEST",
+      "relationship": "ALLIED",
+      "request": "Investigate loss of contact with an undercover operative at a remote Supply-mining operation."
+    },
+    "destinationId": "benchmark-supply-mine-001",
+    "seed": 104729,
+    "briefing": {
+      "playerText": "An undercover operative working for an allied Haven has stopped communicating from a remote Supply-mining operation. The operative's transmitter code has been provided. Travel to the mining operation, determine what happened to the operative, and recover them if possible.",
+      "specialIntel": [
+        "operative-transmitter-code-known"
+      ]
+    }
+  },
+  "archetypeDependencies": {
+    "stage": [
+      "stage_gate_area",
+      "stage_room_basic",
+      "stage_hallway_basic",
+      "stage_processing_room",
+      "stage_security_room",
+      "stage_medical_holding"
+    ],
+    "transition": [
+      "door_routine",
+      "door_hackable_basic",
+      "door_restricted_basic"
+    ],
+    "instance": [
+      "stargate_standard",
+      "npc_undercover_operative",
+      "npc_worker_basic",
+      "npc_guard_poorly_trained",
+      "npc_security_supervisor",
+      "npc_overseer",
+      "npc_expert_medic_epidemiologist",
+      "patient_outbreak_basic",
+      "supply_storage_basic",
+      "advanced_mining_system",
+      "radiation_leak_source",
+      "security_terminal_basic",
+      "evidence_archive_basic",
+      "transmitter_beacon_personal",
+      "recoverable_advanced_component",
+      "medical_sample_source",
+      "supply_cache_basic",
+      "equipment_crate"
+    ],
+    "observation": [
+      "obs_guard_discipline",
+      "obs_recent_disturbance",
+      "obs_transmitter_signal",
+      "obs_patient_symptoms",
+      "obs_outbreak_pattern",
+      "obs_radiation_warning",
+      "obs_machine_damage",
+      "obs_nonstandard_technology",
+      "obs_security_activity",
+      "obs_evidence_purge_activity",
+      "obs_route_or_patrol_pattern",
+      "obs_instance_identity"
+    ],
+    "interactionTarget": [
+      "target_npc_standard",
+      "target_terminal_standard",
+      "target_machine_standard",
+      "target_patient_standard",
+      "target_recovery_standard",
+      "target_transition_standard"
+    ],
+    "recipe": [
+      "recipe_question_npc",
+      "recipe_negotiate_surrender",
+      "recipe_stabilize_patient",
+      "recipe_assess_patient",
+      "recipe_collect_medical_sample",
+      "recipe_inspect_machine",
+      "recipe_isolate_power_feed",
+      "recipe_record_scientific_readings",
+      "recipe_recover_component",
+      "recipe_hack_terminal",
+      "recipe_destroy_terminal_tech",
+      "recipe_destroy_terminal_soldier",
+      "recipe_enter_code",
+      "recipe_collect_evidence",
+      "recipe_secure_stage",
+      "recipe_restrain_prisoner",
+      "recipe_collect_supply",
+      "recipe_extract_person",
+      "recipe_hack_transition",
+      "recipe_persuade_npc"
+    ],
+    "incident": [
+      "incident_guard_combat_basic",
+      "incident_medical_deterioration",
+      "incident_radiation_hazard"
+    ],
+    "event": [
+      "event_stage_entered",
+      "event_guard_escaped",
+      "event_gunfire_occurred",
+      "event_gate_closed",
+      "event_wormhole_expired",
+      "event_operative_located",
+      "event_mcguffin_alerted",
+      "event_evidence_purge_started",
+      "event_evidence_purge_completed",
+      "event_incident_resolved",
+      "event_objective_completed"
+    ]
+  },
+  "time": {
+    "sgcStartTimeBinding": "CURRENT_SGC_TIME",
+    "missionElapsedSeconds": 0,
+    "presentationTiming": {
+      "immediateActionSimMinutes": 3,
+      "immediateActionRealSeconds": 1,
+      "operationalActionSimMinutes": 60,
+      "operationalActionRealSeconds": 10
+    }
+  },
+  "gate": {
+    "instanceId": "gate-01",
+    "stageId": "stage-gate-yard",
+    "initialConnectionState": "OPEN_TO_SGC",
+    "requiresOpeningChoice": true,
+    "maxContinuousConnectionMinutes": 37,
+    "onMaxDurationEvent": "event_wormhole_expired",
+    "closedGateAllowsLocalUse": true
+  },
+  "map": {
+    "width": 9,
+    "height": 7,
+    "orientation": "TOP_DOWN",
+    "adjacency": "CARDINAL_ONLY",
+    "notes": "Grid cells define geometry. Gameplay resolves at Stage level. No tactical grid movement."
+  },
+  "stages": [
+    {
+      "stageId": "stage-gate-yard",
+      "archetypeId": "stage_gate_area",
+      "cells": [
+        {
+          "x": 4,
+          "y": 6
+        }
+      ],
+      "initialVisibility": "VISIBLE",
+      "initialSecurityState": "SECURE",
+      "knownShapeAtStart": true,
+      "instanceIds": [
+        "gate-01"
+      ],
+      "observationIds": [],
+      "interactionTargetIds": [],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-outer-yard",
+      "archetypeId": "stage_room_basic",
+      "cells": [
+        {
+          "x": 4,
+          "y": 5
+        },
+        {
+          "x": 5,
+          "y": 5
+        }
+      ],
+      "initialVisibility": "PARTIAL",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": true,
+      "instanceIds": [
+        "worker-yard-01",
+        "worker-yard-02"
+      ],
+      "observationIds": [
+        "obs-yard-security-focus",
+        "obs-yard-disturbance"
+      ],
+      "interactionTargetIds": [
+        "target-worker-yard-01"
+      ],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-main-hall",
+      "archetypeId": "stage_hallway_basic",
+      "cells": [
+        {
+          "x": 4,
+          "y": 4
+        },
+        {
+          "x": 4,
+          "y": 3
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [],
+      "observationIds": [
+        "obs-mainhall-signal-weak"
+      ],
+      "interactionTargetIds": [
+        "target-door-mainhall-to-security"
+      ],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-holding-area",
+      "archetypeId": "stage_medical_holding",
+      "cells": [
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 2
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "patient-01",
+        "patient-02",
+        "patient-03",
+        "epidemiologist-01",
+        "guard-holding-01",
+        "operative-01",
+        "operative-transmitter-01",
+        "medical-sample-source-01",
+        "equipment-crate-01",
+        "worker-holding-01"
+      ],
+      "observationIds": [
+        "obs-holding-coughing",
+        "obs-holding-patient-symptoms",
+        "obs-holding-outbreak-pattern",
+        "obs-holding-signal-strong",
+        "obs-operative-identity"
+      ],
+      "interactionTargetIds": [
+        "target-patient-01",
+        "target-patient-02",
+        "target-epidemiologist-01",
+        "target-operative-01",
+        "target-medical-sample-01",
+        "target-patient-03",
+        "target-equipment-crate-01",
+        "target-worker-holding-01"
+      ],
+      "incidentIds": [
+        "incident-holding-medical",
+        "incident-holding-guards"
+      ],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-processing",
+      "archetypeId": "stage_processing_room",
+      "cells": [
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 5,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 5,
+          "y": 1
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "mining-system-01",
+        "radiation-source-01",
+        "advanced-component-01",
+        "supply-cache-01",
+        "worker-processing-01"
+      ],
+      "observationIds": [
+        "obs-processing-radiation",
+        "obs-processing-machine-damage",
+        "obs-processing-nonstandard-tech"
+      ],
+      "interactionTargetIds": [
+        "target-mining-system-01",
+        "target-advanced-component-01",
+        "target-supply-cache-01",
+        "target-worker-processing-01"
+      ],
+      "incidentIds": [
+        "incident-processing-radiation"
+      ],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-security-hall",
+      "archetypeId": "stage_hallway_basic",
+      "cells": [
+        {
+          "x": 6,
+          "y": 3
+        },
+        {
+          "x": 7,
+          "y": 3
+        },
+        {
+          "x": 5,
+          "y": 3
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "guard-security-01",
+        "guard-security-02",
+        "reynolds-01"
+      ],
+      "observationIds": [
+        "obs-security-poor-discipline",
+        "obs-security-patrol-pattern"
+      ],
+      "interactionTargetIds": [
+        "target-reynolds-01",
+        "target-door-security-to-office"
+      ],
+      "incidentIds": [
+        "incident-security-guards"
+      ],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-overseer-office",
+      "archetypeId": "stage_security_room",
+      "cells": [
+        {
+          "x": 7,
+          "y": 2
+        },
+        {
+          "x": 8,
+          "y": 2
+        },
+        {
+          "x": 6,
+          "y": 2
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "mcguffin-01",
+        "security-terminal-01",
+        "evidence-archive-01"
+      ],
+      "observationIds": [
+        "obs-office-security-activity",
+        "obs-office-evidence-purge"
+      ],
+      "interactionTargetIds": [
+        "target-mcguffin-01",
+        "target-security-terminal-01",
+        "target-evidence-archive-01"
+      ],
+      "incidentIds": [
+        "incident-office-guards"
+      ],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "stage-hidden-store",
+      "archetypeId": "stage_room_basic",
+      "cells": [
+        {
+          "x": 1,
+          "y": 2
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "equipment-crate-02"
+      ],
+      "observationIds": [],
+      "interactionTargetIds": [
+        "target-equipment-crate-02"
+      ],
+      "incidentIds": []
+    },
+    {
+      "stageId": "stage-hidden-safe",
+      "archetypeId": "stage_room_basic",
+      "cells": [
+        {
+          "x": 8,
+          "y": 1
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "safe-intel-01",
+        "safe-loot-01"
+      ],
+      "observationIds": [],
+      "interactionTargetIds": [
+        "target-safe-intel-01",
+        "target-safe-loot-01"
+      ],
+      "incidentIds": []
+    }
+  ],
+  "transitions": [
+    {
+      "transitionId": "door-gate-to-yard",
+      "archetypeId": "door_routine",
+      "fromStageId": "stage-gate-yard",
+      "toStageId": "stage-outer-yard",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH"
+    },
+    {
+      "transitionId": "door-yard-to-mainhall",
+      "archetypeId": "door_routine",
+      "fromStageId": "stage-outer-yard",
+      "toStageId": "stage-main-hall",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH"
+    },
+    {
+      "transitionId": "door-mainhall-to-holding",
+      "archetypeId": "door_restricted_basic",
+      "fromStageId": "stage-main-hall",
+      "toStageId": "stage-holding-area",
+      "directionFrom": "WEST",
+      "directionTo": "EAST",
+      "overrides": {
+        "initialState": "CLOSED",
+        "routine": true
+      }
+    },
+    {
+      "transitionId": "door-mainhall-to-processing",
+      "archetypeId": "door_routine",
+      "fromStageId": "stage-main-hall",
+      "toStageId": "stage-processing",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH"
+    },
+    {
+      "transitionId": "door-mainhall-to-security",
+      "archetypeId": "door_hackable_basic",
+      "fromStageId": "stage-main-hall",
+      "toStageId": "stage-security-hall",
+      "directionFrom": "EAST",
+      "directionTo": "WEST",
+      "overrides": {
+        "initialState": "LOCKED",
+        "requiredTechTier": 2,
+        "requiredToolService": "TECH_SERVICE_II",
+        "hackPerceptionThreshold": 6,
+        "destroyDifficulty": 5,
+        "codeState": "UNKNOWN"
+      }
+    },
+    {
+      "transitionId": "door-security-to-office",
+      "archetypeId": "door_hackable_basic",
+      "fromStageId": "stage-security-hall",
+      "toStageId": "stage-overseer-office",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH",
+      "overrides": {
+        "initialState": "LOCKED",
+        "requiredTechTier": 2,
+        "requiredToolService": "TECH_SERVICE_II",
+        "hackPerceptionThreshold": 7,
+        "destroyDifficulty": 6,
+        "codeState": "UNKNOWN"
+      }
+    },
+    {
+      "transitionId": "door-processing-to-office",
+      "archetypeId": "door_restricted_basic",
+      "fromStageId": "stage-processing",
+      "toStageId": "stage-overseer-office",
+      "directionFrom": "EAST",
+      "directionTo": "WEST",
+      "overrides": {
+        "initialState": "CLOSED",
+        "routine": true
+      }
+    },
+    {
+      "transitionId": "door-stage-hidden-store",
+      "archetypeId": "door_routine",
+      "fromStageId": "stage-holding-area",
+      "toStageId": "stage-hidden-store",
+      "directionFrom": "WEST",
+      "directionTo": "EAST",
+      "revealedWhen": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "holding-hidden-entrance-known"
+      }
+    },
+    {
+      "transitionId": "door-stage-hidden-safe",
+      "archetypeId": "door_routine",
+      "fromStageId": "stage-overseer-office",
+      "toStageId": "stage-hidden-safe",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH",
+      "revealedWhen": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "office-hidden-safe-known"
+      }
+    }
+  ],
+  "instances": [
+    {
+      "instanceId": "gate-01",
+      "archetypeId": "stargate_standard",
+      "stageId": "stage-gate-yard",
+      "overrides": {}
+    },
+    {
+      "instanceId": "worker-yard-01",
+      "archetypeId": "npc_worker_basic",
+      "stageId": "stage-outer-yard",
+      "overrides": {}
+    },
+    {
+      "instanceId": "worker-yard-02",
+      "archetypeId": "npc_worker_basic",
+      "stageId": "stage-outer-yard",
+      "overrides": {}
+    },
+    {
+      "instanceId": "operative-01",
+      "archetypeId": "npc_undercover_operative",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "initialCondition": "INJURED",
+        "mobility": "IMPAIRED",
+        "identityKnownAtStart": false,
+        "initialState": {
+          "condition": "INJURED"
+        }
+      }
+    },
+    {
+      "instanceId": "operative-transmitter-01",
+      "archetypeId": "transmitter_beacon_personal",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "transmitterCodeFact": "operative-transmitter-code-known",
+        "signalState": "INTERMITTENT",
+        "boundPersonId": "operative-01"
+      }
+    },
+    {
+      "instanceId": "patient-01",
+      "archetypeId": "patient_outbreak_basic",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "initialState": {
+          "condition": "DOWN"
+        }
+      }
+    },
+    {
+      "instanceId": "patient-02",
+      "archetypeId": "patient_outbreak_basic",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "initialState": {
+          "condition": "DOWN"
+        }
+      }
+    },
+    {
+      "instanceId": "patient-03",
+      "archetypeId": "patient_outbreak_basic",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "initialState": {
+          "condition": "DOWN"
+        }
+      }
+    },
+    {
+      "instanceId": "epidemiologist-01",
+      "archetypeId": "npc_expert_medic_epidemiologist",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "relationshipState": "UNKNOWN_CONTACT"
+      }
+    },
+    {
+      "instanceId": "guard-holding-01",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "initialState": {
+          "combatState": "ACTIVE"
+        }
+      }
+    },
+    {
+      "instanceId": "medical-sample-source-01",
+      "archetypeId": "medical_sample_source",
+      "stageId": "stage-holding-area",
+      "overrides": {}
+    },
+    {
+      "instanceId": "mining-system-01",
+      "archetypeId": "advanced_mining_system",
+      "stageId": "stage-processing",
+      "overrides": {
+        "operational": true,
+        "unstable": true,
+        "powerFeedIsolated": false,
+        "repairIncomplete": true,
+        "expectedFacilityCapability": "EXCEEDS_EXPECTED",
+        "initialState": {
+          "operational": true,
+          "unstable": true,
+          "powerFeedIsolated": false,
+          "repairIncomplete": true
+        }
+      }
+    },
+    {
+      "instanceId": "radiation-source-01",
+      "archetypeId": "radiation_leak_source",
+      "stageId": "stage-processing",
+      "overrides": {
+        "active": true,
+        "linkedSystemId": "mining-system-01",
+        "stabilizedByState": {
+          "instanceId": "mining-system-01",
+          "field": "powerFeedIsolated",
+          "equals": true
+        },
+        "initialState": {
+          "active": true
+        }
+      }
+    },
+    {
+      "instanceId": "advanced-component-01",
+      "archetypeId": "recoverable_advanced_component",
+      "stageId": "stage-processing",
+      "overrides": {
+        "availableAfterState": {
+          "instanceId": "mining-system-01",
+          "field": "powerFeedIsolated",
+          "equals": true
+        }
+      }
+    },
+    {
+      "instanceId": "supply-cache-01",
+      "archetypeId": "supply_cache_basic",
+      "stageId": "stage-processing",
+      "overrides": {
+        "quantity": 1
+      }
+    },
+    {
+      "instanceId": "guard-security-01",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "stage-security-hall",
+      "overrides": {
+        "initialState": {
+          "combatState": "ACTIVE"
+        }
+      }
+    },
+    {
+      "instanceId": "guard-security-02",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "stage-security-hall",
+      "overrides": {
+        "initialState": {
+          "combatState": "ACTIVE"
+        }
+      }
+    },
+    {
+      "instanceId": "reynolds-01",
+      "archetypeId": "npc_security_supervisor",
+      "stageId": "stage-security-hall",
+      "overrides": {
+        "name": "Reynolds",
+        "initialState": {
+          "combatState": "ACTIVE"
+        }
+      }
+    },
+    {
+      "instanceId": "mcguffin-01",
+      "archetypeId": "npc_overseer",
+      "stageId": "stage-overseer-office",
+      "overrides": {
+        "name": "McGuffin",
+        "awareness": "UNAWARE",
+        "destroyEvidenceBehavior": true,
+        "initialState": {
+          "awareness": "UNAWARE",
+          "combatState": "ACTIVE"
+        }
+      }
+    },
+    {
+      "instanceId": "security-terminal-01",
+      "archetypeId": "security_terminal_basic",
+      "stageId": "stage-overseer-office",
+      "overrides": {
+        "powered": true,
+        "locked": true,
+        "initialState": {
+          "powered": true,
+          "locked": true
+        }
+      }
+    },
+    {
+      "instanceId": "evidence-archive-01",
+      "archetypeId": "evidence_archive_basic",
+      "stageId": "stage-overseer-office",
+      "overrides": {
+        "evidenceState": "INTACT",
+        "containsMissionLead": true,
+        "containsAddressLead": true,
+        "initialState": {
+          "evidenceState": "INTACT"
+        }
+      }
+    },
+    {
+      "instanceId": "equipment-crate-01",
+      "archetypeId": "equipment_crate",
+      "stageId": "stage-holding-area",
+      "revealedWhen": {
+        "instanceId": "epidemiologist-01",
+        "field": "cacheRevealed",
+        "equals": true
+      },
+      "cargo": [
+        {
+          "instanceId": "missing-operative-rifle-01",
+          "itemId": "ASGARD_EM_RIFLE",
+          "displayName": "Unknown object",
+          "state": {
+            "condition": "UNKNOWN",
+            "quantity": 1,
+            "percentOfWhole": 1000
+          },
+          "reality": {
+            "theoryBindings": [
+              {
+                "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                ]
+              }
+            ],
+            "authoredTags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE",
+              "ASGARD",
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          },
+          "knowledge": {
+            "revealedTags": [
+              "PHYSICAL_OBJECT"
+            ],
+            "identityTags": [],
+            "conditionTags": [],
+            "functionalityTags": [],
+            "instanceFindings": []
+          },
+          "processingTags": [
+            "RECEIVING_REQUIRED",
+            "IDENTITY_UNKNOWN"
+          ],
+          "custody": {
+            "storageId": "equipment-crate-01",
+            "containerId": "equipment-crate-01",
+            "status": "STORED",
+            "cost": {
+              "unitCost": 1,
+              "extendedCost": 1
+            }
+          }
+        }
+      ],
+      "overrides": {
+        "quantity": 1,
+        "playerLabel": "Sealed equipment crate 01"
+      }
+    },
+    {
+      "instanceId": "equipment-crate-02",
+      "archetypeId": "equipment_crate",
+      "stageId": "stage-hidden-store",
+      "cargo": [
+        {
+          "instanceId": "missing-operative-rifle-02",
+          "itemId": "HUMAN_ADVANCED_COIL_RIFLE",
+          "displayName": "Unknown object",
+          "state": {
+            "condition": "UNKNOWN",
+            "quantity": 1,
+            "percentOfWhole": 1000
+          },
+          "reality": {
+            "theoryBindings": [
+              {
+                "theoryId": "PULSED_POWER_II",
+                "implementedProperties": [
+                  "ACCUMULATE",
+                  "STORE",
+                  "SHAPE_DISCHARGE",
+                  "SYNCHRONIZE",
+                  "DELIVER_CONTROLLED_PULSE",
+                  "MONITOR_LOAD_RESPONSE",
+                  "RECOVER_COMPENSATE"
+                ],
+                "implementationTags": [
+                  "PULSED_POWER_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "ELECTROMAGNETIC_ACTUATION_II",
+                "implementedProperties": [
+                  "RECEIVE_CONTROL_INPUT",
+                  "GENERATE_FIELD",
+                  "APPLY_ELECTROMAGNETIC_FORCE",
+                  "PRODUCE_CONTROLLED_MOTION",
+                  "RETURN_OR_HOLD"
+                ],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_MANUFACTURING_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "HUMAN_MANUFACTURING_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+                "implementedProperties": [
+                  "FABRICATE_FIELD_COMPONENTS",
+                  "FABRICATE_POWER_CONTROL_COMPONENTS",
+                  "ASSEMBLE_ACCELERATOR_STAGES",
+                  "INTEGRATE_POWER_CONTROL",
+                  "ALIGN_STAGES",
+                  "CALIBRATE_SEQUENCING",
+                  "POWERED_VALIDATION"
+                ],
+                "implementationTags": [
+                  "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_ADVANCED_RIFLE_PATTERN",
+                "implementedProperties": [
+                  "FABRICATE_STRUCTURAL_COMPONENTS",
+                  "FABRICATE_FEED_CONTROL_COMPONENTS",
+                  "ASSEMBLE_RIFLE_BODY",
+                  "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+                  "FIT_ALIGN",
+                  "FUNCTION_CHECK"
+                ],
+                "implementationTags": [
+                  "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+                ]
+              }
+            ],
+            "authoredTags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE",
+              "HUMAN",
+              "COIL_RIFLE",
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          },
+          "knowledge": {
+            "revealedTags": [
+              "PHYSICAL_OBJECT"
+            ],
+            "identityTags": [],
+            "conditionTags": [],
+            "functionalityTags": [],
+            "instanceFindings": []
+          },
+          "processingTags": [
+            "RECEIVING_REQUIRED",
+            "IDENTITY_UNKNOWN"
+          ],
+          "custody": {
+            "storageId": "equipment-crate-02",
+            "containerId": "equipment-crate-02",
+            "status": "STORED",
+            "cost": {
+              "unitCost": 1,
+              "extendedCost": 1
+            }
+          }
+        }
+      ],
+      "overrides": {
+        "quantity": 1,
+        "playerLabel": "Sealed equipment crate 02"
+      }
+    },
+    {
+      "instanceId": "worker-holding-01",
+      "archetypeId": "npc_worker_basic",
+      "stageId": "stage-holding-area"
+    },
+    {
+      "instanceId": "worker-processing-01",
+      "archetypeId": "npc_worker_basic",
+      "stageId": "stage-processing"
+    },
+    {
+      "instanceId": "safe-intel-01",
+      "archetypeId": "hidden_evidence_archive_basic",
+      "stageId": "stage-hidden-safe"
+    },
+    {
+      "instanceId": "safe-loot-01",
+      "archetypeId": "hidden_supply_cache_basic",
+      "stageId": "stage-hidden-safe"
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "obs-yard-security-focus",
+      "archetypeId": "obs_guard_discipline",
+      "stageId": "stage-outer-yard",
+      "overrides": {
+        "profession": "SOLDIER",
+        "minimumTier": 1,
+        "minimumPerception": 5,
+        "text": "Security personnel are watching the workers more closely than the perimeter.",
+        "revealsFacts": [
+          "security-focuses-on-workers"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-yard-disturbance",
+      "archetypeId": "obs_recent_disturbance",
+      "stageId": "stage-outer-yard",
+      "overrides": {
+        "profession": "SCOUT",
+        "minimumTier": 1,
+        "minimumPerception": 6,
+        "text": "Recent movement is concentrated between the main facility and interior work areas.",
+        "revealsFacts": [
+          "recent-internal-movement"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-mainhall-signal-weak",
+      "archetypeId": "obs_transmitter_signal",
+      "stageId": "stage-main-hall",
+      "overrides": {
+        "profession": "SCOUT",
+        "minimumTier": 1,
+        "minimumPerception": 5,
+        "requiresKnowledge": [
+          "operative-transmitter-code-known"
+        ],
+        "text": "The operative's transmitter signal is weak but detectable west of the main hall.",
+        "revealsFacts": [
+          "operative-signal-west"
+        ],
+        "targetDirection": "WEST",
+        "requiredToolService": "SIGNAL_DIRECTION_FINDING"
+      }
+    },
+    {
+      "observationId": "obs-holding-coughing",
+      "archetypeId": "obs_patient_symptoms",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "profession": "MEDIC",
+        "minimumTier": 1,
+        "minimumPerception": 4,
+        "presentationType": "SPEECH_BUBBLE",
+        "text": "Coughing is audible from the holding area.",
+        "revealsFacts": [
+          "multiple-ill-patients-present"
+        ],
+        "fromStageIds": [
+          "stage-main-hall"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-holding-patient-symptoms",
+      "archetypeId": "obs_patient_symptoms",
+      "stageId": "stage-holding-area",
+      "subjectInstanceId": "patient-01",
+      "overrides": {
+        "profession": "MEDIC",
+        "minimumTier": 1,
+        "minimumPerception": 6,
+        "text": "Several patients show a similar symptom pattern.",
+        "revealsFacts": [
+          "shared-symptom-pattern"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-holding-outbreak-pattern",
+      "archetypeId": "obs_outbreak_pattern",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "profession": "MEDIC",
+        "minimumTier": 2,
+        "minimumPerception": 8,
+        "text": "The cases are consistent enough to warrant outbreak-style containment and investigation.",
+        "revealsFacts": [
+          "possible-outbreak-requires-containment"
+        ],
+        "supportsObservationIds": [
+          "obs-holding-patient-symptoms"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-holding-signal-strong",
+      "archetypeId": "obs_transmitter_signal",
+      "stageId": "stage-holding-area",
+      "subjectInstanceId": "operative-transmitter-01",
+      "overrides": {
+        "profession": "SCOUT",
+        "minimumTier": 1,
+        "minimumPerception": 5,
+        "requiresKnowledge": [
+          "operative-transmitter-code-known"
+        ],
+        "text": "The known transmitter signal is strong and originates inside this area.",
+        "revealsFacts": [
+          "operative-present-in-holding-area"
+        ],
+        "requiredToolService": "SIGNAL_DIRECTION_FINDING"
+      }
+    },
+    {
+      "observationId": "obs-processing-radiation",
+      "archetypeId": "obs_radiation_warning",
+      "stageId": "stage-processing",
+      "subjectInstanceId": "radiation-source-01",
+      "overrides": {
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "minimumPerception": 5,
+        "text": "Readings indicate hazardous radiation around the processing equipment.",
+        "revealsFacts": [
+          "processing-radiation-hazard-confirmed"
+        ],
+        "requiredToolService": "SCT1"
+      }
+    },
+    {
+      "observationId": "obs-processing-machine-damage",
+      "archetypeId": "obs_machine_damage",
+      "stageId": "stage-processing",
+      "subjectInstanceId": "mining-system-01",
+      "overrides": {
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "minimumPerception": 6,
+        "text": "The processing system is operating with an unstable damaged power feed.",
+        "revealsFacts": [
+          "mining-system-power-feed-unstable"
+        ],
+        "revealsInteractionIds": [
+          "target-mining-system-01"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-processing-nonstandard-tech",
+      "archetypeId": "obs_nonstandard_technology",
+      "stageId": "stage-processing",
+      "subjectInstanceId": "mining-system-01",
+      "overrides": {
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "minimumPerception": 8,
+        "text": "The extraction system uses technology beyond what is expected for this mining operation.",
+        "revealsFacts": [
+          "advanced-mining-technology-confirmed"
+        ],
+        "createsDiscoveryId": "discovery-advanced-mining-tech"
+      }
+    },
+    {
+      "observationId": "obs-security-poor-discipline",
+      "archetypeId": "obs_guard_discipline",
+      "stageId": "stage-security-hall",
+      "overrides": {
+        "profession": "SOLDIER",
+        "minimumTier": 1,
+        "minimumPerception": 5,
+        "text": "Guard spacing and response discipline are inconsistent with a professional security force.",
+        "revealsFacts": [
+          "guards-poorly-trained"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-security-patrol-pattern",
+      "archetypeId": "obs_route_or_patrol_pattern",
+      "stageId": "stage-security-hall",
+      "overrides": {
+        "profession": "SCOUT",
+        "minimumTier": 2,
+        "minimumPerception": 7,
+        "text": "The patrol pattern leaves predictable gaps near the overseer's office.",
+        "revealsFacts": [
+          "security-patrol-gap-known"
+        ],
+        "supportsObservationIds": [
+          "obs-security-poor-discipline"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-office-security-activity",
+      "archetypeId": "obs_security_activity",
+      "stageId": "stage-overseer-office",
+      "overrides": {
+        "profession": "SOLDIER",
+        "minimumTier": 1,
+        "minimumPerception": 5,
+        "text": "Security activity centers on McGuffin and the facility records.",
+        "revealsFacts": [
+          "mcguffin-controls-security-records"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-office-evidence-purge",
+      "archetypeId": "obs_evidence_purge_activity",
+      "stageId": "stage-overseer-office",
+      "subjectInstanceId": "evidence-archive-01",
+      "overrides": {
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "minimumPerception": 6,
+        "requiresState": {
+          "instanceId": "evidence-archive-01",
+          "field": "evidenceState",
+          "equals": "PURGING"
+        },
+        "text": "The archive is actively deleting records.",
+        "revealsFacts": [
+          "evidence-purge-in-progress"
+        ]
+      }
+    },
+    {
+      "observationId": "obs-operative-identity",
+      "archetypeId": "obs_instance_identity",
+      "stageId": "stage-holding-area",
+      "subjectInstanceId": "operative-01",
+      "overrides": {
+        "profession": "UNTRAINED",
+        "minimumPerception": 0,
+        "requiresKnowledge": [
+          "operative-transmitter-code-known"
+        ],
+        "text": "The transmitter code confirms this is the missing operative.",
+        "setsDetectionState": {
+          "instanceId": "operative-01",
+          "value": "LOCATED"
+        },
+        "revealsFacts": [
+          "operative-located"
+        ]
+      }
+    }
+  ],
+  "interactionTargets": [
+    {
+      "targetId": "target-worker-yard-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "worker-yard-01",
+      "stageId": "stage-outer-yard",
+      "recipeInstanceIds": [
+        "question-worker-yard"
+      ]
+    },
+    {
+      "targetId": "target-patient-01",
+      "archetypeId": "target_patient_standard",
+      "instanceId": "patient-01",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "assess-patient-01",
+        "stabilize-patient-01"
+      ]
+    },
+    {
+      "targetId": "target-patient-02",
+      "archetypeId": "target_patient_standard",
+      "instanceId": "patient-02",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "assess-patient-02",
+        "stabilize-patient-02"
+      ]
+    },
+    {
+      "targetId": "target-epidemiologist-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "epidemiologist-01",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "persuade-epidemiologist"
+      ]
+    },
+    {
+      "targetId": "target-operative-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "operative-01",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "extract-operative",
+        "talk-operative"
+      ]
+    },
+    {
+      "targetId": "target-medical-sample-01",
+      "archetypeId": "target_recovery_standard",
+      "instanceId": "medical-sample-source-01",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "collect-medical-sample"
+      ]
+    },
+    {
+      "targetId": "target-mining-system-01",
+      "archetypeId": "target_machine_standard",
+      "instanceId": "mining-system-01",
+      "stageId": "stage-processing",
+      "recipeInstanceIds": [
+        "inspect-mining-system",
+        "isolate-mining-power",
+        "record-mining-readings"
+      ]
+    },
+    {
+      "targetId": "target-advanced-component-01",
+      "archetypeId": "target_recovery_standard",
+      "instanceId": "advanced-component-01",
+      "stageId": "stage-processing",
+      "recipeInstanceIds": [
+        "recover-advanced-component"
+      ]
+    },
+    {
+      "targetId": "target-supply-cache-01",
+      "archetypeId": "target_recovery_standard",
+      "instanceId": "supply-cache-01",
+      "stageId": "stage-processing",
+      "recipeInstanceIds": [
+        "collect-supply-cache"
+      ]
+    },
+    {
+      "targetId": "target-reynolds-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "reynolds-01",
+      "stageId": "stage-security-hall",
+      "recipeInstanceIds": [
+        "question-reynolds",
+        "negotiate-reynolds",
+        "intimidate-reynolds"
+      ]
+    },
+    {
+      "targetId": "target-mcguffin-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "mcguffin-01",
+      "stageId": "stage-overseer-office",
+      "recipeInstanceIds": [
+        "question-mcguffin",
+        "negotiate-mcguffin",
+        "restrain-mcguffin",
+        "intimidate-mcguffin"
+      ]
+    },
+    {
+      "targetId": "target-security-terminal-01",
+      "archetypeId": "target_terminal_standard",
+      "instanceId": "security-terminal-01",
+      "stageId": "stage-overseer-office",
+      "recipeInstanceIds": [
+        "hack-security-terminal",
+        "destroy-security-terminal-tech",
+        "destroy-security-terminal-soldier",
+        "enter-security-code",
+        "recover-terminal-wreckage"
+      ]
+    },
+    {
+      "targetId": "target-evidence-archive-01",
+      "archetypeId": "target_recovery_standard",
+      "instanceId": "evidence-archive-01",
+      "stageId": "stage-overseer-office",
+      "recipeInstanceIds": [
+        "collect-evidence-archive"
+      ]
+    },
+    {
+      "targetId": "target-door-mainhall-to-security",
+      "archetypeId": "target_transition_standard",
+      "transitionId": "door-mainhall-to-security",
+      "stageId": "stage-main-hall",
+      "recipeInstanceIds": [
+        "hack-door-mainhall-to-security"
+      ]
+    },
+    {
+      "targetId": "target-door-security-to-office",
+      "archetypeId": "target_transition_standard",
+      "transitionId": "door-security-to-office",
+      "stageId": "stage-security-hall",
+      "recipeInstanceIds": [
+        "hack-door-security-to-office",
+        "enter-security-office-door-code"
+      ]
+    },
+    {
+      "targetId": "target-patient-03",
+      "archetypeId": "target_patient_standard",
+      "instanceId": "patient-03",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "assess-patient-03",
+        "stabilize-patient-03"
+      ]
+    },
+    {
+      "targetId": "target-equipment-crate-01",
+      "archetypeId": "target_recovery_standard",
+      "instanceId": "equipment-crate-01",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "collect-equipment-crate-01"
+      ]
+    },
+    {
+      "targetId": "target-equipment-crate-02",
+      "archetypeId": "target_recovery_standard",
+      "instanceId": "equipment-crate-02",
+      "stageId": "stage-hidden-store",
+      "recipeInstanceIds": [
+        "collect-equipment-crate-02"
+      ]
+    },
+    {
+      "targetId": "target-worker-holding-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "worker-holding-01",
+      "stageId": "stage-holding-area",
+      "recipeInstanceIds": [
+        "small-talk-worker-holding"
+      ]
+    },
+    {
+      "targetId": "target-worker-processing-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "worker-processing-01",
+      "stageId": "stage-processing",
+      "recipeInstanceIds": [
+        "inquire-worker-processing"
+      ]
+    },
+    {
+      "targetId": "target-safe-intel-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "safe-intel-01",
+      "stageId": "stage-hidden-safe",
+      "recipeInstanceIds": [
+        "collect-safe-intel-01"
+      ]
+    },
+    {
+      "targetId": "target-safe-loot-01",
+      "archetypeId": "target_npc_standard",
+      "instanceId": "safe-loot-01",
+      "stageId": "stage-hidden-safe",
+      "recipeInstanceIds": [
+        "collect-safe-loot-01"
+      ]
+    }
+  ],
+  "recipes": [
+    {
+      "recipeInstanceId": "question-worker-yard",
+      "archetypeId": "recipe_question_npc",
+      "targetId": "target-worker-yard-01",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "assess-patient-01",
+      "archetypeId": "recipe_assess_patient",
+      "targetId": "target-patient-01",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "stabilize-patient-01",
+      "archetypeId": "recipe_stabilize_patient",
+      "targetId": "target-patient-01",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3
+      }
+    },
+    {
+      "recipeInstanceId": "assess-patient-02",
+      "archetypeId": "recipe_assess_patient",
+      "targetId": "target-patient-02",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "stabilize-patient-02",
+      "archetypeId": "recipe_stabilize_patient",
+      "targetId": "target-patient-02",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3
+      }
+    },
+    {
+      "recipeInstanceId": "persuade-epidemiologist",
+      "archetypeId": "recipe_persuade_npc",
+      "targetId": "target-epidemiologist-01",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "extract-operative",
+      "archetypeId": "recipe_extract_person",
+      "targetId": "target-operative-01",
+      "overrides": {
+        "requiresLocated": true,
+        "hiddenUntilKnowledge": [
+          "operative-located"
+        ],
+        "requiresState": {
+          "type": "ANY",
+          "conditions": [
+            {
+              "type": "ALL",
+              "conditions": [
+                {
+                  "instanceId": "patient-01",
+                  "field": "condition",
+                  "equals": "STABILIZED"
+                },
+                {
+                  "instanceId": "patient-02",
+                  "field": "condition",
+                  "equals": "STABILIZED"
+                },
+                {
+                  "instanceId": "patient-03",
+                  "field": "condition",
+                  "equals": "STABILIZED"
+                }
+              ]
+            },
+            {
+              "type": "INCIDENT_STATE",
+              "incidentId": "incident-holding-medical",
+              "equals": "RESOLVED"
+            },
+            {
+              "instanceId": "radiation-source-01",
+              "field": "active",
+              "equals": false
+            }
+          ]
+        }
+      },
+      "requiresGateRoute": true
+    },
+    {
+      "recipeInstanceId": "collect-medical-sample",
+      "archetypeId": "recipe_collect_medical_sample",
+      "targetId": "target-medical-sample-01",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "inspect-mining-system",
+      "archetypeId": "recipe_inspect_machine",
+      "targetId": "target-mining-system-01",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3
+      }
+    },
+    {
+      "recipeInstanceId": "isolate-mining-power",
+      "archetypeId": "recipe_isolate_power_feed",
+      "targetId": "target-mining-system-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiredToolService": "TECH_SERVICE_II",
+        "durationMinutes": 3,
+        "effects": [
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "mining-system-01",
+            "field": "operational",
+            "value": false
+          },
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "mining-system-01",
+            "field": "powerFeedIsolated",
+            "value": true
+          },
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "radiation-source-01",
+            "field": "active",
+            "value": false
+          }
+        ]
+      }
+    },
+    {
+      "recipeInstanceId": "record-mining-readings",
+      "archetypeId": "recipe_record_scientific_readings",
+      "targetId": "target-mining-system-01",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3,
+        "createsDiscoveryId": "discovery-advanced-mining-tech"
+      }
+    },
+    {
+      "recipeInstanceId": "recover-advanced-component",
+      "archetypeId": "recipe_recover_component",
+      "targetId": "target-advanced-component-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiredToolService": "TECH_SERVICE_II",
+        "durationMinutes": 60,
+        "requiresState": {
+          "instanceId": "mining-system-01",
+          "field": "powerFeedIsolated",
+          "equals": true
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "collect-supply-cache",
+      "archetypeId": "recipe_collect_supply",
+      "targetId": "target-supply-cache-01",
+      "overrides": {
+        "durationMinutes": 3
+      }
+    },
+    {
+      "recipeInstanceId": "question-reynolds",
+      "archetypeId": "recipe_question_npc",
+      "targetId": "target-reynolds-01",
+      "overrides": {
+        "minimumTier": 1,
+        "requiresState": {
+          "instanceId": "reynolds-01",
+          "field": "combatState",
+          "equals": "DOWN"
+        },
+        "effects": [
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "security-office-door-code-known"
+          }
+        ],
+        "outcomeText": "The supervisor gives you the code for the Security-to-Office door. Enter it without spending a Tool charge."
+      }
+    },
+    {
+      "recipeInstanceId": "negotiate-reynolds",
+      "archetypeId": "recipe_negotiate_surrender",
+      "targetId": "target-reynolds-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiresState": {
+          "type": "ANY",
+          "conditions": [
+            {
+              "instanceId": "reynolds-01",
+              "field": "combatState",
+              "equals": "ACTIVE"
+            }
+          ]
+        },
+        "effects": [
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "reynolds-01",
+            "field": "combatState",
+            "value": "SURRENDERED",
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "reynolds-01",
+                  "field": "combatState",
+                  "equals": "ACTIVE"
+                }
+              ]
+            }
+          },
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "guard-security-01",
+            "field": "combatState",
+            "value": "SURRENDERED",
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "guard-security-01",
+                  "field": "combatState",
+                  "equals": "ACTIVE"
+                }
+              ]
+            }
+          },
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "guard-security-02",
+            "field": "combatState",
+            "value": "SURRENDERED",
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "guard-security-02",
+                  "field": "combatState",
+                  "equals": "ACTIVE"
+                }
+              ]
+            }
+          }
+        ],
+        "durationModifiers": [
+          {
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "worker-yard-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "epidemiologist-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "reynolds-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "mcguffin-01",
+                  "field": "interviewed",
+                  "equals": true
+                }
+              ]
+            },
+            "durationMinutes": 1,
+            "label": "Interview preparation"
+          }
+        ]
+      },
+      "allowHostiles": true
+    },
+    {
+      "recipeInstanceId": "question-mcguffin",
+      "archetypeId": "recipe_question_npc",
+      "targetId": "target-mcguffin-01",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "negotiate-mcguffin",
+      "archetypeId": "recipe_negotiate_surrender",
+      "targetId": "target-mcguffin-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiresState": {
+          "type": "ANY",
+          "conditions": [
+            {
+              "instanceId": "mcguffin-01",
+              "field": "combatState",
+              "equals": "ACTIVE"
+            }
+          ]
+        },
+        "durationModifiers": [
+          {
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "worker-yard-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "epidemiologist-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "reynolds-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "mcguffin-01",
+                  "field": "interviewed",
+                  "equals": true
+                }
+              ]
+            },
+            "durationMinutes": 1,
+            "label": "Interview preparation"
+          }
+        ]
+      },
+      "allowHostiles": true
+    },
+    {
+      "recipeInstanceId": "restrain-mcguffin",
+      "archetypeId": "recipe_restrain_prisoner",
+      "targetId": "target-mcguffin-01",
+      "overrides": {
+        "durationMinutes": 3,
+        "requiresState": {
+          "type": "ANY",
+          "conditions": [
+            {
+              "instanceId": "mcguffin-01",
+              "field": "combatState",
+              "equals": "DOWN"
+            },
+            {
+              "instanceId": "mcguffin-01",
+              "field": "combatState",
+              "equals": "SURRENDERED"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "hack-security-terminal",
+      "archetypeId": "recipe_hack_terminal",
+      "targetId": "target-security-terminal-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiredToolService": "TECH_SERVICE_II",
+        "durationMinutes": 3,
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "instanceId": "security-terminal-01",
+              "field": "powered",
+              "equals": true
+            },
+            {
+              "instanceId": "security-terminal-01",
+              "field": "locked",
+              "equals": true
+            }
+          ]
+        },
+        "outcomeText": "Unlock the terminal intact. Destruction is an alternative, not a follow-up step."
+      }
+    },
+    {
+      "recipeInstanceId": "destroy-security-terminal-tech",
+      "archetypeId": "recipe_destroy_terminal_tech",
+      "targetId": "target-security-terminal-01",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3,
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "instanceId": "security-terminal-01",
+              "field": "powered",
+              "equals": true
+            },
+            {
+              "instanceId": "security-terminal-01",
+              "field": "locked",
+              "equals": true
+            }
+          ]
+        },
+        "outcomeText": "Destroy the locked terminal instead of hacking it. Leaves recoverable wreckage; does not erase the separate archive."
+      },
+      "choiceGroup": "destroy-terminal"
+    },
+    {
+      "recipeInstanceId": "destroy-security-terminal-soldier",
+      "archetypeId": "recipe_destroy_terminal_soldier",
+      "targetId": "target-security-terminal-01",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3,
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "instanceId": "security-terminal-01",
+              "field": "powered",
+              "equals": true
+            },
+            {
+              "instanceId": "security-terminal-01",
+              "field": "locked",
+              "equals": true
+            }
+          ]
+        },
+        "outcomeText": "Destroy the locked terminal instead of hacking it. Leaves recoverable wreckage; does not erase the separate archive."
+      },
+      "choiceGroup": "destroy-terminal"
+    },
+    {
+      "recipeInstanceId": "enter-security-code",
+      "archetypeId": "recipe_enter_code",
+      "targetId": "target-security-terminal-01",
+      "overrides": {
+        "requiresKnowledge": [
+          "security-terminal-code-known"
+        ],
+        "durationMinutes": 3,
+        "requiresState": {
+          "instanceId": "security-terminal-01",
+          "field": "powered",
+          "equals": true
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "collect-evidence-archive",
+      "archetypeId": "recipe_collect_evidence",
+      "targetId": "target-evidence-archive-01",
+      "overrides": {
+        "durationMinutes": 3,
+        "requiresState": {
+          "instanceId": "evidence-archive-01",
+          "field": "evidenceState",
+          "equals": "INTACT"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "hack-door-mainhall-to-security",
+      "archetypeId": "recipe_hack_transition",
+      "targetId": "target-door-mainhall-to-security",
+      "overrides": {
+        "minimumTier": 2,
+        "minimumPerception": 6,
+        "requiredToolService": "TECH_SERVICE_II"
+      }
+    },
+    {
+      "recipeInstanceId": "hack-door-security-to-office",
+      "archetypeId": "recipe_hack_transition",
+      "targetId": "target-door-security-to-office",
+      "overrides": {
+        "minimumTier": 2,
+        "minimumPerception": 7,
+        "requiredToolService": "TECH_SERVICE_II"
+      }
+    },
+    {
+      "recipeInstanceId": "assess-patient-03",
+      "archetypeId": "recipe_assess_patient",
+      "targetId": "target-patient-03",
+      "overrides": {
+        "minimumTier": 1
+      }
+    },
+    {
+      "recipeInstanceId": "stabilize-patient-03",
+      "archetypeId": "recipe_stabilize_patient",
+      "targetId": "target-patient-03",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3
+      }
+    },
+    {
+      "recipeInstanceId": "recover-terminal-wreckage",
+      "archetypeId": "recipe_recover_wreckage",
+      "targetId": "target-security-terminal-01",
+      "overrides": {
+        "requiresState": {
+          "instanceId": "security-terminal-01",
+          "field": "condition",
+          "equals": "WRECKAGE"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "intimidate-reynolds",
+      "archetypeId": "recipe_intimidate_surrender",
+      "targetId": "target-reynolds-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiresState": {
+          "type": "ANY",
+          "conditions": [
+            {
+              "instanceId": "reynolds-01",
+              "field": "combatState",
+              "equals": "ACTIVE"
+            }
+          ]
+        },
+        "effects": [
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "reynolds-01",
+            "field": "combatState",
+            "value": "SURRENDERED",
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "reynolds-01",
+                  "field": "combatState",
+                  "equals": "ACTIVE"
+                }
+              ]
+            }
+          },
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "guard-security-01",
+            "field": "combatState",
+            "value": "SURRENDERED",
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "guard-security-01",
+                  "field": "combatState",
+                  "equals": "ACTIVE"
+                }
+              ]
+            }
+          },
+          {
+            "type": "SET_INSTANCE_STATE",
+            "instanceId": "guard-security-02",
+            "field": "combatState",
+            "value": "SURRENDERED",
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "guard-security-02",
+                  "field": "combatState",
+                  "equals": "ACTIVE"
+                }
+              ]
+            }
+          }
+        ],
+        "durationModifiers": [
+          {
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "worker-yard-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "epidemiologist-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "reynolds-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "mcguffin-01",
+                  "field": "interviewed",
+                  "equals": true
+                }
+              ]
+            },
+            "durationMinutes": 1,
+            "label": "Interview preparation"
+          }
+        ]
+      },
+      "allowHostiles": true
+    },
+    {
+      "recipeInstanceId": "intimidate-mcguffin",
+      "archetypeId": "recipe_intimidate_surrender",
+      "targetId": "target-mcguffin-01",
+      "overrides": {
+        "minimumTier": 2,
+        "requiresState": {
+          "type": "ANY",
+          "conditions": [
+            {
+              "instanceId": "mcguffin-01",
+              "field": "combatState",
+              "equals": "ACTIVE"
+            }
+          ]
+        },
+        "durationModifiers": [
+          {
+            "when": {
+              "type": "ANY",
+              "conditions": [
+                {
+                  "instanceId": "worker-yard-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "epidemiologist-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "reynolds-01",
+                  "field": "interviewed",
+                  "equals": true
+                },
+                {
+                  "instanceId": "mcguffin-01",
+                  "field": "interviewed",
+                  "equals": true
+                }
+              ]
+            },
+            "durationMinutes": 1,
+            "label": "Interview preparation"
+          }
+        ]
+      },
+      "allowHostiles": true
+    },
+    {
+      "recipeInstanceId": "collect-equipment-crate-01",
+      "archetypeId": "recipe_collect_supply",
+      "targetId": "target-equipment-crate-01",
+      "overrides": {}
+    },
+    {
+      "recipeInstanceId": "collect-equipment-crate-02",
+      "archetypeId": "recipe_collect_supply",
+      "targetId": "target-equipment-crate-02",
+      "overrides": {}
+    },
+    {
+      "recipeInstanceId": "small-talk-worker-holding",
+      "archetypeId": "recipe_dialogue_small_talk",
+      "targetId": "target-worker-holding-01",
+      "overrides": {
+        "effects": [
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "holding-hidden-entrance-known"
+          }
+        ],
+        "outcomeText": "The worker reveals a concealed entrance beside Holding. The hidden store is now accessible."
+      }
+    },
+    {
+      "recipeInstanceId": "inquire-worker-processing",
+      "archetypeId": "recipe_dialogue_inquire",
+      "targetId": "target-worker-processing-01",
+      "overrides": {
+        "effects": [
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "office-hidden-safe-known"
+          }
+        ],
+        "outcomeText": "The worker reveals a hidden safe room behind the Overseer office. Its concealed door is now visible.",
+        "requiresState": {
+          "instanceId": "radiation-source-01",
+          "field": "active",
+          "equals": false
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "collect-safe-intel-01",
+      "archetypeId": "recipe_dialogue_collect_safe",
+      "targetId": "target-safe-intel-01",
+      "overrides": {
+        "effects": [
+          {
+            "type": "CARRY_TARGET"
+          }
+        ],
+        "outcomeText": "Package secured for recovery."
+      }
+    },
+    {
+      "recipeInstanceId": "collect-safe-loot-01",
+      "archetypeId": "recipe_dialogue_collect_safe",
+      "targetId": "target-safe-loot-01",
+      "overrides": {
+        "effects": [
+          {
+            "type": "CARRY_TARGET"
+          }
+        ],
+        "outcomeText": "Package secured for recovery."
+      }
+    },
+    {
+      "recipeInstanceId": "talk-operative",
+      "archetypeId": "recipe_dialogue_talk",
+      "targetId": "target-operative-01",
+      "overrides": {
+        "effects": [],
+        "outcomeText": "I am only leaving if everybody is stabilized or the source is resolved. Then send me to the Gate along a clear route."
+      }
+    },
+    {
+      "recipeInstanceId": "enter-security-office-door-code",
+      "archetypeId": "recipe_dialogue_enter_door_code",
+      "targetId": "target-door-security-to-office",
+      "overrides": {
+        "effects": [
+          {
+            "type": "OPEN_TARGET_TRANSITION"
+          }
+        ],
+        "outcomeText": "The code unlocks the office door. No Tool charge spent.",
+        "requiresState": {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "security-office-door-code-known"
+        }
+      }
+    }
+  ],
+  "incidents": [
+    {
+      "incidentId": "incident-holding-medical",
+      "archetypeId": "incident_medical_deterioration",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "participantIds": [
+          "patient-01",
+          "patient-02",
+          "patient-03"
+        ],
+        "initialState": "ACTIVE",
+        "resolutionMode": "STABILIZE_IMMEDIATE_DETERIORATION"
+      }
+    },
+    {
+      "incidentId": "incident-processing-radiation",
+      "archetypeId": "incident_radiation_hazard",
+      "stageId": "stage-processing",
+      "overrides": {
+        "sourceInstanceId": "radiation-source-01",
+        "initialState": "ACTIVE",
+        "resolutionCondition": {
+          "instanceId": "radiation-source-01",
+          "field": "active",
+          "equals": false
+        }
+      }
+    },
+    {
+      "incidentId": "incident-security-guards",
+      "archetypeId": "incident_guard_combat_basic",
+      "stageId": "stage-security-hall",
+      "overrides": {
+        "participantIds": [
+          "guard-security-01",
+          "guard-security-02",
+          "reynolds-01"
+        ],
+        "initialState": "DORMANT",
+        "allowSurrender": true,
+        "allowRetreat": true,
+        "onEscapeEvent": "event_guard_escaped",
+        "activationMode": "ON_HOSTILE_ENGAGEMENT_OR_ESCALATION"
+      }
+    },
+    {
+      "incidentId": "incident-holding-guards",
+      "archetypeId": "incident_guard_combat_basic",
+      "stageId": "stage-holding-area",
+      "overrides": {
+        "participantIds": [
+          "guard-holding-01"
+        ],
+        "initialState": "DORMANT",
+        "allowRetreat": true,
+        "allowSurrender": true,
+        "activationMode": "ON_HOSTILE_ENGAGEMENT_OR_ESCALATION"
+      }
+    },
+    {
+      "incidentId": "incident-office-guards",
+      "archetypeId": "incident_guard_combat_basic",
+      "stageId": "stage-overseer-office",
+      "overrides": {
+        "participantIds": [
+          "mcguffin-01"
+        ],
+        "initialState": "DORMANT",
+        "allowRetreat": true,
+        "allowSurrender": true,
+        "activationMode": "ON_HOSTILE_ENGAGEMENT_OR_ESCALATION"
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "objectiveId": "locate-operative",
+      "priority": "PRIMARY",
+      "initialState": "ACTIVE",
+      "playerText": "Locate the missing operative.",
+      "completionCondition": {
+        "type": "INSTANCE_DETECTION_STATE",
+        "instanceId": "operative-01",
+        "equals": "LOCATED"
+      },
+      "onComplete": [
+        {
+          "type": "ACTIVATE_OBJECTIVE",
+          "objectiveId": "extract-operative"
+        }
+      ]
+    },
+    {
+      "objectiveId": "extract-operative",
+      "priority": "PRIMARY",
+      "initialState": "HIDDEN",
+      "playerText": "Extract the operative.",
+      "completionCondition": {
+        "type": "INSTANCE_STATUS",
+        "instanceId": "operative-01",
+        "field": "partyStatus",
+        "equals": "EXTRACTED"
+      }
+    },
+    {
+      "objectiveId": "stabilize-medical-crisis",
+      "priority": "OPTIONAL",
+      "initialState": "HIDDEN",
+      "playerText": "Stabilize the medical crisis.",
+      "revealCondition": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "multiple-ill-patients-present"
+      },
+      "completionCondition": {
+        "type": "INCIDENT_STATE",
+        "incidentId": "incident-holding-medical",
+        "equals": "RESOLVED"
+      }
+    },
+    {
+      "objectiveId": "contain-radiation",
+      "priority": "OPTIONAL",
+      "initialState": "HIDDEN",
+      "playerText": "Contain the radiation hazard.",
+      "revealCondition": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "processing-radiation-hazard-confirmed"
+      },
+      "completionCondition": {
+        "type": "INCIDENT_STATE",
+        "incidentId": "incident-processing-radiation",
+        "equals": "RESOLVED"
+      }
+    },
+    {
+      "objectiveId": "recover-evidence",
+      "priority": "OPTIONAL",
+      "initialState": "HIDDEN",
+      "playerText": "Recover evidence from the facility.",
+      "revealCondition": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "mcguffin-controls-security-records"
+      },
+      "completionCondition": {
+        "type": "ASSET_CUSTODY",
+        "assetInstanceId": "evidence-archive-01",
+        "equals": "RECOVERED_TO_SGC"
+      }
+    }
+  ],
+  "discoveries": [
+    {
+      "discoveryId": "discovery-advanced-mining-tech",
+      "sourceInstanceIds": [
+        "mining-system-01",
+        "advanced-component-01"
+      ],
+      "evidenceRequirements": [
+        {
+          "type": "ANY",
+          "conditions": [
+            {
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "advanced-mining-technology-confirmed"
+            },
+            {
+              "type": "ASSET_CUSTODY",
+              "assetInstanceId": "advanced-component-01",
+              "equals": "CARRIED_OFFWORLD"
+            },
+            {
+              "type": "ASSET_CUSTODY",
+              "assetInstanceId": "advanced-component-01",
+              "equals": "RECOVERED_TO_SGC"
+            }
+          ]
+        }
+      ],
+      "question": "How does the advanced mining technology alter or increase Supply extraction?"
+    }
+  ],
+  "eventBindings": [
+    {
+      "bindingId": "guard-escape-alerts-mcguffin",
+      "eventArchetypeId": "event_guard_escaped",
+      "effects": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "mcguffin-01",
+          "field": "awareness",
+          "value": "ALERTED"
+        },
+        {
+          "type": "EMIT_EVENT",
+          "eventArchetypeId": "event_mcguffin_alerted"
+        }
+      ],
+      "once": true
+    },
+    {
+      "bindingId": "gunfire-can-alert-mcguffin",
+      "eventArchetypeId": "event_gunfire_occurred",
+      "conditions": [
+        {
+          "type": "EVENT_STAGE_IN",
+          "stageIds": [
+            "stage-security-hall",
+            "stage-overseer-office"
+          ]
+        }
+      ],
+      "effects": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "mcguffin-01",
+          "field": "awareness",
+          "value": "ALERTED"
+        },
+        {
+          "type": "EMIT_EVENT",
+          "eventArchetypeId": "event_mcguffin_alerted"
+        }
+      ],
+      "once": true
+    },
+    {
+      "bindingId": "mcguffin-starts-evidence-destruction",
+      "eventArchetypeId": "event_mcguffin_alerted",
+      "effects": [
+        {
+          "type": "SCHEDULE_EVENT",
+          "eventArchetypeId": "event_evidence_purge_started",
+          "delayMinutes": 3
+        }
+      ],
+      "once": true
+    },
+    {
+      "bindingId": "begin-evidence-purge",
+      "eventArchetypeId": "event_evidence_purge_started",
+      "effects": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "evidence-archive-01",
+          "field": "evidenceState",
+          "value": "PURGING"
+        },
+        {
+          "type": "SCHEDULE_EVENT",
+          "eventArchetypeId": "event_evidence_purge_completed",
+          "delayMinutes": 3
+        }
+      ],
+      "once": true,
+      "conditions": [
+        {
+          "type": "ASSET_CUSTODY",
+          "assetInstanceId": "evidence-archive-01",
+          "equals": "LOCAL"
+        }
+      ]
+    },
+    {
+      "bindingId": "complete-evidence-purge",
+      "eventArchetypeId": "event_evidence_purge_completed",
+      "conditions": [
+        {
+          "type": "INSTANCE_STATE",
+          "instanceId": "evidence-archive-01",
+          "field": "evidenceState",
+          "equals": "PURGING"
+        },
+        {
+          "type": "ASSET_CUSTODY",
+          "assetInstanceId": "evidence-archive-01",
+          "equals": "LOCAL"
+        }
+      ],
+      "effects": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "evidence-archive-01",
+          "field": "evidenceState",
+          "value": "DESTROYED"
+        }
+      ],
+      "once": true
+    }
+  ],
+  "scheduledEvents": [],
+  "startingKnowledge": [
+    "destination-is-small-supply-mining-operation",
+    "allied-operative-embedded-here",
+    "operative-communications-stopped",
+    "operative-transmitter-code-known"
+  ],
+  "probeIntel": {
+    "atmosphere": "SURVIVABLE",
+    "facilityDetected": true,
+    "signals": "INTERMITTENT",
+    "tags": []
+  },
+  "deployment": {
+    "mode": "EXTERNAL_BINDING",
+    "required": true,
+    "notes": "This benchmark mission JSON is fully finalized except for the actual player deployment. The simulator must bind the selected deployed Unit and Tool instances before runtime creation. Mission Reality and tuned encounter thresholds must not be regenerated when deployment is bound.",
+    "partyTools": [
+      {
+        "toolInstanceId": "mission-signal-receiver-01",
+        "toolId": "SIGNAL_RECEIVER"
+      }
+    ]
+  },
+  "auto": {
+    "defaultGatePolicy": "PLAYER_CHOICE",
+    "defaultWithdrawalPolicy": "PRIMARY_OBJECTIVE_AND_RISK_AWARE",
+    "movementHeuristics": {
+      "continueCurrentHeading": true,
+      "preferKnownObjectiveRoute": true,
+      "avoidImmediateBacktrack": true
+    },
+    "interactionHeuristics": {
+      "useMinimumSufficientActorTier": true,
+      "useMinimumSufficientToolService": true,
+      "doNotAttemptBlockedActions": true,
+      "doNotUseHiddenActions": true
+    }
+  },
+  "resultBindings": [
+    {
+      "bindingId": "operative-result",
+      "watch": {
+        "instanceId": "operative-01"
+      },
+      "emit": [
+        "PERSONNEL_CHANGE",
+        "OBJECTIVE_RESULT"
+      ]
+    },
+    {
+      "bindingId": "medical-result",
+      "watch": {
+        "incidentId": "incident-holding-medical"
+      },
+      "emit": [
+        "INCIDENT_AFTERMATH",
+        "KNOWLEDGE_DELTA"
+      ]
+    },
+    {
+      "bindingId": "mining-system-result",
+      "watch": {
+        "instanceId": "mining-system-01"
+      },
+      "emit": [
+        "DESTINATION_CHANGE",
+        "PERSISTENT_INSTANCE_CHANGE"
+      ]
+    },
+    {
+      "bindingId": "radiation-result",
+      "watch": {
+        "incidentId": "incident-processing-radiation"
+      },
+      "emit": [
+        "INCIDENT_AFTERMATH",
+        "DESTINATION_CHANGE"
+      ]
+    },
+    {
+      "bindingId": "mcguffin-result",
+      "watch": {
+        "instanceId": "mcguffin-01"
+      },
+      "emit": [
+        "PERSISTENT_INSTANCE_CHANGE",
+        "FACTION_CONSEQUENCE"
+      ]
+    },
+    {
+      "bindingId": "evidence-result",
+      "watch": {
+        "instanceId": "evidence-archive-01"
+      },
+      "emit": [
+        "KNOWLEDGE_DELTA",
+        "NEW_MISSION_SEED",
+        "NEW_ADDRESS_INFORMATION"
+      ]
+    },
+    {
+      "bindingId": "advanced-component-result",
+      "watch": {
+        "instanceId": "advanced-component-01"
+      },
+      "emit": [
+        "RECOVERED_ASSET",
+        "DISCOVERY"
+      ]
+    },
+    {
+      "bindingId": "supply-result",
+      "watch": {
+        "instanceId": "supply-cache-01"
+      },
+      "emit": [
+        "RESOURCE_CHANGE",
+        "RECOVERED_ASSET"
+      ]
+    }
+  ],
+  "debug": {
+    "allowRealityOverlay": true,
+    "allowHiddenObservationOverlay": true,
+    "allowEventInspection": true,
+    "allowStateCopy": true,
+    "allowResultLedgerCopy": true
+  },
+  "simulatorArtifact": {
+    "wave": 3,
+    "geometryChanges": [
+      "Security hall extended to (5,3).",
+      "Office access extended to (6,2)."
+    ],
+    "movementSeconds": 60,
+    "note": "Wave 3 prototype: Incidents, basic combat, authored escalation and objective execution.",
+    "redialSeconds": 180,
+    "assumptions": [
+      "Movement costs 60 simulated seconds per Stage transition.",
+      "Redial at the Gate takes 180 simulated seconds; no dialing interference modeled in Wave 1.",
+      "Time advances on actions and explicit waits, not while choosing.",
+      "Staffing tool codes are provisional generic Service identifiers outside Technician aliases; no specialist Services inferred.",
+      "Tools reserve charges while work is active and spend them only on commit; cancelled work spends no charge.",
+      "Specializations unlock a second eligible kit slot but grant no unimplemented specialist power.",
+      "Patient assessment/stabilization are bounded field actions, not an outbreak cure.",
+      "Passive non-consuming observations require undamaged instruments but do not consume action charges.",
+      "Provisional combat: each party member carries a basic ranged weapon separate from the two Profession Tool slots; 100 health, 18 damage per 30-second round. Guards have 45 health and deal 5 damage. Defeat leaves a downed person, not a death.",
+      "Combat requires explicit engagement; dormant guards remain a security threat. Disengagement preserves opponents and permits doorway retreat.",
+      "Patient 03 receives the same authored assessment/stabilization actions as the other patients. Holding and office guards receive explicit combat Incident records.",
+      "User-authorized provisional negotiation: Diplomat II can negotiate surrender without a Tool charge; Reynolds surrenders with his two guards, McGuffin surrenders individually. No faction rewards, hidden knowledge or automatic prisoner extraction.",
+      "User-authorized provisional terminal destruction: Technician I or Soldier I spends one Tool charge, disables power and leaves the entire terminal instance as recoverable WRECKAGE. No matter disappears and no separate resource yield is invented. Destroying the terminal does not erase or restore the separate evidence archive.",
+      "Campaign result bindings report actual state; faction rewards, address values and mission-lead payloads still require authored content.",
+      "Signal receiver is mission-issued party equipment, separate from Scout Tools and personal slots. It travels with the advancing party; local qualified Actors can use its SIGNAL_DIRECTION_FINDING Service. Passive observation is non-consuming.",
+      "User-restored SURRENDERED state distinguishes accepted surrender from combat incapacitation (DOWN). Soldier II intimidation uses a provisional demand-for-surrender outcome; Diplomat II negotiation handles surrender terms. Both apply only their explicitly authored participants. Restraint accepts DOWN or SURRENDERED.",
+      "User-requested interview utility: completing any authored interview prepares the team for this mission's surrender conversations, reducing negotiation/intimidation from 3 minutes to 1 without changing competency, equipment or target-state requirements.",
+      "User-requested recovery abstraction: discovered recoverable loot and secured people with known traversable Gate routes may be chosen at debrief without prior hauling. Unselected assets stay local; no carrying capacity is authored. Selected destinations await room admission.",
+      "Holding persuasion reveals two authored equipment crates containing the staffing-test rifles. Crate contents keep authored physical IDs and hidden Reality; revealing a crate grants no scientific Knowledge. Terminal hacking and destruction are alternative resolutions.",
+      "Source resolution for operative departure uses the existing Processing radiation source. Ordinary work is blocked by active hostiles; authored negotiation and intimidation remain available. Hidden rooms and dialogue rewards are authored simulator content."
+    ],
+    "combat": {
+      "partyHealth": 100,
+      "partyWeapon": {
+        "mode": "RANGED",
+        "damage": 18
+      }
+    }
+  }
+}

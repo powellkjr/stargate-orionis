@@ -1,0 +1,2607 @@
+{
+  "formatVersion": "0.1.0",
+  "status": "Wave 3: deterministic Incidents, combat, event bindings and objectives.",
+  "archetypes": {
+    "stage": {
+      "stage_gate_area": {
+        "defaults": {
+          "walkArea": {
+            "x": 0.15,
+            "y": 0.22,
+            "width": 0.7,
+            "height": 0.65
+          }
+        },
+        "tunableFields": {}
+      },
+      "stage_room_basic": {
+        "defaults": {
+          "walkArea": {
+            "x": 0.15,
+            "y": 0.22,
+            "width": 0.7,
+            "height": 0.65
+          }
+        },
+        "tunableFields": {}
+      },
+      "stage_hallway_basic": {
+        "defaults": {
+          "walkArea": {
+            "x": 0.15,
+            "y": 0.22,
+            "width": 0.7,
+            "height": 0.65
+          }
+        },
+        "tunableFields": {}
+      },
+      "stage_processing_room": {
+        "defaults": {
+          "walkArea": {
+            "x": 0.15,
+            "y": 0.22,
+            "width": 0.7,
+            "height": 0.65
+          }
+        },
+        "tunableFields": {}
+      },
+      "stage_security_room": {
+        "defaults": {
+          "walkArea": {
+            "x": 0.15,
+            "y": 0.22,
+            "width": 0.7,
+            "height": 0.65
+          }
+        },
+        "tunableFields": {}
+      },
+      "stage_medical_holding": {
+        "defaults": {
+          "walkArea": {
+            "x": 0.15,
+            "y": 0.22,
+            "width": 0.7,
+            "height": 0.65
+          }
+        },
+        "tunableFields": {}
+      }
+    },
+    "transition": {
+      "door_routine": {
+        "defaults": {
+          "initialState": "OPEN",
+          "routine": true
+        },
+        "tunableFields": {
+          "initialState": "string",
+          "routine": "boolean",
+          "requiredTechTier": "number",
+          "requiredToolService": "string",
+          "hackPerceptionThreshold": "number",
+          "destroyDifficulty": "number",
+          "codeState": "string"
+        }
+      },
+      "door_hackable_basic": {
+        "defaults": {
+          "initialState": "CLOSED",
+          "routine": false
+        },
+        "tunableFields": {
+          "initialState": "string",
+          "routine": "boolean",
+          "requiredTechTier": "number",
+          "requiredToolService": "string",
+          "hackPerceptionThreshold": "number",
+          "destroyDifficulty": "number",
+          "codeState": "string"
+        }
+      },
+      "door_restricted_basic": {
+        "defaults": {
+          "initialState": "CLOSED",
+          "routine": false
+        },
+        "tunableFields": {
+          "initialState": "string",
+          "routine": "boolean",
+          "requiredTechTier": "number",
+          "requiredToolService": "string",
+          "hackPerceptionThreshold": "number",
+          "destroyDifficulty": "number",
+          "codeState": "string"
+        }
+      }
+    },
+    "instance": {
+      "stargate_standard": {
+        "defaults": {
+          "visibleWhenPartial": true,
+          "playerLabel": "Stargate",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "npc_undercover_operative": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Injured person",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "npc_worker_basic": {
+        "defaults": {
+          "visibleWhenPartial": true,
+          "playerLabel": "Worker",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "npc_guard_poorly_trained": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "npc guard poorly trained",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "npc_security_supervisor": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Security supervisor",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "npc_overseer": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Overseer",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "npc_expert_medic_epidemiologist": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Medical worker",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "patient_outbreak_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "patient outbreak",
+          "mapGlyph": "PERSON",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "supply_storage_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "supply storage",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "advanced_mining_system": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Processing equipment",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "radiation_leak_source": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Equipment",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "security_terminal_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "security terminal",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "evidence_archive_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Archive",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "transmitter_beacon_personal": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "transmitter beacon personal",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "recoverable_advanced_component": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Component",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "medical_sample_source": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "medical sample source",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "supply_cache_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "supply cache",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "equipment_crate": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Equipment crate",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object",
+          "playerLabel": "string"
+        }
+      },
+      "hidden_evidence_archive_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Sealed intel package",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      },
+      "hidden_supply_cache_basic": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Supply crate",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialCondition": "string",
+          "mobility": "string",
+          "identityKnownAtStart": "boolean",
+          "transmitterCodeFact": "string",
+          "signalState": "string",
+          "boundPersonId": "string",
+          "relationshipState": "string",
+          "operational": "boolean",
+          "unstable": "boolean",
+          "powerFeedIsolated": "boolean",
+          "repairIncomplete": "boolean",
+          "expectedFacilityCapability": "string",
+          "active": "boolean",
+          "linkedSystemId": "string",
+          "stabilizedByState": "object",
+          "availableAfterState": "object",
+          "quantity": "number",
+          "name": "string",
+          "awareness": "string",
+          "destroyEvidenceBehavior": "boolean",
+          "powered": "boolean",
+          "locked": "boolean",
+          "evidenceState": "string",
+          "containsMissionLead": "boolean",
+          "containsAddressLead": "boolean",
+          "initialState": "object"
+        }
+      }
+    },
+    "observation": {
+      "obs_guard_discipline": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_recent_disturbance": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_transmitter_signal": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_patient_symptoms": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_outbreak_pattern": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_radiation_warning": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_machine_damage": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_nonstandard_technology": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_security_activity": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_evidence_purge_activity": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_route_or_patrol_pattern": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      },
+      "obs_instance_identity": {
+        "defaults": {
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "presentationType": "OBJECT_OUTLINE",
+          "implemented": true,
+          "visibleIn": [
+            "VISIBLE"
+          ],
+          "requiresKnowledge": [],
+          "revealsFacts": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "profession": "string",
+          "text": "string",
+          "revealsFacts": "array",
+          "requiresKnowledge": "array",
+          "targetDirection": "string",
+          "presentationType": "string",
+          "supportsObservationIds": "array",
+          "createsDiscoveryId": "string",
+          "revealsInteractionIds": "array",
+          "requiresState": "object",
+          "setsDetectionState": "object",
+          "visibleIn": "array",
+          "fromStageIds": "array",
+          "requiredToolService": "string"
+        }
+      }
+    },
+    "interactionTarget": {
+      "target_npc_standard": {
+        "defaults": {
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "implemented": true
+        },
+        "tunableFields": {}
+      },
+      "target_terminal_standard": {
+        "defaults": {
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "implemented": true
+        },
+        "tunableFields": {}
+      },
+      "target_machine_standard": {
+        "defaults": {
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "implemented": true
+        },
+        "tunableFields": {}
+      },
+      "target_patient_standard": {
+        "defaults": {
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "implemented": true
+        },
+        "tunableFields": {}
+      },
+      "target_recovery_standard": {
+        "defaults": {
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "implemented": true
+        },
+        "tunableFields": {}
+      },
+      "target_transition_standard": {
+        "defaults": {
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "implemented": true
+        },
+        "tunableFields": {}
+      }
+    },
+    "recipe": {
+      "recipe_question_npc": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "DIPLOMAT",
+          "actionType": "QUESTION",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "interviewed",
+              "value": true
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": [],
+          "outcomeText": "Interview notes gathered. Later negotiation or intimidation takes 1 simulated minute instead of 3. Required Profession tiers still apply."
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_negotiate_surrender": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "DIPLOMAT",
+          "actionType": "NEGOTIATE",
+          "chargeCost": 0,
+          "requiredToolService": null,
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": [],
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "combatState",
+              "value": "SURRENDERED"
+            }
+          ],
+          "outcomeText": "Negotiated surrender. Surrendered people are no longer active threats; restraint is a separate action.",
+          "durationModifiers": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "outcomeText": "string",
+          "durationModifiers": "array"
+        }
+      },
+      "recipe_stabilize_patient": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "MEDIC",
+          "actionType": "STABILIZE",
+          "requiredToolService": "MET1",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "condition",
+              "value": "STABILIZED"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_assess_patient": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "MEDIC",
+          "actionType": "INSPECT",
+          "requiredToolService": "MET1",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "assessed",
+              "value": true
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_collect_medical_sample": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "MEDIC",
+          "actionType": "SAMPLE",
+          "requiredToolService": "MET1",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "sampleCollected",
+              "value": true
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_inspect_machine": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "TECHNICIAN",
+          "actionType": "INSPECT",
+          "requiredToolService": "TECH_SERVICE_I",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "inspected",
+              "value": true
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_isolate_power_feed": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "TECHNICIAN",
+          "actionType": "REPAIR",
+          "requiredToolService": "TECH_SERVICE_II",
+          "chargeCost": 1,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_record_scientific_readings": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "SCIENTIST",
+          "actionType": "INSPECT",
+          "requiredToolService": "SCT1",
+          "chargeCost": 1,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_recover_component": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "TECHNICIAN",
+          "actionType": "COLLECT",
+          "requiredToolService": "TECH_SERVICE_II",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "CARRY_TARGET"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_hack_terminal": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "TECHNICIAN",
+          "actionType": "HACK",
+          "requiredToolService": "TECH_SERVICE_II",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "locked",
+              "value": false
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_destroy_terminal_tech": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "TECHNICIAN",
+          "actionType": "DESTROY",
+          "chargeCost": 1,
+          "requiredToolService": "TECH_SERVICE_I",
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": [],
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "powered",
+              "value": false
+            },
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "condition",
+              "value": "WRECKAGE"
+            }
+          ]
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_destroy_terminal_soldier": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "SOLDIER",
+          "actionType": "DESTROY",
+          "chargeCost": 1,
+          "requiredToolService": "SOT1",
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": [],
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "powered",
+              "value": false
+            },
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "condition",
+              "value": "WRECKAGE"
+            }
+          ]
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_enter_code": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "ENTER_CODE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "locked",
+              "value": false
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_collect_evidence": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "COLLECT",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "CARRY_TARGET"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_secure_stage": {
+        "defaults": {
+          "implemented": false,
+          "durationMinutes": 3,
+          "minimumTier": 1
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array"
+        }
+      },
+      "recipe_restrain_prisoner": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "SOLDIER",
+          "actionType": "SECURE",
+          "requiredToolService": "SOT1",
+          "chargeCost": 1,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "combatState",
+              "value": "CAPTURED"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_collect_supply": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "COLLECT",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "CARRY_TARGET"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_extract_person": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "SEND_TO_GATE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "SEND_TARGET_TO_GATE"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_hack_transition": {
+        "defaults": {
+          "implemented": true,
+          "profession": "TECHNICIAN",
+          "actionType": "HACK",
+          "minimumTier": 2,
+          "requiredToolService": "TECH_SERVICE_II",
+          "chargeCost": 1,
+          "durationMinutes": 3,
+          "effects": [
+            {
+              "type": "OPEN_TARGET_TRANSITION"
+            }
+          ],
+          "requiresKnowledge": [],
+          "minimumPerception": 0
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "minimumPerception": "number",
+          "requiredToolService": "string"
+        }
+      },
+      "recipe_recover_wreckage": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "RECOVER_WRECKAGE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "CARRY_TARGET"
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array"
+        }
+      },
+      "recipe_intimidate_surrender": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 2,
+          "profession": "SOLDIER",
+          "actionType": "INTIMIDATE",
+          "chargeCost": 0,
+          "requiredToolService": null,
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": [],
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "combatState",
+              "value": "SURRENDERED"
+            }
+          ],
+          "outcomeText": "The demand for surrender was accepted. No negotiated terms or faction agreement were created.",
+          "durationModifiers": []
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "outcomeText": "string",
+          "durationModifiers": "array"
+        }
+      },
+      "recipe_persuade_npc": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 3,
+          "minimumTier": 1,
+          "profession": "DIPLOMAT",
+          "actionType": "PERSUADE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [
+            {
+              "type": "SET_TARGET_STATE",
+              "field": "cacheRevealed",
+              "value": true
+            }
+          ],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": [],
+          "outcomeText": "The epidemiologist reveals an equipment crate in Holding."
+        },
+        "tunableFields": {
+          "minimumTier": "number",
+          "durationMinutes": "number",
+          "requiredToolService": "string",
+          "requiresLocated": "boolean",
+          "setsPartyEscort": "boolean",
+          "effects": "array",
+          "createsDiscoveryId": "string",
+          "requiresState": "object",
+          "requiresKnowledge": "array",
+          "chargeCost": "number",
+          "hiddenUntilKnowledge": "array",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_dialogue_small_talk": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 1,
+          "minimumTier": 1,
+          "profession": "DIPLOMAT",
+          "actionType": "SMALL_TALK",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "effects": "array",
+          "requiresState": "object",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_dialogue_inquire": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 1,
+          "minimumTier": 1,
+          "profession": "DIPLOMAT",
+          "actionType": "INQUIRE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "effects": "array",
+          "requiresState": "object",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_dialogue_collect_safe": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 1,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "COLLECT_SAFE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "effects": "array",
+          "requiresState": "object",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_dialogue_talk": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 1,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "TALK",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "effects": "array",
+          "requiresState": "object",
+          "outcomeText": "string"
+        }
+      },
+      "recipe_dialogue_enter_door_code": {
+        "defaults": {
+          "implemented": true,
+          "durationMinutes": 1,
+          "minimumTier": 0,
+          "profession": "UNTRAINED",
+          "actionType": "ENTER_DOOR_CODE",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {
+          "effects": "array",
+          "requiresState": "object",
+          "outcomeText": "string"
+        }
+      }
+    },
+    "incident": {
+      "incident_guard_combat_basic": {
+        "defaults": {
+          "implemented": true,
+          "kind": "COMBAT",
+          "roundSeconds": 30,
+          "hostileHealth": 45,
+          "hostileDamage": 5
+        },
+        "tunableFields": {
+          "participantIds": "array",
+          "initialState": "string",
+          "resolutionMode": "string",
+          "sourceInstanceId": "string",
+          "resolutionCondition": "object",
+          "allowSurrender": "boolean",
+          "allowRetreat": "boolean",
+          "onEscapeEvent": "string",
+          "activationMode": "string"
+        }
+      },
+      "incident_medical_deterioration": {
+        "defaults": {
+          "implemented": true,
+          "kind": "HAZARD"
+        },
+        "tunableFields": {
+          "participantIds": "array",
+          "initialState": "string",
+          "resolutionMode": "string",
+          "sourceInstanceId": "string",
+          "resolutionCondition": "object",
+          "allowSurrender": "boolean",
+          "allowRetreat": "boolean",
+          "onEscapeEvent": "string",
+          "activationMode": "string"
+        }
+      },
+      "incident_radiation_hazard": {
+        "defaults": {
+          "implemented": true,
+          "kind": "HAZARD"
+        },
+        "tunableFields": {
+          "participantIds": "array",
+          "initialState": "string",
+          "resolutionMode": "string",
+          "sourceInstanceId": "string",
+          "resolutionCondition": "object",
+          "allowSurrender": "boolean",
+          "allowRetreat": "boolean",
+          "onEscapeEvent": "string",
+          "activationMode": "string"
+        }
+      }
+    },
+    "event": {
+      "event_stage_entered": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_guard_escaped": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_gunfire_occurred": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_gate_closed": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_wormhole_expired": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_operative_located": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_mcguffin_alerted": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_evidence_purge_started": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_evidence_purge_completed": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_incident_resolved": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_objective_completed": {
+        "defaults": {},
+        "tunableFields": {}
+      }
+    }
+  },
+  "tools": {
+    "SOT1": {
+      "label": "Soldier Tools 1",
+      "providedServices": [
+        "SOT1"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SOT2": {
+      "label": "Soldier Tools 2",
+      "providedServices": [
+        "SOT1",
+        "SOT2"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SOT3": {
+      "label": "Soldier Tools 3",
+      "providedServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "STT1": {
+      "label": "Scout Tools 1",
+      "providedServices": [
+        "STT1"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "STT2": {
+      "label": "Scout Tools 2",
+      "providedServices": [
+        "STT1",
+        "STT2"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "STT3": {
+      "label": "Scout Tools 3",
+      "providedServices": [
+        "STT1",
+        "STT2",
+        "STT3"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TET1": {
+      "label": "Technician Tools 1",
+      "providedServices": [
+        "TET1",
+        "TECH_SERVICE_I"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TET2": {
+      "label": "Technician Tools 2",
+      "providedServices": [
+        "TET1",
+        "TET2",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TET3": {
+      "label": "Technician Tools 3",
+      "providedServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SCT1": {
+      "label": "Scientist Tools 1",
+      "providedServices": [
+        "SCT1"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SCT2": {
+      "label": "Scientist Tools 2",
+      "providedServices": [
+        "SCT1",
+        "SCT2"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SCT3": {
+      "label": "Scientist Tools 3",
+      "providedServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "MET1": {
+      "label": "Medic Tools 1",
+      "providedServices": [
+        "MET1"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "MET2": {
+      "label": "Medic Tools 2",
+      "providedServices": [
+        "MET1",
+        "MET2"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "MET3": {
+      "label": "Medic Tools 3",
+      "providedServices": [
+        "MET1",
+        "MET2",
+        "MET3"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "DIT1": {
+      "label": "Diplomat Tools 1",
+      "providedServices": [
+        "DIT1"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "DIT2": {
+      "label": "Diplomat Tools 2",
+      "providedServices": [
+        "DIT1",
+        "DIT2"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "DIT3": {
+      "label": "Diplomat Tools 3",
+      "providedServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "MKT1": {
+      "label": "Marksman Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "MKT2": {
+      "label": "Marksman Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "MKT3": {
+      "label": "Marksman Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "GUT1": {
+      "label": "Guardian Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "GUT2": {
+      "label": "Guardian Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "GUT3": {
+      "label": "Guardian Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TAT1": {
+      "label": "Tactician Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TAT2": {
+      "label": "Tactician Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TAT3": {
+      "label": "Tactician Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "PAT1": {
+      "label": "Pathfinder Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "PAT2": {
+      "label": "Pathfinder Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "PAT3": {
+      "label": "Pathfinder Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TRT1": {
+      "label": "Tracker Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TRT2": {
+      "label": "Tracker Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TRT3": {
+      "label": "Tracker Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OBT1": {
+      "label": "Observer Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OBT2": {
+      "label": "Observer Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OBT3": {
+      "label": "Observer Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "DET1": {
+      "label": "Demolitions Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "DET2": {
+      "label": "Demolitions Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "DET3": {
+      "label": "Demolitions Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "IGT1": {
+      "label": "Integrations Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "IGT2": {
+      "label": "Integrations Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "IGT3": {
+      "label": "Integrations Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OVT1": {
+      "label": "Overdrive Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OVT2": {
+      "label": "Overdrive Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OVT3": {
+      "label": "Overdrive Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "APT1": {
+      "label": "Applied Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "APT2": {
+      "label": "Applied Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "APT3": {
+      "label": "Applied Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OPT1": {
+      "label": "Operational Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OPT2": {
+      "label": "Operational Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "OPT3": {
+      "label": "Operational Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SGT1": {
+      "label": "Strategic Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SGT2": {
+      "label": "Strategic Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "SGT3": {
+      "label": "Strategic Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TUT1": {
+      "label": "Trauma Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TUT2": {
+      "label": "Trauma Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "TUT3": {
+      "label": "Trauma Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "FMT1": {
+      "label": "Field Medicine Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "FMT2": {
+      "label": "Field Medicine Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "FMT3": {
+      "label": "Field Medicine Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "EPT1": {
+      "label": "Epidemiology Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "EPT2": {
+      "label": "Epidemiology Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "EPT3": {
+      "label": "Epidemiology Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "NET1": {
+      "label": "Negotiator Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "NET2": {
+      "label": "Negotiator Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "NET3": {
+      "label": "Negotiator Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "AMT1": {
+      "label": "Ambassador Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "AMT2": {
+      "label": "Ambassador Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "AMT3": {
+      "label": "Ambassador Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "ART1": {
+      "label": "Arbiter Tools 1",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "ART2": {
+      "label": "Arbiter Tools 2",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    },
+    "ART3": {
+      "label": "Arbiter Tools 3",
+      "providedServices": [],
+      "note": "Staffing kit codes; generic curriculum capability only. Specialization Service mappings remain unauthored."
+    }
+  },
+  "partyTools": {
+    "SIGNAL_RECEIVER": {
+      "label": "Signal receiver",
+      "providedServices": [
+        "SIGNAL_DIRECTION_FINDING"
+      ],
+      "chargesRemaining": null,
+      "note": "Mission-issued party equipment. Passive direction finding does not consume charges."
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.personnel-panel.class-chip{display:flex;align-items:center;gap:12px;padding:10px;border-radius:12px;border:1px solid #ffffff24;background:#ffffff08;min-width:0}
+.personnel-panel .portrait{width:84px;height:112px;flex:0 0 84px;image-rendering:pixelated;background:#000}
+.personnel-panel .portrait svg{display:block;width:100%;height:100%}
+.personnel-panel .class-copy{min-width:0;overflow-wrap:anywhere}
+.personnel-panel .class-name{font-size:.82rem;font-weight:700}
+.personnel-panel .class-short{font-size:.72rem;color:#9bafb8}
+.personnel-panel .class-meta{font-size:.68rem;color:#9bafb8;margin-top:2px}
+.personnel-panel .personnel-favorite{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;cursor:pointer}
+.personnel-panel input[type=checkbox]{width:18px;height:18px;accent-color:#8ad1ba}

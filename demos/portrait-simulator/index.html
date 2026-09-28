@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portrait simulator for composable, code-native personnel pixel parts.">
+  <title>Stargate Portrait Simulator</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div>
+    <span class="eyebrow">STARGATE ORIONIS / PERSONNEL</span>
+    <h1>Portrait Simulator</h1>
+    <p class="muted">Composable pixel parts at a 48×64 bust scale. Appearance is presentation only: no competency, knowledge, or custody is encoded.</p>
+  </div>
+  <div class="header-actions">
+    <label class="seed">Seed<input id="seed" value="orionis-1"></label>
+    <button id="randomize">Randomize record</button>
+    <button id="reset">Reset record</button>
+  </div>
+</header>
+<p id="error" role="alert" hidden></p>
+<div class="app">
+  <aside class="left">
+    <h2>Part studies</h2>
+    <p class="muted">Authored part combinations from <code>shared/data/portraits/portrait-presets.json</code>. These are visual studies, not personnel records.</p>
+    <div id="studies" class="studies"></div>
+    <h2>Deployment roster</h2>
+    <p class="muted">The shared 54-person staffing roster. Select a person, edit the face, then save the appearance back to the shared presentation record.</p>
+    <div id="roster" class="roster"></div>
+  </aside>
+  <main>
+    <div class="stage-head">
+      <h2 id="studyLabel">Bust preview</h2>
+      <div class="scales" id="scales" role="group" aria-label="Preview scale"></div>
+    </div>
+    <div id="stage" class="stage" aria-live="polite"></div>
+    <div class="legend">
+      <label class="inline"><input type="checkbox" id="transparent"> Transparent background</label>
+      <span id="summary" class="muted"></span>
+    </div>
+    <details open><summary>Layer parts</summary>
+      <div id="layers" class="chips"></div>
+      <p class="muted">Layer visibility is a preview tool. Hidden parts stay in the record and in exported JSON.</p>
+    </details>
+    <details open><summary>Same record, other presentations</summary>
+      <p class="muted">One validated appearance record drives every presentation. The 48×48 roster icon and the overhead map token read the same colors and style keys; the icon supports a subset of the bust's parts and keeps its own backdrop.</p>
+      <div id="compat" class="compat"></div>
+    </details>
+  </main>
+  <aside class="right">
+    <h2>Parts</h2>
+    <div id="styleFields"></div>
+    <h2>Colors</h2>
+    <div id="colorFields"></div>
+    <h2>Appearance record</h2>
+    <div class="row"><button id="saveRoster">Save to shared roster</button><button id="copy">Copy JSON</button><button id="download">Download JSON</button></div>
+    <p id="saveStatus" class="muted" role="status">Select a shared roster member to edit their face.</p>
+    <label class="file">Load record<input id="load" type="file" accept="application/json,.json"></label>
+    <pre id="record"></pre>
+    <p id="groups" class="muted"></p>
+  </aside>
+</div>
+<footer>Serve the repository root with <code>python -m http.server 8000</code>, then open <code>/demos/portrait-simulator/</code>. Terminal authoring aid: <code>node demos/portrait-simulator/preview-ascii.mjs</code>.</footer>
+<script type="module" src="app.mjs"></script>
+</body>
+</html>

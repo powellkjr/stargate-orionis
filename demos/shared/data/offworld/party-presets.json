@@ -1,0 +1,131 @@
+{
+  "note": "First base personnel from staffing demo (same IDs/names); provisional editable mission stats, no specialization granted.",
+  "units": [
+    {
+      "unitId": "unit-1",
+      "name": "Brett Holt",
+      "profession": "SOLDIER",
+      "tier": 1,
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "color": "#d1495b",
+      "appearance": {
+        "faceStyle": "square",
+        "hairStyle": "crop",
+        "skinColor": "#ac785a",
+        "hairColor": "#342c30",
+        "uniformStyle": "field",
+        "uniformColor": "#3b4c57",
+        "collarStyle": "split",
+        "collarColor": "#d1495b"
+      },
+      "tools": []
+    },
+    {
+      "unitId": "unit-10",
+      "name": "Aspen Woodland",
+      "profession": "SCOUT",
+      "tier": 2,
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "color": "#2a9d8f",
+      "appearance": {
+        "faceStyle": "soft",
+        "hairStyle": "swept",
+        "skinColor": "#d4a282",
+        "hairColor": "#804f3b",
+        "uniformStyle": "field",
+        "uniformColor": "#3b4c57",
+        "collarStyle": "split",
+        "collarColor": "#2a9d8f"
+      },
+      "tools": []
+    },
+    {
+      "unitId": "unit-19",
+      "name": "Alfred Arkwright",
+      "profession": "TECHNICIAN",
+      "tier": 2,
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "color": "#f4a261",
+      "appearance": {
+        "faceStyle": "square",
+        "hairStyle": "crop",
+        "skinColor": "#c99b74",
+        "hairColor": "#292b32",
+        "uniformStyle": "field",
+        "uniformColor": "#3b4c57",
+        "collarStyle": "split",
+        "collarColor": "#f4a261"
+      },
+      "tools": []
+    },
+    {
+      "unitId": "unit-28",
+      "name": "Ambrose Ainsworth",
+      "profession": "SCIENTIST",
+      "tier": 1,
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "color": "#7b6ef6",
+      "appearance": {
+        "faceStyle": "soft",
+        "hairStyle": "bob",
+        "skinColor": "#9d6c51",
+        "hairColor": "#3a2a30",
+        "uniformStyle": "field",
+        "uniformColor": "#3b4c57",
+        "collarStyle": "split",
+        "collarColor": "#7b6ef6"
+      },
+      "tools": []
+    },
+    {
+      "unitId": "unit-37",
+      "name": "Abigail Anderson",
+      "profession": "MEDIC",
+      "tier": 2,
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "color": "#4cc9f0",
+      "appearance": {
+        "faceStyle": "square",
+        "hairStyle": "crop",
+        "skinColor": "#bc9874",
+        "hairColor": "#85847b",
+        "uniformStyle": "field",
+        "uniformColor": "#3b4c57",
+        "collarStyle": "split",
+        "collarColor": "#4cc9f0"
+      },
+      "tools": []
+    },
+    {
+      "unitId": "unit-46",
+      "name": "Anastasia Ashford",
+      "profession": "DIPLOMAT",
+      "tier": 1,
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "color": "#b8a14f",
+      "appearance": {
+        "faceStyle": "soft",
+        "hairStyle": "bob",
+        "skinColor": "#d2a187",
+        "hairColor": "#44312d",
+        "uniformStyle": "field",
+        "uniformColor": "#3b4c57",
+        "collarStyle": "split",
+        "collarColor": "#b8a14f"
+      },
+      "tools": []
+    }
+  ]
+}

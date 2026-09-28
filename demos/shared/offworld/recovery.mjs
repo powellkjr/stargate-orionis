@@ -1,0 +1,32 @@
+import {returnRoute} from './runtime.mjs?v=dialogue-doors-1';
+import {refreshCampaign} from './campaign.mjs?v=dialogue-doors-1';
+import {condition} from './field.mjs?v=dialogue-doors-1';
+export function lootEntries(m,s){
+  const byInstance=new Map();
+  for(const r of m.recipes){
+    const t=m.indexes.interactionTargets[r.targetId],d=m.indexes.instances[t.instanceId];
+    if(!d||d.mapGlyph==='PERSON'||!(r.effects??[]).some(e=>e.type==='CARRY_TARGET'))continue;
+    const state=s.instanceStates[d.instanceId],known=s.stageStates[d.stageId].explored||state.detectionState!=='HIDDEN'||state.custody!=='LOCAL';
+    if(!known||!condition(s,d.revealedWhen))continue;
+    const collected=['CARRIED_OFFWORLD','RECOVERED_TO_SGC'].includes(state.custody);
+    byInstance.set(d.instanceId,{instanceId:d.instanceId,label:d.playerLabel,stageId:d.stageId,quantity:d.quantity??1,cost:d.cargo?.reduce((sum,item)=>sum+item.custody.cost.extendedCost,0)??d.quantity??1,collected:collected||!!state.securedForExtraction,status:state.custody==='RECOVERED_TO_SGC'?'Recovered':!condition(s,r.requiresState)?'Blocked':state.securedForExtraction?'Secured':collected?'Collected':'Available',recipeId:r.recipeInstanceId});
+  }
+  return [...byInstance.values()];
+}
+export function debriefOptions(m,s){
+  return {loot:lootEntries(m,s).map(e=>({...e,eligible:e.status!=='Blocked'&&returnRoute(m,{...s,currentStageId:e.stageId})!==null,reason:e.status==='Blocked'?'Recovery requirements not met':returnRoute(m,{...s,currentStageId:e.stageId})===null?'No traversable route to Gate':null})),people:m.instances.filter(d=>d.mapGlyph==='PERSON'&&s.stageStates[d.stageId].explored&&['CAPTURED','SURRENDERED'].includes(s.instanceStates[d.instanceId].combatState)).map(d=>({instanceId:d.instanceId,label:d.playerLabel,stageId:d.stageId,state:s.instanceStates[d.instanceId].combatState,eligible:returnRoute(m,{...s,currentStageId:d.stageId})!==null,reason:returnRoute(m,{...s,currentStageId:d.stageId})===null?'No traversable route to Gate':null}))};
+}
+// Debrief recovery follows a valid known path to the Gate. Physical IDs persist.
+// Room destinations remain admission requests until room capacity is validated.
+export function finalizeDebrief(m,s,{holdingIds=[],receivingIds=[]}){
+  if(s.status!=='EXTRACTED')throw new Error('Extract before finalizing the debrief.');
+  if(s.debrief?.confirmed)throw new Error('This debrief has already been confirmed.');
+  const options=debriefOptions(m,s);
+  for(const [ids,rows] of [[holdingIds,options.people],[receivingIds,options.loot]])if(!Array.isArray(ids)||new Set(ids).size!==ids.length||ids.some(id=>!rows.some(row=>row.instanceId===id&&row.eligible)))throw new Error('Invalid debrief selection.');
+  const requests=[...holdingIds.map(instanceId=>({instanceId,destination:'HOLDING',status:'AWAITING_ADMISSION',cost:1})),...receivingIds.map(instanceId=>({instanceId,destination:'RECEIVING',status:'AWAITING_ADMISSION',cost:options.loot.find(e=>e.instanceId===instanceId).cost,cargo:structuredClone(m.indexes.instances[instanceId].cargo??[])}))];
+  for(const request of requests){const item=s.instanceStates[request.instanceId];item.custody='RECOVERED_TO_SGC';item.recoveryDestination=request.destination;if(request.destination==='HOLDING')item.partyStatus='EXTRACTED';s.resultEvents.push({type:'ASSET_RECOVERED',instanceId:request.instanceId,atSeconds:s.missionElapsedSeconds});}
+  refreshCampaign(m,s);
+  s.debrief={confirmed:true,holdingIds:[...holdingIds],receivingIds:[...receivingIds],requests};
+  s.resultEvents.push({type:'RECOVERY_PLAN_CONFIRMED',atSeconds:s.missionElapsedSeconds,requests:structuredClone(requests)});
+  return s.debrief;
+}

@@ -1,3 +1,6 @@
+import {loadBase,saveBase,validateBase,baseCapacity} from '../shared/js/base-configuration.mjs?v=save-response-1';
+let sharedBase=null;
+import {renderMapSurface} from '../shared/map/renderer.mjs?v=shared-map-1';
 import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-2";
 
 const COLS=12, ROWS=10;
@@ -686,6 +689,15 @@ function addContinuousDoors(element,doors,width,height){
   }
 }
 
+function appendRoomSurface(element,room,cells,joinedSides,selectedGroupRooms,destinationRooms){
+  element.classList.add('shared-surface-room');
+  const stroke=destinationRooms.has(room.instanceId)?'#f2c94c':room.instanceId===selectedId?'#ffffff':selectedGroupRooms.has(room.instanceId)?'#7dd3fc':CT_BORDER_COLORS[room.constructionTier];
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.classList.add('room-map-surface');svg.setAttribute('width','100%');svg.setAttribute('height','100%');
+  svg.innerHTML=renderMapSurface(cells,{cellSize:CELL,padding:PAD,joinedSides,fill:roomDef(room.roomId).color,stroke,strokeWidth:3,dashed:!!roomDef(room.roomId).joinGroup});
+  element.appendChild(svg);
+}
+
 function renderContinuousRoom(room,definition,selectedGroupRooms,destinationRooms){
   const element=document.createElement("div");
   element.className="room-cell continuous-room"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
@@ -695,6 +707,7 @@ function renderContinuousRoom(room,definition,selectedGroupRooms,destinationRoom
   element.style.height=`${room.height*CELL}px`;
   element.style.setProperty("--room-color",definition.color);
   element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
+  appendRoomSurface(element,room,Array.from({length:room.width*room.height},(_,i)=>({x:i%room.width,y:Math.floor(i/room.width)})),undefined,selectedGroupRooms,destinationRooms);
   const fill=document.createElement("div");
   fill.className="room-fill";
   Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`});
@@ -736,6 +749,8 @@ function addRoomNumber(element,room){
 }
 
 function render(){
+  if(sharedBase){const capacity=baseCapacity({...sharedBase,rooms:placed},catalog.map(d=>d.schema));document.getElementById('baseSummary').textContent=`Layout capacity: Holding ${capacity.HOLDING.free}/${capacity.HOLDING.total} free · Receiving ${capacity.RECEIVING.free}/${capacity.RECEIVING.total} free. Save to apply to Offworld.`;}
+
   syncGridScale();
   grid.replaceChildren();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
@@ -772,6 +787,7 @@ function render(){
       const joins=joinedSides(room,localCol,localRow),element=document.createElement("div");
       element.className="room-cell"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
       element.style.left=`${(room.col+localCol)*CELL}px`;element.style.top=`${(room.row+localRow)*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
+      appendRoomSurface(element,room,[{x:0,y:0}],()=>joins,selectedGroupRooms,destinationRooms);
       const fill=document.createElement("div");fill.className="room-fill";
       const top=joins.north?0:PAD,right=joins.east?0:PAD,bottom=joins.south?0:PAD,left=joins.west?0:PAD;
       Object.assign(fill.style,{top:`${top}px`,right:`${right}px`,bottom:`${bottom}px`,left:`${left}px`});
@@ -1036,8 +1052,15 @@ document.getElementById("jsonFile").addEventListener("change",async event=>{
   catch(error){setStatus(`Could not load JSON: ${error.message}`)}
 });
 
+function restoreBase(base){
+  validateBase(base,catalog.map(d=>d.schema));sharedBase=base;placed=structuredClone(base.rooms);groups=structuredClone(base.groups);if(base.baseMap?.length)baseMap=structuredClone(base.baseMap);
+  nextRoomId=Math.max(0,...placed.map(r=>Number(r.instanceId.slice(1))))+1;nextGroupId=Math.max(0,...groups.map(g=>Number(g.id.slice(1))))+1;selectedId=null;selectedGroupId=null;
+  render();const cap=baseCapacity(base,catalog.map(d=>d.schema));setStatus(`Shared base loaded: Holding ${cap.HOLDING.free}/${cap.HOLDING.total} free; Receiving ${cap.RECEIVING.free}/${cap.RECEIVING.total} free.`);
+}
+document.getElementById('saveBase').onclick=async()=>{try{sharedBase=await saveBase(validateBase({...sharedBase,rooms:placed,groups,baseMap},catalog.map(d=>d.schema)));setStatus('Shared base saved. Offworld uses these room capacities.');}catch(e){setStatus(e.message);}};
+document.getElementById('loadBase').onclick=async()=>{try{restoreBase(await loadBase());}catch(e){setStatus(e.message);}};
 async function initialize(){
-  try{const {rooms,tiles}=await refreshCatalogs();baseMap=emptyBaseMap();logAction(`Loaded ${rooms.length} rooms and ${tiles.length} base tile definitions from the shared catalogs.`);render();setStatus(`Loaded ${rooms.length} rooms and ${tiles.length} base tile definitions.`)}
+  try{const {rooms,tiles}=await refreshCatalogs();baseMap=emptyBaseMap();restoreBase(await loadBase());logAction(`Loaded ${rooms.length} rooms and ${tiles.length} base tile definitions from the shared catalogs.`);render();setStatus(`Loaded ${rooms.length} rooms and ${tiles.length} base tile definitions.`)}
   catch(error){roomSelect.disabled=true;ctSelect.disabled=true;placeButton.disabled=true;setStatus(`Could not load the shared room catalog: ${error.message}`)}
 }
 

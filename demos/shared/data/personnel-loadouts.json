@@ -1,0 +1,1115 @@
+{
+  "version": 1,
+  "units": {
+    "unit-1": {
+      "tier": 1,
+      "branch": null,
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT1",
+          "charges": 3
+        },
+        {
+          "kitId": "",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-2": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Marksman",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "MKT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-3": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Guardian",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "GUT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-4": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Tactician",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "TAT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-5": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "STT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-6": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "TET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-7": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SCT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-8": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 3
+        },
+        {
+          "kitId": "MET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-9": {
+      "tier": 3,
+      "perception": 9,
+      "stamina": 92,
+      "endurance": 8,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
+      "toolSlots": [
+        {
+          "kitId": "SOT3",
+          "charges": 9
+        },
+        {
+          "kitId": "DIT3",
+          "charges": 9
+        }
+      ]
+    },
+    "unit-10": {
+      "tier": 1,
+      "branch": null,
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT1",
+          "charges": 3
+        },
+        {
+          "kitId": "",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-11": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Pathfinder",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "PAT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-12": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Tracker",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "TRT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-13": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Observer",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "OBT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-14": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SOT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-15": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "TET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-16": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SCT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-17": {
+      "tier": 3,
+      "perception": 9,
+      "stamina": 90,
+      "endurance": 8,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 3
+      },
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 9
+        },
+        {
+          "kitId": "MET3",
+          "charges": 9
+        }
+      ]
+    },
+    "unit-18": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8,
+      "toolSlots": [
+        {
+          "kitId": "STT3",
+          "charges": 3
+        },
+        {
+          "kitId": "DIT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-19": {
+      "tier": 1,
+      "branch": null,
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET1",
+          "charges": 3
+        },
+        {
+          "kitId": "",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-20": {
+      "tier": 3,
+      "perception": 9,
+      "stamina": 84,
+      "endurance": 7,
+      "branch": {
+        "kind": "specialization",
+        "id": "Demolitions",
+        "tier": 3
+      },
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 9
+        },
+        {
+          "kitId": "DET3",
+          "charges": 9
+        }
+      ]
+    },
+    "unit-21": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Integrations",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "IGT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-22": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Overdrive",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "OVT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-23": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "SOT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-24": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "STT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-25": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "SCT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-26": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "MET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-27": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 1
+      },
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "TET3",
+          "charges": 3
+        },
+        {
+          "kitId": "DIT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-28": {
+      "tier": 1,
+      "branch": null,
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT1",
+          "charges": 3
+        },
+        {
+          "kitId": "",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-29": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Applied",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "APT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-30": {
+      "tier": 3,
+      "perception": 9,
+      "stamina": 78,
+      "endurance": 6,
+      "branch": {
+        "kind": "specialization",
+        "id": "Operational",
+        "tier": 3
+      },
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 9
+        },
+        {
+          "kitId": "OPT3",
+          "charges": 9
+        }
+      ]
+    },
+    "unit-31": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Strategic",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SGT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-32": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SOT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-33": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "STT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-34": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "TET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-35": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "MET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-36": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 1
+      },
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "SCT3",
+          "charges": 3
+        },
+        {
+          "kitId": "DIT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-37": {
+      "tier": 1,
+      "branch": null,
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET1",
+          "charges": 3
+        },
+        {
+          "kitId": "",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-38": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Trauma",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "TUT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-39": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Field Medicine",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "FMT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-40": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Epidemiology",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "EPT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-41": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "SOT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-42": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "STT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-43": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "TET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-44": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "SCT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-45": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 1
+      },
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7,
+      "toolSlots": [
+        {
+          "kitId": "MET3",
+          "charges": 3
+        },
+        {
+          "kitId": "DIT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-46": {
+      "tier": 1,
+      "branch": null,
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT1",
+          "charges": 3
+        },
+        {
+          "kitId": "",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-47": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Negotiator",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "NET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-48": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Ambassador",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "AMT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-49": {
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Arbiter",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "ART1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-50": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SOT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-51": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "STT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-52": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "TET1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-53": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "SCT1",
+          "charges": 3
+        }
+      ]
+    },
+    "unit-54": {
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 1
+      },
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6,
+      "toolSlots": [
+        {
+          "kitId": "DIT3",
+          "charges": 3
+        },
+        {
+          "kitId": "MET1",
+          "charges": 3
+        }
+      ]
+    }
+  }
+}
