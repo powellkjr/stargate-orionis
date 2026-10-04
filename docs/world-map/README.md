@@ -7,6 +7,7 @@ The World Map Simulator is a standalone prototype specification. It evaluates se
 ## Documents
 
 - [Design/demo consistency audit](../design-consistency-audit.md) — settled rules and remaining alignment checklist.
+- [Campaign context reconciliation](../campaign-context-reconciliation.md) — incoming endgame concepts, repository resolutions and open decision checklist.
 
 - [World Map Simulator v1](world-map-simulator-v1.md)
 - [Unique glyph address encoding](unique-glyph-address-encoding.md)
@@ -21,4 +22,4 @@ The v1 specification includes a supplement covering Haven population, P-scale ca
 
 The simulator document defines provisional implementation conventions for geometry experiments, including its generated address grammar, routing graph, hop-limit analysis, and God View/SGC View separation. Production-game address presentation, Haven rules, mission systems, and economy systems remain governed by their existing documentation until explicitly revised.
 
-The implemented demo keeps faction identity and routing state visually separate: faction colors are marker fills, while reachability is shown by an independent ring. `requires staging` uses an orange dashed ring so it cannot be confused with the Concord faction color (currently labeled Moy'na in the demo).
+The implemented demo keeps faction identity and routing state visually separate: faction colors are marker fills, while reachability is shown by an independent ring. `requires staging` uses an orange dashed ring so it cannot be confused with the Concord faction color. The demo displays Concord while retaining legacy faction keys; Moy'na remains the species name.

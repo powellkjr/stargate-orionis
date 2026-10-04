@@ -1,5 +1,25 @@
 # Design / Demo Consistency Audit
 
+See [Historical context reconciliation](historical-context-reconciliation.md)
+for the 27-section older-context checklist, superseded terminology, preserved
+specialization story rationale, and deferred conflicts. It does not restore
+historical staffing numbers, level gates, or unfinished campaign mechanics.
+
+Latest campaign update: see the [nine-ending reconciliation](faction-campaign-nine-endings-reconciliation.md)
+for Promise/Chorus/Vigil, Emergence/Resurgence/Convergence and Choice/Logistics/Protection.
+All nine must be genuine viable victories; cross-faction cooperation improves them
+rather than making false paths valid. Existing threat questions remain deferred;
+late-game faction opposition is intentionally not inferred.
+
+See also [Campaign context reconciliation](campaign-context-reconciliation.md)
+for confirmed campaign/endgame direction, retained proposals, resolved repository
+conflicts, and the remaining authoring checklist. Exactly nine endings and
+historical-only Ancients are confirmed; detailed endgame mechanics remain open.
+
+See [Central threat reconciliation](central-threat-reconciliation.md) for the
+biological-civilization handoff, repository-preferred conflict resolutions, and
+open ecology/Gate/endgame decisions. The complete threat design is not locked.
+
 This is a consistency pass, not a numeric balance revision. Latest explicit
 design decisions govern the labels and branch rules below. Detailed base
 Profession curricula and the Haven population/economy specification retain
