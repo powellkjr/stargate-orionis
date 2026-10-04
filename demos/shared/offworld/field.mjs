@@ -1,7 +1,9 @@
+import {incidentKind} from './campaign.mjs?v=dialogue-doors-1';
 import {returnRoute} from './runtime.mjs?v=dialogue-doors-1';
 import {availableTools,toolReserved,resolvedWorkTool} from './party-tools.mjs?v=dialogue-doors-1';
-import {clone} from './mission.mjs?v=dialogue-doors-1';
+import {clone,fieldStateEffects} from './mission.mjs?v=dialogue-doors-1';
 import {professionTier} from './equipment.mjs?v=dialogue-doors-1';
+import {initializeNpc,npcHostile,npcConfronting,npcCondition,npcEffectTypes,applyNpcEffect} from './npc.mjs?v=dialogue-doors-1';
 const running=w=>['MOVING_TO_TARGET','EXECUTING'].includes(w.status);
 export const activeWork=s=>s.activeWork.filter(running);
 export const movementWork=s=>activeWork(s).filter(w=>s.units.find(u=>u.unitId===w.actorId)?.partyStatus==='ACTIVE_PARTY'||w.toolSource==='PARTY');
@@ -10,6 +12,7 @@ const knows=(s,f)=>s.knowledgeState.starting.includes(f)||s.knowledgeState.gaine
 const stamp=(s,type,data)=>s.resultEvents.push({type,...data,atSeconds:s.missionElapsedSeconds});
 export function condition(s,c){
   if(!c)return true;
+  if(c.type==='NPC_STATE')return npcCondition(s,c);
   if(c.type==='INCIDENT_STATE')return s.incidentStates?.[c.incidentId]?.state===c.equals;
   if(c.type==='ANY')return c.conditions.some(v=>condition(s,v));
   if(c.type==='ALL')return c.conditions.every(v=>condition(s,v));
@@ -24,8 +27,8 @@ function addDiscovery(m,s,id){
   if(d&&!s.discoveries.some(x=>x.discoveryId===id)&&(d.evidenceRequirements??[]).every(c=>condition(s,c))){s.discoveries.push(clone(d));stamp(s,'DISCOVERY_CREATED',{discoveryId:id});}
 }
 export function initializeField(m,s){
-  s.activeWork=[];s.observationStates={};s.interactionStates={};s.discoveries=[];s.carriedAssets=[];
-  for(const d of m.instances)Object.assign(s.instanceStates[d.instanceId],clone(d.initialState??{}));
+  s.activeWork=[];s.observationStates={};s.interactionStates={};s.discoveries=[];s.carriedAssets=[];s.partyStorage=[];
+  for(const d of m.instances){Object.assign(s.instanceStates[d.instanceId],clone(d.initialState??{}));initializeNpc(d,s.instanceStates[d.instanceId]);}
   for(const o of m.observations)s.observationStates[o.observationId]={status:'HIDDEN',observedByUnitId:null};
   refreshField(m,s);
 }
@@ -59,7 +62,7 @@ export function refreshField(m,s){
     if(stage.stageId!==s.currentStageId)continue;
     const rules=stage.securityConditions;if(!rules)continue;
     const hazards=m.incidents.some(i=>i.stageId===stage.stageId&&(s.incidentStates?.[i.incidentId]?.state??i.initialState)==='ACTIVE');
-    const hostiles=m.instances.some(i=>i.stageId===stage.stageId&&s.instanceStates[i.instanceId]&&['ACTIVE'].includes(s.instanceStates[i.instanceId]?.combatState));
+    const hostiles=roomHasHostiles(m,s,stage.stageId)||roomHasConfrontation(m,s,stage.stageId);
     s.stageStates[stage.stageId].securityState=(!rules.noActiveIncidents||!hazards)&&(!rules.noActiveHostiles||!hostiles)?'SECURE':'UNSECURE';
   }
 }
@@ -67,12 +70,24 @@ export function targetLocal(m,s,t){
   if(t.transitionId){const edge=m.indexes.transitions[t.transitionId];return edge.fromStageId===s.currentStageId||edge.toStageId===s.currentStageId;}
   return t.stageId===s.currentStageId&&condition(s,m.indexes.instances[t.instanceId]?.revealedWhen)&&s.instanceStates[t.instanceId].custody==='LOCAL';
 }
-export const roomHasHostiles=(m,s,stage=s.currentStageId)=>m.instances.some(i=>i.stageId===stage&&s.instanceStates[i.instanceId]?.combatState==='ACTIVE');
+export const roomHasHostiles=(m,s,stage=s.currentStageId)=>m.instances.some(i=>i.stageId===stage&&npcHostile(s.instanceStates[i.instanceId]));
+export const roomHasConfrontation=(m,s,stage=s.currentStageId)=>m.instances.some(i=>i.stageId===stage&&npcConfronting(s.instanceStates[i.instanceId]));
+// Context admission precedes Actor/Tool/Knowledge eligibility and never mutates state.
+export function recipeAdmission(m,s,r){
+  const context=r.availabilityContext;
+  if(context?.requiresSecureStage&&s.stageStates[s.currentStageId]?.securityState!=='SECURE')return false;
+  const kinds=new Set(m.incidents.filter(i=>i.stageId===s.currentStageId&&s.incidentStates?.[i.incidentId]?.state==='ACTIVE').map(i=>incidentKind(i,s)));
+  // Legacy fixtures can have active hostile instances before their Combat Incident starts.
+  if(roomHasHostiles(m,s))kinds.add('COMBAT');
+  if(roomHasConfrontation(m,s))kinds.add('CONFRONTATION');
+  if(!context)return (!kinds.has('COMBAT')&&!kinds.has('CONFRONTATION'))||r.allowHostiles===true;
+  return kinds.size?[...kinds].every(kind=>(context.activeIncidentKinds??[]).includes(kind)):context.normal!==false;
+}
 export function recipeEligibility(m,s,r,actorId=null){
   const t=m.indexes.interactionTargets[r.targetId];
   const result=(status,blocker,candidates=[])=>({status,blocker,candidates});
   if(!targetLocal(m,s,t)||(r.hiddenUntilKnowledge??[]).some(f=>!knows(s,f)))return result('HIDDEN',null);
-  if(roomHasHostiles(m,s)&&!r.allowHostiles)return result('BLOCKED','HOSTILES_PRESENT');
+  if(!recipeAdmission(m,s,r))return result('HIDDEN',null);
   if(r.requiresGateRoute&&returnRoute(m,s)===null)return result('BLOCKED','NO_GATE_ROUTE');
   if(!r.implemented)return result('BLOCKED','AUTHORED_OUTCOME_REQUIRED');
   if(s.interactionStates[r.recipeInstanceId]==='COMPLETED')return result('COMPLETED',null);
@@ -105,6 +120,7 @@ export function recipeEligibility(m,s,r,actorId=null){
 }
 export function executionProfile(s,r){const modifier=(r.durationModifiers??[]).find(mod=>condition(s,mod.when));return {durationMinutes:modifier?.durationMinutes??r.durationMinutes,preparation:modifier?.label??null};}
 export function startWork(m,s,recipeId,actorId){
+  if(s.dialogue)throw new Error('Resolve the conversation before starting work.');
   const r=m.indexes.recipes[recipeId];if(!r)throw new Error('Unknown Recipe.');
   const e=recipeEligibility(m,s,r,actorId);if(e.status!=='AVAILABLE')throw new Error(e.blocker??e.status);
   const candidate=e.candidates[0],actor=s.units.find(u=>u.unitId===candidate.actorId);
@@ -121,7 +137,19 @@ function applyEffects(m,s,r,t){
   for(const effect of r.effects??[]){
     const e=effect;
     if(e.when&&!condition(s,e.when))continue;
-    if(e.type==='SET_TARGET_STATE'||e.type==='SET_INSTANCE_STATE'){
+    if(npcEffectTypes.includes(e.type))applyNpcEffect(s,e);
+    else if(e.type==='ADD_TO_PARTY_STORAGE'){
+      const definition=m.indexes.instances[e.instanceId],instance=s.instanceStates[e.instanceId];
+      if(!['PARTY_STORAGE','PARTY_STORAGE_WHEN_COLLECTED'].includes(definition?.recovery?.category)||definition.stageId!==s.currentStageId||!instance||instance.custody!=='LOCAL'||s.partyStorage.includes(e.instanceId))throw new Error('Portable asset is not available locally.');
+      instance.custody='PARTY_STORAGE';s.partyStorage.push(e.instanceId);
+      stamp(s,'ASSET_COLLECTED',{instanceId:e.instanceId});
+    }
+    else if(Object.hasOwn(fieldStateEffects,e.type)){
+      const spec=fieldStateEffects[e.type],instance=s.instanceStates[e.instanceId];
+      if(!instance||!spec.values.includes(e.value))throw new Error('Invalid authored field state effect.');
+      instance[spec.field]=e.value;stamp(s,'INSTANCE_CHANGED',{instanceId:e.instanceId,field:spec.field,value:e.value});
+    }
+    else if(e.type==='SET_TARGET_STATE'||e.type==='SET_INSTANCE_STATE'){
       const id=e.type==='SET_TARGET_STATE'?t.instanceId:e.instanceId;
       if(!s.instanceStates[id]||!e.field||['__proto__','constructor','prototype'].includes(e.field))throw new Error('Invalid authored state effect.');
       s.instanceStates[id][e.field]=clone(e.value);stamp(s,'INSTANCE_CHANGED',{instanceId:id,field:e.field,value:e.value});
@@ -147,12 +175,12 @@ export function tickWork(m,s,seconds){
     if(w.elapsedSeconds<w.durationSeconds)continue;
     const r=m.indexes.recipes[w.recipeId],t=m.indexes.interactionTargets[r.targetId];
     try{
-      if((roomHasHostiles(m,s,w.stageId)&&!r.allowHostiles)||actor.currentStageId!==w.stageId||actor.activityState==='DOWN'||!['ACTIVE_PARTY','STATIONED'].includes(actor.partyStatus)||professionTier(actor,r.profession)<r.minimumTier||!targetLocal(m,{...s,currentStageId:w.stageId},t)||!condition(s,r.requiresState)||(r.requiresKnowledge??[]).some(f=>!knows(s,f)))throw new Error('Work requirements changed.');
+      if(!recipeAdmission(m,{...s,currentStageId:w.stageId},r)||actor.currentStageId!==w.stageId||actor.activityState==='DOWN'||!['ACTIVE_PARTY','STATIONED'].includes(actor.partyStatus)||professionTier(actor,r.profession)<r.minimumTier||!targetLocal(m,{...s,currentStageId:w.stageId},t)||!condition(s,r.requiresState)||(r.requiresKnowledge??[]).some(f=>!knows(s,f)))throw new Error('Work requirements changed.');
       const tool=resolvedWorkTool(s,actor,w);
       if(w.toolInstanceId&&(!tool||tool.damaged||(tool.chargesRemaining!==null&&tool.chargesRemaining<w.chargeCost)||!tool.providedServices.includes(r.requiredToolService)))throw new Error('Reserved Tool unavailable.');
       const eventStart=s.resultEvents.length,draft=clone(s);applyEffects(m,draft,r,t);
       // Commit only the validated transaction. Work/Actor identities never transfer.
-      for(const key of ['instanceStates','transitionStates','carriedAssets','discoveries','resultEvents','knowledgeState'])s[key]=draft[key];
+      for(const key of ['instanceStates','transitionStates','carriedAssets','partyStorage','discoveries','resultEvents','knowledgeState'])s[key]=draft[key];
       if(tool&&tool.chargesRemaining!==null)tool.chargesRemaining-=w.chargeCost;
       s.interactionStates[w.recipeId]='COMPLETED';w.status='COMPLETED';
       w.completedAt=s.missionElapsedSeconds;w.outcome={text:r.outcomeText??null,changes:clone(s.resultEvents.slice(eventStart)),chargesSpent:tool&&tool.chargesRemaining!==null?w.chargeCost:0};
@@ -164,6 +192,7 @@ export function tickWork(m,s,seconds){
   refreshField(m,s);
 }
 export function stationUnit(m,s,id){
+  if(s.dialogue)throw new Error('Resolve the conversation before stationing Units.');
   const u=s.units.find(u=>u.unitId===id);
   if(!u||s.status!=='ACTIVE'||s.gateState.choicePending||u.currentStageId!==s.currentStageId||s.stageStates[s.currentStageId].securityState!=='SECURE'||activeWork(s).some(w=>w.actorId===id))throw new Error('Stationing requires an idle local Unit in a secure Stage.');
   if(u.partyStatus==='ACTIVE_PARTY'){

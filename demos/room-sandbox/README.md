@@ -37,10 +37,13 @@ Browser prototype for testing Stargate base room footprints.
 
 The sandbox uses an ES module and loads the shared room catalog with `fetch`, so
 opening `index.html` directly from the filesystem will not work. Serve the
-repository root with a simple web server instead:
+repository root with the shared writable demo server instead:
 
-`python -m http.server 8000`
+`node demos/serve.mjs`
 
 Then open:
 
-`http://localhost:8000/demos/room-sandbox/`
+`http://127.0.0.1:8001/demos/room-sandbox/`
+
+All demos are available at `/demos/` on this server. **Save shared base** writes
+validated JSON locally. See `../README.md` for custom ports and static-hosting limits.

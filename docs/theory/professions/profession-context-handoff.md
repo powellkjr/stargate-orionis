@@ -144,6 +144,7 @@ Profession A output
 
 ## Authority Pointers
 
+- Use the [Specializations and Haven Context Handoff](specializations-and-haven-context-handoff.md) for specialization labels, faction/local Haven context and design status; unresolved decisions are tracked in its [checklist](specializations-and-haven-decisions.md). It does not replace detailed curricula.
 - Start with this document for normal Profession context.
 - Use [Profession boundaries](./profession-boundaries.md) when a cross-Profession ownership question is not resolved by the pairwise summaries above.
 - Use an individual curriculum only when exact competencies, tier limits, certifications, tools, Services, or field guidance matter.

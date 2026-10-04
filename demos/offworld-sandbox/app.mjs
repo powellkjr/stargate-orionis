@@ -1,4 +1,11 @@
+import {incidentKind} from '../shared/offworld/campaign.mjs?v=dialogue-doors-1';
 import {baseCapacity,loadBase,saveBase,reserveRecovery} from '../shared/js/base-configuration.mjs?v=dialogue-doors-1';
+import {combatPacer,damageFeedback} from './combat-feedback.mjs';
+import {npcDetailsHtml} from './npc-presentation.mjs';
+import {dialogueEligibility,startDialogue,respondDialogue,continueDialogue,refreshDialogue} from '../shared/offworld/dialogue.mjs';
+import {conversationHtml} from './conversation.mjs';
+let selectedNpc=null;
+const paceCombat=combatPacer(),damageFrames=damageFeedback();
 import {recipeChoices,recipeAlternatives} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
 let baseConfig,roomSchemas;
 import {finalizeDebrief} from '../shared/offworld/recovery.mjs?v=dialogue-doors-1';
@@ -21,7 +28,7 @@ let camera={x:0,y:0,w:700,h:550},dragged=false;
 const pointers=new Map();let gesture;
 const load=async path=>{const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(`Could not load ${path}: ${response.status}`);return response.json();};
 function error(e){$('error').textContent=e.message??String(e);$('error').hidden=false;}
-function guard(fn){return async(...args)=>{if($('error'))$('error').hidden=true;try{return await fn(...args);}catch(e){error(e);}};}
+function guard(fn){return async(...args)=>{if(state?.dialogue&&args[0]?.target&&!args[0].target.closest('#conversation')&&!['resetButton','setupButton','designerButton','closeDesigner'].includes(args[0].target.id))return;if($('error'))$('error').hidden=true;try{return await fn(...args);}catch(e){error(e);}};}
 function renderSetup(){
   $('briefing').textContent=definition.mission.briefing.playerText;document.querySelector('h1').textContent=definition.mission.title;
   $('deploymentTools').innerHTML=partyToolPanel(definition.partyTools);
@@ -37,17 +44,26 @@ function focus(){
   camera={x:cx-h*aspect/2,y:cy-h/2,w:h*aspect,h};applyCamera();drawMap();
 }
 function zoom(f){const w=Math.max(180,Math.min(1800,camera.w*f));f=w/camera.w;camera.x+=(camera.w-w)/2;camera.y+=(camera.h-camera.h*f)/2;camera.w=w;camera.h*=f;applyCamera();if(!pointers.size)drawMap();}
-function drawMap(){if(!state||pointers.size)return;$('map').innerHTML=renderMap(definition,state,Math.max(13,26*camera.w/Math.max(1,$('map').clientWidth)),!busy);applyCamera();}
+function drawMap(){if(!state||pointers.size)return;const focused=document.activeElement?.dataset?.npc;$('map').innerHTML=renderMap(definition,state,Math.max(13,26*camera.w/Math.max(1,$('map').clientWidth)),!busy,damageFrames(state,performance.now()));if(focused)[...$('map').querySelectorAll('[data-npc]')].find(n=>n.dataset.npc===focused)?.focus({preventScroll:true});applyCamera();}
+function renderNpcDetails(){
+  const html=selectedNpc&&state?npcDetailsHtml(definition,state,selectedNpc):'';
+  $('npcDetails').hidden=!html;
+  if($('npcDetails').innerHTML!==html)$('npcDetails').innerHTML=html;
+  if(!html)selectedNpc=null;
+}
 function visibleObservations(){return definition.observations.filter(o=>state.observationStates[o.observationId].status==='PRESENTED'&&(o.stageId===state.currentStageId||(o.fromStageIds??[]).includes(state.currentStageId)));}
 function recipeButton(r){const e=recipeEligibility(definition,state,r);if(e.status==='HIDDEN'||e.status==='COMPLETED'||e.blocker==='INVALID_TARGET_STATE')return '';return `<button data-recipe="${esc(r.recipeInstanceId)}" class="recipe-button" style="--profession:${colors[r.profession]??'#879b9b'}" aria-disabled="${e.status!=='AVAILABLE'}"><b>${icons[r.actionType]??'…'} ${esc(title(r.actionType??r.archetypeId.replace('recipe_','').replaceAll('_',' ')))}</b><small>${esc(r.profession??'Deferred')} ${r.minimumTier??''} · ${esc(e.blocker??e.status)}</small></button>`;}
 function renderContext(){
+  renderNpcDetails();
   const stage=definition.indexes.stages[state.currentStageId],st=state.stageStates[state.currentStageId];
-  $('context').innerHTML=definition.incidents.filter(i=>i.stageId===state.currentStageId).map(i=>{const st=state.incidentStates[i.incidentId];return `<section class="incident-card"><strong>${esc(title(i.incidentId.replace('incident-','')))}</strong><p>${esc(st.state)}${i.kind==='COMBAT'?` · round ${st.round}`:''}</p>${i.kind==='COMBAT'&&st.state==='DORMANT'?`<button data-engage="${i.incidentId}">Engage hostiles</button>`:''}${i.kind==='COMBAT'&&st.state==='ACTIVE'&&i.allowRetreat?`<button data-retreat="${i.incidentId}">Disengage</button>`:''}${i.kind==='COMBAT'?i.participantIds.map(id=>`<small>${esc(definition.indexes.instances[id].playerLabel)} · ${esc(state.instanceStates[id].combatState)}</small>`).join('<br>'):''}</section>`;}).join('')+`<p>${esc(title(stage.stageId))}<br><small>${st.visibility} · ${st.securityState}</small></p>`+
+  $('context').innerHTML=definition.incidents.filter(i=>i.stageId===state.currentStageId).map(i=>{const st=state.incidentStates[i.incidentId];return `<section class="incident-card"><strong>${esc(title(i.incidentId.replace('incident-','')))}</strong><p>${esc(st.state)}${incidentKind(i,state)==='COMBAT'?` · round ${st.round}`:''}</p>${incidentKind(i,state)==='COMBAT'&&st.state==='DORMANT'?`<button data-engage="${i.incidentId}">Engage hostiles</button>`:''}${incidentKind(i,state)==='COMBAT'&&st.state==='ACTIVE'&&i.allowRetreat?`<button data-retreat="${i.incidentId}">Disengage</button>`:''}${incidentKind(i,state)==='COMBAT'?i.participantIds.map(id=>`<small>${esc(definition.indexes.instances[id].playerLabel)} · ${esc(state.instanceStates[id].combatState)}</small>`).join('<br>'):''}</section>`;}).join('')+`<p>${esc(title(stage.stageId))}<br><small>${st.visibility} · ${st.securityState}</small></p>`+
     visibleObservations().map(o=>`<button class="observation-card" data-observation="${esc(o.observationId)}" style="--profession:${colors[o.profession]}"><small>${esc(o.profession)} OBSERVATION</small>${esc(o.text)}</button>`).join('')+
     definition.interactionTargets.filter(t=>targetLocal(definition,state,t)).map(t=>{
       const recipes=t.recipeInstanceIds.map(id=>definition.indexes.recipes[id]).filter(r=>recipeEligibility(definition,state,r).status!=='HIDDEN');
       if(!recipes.length)return '';return `<section class="target-actions"><h3>${esc(t.transitionId?'Door controls':definition.indexes.instances[t.instanceId].playerLabel)}</h3>${recipeChoices(definition,state,recipes).map(recipeButton).join('')}</section>`;
     }).join('')+`<p class="muted">${exits(definition,state).map(e=>`${e.direction}: ${e.state==='LOCKED'?'locked':e.state==='CLOSED'?'closed routine door':'open passage'}`).join('<br>')}</p>`;
+  const scenes=(definition.dialogueScenes??[]).filter(scene=>dialogueEligibility(definition,state,scene));
+  if(scenes.length)$('context').innerHTML+=`<label>Conversation speaker<select id="dialogueActor">${state.units.filter(u=>u.currentStageId===state.currentStageId&&u.partyStatus==='ACTIVE_PARTY'&&u.activityState==='IDLE').map(u=>`<option value="${esc(u.unitId)}">${esc(u.name)} · ${esc(u.profession)}</option>`).join('')}</select></label>`+scenes.map(scene=>`<button data-dialogue-start="${esc(scene.dialogueSceneId)}">Talk · ${esc(definition.indexes.instances[Object.values(scene.participants).find(id=>id!=='ACTIVE_SGC_SPEAKER')]?.playerLabel??'Conversation')}</button>`).join('');
 }
 function renderDebug(){
   if(!definition)return;
@@ -55,6 +71,10 @@ function renderDebug(){
   $('debugContent').textContent=JSON.stringify(data[$('debugView').value]??{},null,2);
 }
 function render(){
+  if(state&&!busy)refreshDialogue(definition,state);
+  $('conversation').hidden=!state?.dialogue;
+  $('conversation').innerHTML=state?.dialogue?conversationHtml(definition,state):'';
+  for(const id of ['map','party','context','work'])$(id).inert=!!state?.dialogue;
   $('setup').hidden=!!state;$('mission').hidden=!state;if(!state)return;
   const primary=definition.objectives.find(o=>o.priority==='PRIMARY'&&state.objectiveStates[o.objectiveId].state==='ACTIVE')??definition.objectives.filter(o=>o.priority==='PRIMARY'&&state.objectiveStates[o.objectiveId].state!=='HIDDEN').at(-1);
   $('objective').textContent=primary?`${primary.playerText} — ${state.objectiveStates[primary.objectiveId].state}`:'Explore';
@@ -68,9 +88,10 @@ function render(){
   $('objectives').innerHTML=definition.objectives.filter(o=>o.objectiveId!==primary?.objectiveId&&state.objectiveStates[o.objectiveId].state!=='HIDDEN').map(o=>`<li>${esc(o.playerText)} — ${state.objectiveStates[o.objectiveId].state}</li>`).join('');
   $('actionResults').innerHTML=outcomesHtml(definition,state);
   renderContext();$('gateChoice').hidden=!state.gateState.choicePending;
-  const inactive=state.status!=='ACTIVE'||busy||state.gateState.choicePending;
+  const inactive=state.status!=='ACTIVE'||busy||state.gateState.choicePending||!!state.dialogue;
   for(const id of ['return','wait','closeLater','redial','extract'])$(id).disabled=inactive;
   $('return').disabled||=state.currentStageId===definition.gate.stageId;
+  $('wait').disabled||=localCombat(definition,state).length>0;
   $('closeLater').disabled||=state.gateState.connection==='CLOSED';$('redial').disabled||=state.currentStageId!==definition.gate.stageId||state.gateState.connection!=='CLOSED';$('extract').disabled||=state.currentStageId!==definition.gate.stageId||state.gateState.connection!=='OPEN_TO_SGC';
   $('work').innerHTML=activeWork(state).map(w=>`<div class="work-card"><span>${esc(state.units.find(u=>u.unitId===w.actorId).name)} · ${esc(definition.indexes.recipes[w.recipeId].actionType)}</span><progress max="${w.durationSeconds}" value="${w.elapsedSeconds}"></progress><button data-cancel-work="${w.workId}">Cancel</button></div>`).join('');
   if($('actionDialog').open&&selectedRecipe)inspectRecipe(selectedRecipe);
@@ -100,19 +121,22 @@ $('debrief').onclick=guard(async event=>{if(event.target.id!=='confirmRecovery')
 $('deploy').onclick=guard(()=>{deployment=selectedParty();startTime=$('startTime').value+'Z';state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();epoch++;render();focus();});
 $('keepGate').onclick=guard(()=>{chooseGate(definition,state,true);render();});
 $('closeGate').onclick=$('closeLater').onclick=guard(()=>{chooseGate(definition,state,false);render();});
-$('wait').onclick=guard(()=>{advanceTime(definition,state,180);log(state,'Waited 3 simulated minutes.');render();});
+$('wait').onclick=guard(()=>{if(localCombat(definition,state).length)throw Error('Combat rounds advance automatically every 3 seconds.');advanceTime(definition,state,180);log(state,'Waited 3 simulated minutes.');render();});
 $('redial').onclick=guard(()=>{redial(definition,state);render();});$('extract').onclick=guard(async()=>{baseConfig=await loadBase();extract(definition,state);render();});
 $('resetButton').onclick=guard(async()=>{if(state?.runId){const current=await loadBase();const reservations=current.reservations.filter(r=>!r.key.startsWith(state.runId+':'));baseConfig=reservations.length===current.reservations.length?current:await saveBase({...current,reservations});}epoch++;busy=false;closeDialogs();$('activity').textContent='';if(state){state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();render();focus();}else renderSetup();});
 $('setupButton').onclick=guard(()=>{epoch++;busy=false;state=null;closeDialogs();$('activity').textContent='';renderSetup();render();});
 $('return').onclick=guard(()=>{const route=returnRoute(definition,state);$('routeText').textContent=route===null?'No known traversable route.':`Shortest known route: ${route.length} Stage transitions. Stationed Units remain where assigned.`;$('confirmReturn').disabled=!route?.length;$('routeDialog').showModal();});
 $('cancelReturn').onclick=()=>$('routeDialog').close();
-$('confirmReturn').onclick=guard(async()=>{const route=returnRoute(definition,state),mine=epoch;$('routeDialog').close();for(const id of route??[]){if(mine!==epoch||state.status!=='ACTIVE'||!await moveAnimated(id))break;}});
+$('confirmReturn').onclick=guard(async()=>{const route=returnRoute(definition,state),mine=epoch;$('routeDialog').close();for(const id of route??[]){if(mine!==epoch||state.status!=='ACTIVE'||state.dialogue||!await moveAnimated(id))break;}});
 $('cancelLeave').onclick=()=>$('leaveDialog').close();
 $('cancelWorkMove').onclick=guard(async()=>{for(const w of movementWork(state))cancelWork(state,w.workId);$('leaveDialog').close();await moveAnimated(pendingMove);});
 $('waitWorkMove').onclick=guard(async()=>{const work=movementWork(state);advanceTime(definition,state,Math.max(0,...work.map(w=>w.durationSeconds-w.elapsedSeconds)));$('leaveDialog').close();await moveAnimated(pendingMove);});
 $('startAction').onclick=guard(()=>{const actor=$('actor').value;const recipe=recipeAlternatives(definition,definition.indexes.recipes[selectedRecipe]).find(r=>recipeEligibility(definition,state,r,actor).status==='AVAILABLE');if(!recipe)throw Error('No eligible action for this Actor.');startWork(definition,state,recipe.recipeInstanceId,actor);$('actionDialog').close();render();});$('cancelAction').onclick=()=>$('actionDialog').close();
 function delegated(event){
+  const dialogue=event.target.closest('[data-dialogue-start]');if(dialogue){startDialogue(definition,state,dialogue.dataset.dialogueStart,$('dialogueActor').value);render();$('conversation').scrollIntoView({block:'nearest'});return;}
+  if(event.target.closest('#closeNpcDetails')){selectedNpc=null;renderNpcDetails();return;}
   if(dragged&&event.currentTarget===$('map'))return;
+  const npc=event.target.closest('[data-npc]');if(npc){selectedNpc=npc.dataset.npc;renderNpcDetails();return;}
   const gateAction=event.target.closest('[data-gate-action]');if(gateAction){if(gateAction.getAttribute('aria-disabled')==='true')return;$(gateAction.dataset.gateAction).click();return;}
   const engagement=event.target.closest('[data-engage]');if(engagement){engage(definition,state,engagement.dataset.engage);render();return;}
   const withdrawal=event.target.closest('[data-retreat]');if(withdrawal){retreat(definition,state,withdrawal.dataset.retreat);render();return;}
@@ -123,6 +147,10 @@ function delegated(event){
   const door=event.target.closest('[data-transition]');if(door&&!busy){const id=door.dataset.transition;if(state.transitionStates[id].state==='LOCKED'){const t=definition.interactionTargets.find(t=>t.transitionId===id);if(t)inspectRecipe(t.recipeInstanceIds[0]);}else return moveAnimated(id);}
 }
 for(const id of ['map','party','context','work'])$(id).addEventListener('click',guard(delegated));
+$('npcDetails').addEventListener('click',guard(delegated));
+$('conversation').addEventListener('click',guard(event=>{const response=event.target.closest('[data-dialogue-response]');if(response)respondDialogue(definition,state,response.dataset.dialogueResponse);else if(event.target.closest('[data-dialogue-continue]'))continueDialogue(definition,state);else return;render();}));
+$('map').addEventListener('focusin',event=>{const npc=event.target.closest('[data-npc]');if(npc){selectedNpc=npc.dataset.npc;renderNpcDetails();}});
+$('map').addEventListener('pointerover',event=>{if(event.pointerType!=='mouse')return;const npc=event.target.closest('[data-npc]');if(npc){selectedNpc=npc.dataset.npc;renderNpcDetails();}});
 $('map').addEventListener('keydown',guard(e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();dragged=false;return delegated(e);}}));
 $('closeObservation').onclick=()=>$('observationDialog').close();
 $('focus').onclick=focus;$('zoomIn').onclick=()=>zoom(.8);$('zoomOut').onclick=()=>zoom(1.25);
@@ -135,5 +163,17 @@ $('designerButton').onclick=()=>{renderDebug();$('designer').showModal();};$('cl
 $('export').onclick=()=>{const data=missionResults(definition,state);const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='offworld-mission-results.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 $('missionFile').onchange=guard(async()=>{const file=$('missionFile').files[0];if(!file)return;const next=JSON.parse(await file.text()),compiled=compileMission(next,catalog);raw=next;definition=compiled;state=null;renderSetup();render();});
 // Fixed simulation increments: browser frame rate cannot alter outcomes.
-setInterval(()=>{if(!state||busy||state.status!=='ACTIVE'||state.gateState.choicePending||(!activeWork(state).length&&!localCombat(definition,state).length))return;try{const work=activeWork(state),step=localCombat(definition,state).length?3:work.some(w=>w.durationSeconds>=3600)?36:18;advanceTime(definition,state,Math.min(step,...work.map(w=>w.durationSeconds-w.elapsedSeconds)));render();}catch(e){error(e);}},100);
+setInterval(()=>{
+  if(!state)return;
+  const combat=localCombat(definition,state),ready=!busy&&!state.dialogue&&state.status==='ACTIVE'&&!state.gateState.choicePending;
+  const combatStep=paceCombat(definition,state,ready?combat:[],performance.now());
+  if(!ready){drawMap();return;}
+  try{
+    const work=activeWork(state);
+    if(combat.length){if(!combatStep){drawMap();return;}advanceTime(definition,state,combatStep);}
+    else if(work.length){const step=work.some(w=>w.durationSeconds>=3600)?36:18;advanceTime(definition,state,Math.min(step,...work.map(w=>w.durationSeconds-w.elapsedSeconds)));}
+    else{drawMap();return;}
+    render();
+  }catch(e){error(e);}
+},100);
 try{baseConfig=await loadBase();roomSchemas=await load('../shared/data/rooms_schema.json');const [c,r,p,classes,names,loadouts]=await Promise.all([load('../shared/data/offworld/archetypes.json'),load('../shared/data/offworld/missing-operative-001.finalized.json'),load('../shared/data/offworld/party-presets.json'),load('../shared/data/base-classes.json'),load('../shared/data/personnel-names.json'),load('../shared/data/personnel-loadouts.json')]);loadouts.units={...loadouts.units,...cachedLoadouts()};catalog=c;raw=r;presets=deploymentRoster(classes,names,p,loadouts);definition=compileMission(raw,catalog);renderSetup();for(const [id,value] of Object.entries(cachedLoadouts())){const unit=presets.units.find(u=>u.unitId===id);if(unit)savePersonnel(unit,value);}}catch(e){error(e);$('deploy').disabled=true;}

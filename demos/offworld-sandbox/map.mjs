@@ -1,4 +1,5 @@
 import {condition,recipeChoices} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
+import {statsRadar} from '../shared/portraits/stats-radar.mjs';
 import {lootEntries} from '../shared/offworld/recovery.mjs?v=dialogue-doors-1';
 import {renderMapSurface} from '../shared/map/renderer.mjs?v=dialogue-doors-1';
 import {mapLayout} from './map-layout.mjs?v=dialogue-doors-1';
@@ -9,6 +10,7 @@ import {portraitBustSvg} from '../shared/portraits/portrait-bust.mjs?v=dialogue-
 import {mapToken,formationSlot} from '../shared/portraits/map-token.mjs?v=dialogue-doors-1';
 import {recipeEligibility,targetLocal,activeWork} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
 import {esc} from './setup.mjs?v=dialogue-doors-1';
+import {npcAlertSvg,visibleNpc} from './npc-presentation.mjs?v=dialogue-doors-1';
 export const title=id=>id.replace(/^stage-/,'').replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
 export const colors={SOLDIER:'#d1495b',SCOUT:'#2a9d8f',TECHNICIAN:'#f4a261',SCIENTIST:'#7b6ef6',MEDIC:'#4cc9f0',DIPLOMAT:'#b8a14f',UNTRAINED:'#acb8b8'};
 export const icons={KEEP_OPEN:'↔',CLOSE_GATE:'⊘',REDIAL:'◎',EXTRACT:'↑',SEND_TO_GATE:'⇧',TALK:'?',SMALL_TALK:'☷',INQUIRE:'?',COLLECT_SAFE:'↓',ENTER_DOOR_CODE:'#',ENGAGE:'⚔',INTIMIDATE:'!',NEGOTIATE:'☷',DESTROY:'×',RECOVER_WRECKAGE:'↓',HACK:'⌘',INSPECT:'⌕',COLLECT:'↓',SAMPLE:'◇',STABILIZE:'+',PROTECT:'◈',QUESTION:'?',REPAIR:'⚒',ENTER_CODE:'#',SECURE:'▣'};
@@ -21,7 +23,7 @@ export function instancePoint(m,id){
   const cell=stage.cells[Math.floor(index/3)%stage.cells.length];return {x:cell.x*100+22+(index%3)*27,y:cell.y*100+38};
 }
 export function targetPoint(m,t){return t.transitionId?transitionPoint(m,m.indexes.transitions[t.transitionId]):instancePoint(m,t.instanceId);}
-export function renderMap(m,s,hexSize=22,interactionEnabled=true){
+export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]){
   const knownLoot=new Map(s.status==='ACTIVE'?lootEntries(m,s).map(r=>[r.instanceId,r]):[]);
   const layout=mapLayout(m,s),point=id=>layout.points[id]??instancePoint(m,id),targetPosition=t=>t.transitionId?transitionPoint(m,m.indexes.transitions[t.transitionId]):point(t.instanceId);
   const html=['<defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0H0V100" fill="none" stroke="#1c2931"/></pattern><pattern id="secure" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="#283438"/><rect width="6" height="12" fill="#635e39"/></pattern></defs><rect x="-2000" y="-2000" width="5000" height="5000" fill="url(#grid)"/>'];
@@ -32,8 +34,11 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true){
     const anchor=stage.cells[0];html.push(`<text x="${anchor.x*100+9}" y="${anchor.y*100+17}" fill="#bdd0d3" font-size="10">${esc(title(stage.stageId))}</text>`);
     for(const d of m.instances.filter(d=>d.stageId===stage.stageId&&condition(s,d.revealedWhen)&&(knownLoot.has(d.instanceId)||s.instanceStates[d.instanceId].custody==='LOCAL'&&(st.visibility==='VISIBLE'||st.visibility==='PARTIAL'&&d.visibleWhenPartial)))){
       const {x,y}=point(d.instanceId),isGate=d.instanceId===m.gate.instanceId;
+      if(visibleNpc(m,s,d.instanceId))html.push(`<g class="npc-token" data-npc="${esc(d.instanceId)}" role="button" tabindex="0" aria-label="Inspect ${esc(d.playerLabel)}">`);
       const loot=knownLoot.get(d.instanceId);if(loot)html.push(`<g class="loot-marker" data-loot="${esc(d.instanceId)}"><title>${esc(loot.label)} · ${loot.status}</title><rect x="${x-11}" y="${y-11}" width="22" height="22" rx="3" fill="none" stroke="${loot.collected?'#8ad1ba':'#efd174'}" ${loot.collected?'stroke-dasharray="3 2"':''}/><text x="${x}" y="${y+20}" font-size="7" fill="#e5dcae" text-anchor="middle">${loot.status}</text></g>`);
+      if(!isGate&&st.visibility==='VISIBLE')html.push(`<g transform="translate(${x},${y})">${npcAlertSvg(s.instanceStates[d.instanceId])}</g>`);
       html.push(isGate?`<circle cx="${x}" cy="${y}" r="22" fill="${s.gateState.connection==='OPEN_TO_SGC'?'#4ca0b5':'#18262e'}" stroke="#83bccd" stroke-width="7"/>`:`<g transform="translate(${x},${y})"><title>${esc(d.playerLabel)} ${esc(s.instanceStates[d.instanceId].combatState??'')}</title>${s.instanceStates[d.instanceId].combatState?`<circle r="10" fill="none" stroke="${['ACTIVE'].includes(s.instanceStates[d.instanceId].combatState)?'#ff817e':'#8ad1ba'}"/>`:''}${d.mapGlyph==='PERSON'?`<g transform="scale(.85)">${mapToken()}</g>`:`<rect x="-6" y="-6" width="12" height="12" rx="2" fill="${s.instanceStates[d.instanceId].operational===false?'#48514b':'#71878a'}" stroke="#a0b0b0"/>`}</g>`);
+      if(visibleNpc(m,s,d.instanceId))html.push(`<circle cx="${x}" cy="${y}" r="15" fill="transparent"/></g>`);
     }
   }
   const doorObstacles=[];
@@ -66,7 +71,7 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true){
     for(const r of recipeChoices(m,s,recipes))actions.push({recipe:r,target:t,anchor:targetPosition(t)});
   }
   for(const incident of m.incidents.filter(i=>i.kind==='COMBAT'&&i.stageId===s.currentStageId&&s.incidentStates[i.incidentId].state==='DORMANT')){
-    const id=incident.participantIds.findLast(id=>s.instanceStates[id].combatState==='ACTIVE');if(!id)continue;
+    const id=incident.participantIds.findLast(id=>['ACTIVE','NEUTRAL'].includes(s.instanceStates[id].combatState));if(!id)continue;
     actions.push({incident,recipe:{actionType:'ENGAGE',profession:'SOLDIER'},target:{instanceId:id},anchor:point(id)});
   }
   if(s.status==='ACTIVE'&&s.currentStageId===m.gate.stageId){
@@ -80,9 +85,10 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true){
     const e=gateAction?{status:(['redial','extract'].includes(gateAction)&&s.activeWork.some(w=>['MOVING_TO_TARGET','EXECUTING'].includes(w.status)))||(gateAction==='extract'&&s.units.some(u=>u.partyStatus==='STATIONED'))?'BLOCKED':'AVAILABLE'}:incident?engagementEligibility(m,s,incident.incidentId):recipeEligibility(m,s,r),fill=colors[r.profession]??'#899391',label=t.transitionId?'Door controls':m.indexes.instances[t.instanceId].playerLabel;
     html.push(`<g class="action-hex" ${gateAction?`data-gate-action="${gateAction}"`:incident?`data-engage="${esc(incident.incidentId)}"`:`data-recipe="${esc(r.recipeInstanceId)}"`} tabindex="0" role="button" aria-label="${esc(label)}: ${esc(r.actionType??'Deferred action')} ${e.status}" aria-disabled="${e.status!=='AVAILABLE'}"><title>${esc(label)} · ${esc(r.actionType)} · ${esc(e.blocker??e.status)}</title><polygon points="${vertices.map(p=>`${p.x},${p.y}`).join(' ')}" fill="${e.status==='AVAILABLE'?fill:'#24353b'}" stroke="${fill}" stroke-width="1.5" stroke-linejoin="round"/><text x="${x}" y="${y+5}" text-anchor="middle" fill="${e.status==='AVAILABLE'?'#13232a':fill}" font-size="16">${icons[r.actionType]??'…'}</text></g>`);
   }
-  for(const hit of (s.resultEvents??[]).filter(e=>e.type==='COMBAT_HIT'&&s.missionElapsedSeconds-e.atSeconds<6)){
-    const a=layout.points[hit.actorId],b=layout.points[hit.targetId];if(a&&b)html.push(`<line class="combat-shot" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#ffd88d" stroke-width="2" pointer-events="none"/>`);
+  for(const hit of damageFrames){
+    const a=layout.points[hit.actorId],b=layout.points[hit.targetId];if(a&&b&&hit.shotVisible!==false)html.push(`<line class="combat-shot" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#ffd88d" stroke-width="2" pointer-events="none"/>`);
+    if(b)html.push(`<text class="floating-damage" data-damage-target="${esc(hit.targetId)}" x="${b.x}" y="${b.y-17-hit.progress*30-(damageFrames.filter(h=>h.targetId===hit.targetId&&h.id<hit.id).length*12)}" opacity="${1-hit.progress}" text-anchor="middle" fill="#ffb099" stroke="#10191e" stroke-width="3" paint-order="stroke" font-size="14" font-weight="700" pointer-events="none">−${esc(hit.damage)}</text>`);
   }
   return html.join('');
 }
-export function partyCard(u){return `<div class="party-unit" style="--profession:${esc(u.color)}"><div class="portrait">${portraitBustSvg(u.appearance)}</div><div><strong>${esc(u.name)}</strong><span class="profession">${esc(u.profession)} ${u.tier}${u.branch?` / ${esc(u.branch.id)} ${u.branch.tier}`:''}</span><br><small>HP ${u.health??100} · STA ${u.stamina} · PER ${u.perception}<br>${u.partyStatus==='STATIONED'?`Stationed · ${esc(title(u.currentStageId))}`:esc(u.activityState)}</small>${[0,1].map(slot=>{const t=u.tools.find(t=>t.slot===slot);return `<small class="tool-line">${slot+1}: ${t?`${esc(t.label)} · ${t.chargesRemaining} charges`:'empty'}</small>`;}).join('')}<button class="station-button" data-station="${esc(u.unitId)}">${u.partyStatus==='STATIONED'?'Rejoin party':'Station here'}</button></div></div>`;}
+export function partyCard(u){return `<div class="party-unit" style="--profession:${esc(u.color)}"><div class="portrait">${portraitBustSvg(u.appearance)}</div><div><strong>${esc(u.name)}</strong><span class="profession">${esc(u.profession)} ${u.tier}${u.branch?` / ${esc(u.branch.id)} ${u.branch.tier}`:''}</span><br><small>HP ${u.health??100}<br>${u.partyStatus==='STATIONED'?`Stationed · ${esc(title(u.currentStageId))}`:esc(u.activityState)}</small>${statsRadar(u)}${[0,1].map(slot=>{const t=u.tools.find(t=>t.slot===slot);return `<small class="tool-line">${slot+1}: ${t?`${esc(t.label)} · ${t.chargesRemaining} charges`:'empty'}</small>`;}).join('')}<button class="station-button" data-station="${esc(u.unitId)}">${u.partyStatus==='STATIONED'?'Rejoin party':'Station here'}</button></div></div>`;}

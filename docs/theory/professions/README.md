@@ -1,5 +1,8 @@
 # Profession Curricula
 
+See the [design/demo consistency audit](../../design-consistency-audit.md) for
+confirmed specialization rules and outstanding demo alignment work.
+
 ## Status
 
 **STRUCTURALLY COMPLETE — implementation names and supporting Services may still change**
@@ -23,6 +26,9 @@ Profession competency never substitutes for missing subject Theory.
 ## Base Professions
 
 * [Compact Context Handoff](./profession-context-handoff.md)
+* [Specializations and Haven Context Handoff](./specializations-and-haven-context-handoff.md) — design context, repo evidence and authority boundaries.
+* [Specialization Haven Assignment Supplement](./specialization-haven-assignment-supplement.md) — fixed curriculum story origins using confirmed names.
+* [Specialization and Haven Decision Checklist](./specializations-and-haven-decisions.md) — unresolved conflicts and authoring work.
 * [Profession Boundaries](./profession-boundaries.md)
 * [Technician](./technician/technician-summary.md)
 * [Scientist](./scientist/scientist-summary.md)
@@ -46,6 +52,11 @@ Tier III
 ↓
 Specialization or Cross-Path
 ```
+
+Branch selection is permanent: Specialization and Cross-Path are mutually
+exclusive, with no switching. Selecting either at T0 (untrained) unlocks the
+second equipment slot; base Tier III alone does not. Selection grants neither
+equipment nor trained branch capability.
 
 Tier III remains ordinary senior Profession competency.
 

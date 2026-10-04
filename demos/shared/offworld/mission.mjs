@@ -1,4 +1,6 @@
 import {resolvePartyTools} from './party-tools.mjs?v=dialogue-doors-1';
+import {validateDialogue} from './dialogue.mjs';
+import {validNpcState,npcEffectTypes,validateNpcEffect} from './npc.mjs?v=dialogue-doors-1';
 export const clone = value => structuredClone(value);
 export function freeze(value) {
   if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
@@ -12,10 +14,15 @@ export const groups = {
 };
 export const directions={NORTH:[0,-1],EAST:[1,0],SOUTH:[0,1],WEST:[-1,0]};
 export const opposite={NORTH:'SOUTH',SOUTH:'NORTH',EAST:'WEST',WEST:'EAST'};
+export const fieldStateEffects={
+  SET_DETECTION_STATE:{field:'detectionState',values:['HIDDEN','SUSPECTED','LOCATED']},
+  SET_RECOVERY_STATE:{field:'recoveryState',values:['UNKNOWN','LOCATED','SECURED','ELIGIBLE_FOR_EVAC','SELECTED_FOR_EVAC','RECOVERED','LEFT_BEHIND']}
+};
 const typeOf=v=>Array.isArray(v)?'array':v===null?'null':typeof v;
 export function compileMission(input,catalog) {
   const m=clone(input),errors=[],indexes={};
   const fail=(p,msg)=>errors.push(`${p}: ${msg}`);
+  for(const key of ['startingKnowledge','scheduledEvents'])if(!Array.isArray(m[key])){fail(key,'required array');m[key]=[];}
   for(const [group,[kind,idKey]] of Object.entries(groups)) {
     indexes[group]=Object.create(null);
     if(!Array.isArray(m[group])) {fail(group,'required array');m[group]=[];}
@@ -89,6 +96,19 @@ export function compileMission(input,catalog) {
     }
   }
   walk(m,'mission');
+  for(const i of m.instances)if(Object.hasOwn(i,'npcState')&&!validNpcState(i.npcState))fail(`${i.instanceId}.npcState`,'expected disposition and suspicion/hostility in 0..100');
+  function validateNpcConditions(value,path){
+    if(!value||typeof value!=='object')return;
+    if(value.type==='NPC_STATE'){
+      if(!indexes.instances[value.instanceId]?.npcState)fail(path,'NPC state required');
+      const keys=['type','instanceId','disposition','suspicionAtLeast','suspicionBelow','hostilityAtLeast','hostilityBelow'];
+      for(const key of Object.keys(value))if(!keys.includes(key))fail(path,`unsupported NPC condition ${key}`);
+      if(Object.hasOwn(value,'disposition')&&(typeof value.disposition!=='string'||!value.disposition.trim()))fail(path,'invalid disposition condition');
+      for(const key of keys.slice(3))if(Object.hasOwn(value,key)&&(!Number.isFinite(value[key])||value[key]<0||value[key]>100))fail(path,'NPC threshold must be in 0..100');
+    }
+    for(const [key,item] of Object.entries(value))validateNpcConditions(item,`${path}.${key}`);
+  }
+  validateNpcConditions(m,'mission');
   for(const i of m.incidents)if(i.implemented&&i.kind==='COMBAT'){
     if(!Array.isArray(i.participantIds)||!i.participantIds.length)fail(i.incidentId,'combat needs participants');
     for(const key of ['roundSeconds','hostileHealth','hostileDamage'])if(!(i[key]>0))fail(i.incidentId,`invalid ${key}`);
@@ -98,7 +118,8 @@ export function compileMission(input,catalog) {
     if(!(combat?.partyHealth>0)||!(combat?.partyWeapon?.damage>0)||!['RANGED','MELEE'].includes(combat?.partyWeapon?.mode))fail('combat','authored prototype weapon and health required');
   }
   function campaignEffects(list,path){for(const e of list??[]){
-    if(!['SET_INSTANCE_STATE','EMIT_EVENT','SCHEDULE_EVENT','ACTIVATE_OBJECTIVE'].includes(e.type))fail(path,`unsupported campaign effect ${e.type}`);
+    if(npcEffectTypes.includes(e.type))validateNpcEffect(e,indexes.instances,fail,path);
+    else if(!['SET_INSTANCE_STATE','EMIT_EVENT','SCHEDULE_EVENT','ACTIVATE_OBJECTIVE'].includes(e.type))fail(path,`unsupported campaign effect ${e.type}`);
     if(e.type==='SET_INSTANCE_STATE'&&(!e.field||['__proto__','constructor','prototype'].includes(e.field)))fail(path,'invalid state field');
     if(e.type==='SCHEDULE_EVENT'&&!(e.delayMinutes>0))fail(path,'scheduled delay must be positive');
   }}
@@ -106,14 +127,30 @@ export function compileMission(input,catalog) {
   for(const o of m.objectives)campaignEffects(o.onComplete,o.objectiveId);
   for(const e of m.scheduledEvents){eventRef(e.event,'scheduledEvents');if(!Number.isFinite(e.atSeconds)||e.atSeconds<0)fail('scheduledEvents','invalid event time');}
   for(const r of m.recipes){
+    if(Object.hasOwn(r,'availabilityContext')){
+      const c=r.availabilityContext,path=`${r.recipeInstanceId}.availabilityContext`;
+      if(!c||typeOf(c)!=='object')fail(path,'expected object');
+      else {
+        for(const key of Object.keys(c))if(!['normal','activeIncidentKinds','requiresSecureStage'].includes(key))fail(`${path}.${key}`,'unsupported context field');
+        for(const key of ['normal','requiresSecureStage'])if(Object.hasOwn(c,key)&&typeof c[key]!=='boolean')fail(`${path}.${key}`,'expected boolean');
+        if(Object.hasOwn(c,'activeIncidentKinds')&&(!Array.isArray(c.activeIncidentKinds)||c.activeIncidentKinds.some(k=>typeof k!=='string'||!k.trim())))fail(`${path}.activeIncidentKinds`,'expected nonempty Incident kind strings');
+      }
+    }
     if(!indexes.interactionTargets[r.targetId]?.recipeInstanceIds?.includes(r.recipeInstanceId))fail(r.recipeInstanceId,'target must list recipe');
     if(!(r.durationMinutes>0)||!(r.minimumTier>=0))fail(r.recipeInstanceId,'invalid duration or tier');
     for(const mod of r.durationModifiers??[])if(!mod.when||!(mod.durationMinutes>0)||typeof mod.label!=='string')fail(r.recipeInstanceId,'invalid duration modifier');
     if(r.implemented){
       if(!['UNTRAINED','SOLDIER','SCOUT','TECHNICIAN','SCIENTIST','MEDIC','DIPLOMAT'].includes(r.profession)||!Number.isInteger(r.chargeCost)||r.chargeCost<0)fail(r.recipeInstanceId,'invalid Profession or charge cost');
       for(const e of r.effects??[]){
-        if(!['SET_TARGET_STATE','SET_INSTANCE_STATE','OPEN_TARGET_TRANSITION','CARRY_TARGET','ADD_KNOWLEDGE','SEND_TARGET_TO_GATE'].includes(e.type))fail(r.recipeInstanceId,`unsupported field effect ${e.type}`);
-        if(e.type.startsWith('SET_')&&(!e.field||['__proto__','constructor','prototype'].includes(e.field)))fail(r.recipeInstanceId,'invalid state field');
+        if(npcEffectTypes.includes(e.type))validateNpcEffect(e,indexes.instances,fail,r.recipeInstanceId);
+        else if(Object.hasOwn(fieldStateEffects,e.type)){
+          if(!indexes.instances[e.instanceId]||!fieldStateEffects[e.type].values.includes(e.value))fail(r.recipeInstanceId,`invalid ${e.type} instance or value`);
+        }
+        else if(e.type==='ADD_TO_PARTY_STORAGE'){
+          if(!['PARTY_STORAGE','PARTY_STORAGE_WHEN_COLLECTED'].includes(indexes.instances[e.instanceId]?.recovery?.category))fail(r.recipeInstanceId,'party storage requires an authored portable recovery category');
+        }
+        else if(!['SET_TARGET_STATE','SET_INSTANCE_STATE','OPEN_TARGET_TRANSITION','CARRY_TARGET','ADD_KNOWLEDGE','SEND_TARGET_TO_GATE'].includes(e.type))fail(r.recipeInstanceId,`unsupported field effect ${e.type}`);
+        if(['SET_TARGET_STATE','SET_INSTANCE_STATE'].includes(e.type)&&(!e.field||['__proto__','constructor','prototype'].includes(e.field)))fail(r.recipeInstanceId,'invalid state field');
         if(e.type==='OPEN_TARGET_TRANSITION'&&!indexes.interactionTargets[r.targetId]?.transitionId)fail(r.recipeInstanceId,'transition effect needs a transition target');
       }
     }
@@ -126,6 +163,8 @@ export function compileMission(input,catalog) {
   if(m.stages.filter(s=>s.initialVisibility==='VISIBLE').length!==1||indexes.stages[m.gate?.stageId]?.initialVisibility!=='VISIBLE')fail('stages','Wave 1 starts with exactly the Gate stage visible');
   if(m.gate?.maxContinuousConnectionMinutes!==37)fail('gate','expected 37 minute connection limit');
   if(!Array.isArray(m.startingKnowledge)||!Array.isArray(m.scheduledEvents))fail('mission','startingKnowledge and scheduledEvents arrays required');
+  if(m.dialogueScenes!==undefined&&!Array.isArray(m.dialogueScenes))fail('dialogueScenes','expected array');
+  else validateDialogue(m.dialogueScenes??[],indexes,fail,catalog);
   if(errors.length)throw new Error(`MISSION VALIDATION ERROR\n${errors.join('\n')}`);
   return freeze({...m,partyTools:resolvePartyTools(m,catalog),indexes,toolCatalog:clone(catalog)});
 }

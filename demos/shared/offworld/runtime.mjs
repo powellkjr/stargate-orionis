@@ -1,4 +1,5 @@
 import {condition} from './field.mjs?v=dialogue-doors-1';
+import {refreshDialogue} from './dialogue.mjs';
 import {initializePartyTools,movePartyTools,extractPartyTools} from './party-tools.mjs?v=dialogue-doors-1';
 import {initializeCampaign,refreshCampaign,nextCampaignBoundary,combatTick,localCombat} from './campaign.mjs?v=dialogue-doors-1';
 import {clone} from './mission.mjs?v=dialogue-doors-1';
@@ -51,9 +52,9 @@ export function createRuntime(m,units,startTime) {
 
     units:clone(units).map(u=>({...u,currentStageId:m.gate.stageId,partyStatus:'ACTIVE_PARTY',activityState:'IDLE'})),
 
-    stageStates:{},transitionStates:{},instanceStates:{},knowledgeState:{starting:clone(m.startingKnowledge),gained:[]},actionLog:[],emittedEvents:[],resultEvents:[],status:'ACTIVE',mode:'FREE_INTERACTION'};
+    stageStates:{},transitionStates:{},instanceStates:{},knowledgeState:{starting:clone(m.startingKnowledge),gained:[]},actionLog:[],emittedEvents:[],resultEvents:[],dialogue:null,dialogueHistory:[],dialogueStarts:[],status:'ACTIVE',mode:'FREE_INTERACTION'};
 
-  for(const d of m.stages) s.stageStates[d.stageId]={visibility:d.initialVisibility,knownShape:d.knownShapeAtStart||d.initialVisibility!=='HIDDEN',explored:d.stageId===s.currentStageId,securityState:d.initialSecurityState};
+  for(const d of m.stages) s.stageStates[d.stageId]={visibility:d.initialVisibility,knownShape:d.knownShapeAtStart||d.initialVisibility!=='HIDDEN',explored:d.stageId===s.currentStageId,visitCount:d.stageId===s.currentStageId?1:0,securityState:d.initialSecurityState};
 
   for(const d of m.transitions) s.transitionStates[d.transitionId]={state:d.initialState,known:d.fromStageId===s.currentStageId||d.toStageId===s.currentStageId};
 
@@ -116,6 +117,7 @@ function advanceClock(m,s,seconds) {
 }
 
 export function advanceTime(m,s,seconds) {
+  if(s.dialogue)throw new Error('Resolve the conversation before advancing time.');
 
   if(!Number.isFinite(seconds)||seconds<0)throw new Error('Invalid time increment.');
 
@@ -124,13 +126,15 @@ export function advanceTime(m,s,seconds) {
   let remaining=seconds;
 
   refreshCampaign(m,s);
-  while(remaining>0&&s.status==='ACTIVE'){const step=Math.min(remaining,nextWorkBoundary(s),nextCampaignBoundary(m,s));advanceClock(m,s,step);tickWork(m,s,step);combatTick(m,s);refreshCampaign(m,s);remaining-=step;}
+  while(remaining>0&&s.status==='ACTIVE'&&!s.dialogue){const step=Math.min(remaining,nextWorkBoundary(s),nextCampaignBoundary(m,s));advanceClock(m,s,step);tickWork(m,s,step);combatTick(m,s);refreshCampaign(m,s);remaining-=step;refreshDialogue(m,s);}
 
   visibility(m,s);refreshField(m,s);
+  refreshDialogue(m,s);
 
 }
 
 export function chooseGate(m,s,keepOpen) {
+  if(s.dialogue)throw new Error('Resolve the conversation before changing Gate context.');
 
   if(s.status!=='ACTIVE') throw new Error('Mission has ended.');
 
@@ -141,6 +145,7 @@ export function chooseGate(m,s,keepOpen) {
   if(!keepOpen&&s.gateState.connection!=='CLOSED') {s.gateState.connection='CLOSED';s.gateState.sgcOccupied=false;emit(s,'event_gate_closed');}
 
   log(s,keepOpen?'Connection maintained; SGC Gate remains occupied.':'Connection closed; SGC Gate released.');
+  refreshDialogue(m,s);
 
 }
 
@@ -151,6 +156,7 @@ export function exits(m,s,stage=s.currentStageId) {
 }
 
 export function move(m,s,id) {
+  if(s.dialogue)throw new Error('Resolve the conversation before moving.');
 
   if(s.status!=='ACTIVE'||s.gateState.choicePending) throw new Error('Choose the Gate connection first.');
 
@@ -164,15 +170,18 @@ export function move(m,s,id) {
   if(edge.state!=='OPEN' && !(edge.routine&&edge.state==='CLOSED')) throw new Error('Requires an interaction. Select the doorway action.');
 
   advanceTime(m,s,m.simulatorArtifact?.movementSeconds??60);
+  if(s.dialogue)return;
 
   if(s.status!=='ACTIVE')return;
   s.transitionStates[id].state='OPEN';s.currentStageId=edge.toStageId;
 
   s.stageStates[edge.toStageId].explored=true;s.stageStates[edge.toStageId].knownShape=true;
+  s.stageStates[edge.toStageId].visitCount=(s.stageStates[edge.toStageId].visitCount??0)+1;
 
   for(const u of s.units) if(u.partyStatus==='ACTIVE_PARTY') u.currentStageId=edge.toStageId;
 
   movePartyTools(s,edge.toStageId);visibility(m,s);refreshField(m,s);emit(s,'event_stage_entered');refreshCampaign(m,s);log(s,`Party moved ${edge.direction.toLowerCase()}.`);
+  refreshDialogue(m,s);
 
 }
 
@@ -197,6 +206,7 @@ export function returnRoute(m,s) {
 }
 
 export function redial(m,s) {
+  if(s.dialogue)throw new Error('Resolve the conversation before redialing.');
 
   if(s.currentStageId!==m.gate.stageId||s.gateState.connection!=='CLOSED') throw new Error('Redial requires the party at the closed Gate.');
 
@@ -211,6 +221,7 @@ export function redial(m,s) {
 }
 
 export function extract(m,s) {
+  if(s.dialogue)throw new Error('Resolve the conversation before extracting.');
 
   if(s.status!=='ACTIVE'||s.currentStageId!==m.gate.stageId||s.gateState.choicePending) throw new Error('Extraction requires the active party at the Gate.');
 
@@ -220,9 +231,11 @@ export function extract(m,s) {
 
   if(s.units.some(u=>u.partyStatus==='STATIONED'))throw new Error('Recall stationed Units before extraction.');
 
+  if(new Set(s.partyStorage).size!==s.partyStorage.length||s.partyStorage.some(id=>!m.indexes.instances[id]||s.instanceStates[id]?.custody!=='PARTY_STORAGE'))throw new Error('Invalid party storage custody.');
+
   extractPartyTools(s);s.status='EXTRACTED';for(const u of s.units)u.partyStatus='EXTRACTED';
 
-  for(const id of new Set([...s.carriedAssets,...Object.keys(s.instanceStates).filter(id=>s.instanceStates[id].custody==='AT_GATE')])){s.instanceStates[id].custody='RECOVERED_TO_SGC';if(['ESCORTED','AT_GATE'].includes(s.instanceStates[id].partyStatus))s.instanceStates[id].partyStatus='EXTRACTED';s.resultEvents.push({type:'ASSET_RECOVERED',instanceId:id,atSeconds:s.missionElapsedSeconds});}
+  for(const id of new Set([...s.partyStorage,...s.carriedAssets,...Object.keys(s.instanceStates).filter(id=>s.instanceStates[id].custody==='AT_GATE')])){s.instanceStates[id].custody='RECOVERED_TO_SGC';if(['ESCORTED','AT_GATE'].includes(s.instanceStates[id].partyStatus))s.instanceStates[id].partyStatus='EXTRACTED';s.resultEvents.push({type:'ASSET_RECOVERED',instanceId:id,atSeconds:s.missionElapsedSeconds});}
 
   s.gateState.connection='CLOSED';s.gateState.sgcOccupied=false;
 

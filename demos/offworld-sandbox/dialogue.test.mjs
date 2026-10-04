@@ -6,12 +6,13 @@ import {createRuntime,chooseGate,advanceTime,visibility,exits,move} from '../sha
 import {startWork,recipeEligibility} from '../shared/offworld/field.mjs';
 import {renderMap} from './map.mjs';
 const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const m=compileMission(read('missing-operative-001.finalized'),read('archetypes'));
+const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function setup(){const units=read('party-presets').units.filter(u=>['DIPLOMAT','SOLDIER','MEDIC','TECHNICIAN'].includes(u.profession));const s=createRuntime(m,units,'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
 function place(s,id){s.currentStageId=id;for(const u of s.units)u.currentStageId=id;s.stageStates[id].explored=true;s.stageStates[id].knownShape=true;visibility(m,s);}
-test('hostiles block civilian actions, social resolution stays available, and invalid hexes disappear',()=>{
- const s=setup();place(s,'stage-overseer-office');assert.equal(recipeEligibility(m,s,m.indexes.recipes['hack-security-terminal']).blocker,'HOSTILES_PRESENT');assert.throws(()=>startWork(m,s,'hack-security-terminal'),/HOSTILES/);
- assert.notEqual(recipeEligibility(m,s,m.indexes.recipes['negotiate-mcguffin']).blocker,'HOSTILES_PRESENT');
+test('hostiles hide civilian actions, social resolution stays available, and invalid hexes disappear',()=>{
+ const s=setup();place(s,'stage-overseer-office');s.instanceStates['mcguffin-01'].combatState='ACTIVE';s.instanceStates['mcguffin-01'].npcState.disposition='HOSTILE';assert.equal(recipeEligibility(m,s,m.indexes.recipes['hack-security-terminal']).status,'HIDDEN');assert.throws(()=>startWork(m,s,'hack-security-terminal'),/HIDDEN/);
+ assert(!renderMap(m,s).includes('data-recipe="hack-security-terminal"'));
+ assert.notEqual(recipeEligibility(m,s,m.indexes.recipes['negotiate-mcguffin']).status,'HIDDEN');
  s.instanceStates['mcguffin-01'].combatState='DOWN';assert(!renderMap(m,s).includes('data-recipe="negotiate-mcguffin"'));
  s.instanceStates['security-terminal-01'].powered=false;assert(!renderMap(m,s).includes('data-recipe="destroy-security-terminal'));
 });

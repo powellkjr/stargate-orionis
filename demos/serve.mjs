@@ -9,12 +9,17 @@ import {branches} from './shared/offworld/equipment.mjs';
 import {normalizeAppearance} from './shared/portraits/portrait-bust.mjs';
 const project=fileURLToPath(new URL('../',import.meta.url));
 export function demoServer(root=project){
+  const canonicalRoot=realpath(resolve(root));
     const dataPath=resolve(root,'demos/shared/data/personnel-loadouts.json'),presentationPath=resolve(root,'demos/shared/data/personnel-presentation.json');let queue=Promise.resolve();
   const json=async path=>JSON.parse(await readFile(resolve(root,path),'utf8'));
   return createServer(async(req,res)=>{
     res.setHeader('Cache-Control','no-store');
     try{
       const url=new URL(req.url,'http://localhost');
+      if(url.pathname==='/api/demo-status'){
+        if(req.method!=='GET'){res.writeHead(405).end();return;}
+        res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({service:'orionis-writable-demos',writable:true}));return;
+      }
       if(url.pathname==='/api/base-configuration'){
         if(req.method!=='PUT'){res.writeHead(405).end();return;}
         if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host){res.writeHead(403).end();return;}
@@ -59,10 +64,16 @@ export function demoServer(root=project){
       if(!['GET','HEAD'].includes(req.method)){res.writeHead(405).end();return;}
       let pathname=decodeURIComponent(url.pathname);if(pathname.endsWith('/'))pathname+='index.html';
       const file=await realpath(resolve(root,'.'+pathname));
-      if(!file.startsWith(resolve(root)+sep)||file.includes(`${sep}.git${sep}`)){res.writeHead(403).end();return;}
+      if(!file.startsWith((await canonicalRoot)+sep)||file.includes(`${sep}.git${sep}`)){res.writeHead(403).end();return;}
       const bytes=await readFile(file),type={'.html':'text/html','.css':'text/css','.mjs':'text/javascript','.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.png':'image/png'}[extname(file)]??'application/octet-stream';
       res.writeHead(200,{'Content-Type':type});res.end(req.method==='HEAD'?undefined:bytes);
     }catch(error){res.writeHead(error.code==='ENOENT'?404:400,{'Content-Type':'application/json'}).end(JSON.stringify({error:error.message}));}
   });
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){const port=Number(process.argv[2]??8001);demoServer().listen(port,'127.0.0.1',()=>console.log(`Writable demos: http://127.0.0.1:${port}/demos/offworld-sandbox/`));}
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
+  const port=Number(process.argv[2]??8001);
+  if(!Number.isInteger(port)||port<1||port>65535)throw Error('Port must be an integer from 1 to 65535.');
+  const server=demoServer();
+  server.on('error',error=>{console.error(error.code==='EADDRINUSE'?`Port ${port} is already in use. Stop the other server or run node demos/serve.mjs with another port.`:error.message);process.exitCode=1;});
+  server.listen(port,'127.0.0.1',()=>console.log(`All demos: http://127.0.0.1:${port}/demos/\nWritable shared JSON: base configuration, personnel loadouts and portrait presentation.\nKeep this terminal open. Optional port: node demos/serve.mjs 8000`));
+}

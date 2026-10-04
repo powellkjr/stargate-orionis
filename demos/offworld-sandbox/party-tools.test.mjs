@@ -8,7 +8,7 @@ import {toolOptions} from '../shared/offworld/equipment.mjs';
 import {migrateLoadout} from '../shared/offworld/personnel-save.mjs';
 import {missionResults} from '../shared/offworld/campaign.mjs';
 const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const catalog=read('archetypes'),raw=read('missing-operative-001.finalized'),m=compileMission(raw,catalog);
+const catalog=read('archetypes'),raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},m=compileMission(raw,catalog);
 function fresh(profession='SCOUT',mission=m){const u=read('party-presets').units.find(u=>u.profession===profession);u.tier=2;u.perception=9;u.tools=[];const s=createRuntime(mission,[u],'2026-09-25T12:00Z');chooseGate(mission,s,true);return s;}
 test('mission receiver is a separate physical instance; standard Scout kits have no variants',()=>{
   const s=fresh();assert.equal(s.units[0].tools.length,0);assert.equal(s.partyTools.length,1);

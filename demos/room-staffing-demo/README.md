@@ -27,13 +27,15 @@ Third-party artwork is documented in [`../shared/icons/ATTRIBUTION.md`](../share
 
 ## Run
 
-Serve the repository root over HTTP:
+Use the shared writable server from the repository root:
 
-`python -m http.server 8000`
+`node demos/serve.mjs`
 
 Then open:
 
-`http://localhost:8000/demos/room-staffing-demo/`
+`http://127.0.0.1:8001/demos/room-staffing-demo/`
+
+The same server hosts every demo. See `../README.md` for save scope and static hosting.
 
 ## Storage compatibility
 

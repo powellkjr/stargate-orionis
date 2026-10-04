@@ -1,6 +1,7 @@
 // Campaign-only strategic samples, not an inventory, production, or hourly economy.
 export const RATION_CAPACITY = Object.freeze({P1:1_000_000,P4:4_000_000,P16:16_000_000});
 export const SCALE_TARGETS = Object.freeze({Scions:[5,31,4],CLP:[16,6,3],'Moy’na':[3,7,5],Independent:[12,6,2]});
+export const factionLabel=value=>['Moy’na',"Moy'na"].includes(value)?'Concord':value;
 export const RESOURCES = ['Food','Supply','Material'];
 export const TRADE_RULES = Object.freeze({tradesPerHavenPerHour:1,execution:'not simulated'});
 

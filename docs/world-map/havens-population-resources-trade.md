@@ -2,6 +2,13 @@
 
 Append this to the existing World Map Simulator v1 specification.
 
+## Faction Naming Clarification
+
+**Concord** is the faction; **Moy'na** is the symbiote species. Historical
+Moy'na faction labels in this specification and simulator data refer to Concord,
+not a separate faction. Existing simulator identifiers are not renamed by this
+clarification. Population, capacity and economic rules remain unchanged.
+
 The simulator does **not** need to run the full economy yet, but it should generate enough Haven population, capacity, resource, and trade data to test the world-map UI and campaign distribution.
 
 ---
@@ -14,7 +21,7 @@ Generate approximately **100 starting Havens** from the Campaign Seed:
 | ----------- | ------: |
 | Scions      |      40 |
 | CLP         |      25 |
-| Moy'na      |      15 |
+| Concord     |      15 |
 | Independent |      20 |
 | **Total**   | **100** |
 
@@ -169,9 +176,9 @@ Do not count a bonded pair as one person.
 
 ---
 
-# 6. Moy'na Haven Generation
+# 6. Concord Haven Generation
 
-Moy'na should generally have:
+Concord Havens should generally have:
 
 * fewer Havens;
 * larger Havens;
@@ -179,7 +186,7 @@ Moy'na should generally have:
 * scale strongly influenced by nest age/history;
 * expansion from P1 to P4 to P16 over time.
 
-Do **not** force a permanent fixed P1/P4/P16 quota on Moy'na.
+Do **not** force a permanent fixed P1/P4/P16 quota on Concord.
 
 For initial simulator generation, a reasonable paper-test distribution is approximately:
 
@@ -189,7 +196,7 @@ P4:  7
 P16: 5
 ```
 
-for the 15 starting Moy'na Havens.
+for the 15 starting Concord Havens.
 
 Treat this as a generation target/tendency rather than an immutable rule.
 
@@ -197,7 +204,7 @@ Nest age should influence capacity.
 
 A recently expanded nest may have substantial headroom.
 
-Only a few Moy'na Havens should begin close to capacity.
+Only a few Concord Havens should begin close to capacity.
 
 The number of active Moy'na nests changes relatively rarely and should eventually be meaningful when it does.
 
@@ -387,7 +394,7 @@ Exact final iconography is not required for the simulator.
 
 Faction affiliation should influence generated resource profiles.
 
-## Moy'na
+## Concord
 
 Primary tendency:
 

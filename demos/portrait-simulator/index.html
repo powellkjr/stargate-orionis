@@ -9,7 +9,7 @@
 <header>
   <div>
     <span class="eyebrow">STARGATE ORIONIS / PERSONNEL</span>
-    <h1>Portrait Simulator</h1>
+    <h1>Character &amp; Portrait Editor</h1>
     <p class="muted">Composable pixel parts at a 48×64 bust scale. Appearance is presentation only: no competency, knowledge, or custody is encoded.</p>
   </div>
   <div class="header-actions">
@@ -25,7 +25,7 @@
     <p class="muted">Authored part combinations from <code>shared/data/portraits/portrait-presets.json</code>. These are visual studies, not personnel records.</p>
     <div id="studies" class="studies"></div>
     <h2>Deployment roster</h2>
-    <p class="muted">The shared 54-person staffing roster. Select a person, edit the face, then save the appearance back to the shared presentation record.</p>
+    <p class="muted">Select a shared roster member to edit appearance or gameplay stats. Each saves separately; refresh other demos to use saved changes.</p>
     <div id="roster" class="roster"></div>
   </aside>
   <main>
@@ -48,6 +48,25 @@
     </details>
   </main>
   <aside class="right">
+    <section id="characterStats" hidden>
+      <h2>Character stats</h2>
+      <div id="statsPreview" style="color:#38bdf8;max-width:240px"></div>
+      <h3>Profession &amp; progression</h3>
+      <p class="muted">Demo roster authoring only: these controls are not gameplay promotion or branch switching. Final-game progression belongs in the Promotion Room; branch commitment is permanent. A T0 branch unlocks slot two for eligible base Profession Tools. T1 promotion introduces specialist Tools; none are granted here automatically.</p>
+      <p>Base Profession: <strong id="baseProfession"></strong></p>
+      <label>Base tier<input id="characterTier" type="number" min="1" max="3" step="1"></label>
+      <label>Cross-path / specialization<select id="characterBranch"></select></label>
+      <label>Branch tier<select id="characterBranchTier"><option value="0">0 · uncertified</option><option value="1">I</option><option value="2">II</option><option value="3">III</option></select></label>
+      <h3>Configured Tools</h3>
+      <div id="configuredToolRows"></div>
+      <button id="addConfiguredTool">Add Tool</button>
+      <button id="saveConfiguration">Save progression &amp; Tools</button>
+      <p class="muted">This type/charges list controls deployment dropdowns. Removing a Tool clears it from equipped slots. Progression changes never grant Tools automatically.</p>
+      <div id="statFields"></div>
+      <div class="row"><button id="saveStats">Save character stats</button><button id="resetStats">Reset stats</button></div>
+      <p id="statsStatus" class="muted" role="status"></p>
+      <p class="muted">PER 0–10 · STA 0–100 · END 1–10. Stat saves preserve saved progression and equipment. Save progression &amp; Tools separately. Static hosting saves in this browser only.</p>
+    </section>
     <h2>Parts</h2>
     <div id="styleFields"></div>
     <h2>Colors</h2>
@@ -60,7 +79,7 @@
     <p id="groups" class="muted"></p>
   </aside>
 </div>
-<footer>Serve the repository root with <code>python -m http.server 8000</code>, then open <code>/demos/portrait-simulator/</code>. Terminal authoring aid: <code>node demos/portrait-simulator/preview-ascii.mjs</code>.</footer>
+<footer>Run <code>node demos/serve.mjs</code> from the repository root, then open <code>http://127.0.0.1:8001/demos/portrait-simulator/</code>. Terminal authoring aid: <code>node demos/portrait-simulator/preview-ascii.mjs</code>.</footer>
 <script type="module" src="app.mjs"></script>
 </body>
 </html>

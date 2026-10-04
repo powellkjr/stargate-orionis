@@ -181,7 +181,7 @@
           "charges": 9
         },
         {
-          "kitId": "DIT3",
+          "kitId": "SOT3",
           "charges": 9
         }
       ]
@@ -352,21 +352,21 @@
     },
     "unit-18": {
       "tier": 3,
-      "branch": {
-        "kind": "cross",
-        "id": "DIPLOMAT",
-        "tier": 1
-      },
       "perception": 7,
       "stamina": 90,
       "endurance": 8,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
       "toolSlots": [
         {
           "kitId": "STT3",
           "charges": 3
         },
         {
-          "kitId": "DIT1",
+          "kitId": "DIT3",
           "charges": 3
         }
       ]
@@ -432,22 +432,22 @@
     },
     "unit-22": {
       "tier": 3,
+      "perception": 9,
+      "stamina": 84,
+      "endurance": 7,
       "branch": {
         "kind": "specialization",
         "id": "Overdrive",
-        "tier": 1
+        "tier": 3
       },
-      "perception": 6,
-      "stamina": 84,
-      "endurance": 7,
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 8
         },
         {
-          "kitId": "OVT1",
-          "charges": 3
+          "kitId": "OVT3",
+          "charges": 8
         }
       ]
     },

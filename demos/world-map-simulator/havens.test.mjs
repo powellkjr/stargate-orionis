@@ -1,5 +1,10 @@
 import test from 'node:test';
+import {factionLabel} from './havens.mjs';
 import assert from 'node:assert/strict';
+test('Concord display preserves legacy faction keys and species terminology',()=>{
+  for(const value of ['Moy’na',"Moy'na",'Concord'])assert.equal(factionLabel(value),'Concord');
+  for(const value of ['Scions','CLP','Independent',null])assert.equal(factionLabel(value),value);
+});
 import {random,generateGeometry,generateCampaign,analyze,emptyFailures,route} from './model.mjs';
 import {RATION_CAPACITY,SCALE_TARGETS,enrichHavens,populationTotals,havenSummary,knownHaven,balanceIndicator,matchesResource,tradeRelationships} from './havens.mjs';
 const base=Object.entries(SCALE_TARGETS).flatMap(([f,counts])=>Array.from({length:counts.reduce((a,b)=>a+b)},()=>({faction:f}))).map((h,id)=>({...h,id,gateId:id,name:`Haven ${id}`}));

@@ -7,7 +7,7 @@ import {startWork,executionProfile,recipeEligibility} from '../shared/offworld/f
 import {lootEntries,debriefOptions,finalizeDebrief} from '../shared/offworld/recovery.mjs';
 import {renderMap} from './map.mjs';
 const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const m=compileMission(read('missing-operative-001.finalized'),read('archetypes'));
+const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function state(){const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
 function explore(s){for(const stage of Object.values(s.stageStates))Object.assign(stage,{explored:true,knownShape:true});for(const edge of Object.values(s.transitionStates))Object.assign(edge,{state:'OPEN',known:true});}
 test('recovery offers discovered assets with routes, preserves IDs and leaves unselected assets local',()=>{
@@ -43,7 +43,7 @@ test('interviews shorten later social work without granting Profession qualifica
  const r=m.indexes.recipes['negotiate-reynolds'];assert.equal(executionProfile(s,r).durationMinutes,3);
  startWork(m,s,'question-worker-yard',unit.unitId);advanceTime(m,s,180);
  assert.equal(executionProfile(s,r).durationMinutes,1);
- s.currentStageId=s.units[0].currentStageId='stage-security-hall';visibility(m,s);
+ s.currentStageId=s.units[0].currentStageId='stage-security-hall';s.instanceStates['reynolds-01'].combatState='ACTIVE';s.instanceStates['reynolds-01'].npcState.disposition='HOSTILE';visibility(m,s);
  assert.equal(recipeEligibility(m,s,r,unit.unitId).status,'BLOCKED');s.units[0].tier=2;
  const w=startWork(m,s,r.recipeInstanceId,unit.unitId);advanceTime(m,s,59);assert.notEqual(w.status,'COMPLETED');advanceTime(m,s,1);assert.equal(w.status,'COMPLETED');
 });

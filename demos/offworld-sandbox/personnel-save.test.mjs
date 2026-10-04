@@ -11,7 +11,7 @@ test('writable server persists valid stats and tools atomically; invalid saves l
   const path=join(dir,'personnel-loadouts.json'),before=JSON.parse(await readFile(path,'utf8')),server=demoServer(root);await new Promise(r=>server.listen(0,'127.0.0.1',r));
   const base=`http://127.0.0.1:${server.address().port}`,save=(id,value,origin)=>fetch(base+'/api/personnel/'+id,{method:'PUT',headers:{'Content-Type':'application/json',...(origin?{Origin:origin}:{})},body:JSON.stringify(value)});
   try{
-    const edited={...before.units['unit-1'],perception:9,toolSlots:[{kitId:'SOT1',charges:7},{kitId:'',charges:0}]};
+    const edited={...before.units['unit-1'],perception:9,availableTools:[{type:'SOT1',charges:7}],toolSlots:[{kitId:'SOT1',charges:7},{kitId:'',charges:0}]};
     assert.equal((await save('unit-1',edited)).status,200);const after=JSON.parse(await readFile(path,'utf8'));assert.deepEqual(after.units['unit-1'],edited);assert.deepEqual(after.units['unit-2'],before.units['unit-2']);
     assert.equal((await save('unit-1',{...edited,tier:99})).status,400);
     assert.equal((await save('unit-1',{...edited,toolSlots:[{kitId:'TET3',charges:3},{kitId:'',charges:0}]})).status,400);

@@ -6,19 +6,78 @@ import {createRuntime,chooseGate,move,advanceTime,extract} from '../shared/offwo
 import {createTool,toolOptions,validateEquipment,professionTier} from '../shared/offworld/equipment.mjs';
 import {activeWork,recipeEligibility,startWork,cancelWork,stationUnit,observationEligibility,refreshField} from '../shared/offworld/field.mjs';
 const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const raw=read('missing-operative-001.finalized'),catalog=read('archetypes'),presets=read('party-presets').units,m=compileMission(raw,catalog);
+const raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},catalog=read('archetypes'),presets=read('party-presets').units,m=compileMission(raw,catalog);
 function unit(role,kit,tier=2){const u=clone(presets.find(u=>u.profession===role));u.tier=tier;u.tools=kit?[createTool(u,0,kit,3,catalog)]:[];return u;}
 function fresh(units=[unit('TECHNICIAN','TET2'),unit('MEDIC','MET2'),unit('SCOUT','STT2'),unit('SCIENTIST','SCT2')],mission=m){const s=createRuntime(mission,units,'2026-09-24T14:00:00Z');chooseGate(mission,s,true);return s;}
 function hall(s,mission=m){move(mission,s,'door-gate-to-yard');move(mission,s,'door-yard-to-mainhall');}
 const eligible=(s,id,mission=m)=>recipeEligibility(mission,s,mission.indexes.recipes[id]);
+function portableFixture(effects){
+  const r=clone(raw),asset=r.instances.find(i=>i.instanceId==='mining-system-01');
+  asset.recovery={category:'PARTY_STORAGE_WHEN_COLLECTED'};
+  r.recipes.find(r=>r.recipeInstanceId==='inspect-mining-system').overrides.effects=effects??[{type:'ADD_TO_PARTY_STORAGE',instanceId:asset.instanceId}];
+  const mission=compileMission(r,catalog),s=fresh(undefined,mission);hall(s,mission);move(mission,s,'door-mainhall-to-processing');
+  return {r,mission,s};
+}
+test('portable collection preserves instance state and identity through movement and extraction',()=>{
+  const {mission,s}=portableFixture(),before=clone(s.instanceStates['mining-system-01']);
+  const w=startWork(mission,s,'inspect-mining-system');advanceTime(mission,s,180);
+  assert.equal(w.status,'COMPLETED');assert.deepEqual(s.partyStorage,['mining-system-01']);
+  assert.deepEqual(s.instanceStates['mining-system-01'],{...before,custody:'PARTY_STORAGE'});
+  assert.equal(eligible(s,'inspect-mining-system',mission).status,'HIDDEN');
+  for(const id of ['door-mainhall-to-processing','door-yard-to-mainhall','door-gate-to-yard'])move(mission,s,id);
+  assert.equal(s.instanceStates['mining-system-01'].custody,'PARTY_STORAGE');extract(mission,s);
+  assert.equal(s.instanceStates['mining-system-01'].custody,'RECOVERED_TO_SGC');
+  assert.equal(s.resultEvents.filter(e=>e.type==='ASSET_RECOVERED'&&e.instanceId==='mining-system-01').length,1);
+  assert.equal(s.instanceStates['supply-cache-01'].custody,'LOCAL');
+});
+test('duplicate collection rolls back inventory, custody, ledger and charges',()=>{
+  const effect={type:'ADD_TO_PARTY_STORAGE',instanceId:'mining-system-01'}, {mission,s}=portableFixture([effect,effect]);
+  const before=clone(s.instanceStates['mining-system-01']),w=startWork(mission,s,'inspect-mining-system');advanceTime(mission,s,180);
+  assert.equal(w.status,'FAILED');assert.deepEqual(s.partyStorage,[]);assert.deepEqual(s.instanceStates['mining-system-01'],before);
+  assert.equal(s.units[0].tools[0].chargesRemaining,3);assert(!s.resultEvents.some(e=>e.type==='ASSET_COLLECTED'));
+});
+test('collection rejects unauthored portability and remote assets; extraction validates storage before mutation',()=>{
+  const r=clone(raw);r.recipes.find(r=>r.recipeInstanceId==='inspect-mining-system').overrides.effects=[{type:'ADD_TO_PARTY_STORAGE',instanceId:'mining-system-01'}];
+  assert.throws(()=>compileMission(r,catalog),/authored portable recovery category/);
+  const fixture=portableFixture();fixture.r.instances.find(i=>i.instanceId==='operative-01').recovery={category:'PARTY_STORAGE'};
+  fixture.r.recipes.find(r=>r.recipeInstanceId==='inspect-mining-system').overrides.effects=[{type:'ADD_TO_PARTY_STORAGE',instanceId:'operative-01'}];
+  const mission=compileMission(fixture.r,catalog),s=fresh(undefined,mission);hall(s,mission);move(mission,s,'door-mainhall-to-processing');
+  const w=startWork(mission,s,'inspect-mining-system');advanceTime(mission,s,180);assert.equal(w.status,'FAILED');assert.deepEqual(s.partyStorage,[]);
+  const atGate=fresh();atGate.partyStorage.push('missing');const before=clone(atGate);assert.throws(()=>extract(m,atGate),/storage custody/);assert.deepEqual(atGate,before);
+});
+test('authored detection and recovery effects change state without changing custody or moving assets',()=>{
+  const r=clone(raw),recipe=r.recipes.find(r=>r.recipeInstanceId==='inspect-mining-system');
+  recipe.overrides.effects=[{type:'SET_DETECTION_STATE',instanceId:'supply-cache-01',value:'LOCATED'},{type:'SET_RECOVERY_STATE',instanceId:'supply-cache-01',value:'SECURED'}];
+  const mission=compileMission(r,catalog),s=fresh(undefined,mission);hall(s,mission);move(mission,s,'door-mainhall-to-processing');
+  const before=clone(s.instanceStates['supply-cache-01']),w=startWork(mission,s,recipe.recipeInstanceId);
+  advanceTime(mission,s,180);assert.equal(w.status,'COMPLETED');
+  assert.deepEqual(s.instanceStates['supply-cache-01'],{...before,detectionState:'LOCATED',recoveryState:'SECURED'});
+  assert.equal(s.carriedAssets.includes('supply-cache-01'),false);
+  assert(w.outcome.changes.some(e=>e.field==='recoveryState'&&e.instanceId==='supply-cache-01'));
+});
+test('field state effects reject invalid states and roll back prior mutations if the instance disappears',()=>{
+  for(const type of ['SET_DETECTION_STATE','SET_RECOVERY_STATE']){
+    for(const value of ['invented',null,7]){
+      const r=clone(raw);r.recipes.find(r=>r.recipeInstanceId==='inspect-mining-system').overrides.effects=[{type,instanceId:'supply-cache-01',value}];
+      assert.throws(()=>compileMission(r,catalog),new RegExp(`invalid ${type}`));
+    }
+    const r=clone(raw),recipe=r.recipes.find(r=>r.recipeInstanceId==='inspect-mining-system');
+    recipe.overrides.effects=[{type:'SET_TARGET_STATE',field:'inspected',value:true},{type,instanceId:'supply-cache-01',value:type==='SET_DETECTION_STATE'?'LOCATED':'SECURED'}];
+    const mission=compileMission(r,catalog),s=fresh(undefined,mission);hall(s,mission);move(mission,s,'door-mainhall-to-processing');
+    const w=startWork(mission,s,recipe.recipeInstanceId);delete s.instanceStates['supply-cache-01'];advanceTime(mission,s,180);
+    assert.equal(w.status,'FAILED');assert.equal(s.instanceStates['mining-system-01'].inspected,undefined);assert.equal(s.units[0].tools[0].chargesRemaining,3);
+  }
+});
 test('exactly two slots follow base/branch tiers, and either unlocked slot can use either track',()=>{
   const u=unit('TECHNICIAN','TET2',3);assert.throws(()=>createTool(u,1,'TET1',2,catalog),/eligible/);
   u.branch={kind:'cross',id:'MEDIC',tier:1};u.tools=[createTool(u,0,'MET1',2,catalog),createTool(u,1,'TET2',2,catalog)];validateEquipment(u,catalog);
   assert.equal(professionTier(u,'MEDIC'),1);assert(!toolOptions(u).some(t=>t.id==='MET2'));
   u.tools.push(clone(u.tools[0]));assert.throws(()=>validateEquipment(u,catalog),/two/);
 });
-test('uncertified branches grant neither second slot nor competency; specialization has no inferred base Profession',()=>{
+test('T0 branches unlock a base-tool second slot without trained branch competency',()=>{
   const u=unit('TECHNICIAN','TET2',3);u.branch={kind:'cross',id:'MEDIC',tier:0};assert.equal(professionTier(u,'MEDIC'),0);assert.throws(()=>createTool(u,1,'MET1',3,catalog));
+  u.tools.push(createTool(u,1,'TET1',3,catalog));validateEquipment(u,catalog);u.tools.pop();
+  u.branch={kind:'specialization',id:'Overdrive',tier:0};u.tools.push(createTool(u,1,'TET1',3,catalog));validateEquipment(u,catalog);assert.throws(()=>createTool(u,1,'OVT1',3,catalog));u.tools.pop();
   u.branch={kind:'specialization',id:'Overdrive',tier:1};u.tools.push(createTool(u,1,'OVT1',3,catalog));validateEquipment(u,catalog);assert.deepEqual(u.tools[1].providedServices,[]);assert.equal(professionTier(u,'SCIENTIST'),0);
 });
 test('rejects fabricated Tool capabilities and above-tier kits',()=>{

@@ -39,6 +39,8 @@ try {
   assert.equal(await evaluate("document.querySelectorAll('[data-field=selected]:checked').length"),0);
   assert.equal(await evaluate("document.querySelectorAll('[data-field=selected]:disabled').length"),0);
   assert.equal(await evaluate("document.querySelectorAll('[data-slot]').length"),108);
+  assert.equal(await evaluate("document.querySelectorAll('#roster .stats-radar').length"),54);
+  assert.equal(await evaluate("document.querySelectorAll('[data-field=perception],[data-field=stamina],[data-field=endurance]').length"),0);
   assert(await evaluate("document.getElementById('deploymentTools').textContent.includes('Signal receiver')"));
   assert.equal(await evaluate("document.querySelectorAll('option[value$=\"_SIGNAL\"]').length"),0);
   await evaluate("document.querySelector('[data-unit=\"53\"] [data-field=favorite]').click()");
@@ -47,17 +49,19 @@ try {
   for(let i=0;i<100;i++){if(await evaluate("document.querySelectorAll('[data-unit]').length===54"))break;await delay(100);}
   assert.equal(await evaluate("document.querySelector('[data-unit]').dataset.unit"),'53','Favorite survives reload');
   assert.equal(await evaluate("document.querySelector('[data-unit] [data-field=favorite]').checked"),true);
-  await evaluate(`(()=>{const card=document.querySelector('[data-unit="18"]');const tier=card.querySelector('[data-field=tier]');tier.value=3;tier.dispatchEvent(new Event('change',{bubbles:true}));const branch=card.querySelector('[data-field=branch]');branch.value='cross:MEDIC';branch.dispatchEvent(new Event('change',{bubbles:true}));card.querySelector('[data-slot="1"]').value='MET1';card.querySelector('[data-slot="0"]').value='TET2';})()`);
+  assert.equal(await evaluate("document.querySelectorAll('[data-field=tier],[data-field=branch],[data-charges]').length"),0,'configuration belongs in character editor');
+  await evaluate(`(async()=>{const data=await (await fetch('../shared/data/personnel-loadouts.json')).json();const cached={};cached['unit-1']={...data.units['unit-1'],tier:3,branch:{kind:'cross',id:'DIPLOMAT',tier:1}};cached['unit-19']={...data.units['unit-19'],tier:3,branch:{kind:'cross',id:'MEDIC',tier:1},availableTools:[{type:'TET2',charges:3},{type:'MET1',charges:3}],toolSlots:[{kitId:'TET2',charges:3},{kitId:'MET1',charges:3}]};cached['unit-10']={...data.units['unit-10'],tier:2,availableTools:[{type:'STT2',charges:3}],toolSlots:[{kitId:'STT2',charges:3},{kitId:'',charges:0}]};localStorage.setItem('sgc-personnel-loadouts-v1',JSON.stringify(cached));})()`);
+  await call('Page.reload');
+  for(let i=0;i<100;i++){if(await evaluate("document.querySelectorAll('[data-unit]').length===54"))break;await delay(100);}
   assert.equal(await evaluate("document.querySelector('[data-unit=\"18\"] [data-slot=\"1\"]').disabled"),false);
   assert.equal(await evaluate("[...document.querySelector('[data-unit=\"18\"] [data-slot=\"1\"]').options].some(o=>o.value==='MET2')"),false);
-  await evaluate(`(()=>{const card=document.querySelector('[data-unit="9"]');const tier=card.querySelector('[data-field=tier]');tier.value=2;tier.dispatchEvent(new Event('change',{bubbles:true}));card.querySelector('[data-slot="0"]').value='STT2';})()`);
   await evaluate("[0,9,18,27].forEach(i=>document.querySelector('[data-unit=\"'+i+'\"] [data-field=selected]').click())");
   await evaluate(`document.querySelector('[data-unit="18"] [data-slot="0"]').dispatchEvent(new Event('change',{bubbles:true}))`);
   await delay(150);
   await call('Page.reload');
   for(let i=0;i<100;i++){if(await evaluate("document.querySelectorAll('[data-unit]').length===54"))break;await delay(100);}
   assert.equal(await evaluate("document.querySelectorAll('[data-field=selected]:checked').length"),0);
-  assert.equal(await evaluate(`document.querySelector('[data-unit="18"] [data-field=tier]').value`),'3');
+  assert(await evaluate(`document.querySelector('[data-unit="18"] .profession').textContent.includes('3')`));
   assert.equal(await evaluate(`document.querySelector('[data-unit="18"] [data-slot="0"]').value`),'TET2');
   assert.equal(await evaluate(`document.querySelector('[data-unit="18"] [data-slot="1"]').value`),'MET1');
   await evaluate(`document.querySelector('[data-unit="9"] [data-slot="0"]').value='STT2'`);
@@ -70,9 +74,18 @@ try {
   await writeFile(join(profile,'setup.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
   await evaluate("document.getElementById('deploy').click();document.getElementById('keepGate').click()");
   assert.equal(await evaluate("document.getElementById('mission').hidden"),false);
+  assert.equal(await evaluate("document.querySelectorAll('#party .stats-radar').length"),4);
   assert(await evaluate("document.getElementById('partyTools').textContent.includes('Signal receiver')"));
   const door=async id=>{await evaluate(`document.querySelector('[data-transition="${id}"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);await delay(330);};
-  await door('door-gate-to-yard');await door('door-yard-to-mainhall');
+  await door('door-gate-to-yard');
+  assert(await evaluate("document.getElementById('mission').textContent.includes('Visitors check in with Reynolds inside.')"),'Authored yard dialogue appears during normal play');
+  assert(await evaluate("document.querySelector('#conversation').parentElement.classList.contains('map-panel')&&getComputedStyle(document.querySelector('#conversation')).position==='absolute'"),'Conversation overlays map');
+  await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  assert(await evaluate("document.querySelector('#conversation').getBoundingClientRect().width<=document.querySelector('.map-panel').getBoundingClientRect().width&&document.documentElement.scrollWidth<=innerWidth"),'Conversation overlay fits mobile map');
+  await writeFile(join(profile,'dialogue-mobile.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
+  await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+  await evaluate("document.querySelector('[data-dialogue-response=yard-ignore]').click()");
+  await door('door-yard-to-mainhall');
   assert.equal(await evaluate("document.getElementById('stageTitle').textContent"),'Main Hall');
   assert(await evaluate("document.getElementById('context').textContent.includes('operative')"),'Scout observation should be presented');
   await evaluate("document.querySelector('[data-recipe=\"hack-door-mainhall-to-security\"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))");
@@ -101,15 +114,33 @@ try {
   await writeFile(join(profile,'desktop.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
   assert(await evaluate("document.querySelectorAll('.door-inactive:not([data-transition])').length>0"));
   await door('door-mainhall-to-security');
-  assert(await evaluate(`!!document.querySelector('#map [data-recipe="intimidate-reynolds"]')&&!!document.querySelector('#map [data-recipe="negotiate-reynolds"]')`));
+  await evaluate(`document.querySelector('[data-npc="reynolds-01"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);
+  assert(await evaluate("document.getElementById('npcDetails').textContent.includes('Security supervisor')"));
+  assert(await evaluate("!!document.querySelector('#npcDetails .portrait svg')"));
+  await evaluate("document.getElementById('closeNpcDetails').click()");
+  await evaluate("document.querySelector('[data-dialogue-start=dialogue-reynolds]').click();document.querySelector('[data-dialogue-response=reynolds-routine]').click()");
+  assert(await evaluate("document.getElementById('conversation').hidden"),'Reynolds conversation completes');
   await evaluate(`document.querySelector('#map [data-engage="incident-security-guards"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);
-  await delay(3400);
+  assert.equal(await evaluate("document.getElementById('wait').disabled"),true);
+  await delay(2200);
+  assert(await evaluate("document.getElementById('context').textContent.includes('round 0')"),'No round before three real seconds');
+  await delay(1300);
+  assert(await evaluate("document.getElementById('context').textContent.includes('round 1')"));
+  assert(await evaluate("document.querySelectorAll('.floating-damage').length>0"),'Damage is shown over tokens');
+  await writeFile(join(profile,'combat-damage.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
+  await delay(1600);
+  for(let i=0;i<15;i++){if(await evaluate("document.querySelectorAll('.floating-damage').length===0"))break;await delay(100);}
+  assert.equal(await evaluate("document.querySelectorAll('.floating-damage').length"),0,'Damage expires while waiting for next round');
+  for(let i=0;i<300;i++){if(await evaluate("!document.querySelector('[data-retreat=\"incident-security-guards\"]')"))break;await delay(100);}
   assert(await evaluate("document.getElementById('context').textContent.includes('RESOLVED')"));
   assert(await evaluate("document.getElementById('context').textContent.includes('DOWN')"));
   await door('door-mainhall-to-security');
   await door('door-mainhall-to-processing');await door('door-processing-to-office');
   assert(await evaluate("document.querySelectorAll('.action-hex polygon').length>=3"));
-  assert.equal(await evaluate("document.querySelectorAll('#context [data-recipe^=destroy-security-terminal]').length"),1,'One Destroy choice for both professions');
+  await evaluate("document.getElementById('dialogueActor').value='unit-1';document.querySelector('[data-dialogue-start=dialogue-mcguffin-cover]').click()");
+  for(const id of ['mcguffin-containment-play-dumb','mcguffin-processing-vague','mcguffin-lab-deflect','mcguffin-neutral-no']){assert(await evaluate(`document.querySelector('[data-dialogue-response=${id}]')?.disabled===false`),'Authored response eligible');await evaluate(`document.querySelector('[data-dialogue-response=${id}]').click()`);}
+  assert(await evaluate("!document.getElementById('conversation').hidden&&document.querySelector('[data-dialogue-continue]')!==null"),'McGuffin silent branch resolves to spoken terminal node');
+  await evaluate("document.querySelector('[data-dialogue-continue]').click()");
   await writeFile(join(profile,'office.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
   await door('door-processing-to-office');await door('door-mainhall-to-processing');
   await evaluate("document.getElementById('return').click()");
@@ -120,6 +151,44 @@ try {
   await evaluate("document.getElementById('focus').click()");
   assert(await evaluate('document.documentElement.scrollWidth<=window.innerWidth'),'Mobile horizontal overflow');
   await writeFile(join(profile,'mobile.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
+  const npcChecks=await evaluate(`(async()=>{
+    const {npcAlertSvg}=await import('./npc-presentation.mjs');
+    const {applyNpcEffect}=await import('../shared/offworld/npc.mjs');
+    const fixture={instanceStates:{neutral:{npcState:{disposition:'ROUTINE',suspicion:0,hostility:0}}},resultEvents:[],missionElapsedSeconds:0};
+    const panel=document.createElement('div');panel.id='npc-smoke';document.body.append(panel);
+    const symbols=[];
+    for(const [suspicion,hostility] of [[0,0],[50,0],[100,0],[100,50],[100,100]]){
+      fixture.instanceStates.neutral.npcState.suspicion=suspicion;fixture.instanceStates.neutral.npcState.hostility=hostility;
+      panel.innerHTML='<svg viewBox="-20 -40 40 60" width="40" height="60">'+npcAlertSvg(fixture.instanceStates.neutral)+'</svg>';
+      symbols.push(panel.querySelector('text').textContent);
+    }
+    applyNpcEffect(fixture,{type:'START_CONFRONTATION',instanceIds:['neutral']});
+    const result={symbols,disposition:fixture.instanceStates.neutral.npcState.disposition,combatState:fixture.instanceStates.neutral.combatState??null};panel.remove();return result;
+  })()`);
+  assert.deepEqual(npcChecks,{symbols:['?','?','!','!','☹'],disposition:'CONFRONTING',combatState:null});
+  const conversationChecks=await evaluate(`(async()=>{
+    const {conversationHtml}=await import('./conversation.mjs');
+    const {startDialogue,respondDialogue,continueDialogue}=await import('../shared/offworld/dialogue.mjs');
+    const {compileMission}=await import('../shared/offworld/mission.mjs');
+    const {createRuntime,chooseGate}=await import('../shared/offworld/runtime.mjs');
+    const get=async p=>(await fetch(p)).json();
+    const raw=await get('../shared/data/offworld/missing-operative-001.finalized.json');
+    raw.dialogueScenes=[{dialogueSceneId:'smoke',participants:{left:'worker-yard-01',right:'ACTIVE_SGC_SPEAKER'},startNodeId:'hello',nodes:[
+      {nodeId:'hello',speaker:'worker-yard-01',side:'LEFT',text:'Authored greeting.',responses:[{responseId:'reply',text:'Authored reply.',source:'NEUTRAL',nextNodeId:'bye'}]},
+      {nodeId:'bye',speaker:'worker-yard-01',side:'LEFT',text:'Authored farewell.',endConversation:true}]}];
+    const m=compileMission(raw,await get('../shared/data/offworld/archetypes.json'));
+    const units=(await get('../shared/data/offworld/party-presets.json')).units.slice(0,4);
+    const s=createRuntime(m,units,'2026-09-25T12:00Z');chooseGate(m,s,true);s.currentStageId='stage-outer-yard';
+    s.stageStates[s.currentStageId].visibility='VISIBLE';s.units.forEach(u=>u.currentStageId=s.currentStageId);
+    startDialogue(m,s,'smoke',s.units[0].unitId);
+    const panel=document.createElement('section');panel.className='conversation';document.body.append(panel);panel.innerHTML=conversationHtml(m,s);
+    const portraits=panel.querySelectorAll('.portrait svg').length;const left=!!panel.querySelector('.speech.left');
+    panel.querySelector('[data-dialogue-response]').onclick=()=>{respondDialogue(m,s,'reply');panel.innerHTML=conversationHtml(m,s);};
+    panel.querySelector('[data-dialogue-response]').click();const right=!!panel.querySelector('.speech.right');
+    const overflow=document.documentElement.scrollWidth>window.innerWidth;
+    continueDialogue(m,s);panel.remove();return {portraits,left,right,overflow,ended:s.dialogue===null};
+  })()`);
+  assert.deepEqual(conversationChecks,{portraits:2,left:true,right:true,overflow:false,ended:true});
   await evaluate("document.getElementById('extract').click()");await delay(250);
   assert.equal(await evaluate("document.getElementById('debrief').hidden"),false);
   assert.equal(await evaluate("document.querySelectorAll('#objectives').length"),1);

@@ -2075,7 +2075,7 @@
           "implemented": true,
           "kind": "COMBAT",
           "roundSeconds": 30,
-          "hostileHealth": 45,
+          "hostileHealth": 150,
           "hostileDamage": 5
         },
         "tunableFields": {
@@ -2167,6 +2167,14 @@
         "tunableFields": {}
       },
       "event_objective_completed": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_mcguffin_cover_maintained": {
+        "defaults": {},
+        "tunableFields": {}
+      },
+      "event_mcguffin_cover_blown": {
         "defaults": {},
         "tunableFields": {}
       }

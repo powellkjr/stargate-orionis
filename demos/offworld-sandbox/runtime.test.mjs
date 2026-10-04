@@ -6,7 +6,7 @@ import {createRuntime,chooseGate,advanceTime,move,returnRoute,redial,extract} fr
 import {portraitSvg} from '../shared/portraits/portrait.mjs';
 const read=name=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${name}.json`,import.meta.url)));
 const raw=read('missing-operative-001.finalized'),catalog=read('archetypes'),party=read('party-presets').units.slice(0,4);
-const m=compileMission(raw,catalog),start='2026-09-24T14:00:00Z';
+const m=compileMission({...raw,dialogueScenes:[]},catalog),start='2026-09-24T14:00:00Z';
 const fresh=()=>createRuntime(m,party,start);
 test('resolves once, deep freezes definitions, and preserves input',()=>{
   const snapshot=JSON.stringify(raw);compileMission(raw,catalog);assert.equal(JSON.stringify(raw),snapshot);

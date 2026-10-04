@@ -9,10 +9,11 @@ assets, or changes to the room simulators and shared game catalogs are required.
 From the repository root:
 
 ```text
-python -m http.server 8000
+node demos/serve.mjs
 ```
 
-Open `http://localhost:8000/demos/world-map-simulator/` in a modern browser.
+Open `http://127.0.0.1:8001/demos/world-map-simulator/` in a modern browser.
+The same command hosts all demos at `/demos/`; see `../README.md` for save scope and static hosting.
 Serve over HTTP; ES modules and the analysis worker cannot run from `file://`.
 
 1. Generate a **Geometry seed** and inspect its diagnostics. Generation settings

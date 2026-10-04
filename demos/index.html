@@ -107,13 +107,18 @@
 
       <a class="demo-card" href="./portrait-simulator/">
         <div class="card-top"><span class="icon" aria-hidden="true">☺</span><span class="status">Instrument</span></div>
-        <h2>Portrait Simulator</h2>
+        <h2>Character &amp; Portrait Editor</h2>
         <p>Compose personnel busts from interchangeable pixel parts, tune skin, hair, uniform and collar colors, and export the appearance record the roster icon and map token already read.</p>
         <div class="card-footer"><span>Open portrait simulator</span><span class="arrow" aria-hidden="true">→</span></div>
       </a>
     </main>
 
-    <footer>Serve from the repository root with <code>python -m http.server 8000</code>, then visit <code>/demos/</code>.</footer>
+    <footer>
+      <p>Run every demo locally with <code>node demos/serve.mjs</code> from the repository root, then open <code>http://127.0.0.1:8001/demos/</code>. Keep the terminal open. Optional port: <code>node demos/serve.mjs 8000</code>.</p>
+      <p id="hostingStatus" role="status">Checking shared JSON save service…</p>
+      <p>Static hosting (including GitLab Pages) still runs the browser demos, but cannot write shared repository JSON. Existing browser-only saves and exports remain separate from shared JSON saves.</p>
+    </footer>
   </div>
+  <script type="module" src="./hosting-status.mjs"></script>
 </body>
 </html>

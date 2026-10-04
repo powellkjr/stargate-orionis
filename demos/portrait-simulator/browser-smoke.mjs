@@ -48,6 +48,28 @@ try {
   assert.equal(await evaluate("document.querySelector('[data-scale=\"2\"]').getAttribute('aria-pressed')"),'true');
   await evaluate("document.querySelector('[data-roster]').click();");
   assert.match(await evaluate("document.getElementById('studyLabel').textContent"),/shared roster/);
+  assert.equal(await evaluate("document.getElementById('characterStats').hidden"),false);
+  const original=await evaluate("document.getElementById('stat-perception').value");
+  await evaluate("document.getElementById('stat-perception').value='11';document.getElementById('saveStats').click()");
+  assert.equal(await evaluate("document.getElementById('error').hidden"),false,'invalid stats must be rejected');
+  await evaluate("document.getElementById('resetStats').click()");
+  assert.equal(await evaluate("document.getElementById('stat-perception').value"),original);
+  await evaluate("document.getElementById('stat-perception').value='9';document.getElementById('stat-perception').dispatchEvent(new Event('input',{bubbles:true}));document.getElementById('saveStats').click()");
+  for(let i=0;i<50;i++){if(await evaluate("document.getElementById('statsStatus').textContent.includes('Saved in this browser')"))break;await delay(100);}
+  assert(await evaluate("document.querySelector('#statsPreview svg').getAttribute('aria-label').includes('PER 9/10')"));
+  const cached=await evaluate("JSON.parse(localStorage.getItem('sgc-personnel-loadouts-v1'))");
+  assert.equal(Object.values(cached)[0].perception,9);
+  await call('Page.reload');
+  for(let i=0;i<100;i++){if(await evaluate("document.querySelectorAll('[data-roster]').length===54"))break;await delay(100);}
+  await evaluate("document.querySelector('[data-roster]').click()");
+  assert.equal(await evaluate("document.getElementById('stat-perception').value"),'9','stats survive editor reload');
+  await evaluate("document.getElementById('characterTier').value='3';document.getElementById('characterTier').dispatchEvent(new Event('change'));document.getElementById('characterBranch').value='cross:MEDIC';document.getElementById('characterBranch').dispatchEvent(new Event('change'));document.getElementById('addConfiguredTool').click();const row=document.querySelector('.configured-tool:last-child');row.querySelector('select').value='MET1';row.querySelector('input').value='7';document.getElementById('saveConfiguration').click()");
+  for(let i=0;i<50;i++){if(await evaluate("document.getElementById('statsStatus').textContent.includes('Saved in this browser')"))break;await delay(100);}
+  assert.equal(await evaluate("document.getElementById('error').hidden"),true);
+  assert(await evaluate("Object.values(JSON.parse(localStorage.getItem('sgc-personnel-loadouts-v1')))[0].availableTools.some(t=>t.type==='MET1'&&t.charges===7)"));
+  await evaluate("document.querySelector('[data-study]').click()");
+  assert.equal(await evaluate("document.getElementById('characterStats').hidden"),true,'studies cannot edit character stats');
+  await evaluate("document.querySelector('[data-roster]').click()");
   await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   assert(await evaluate('document.documentElement.scrollWidth<=window.innerWidth'),'Mobile horizontal overflow');
   await writeFile(join(profile,'mobile.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
@@ -55,7 +77,7 @@ try {
   for(let i=0;i<50;i++){if(await evaluate("document.querySelectorAll('.demo-card').length===5"))break;await delay(100);}
   assert.equal(await evaluate("document.querySelectorAll('.demo-card').length"),5,'demo index must list the portrait simulator');
   assert.equal(exceptions.length,0,JSON.stringify(exceptions));
-  console.log(`Browser smoke passed: studies, roster, layers, randomization, scaling, mobile layout, demo index. Screenshots: ${profile}`);
+  console.log(`Browser smoke passed: studies, roster, layers, randomization, scaling, stat validation/save/reload, mobile layout, demo index. Screenshots: ${profile}`);
   ws.send(JSON.stringify({id:++serial,method:'Browser.close'}));
 } finally {clearTimeout(deadline);ws?.close();browser.kill();server.close();}
 

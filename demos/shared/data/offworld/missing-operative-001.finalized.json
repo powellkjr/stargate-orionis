@@ -187,7 +187,9 @@
       "knownShapeAtStart": true,
       "instanceIds": [
         "worker-yard-01",
-        "worker-yard-02"
+        "worker-yard-02",
+        "guard-yard-01",
+        "guard-yard-02"
       ],
       "observationIds": [
         "obs-yard-security-focus",
@@ -665,6 +667,11 @@
         "initialState": {
           "combatState": "ACTIVE"
         }
+      },
+      "npcState": {
+        "disposition": "WATCHING",
+        "suspicion": 20,
+        "hostility": 0
       }
     },
     {
@@ -736,6 +743,11 @@
         "initialState": {
           "combatState": "ACTIVE"
         }
+      },
+      "npcState": {
+        "disposition": "ROUTINE",
+        "suspicion": 10,
+        "hostility": 0
       }
     },
     {
@@ -746,6 +758,11 @@
         "initialState": {
           "combatState": "ACTIVE"
         }
+      },
+      "npcState": {
+        "disposition": "ROUTINE",
+        "suspicion": 10,
+        "hostility": 0
       }
     },
     {
@@ -757,6 +774,11 @@
         "initialState": {
           "combatState": "ACTIVE"
         }
+      },
+      "npcState": {
+        "disposition": "ROUTINE",
+        "suspicion": 10,
+        "hostility": 0
       }
     },
     {
@@ -771,6 +793,11 @@
           "awareness": "UNAWARE",
           "combatState": "ACTIVE"
         }
+      },
+      "npcState": {
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
       }
     },
     {
@@ -1010,6 +1037,36 @@
       "instanceId": "safe-loot-01",
       "archetypeId": "hidden_supply_cache_basic",
       "stageId": "stage-hidden-safe"
+    },
+    {
+      "instanceId": "guard-yard-01",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "stage-outer-yard",
+      "npcState": {
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      "overrides": {
+        "initialState": {
+          "combatState": "NEUTRAL"
+        }
+      }
+    },
+    {
+      "instanceId": "guard-yard-02",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "stage-outer-yard",
+      "npcState": {
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      "overrides": {
+        "initialState": {
+          "combatState": "NEUTRAL"
+        }
+      }
     }
   ],
   "observations": [
@@ -2702,7 +2759,7 @@
       "Specializations unlock a second eligible kit slot but grant no unimplemented specialist power.",
       "Patient assessment/stabilization are bounded field actions, not an outbreak cure.",
       "Passive non-consuming observations require undamaged instruments but do not consume action charges.",
-      "Provisional combat: each party member carries a basic ranged weapon separate from the two Profession Tool slots; 100 health, 18 damage per 30-second round. Guards have 45 health and deal 5 damage. Defeat leaves a downed person, not a death.",
+      "Provisional combat: each party member carries a basic ranged weapon separate from the two Profession Tool slots; 100 health, 18 damage per 30-second round. Guards have 150 health and deal 5 damage. A lone guard lasts three rounds against four armed party members. Defeat leaves a downed person, not a death.",
       "Combat requires explicit engagement; dormant guards remain a security threat. Disengagement preserves opponents and permits doorway retreat.",
       "Patient 03 receives the same authored assessment/stabilization actions as the other patients. Holding and office guards receive explicit combat Incident records.",
       "User-authorized provisional negotiation: Diplomat II can negotiate surrender without a Tool charge; Reynolds surrenders with his two guards, McGuffin surrenders individually. No faction rewards, hidden knowledge or automatic prisoner extraction.",
@@ -2722,5 +2779,871 @@
         "damage": 18
       }
     }
-  }
+  },
+  "dialogueScenes": [
+    {
+      "dialogueSceneId": "dialogue-yard-entry",
+      "participants": {
+        "right": "guard-yard-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startWhen": {
+        "all": [
+          {
+            "stageVisitCount": {
+              "stageId": "stage-outer-yard",
+              "equals": 1
+            }
+          },
+          {
+            "npcDispositionIn": {
+              "instanceId": "guard-yard-01",
+              "values": [
+                "ROUTINE",
+                "WATCHING"
+              ]
+            }
+          }
+        ]
+      },
+      "startNodeId": "yard-entry-guard-line",
+      "nodes": [
+        {
+          "nodeId": "yard-entry-guard-line",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "Visitors check in with Reynolds inside.",
+          "responses": [
+            {
+              "responseId": "yard-ignore",
+              "text": "Continue on.",
+              "source": "NEUTRAL",
+              "effects": [],
+              "endConversation": true
+            },
+            {
+              "responseId": "yard-diplomat-smalltalk",
+              "text": "Busy shift?",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "reynolds-is-security-supervisor"
+                },
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": 0
+                }
+              ],
+              "nextNodeId": "yard-smalltalk-answer"
+            },
+            {
+              "responseId": "yard-diplomat-personal",
+              "text": "Anything unusual happen here lately?",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": 20
+                }
+              ],
+              "nextNodeId": "yard-personal-answer"
+            },
+            {
+              "responseId": "yard-soldier-security",
+              "text": "Who is responsible for Gate security?",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": 25
+                }
+              ],
+              "nextNodeId": "yard-security-answer"
+            },
+            {
+              "responseId": "yard-soldier-press-policy",
+              "text": "Your checkpoint procedure is sloppy. Who authorized this?",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 2
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": 45
+                }
+              ],
+              "nextNodeId": "yard-policy-answer"
+            }
+          ]
+        },
+        {
+          "nodeId": "yard-smalltalk-answer",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "Same as usual. Reynolds handles anyone who needs more than directions.",
+          "endConversation": true
+        },
+        {
+          "nodeId": "yard-personal-answer",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "Nothing you need to worry about. Reynolds can answer questions.",
+          "endConversation": true
+        },
+        {
+          "nodeId": "yard-security-answer",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "Reynolds. Why?",
+          "endConversation": true
+        },
+        {
+          "nodeId": "yard-policy-answer",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "You can take that up with Reynolds.",
+          "effects": [
+            {
+              "type": "SET_NPC_DISPOSITION",
+              "instanceId": "guard-yard-01",
+              "value": "SUSPICIOUS"
+            }
+          ],
+          "endConversation": true
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-yard-return",
+      "participants": {
+        "right": "guard-yard-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startWhen": {
+        "all": [
+          {
+            "stageVisitCount": {
+              "stageId": "stage-outer-yard",
+              "minimum": 2
+            }
+          },
+          {
+            "instanceEvacStateIn": {
+              "instanceId": "operative-01",
+              "values": [
+                "READY_TO_EVACUATE",
+                "EVACUATION_ROUTE_CHECK"
+              ]
+            }
+          }
+        ]
+      },
+      "variants": [
+        {
+          "variantId": "return-cover-intact",
+          "when": {
+            "npcDispositionIn": {
+              "instanceId": "mcguffin-01",
+              "values": [
+                "ROUTINE",
+                "WATCHING"
+              ]
+            }
+          },
+          "startNodeId": "yard-return-routine"
+        },
+        {
+          "variantId": "return-cover-blown",
+          "when": {
+            "npcDispositionIn": {
+              "instanceId": "mcguffin-01",
+              "values": [
+                "SUSPICIOUS",
+                "CONFRONTING",
+                "HOSTILE"
+              ]
+            }
+          },
+          "startNodeId": "yard-return-challenge"
+        }
+      ],
+      "nodes": [
+        {
+          "nodeId": "yard-return-routine",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "Heading out already?",
+          "responses": [
+            {
+              "responseId": "yard-return-routine-continue",
+              "text": "We're done here.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        },
+        {
+          "nodeId": "yard-return-challenge",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "Hold on. Why is that worker leaving with you?",
+          "responses": [
+            {
+              "responseId": "yard-return-diplomat-cover",
+              "text": "Medical transfer. Reynolds can confirm it.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1,
+                "knowledgeAny": [
+                  "reynolds-is-security-supervisor",
+                  "contamination-contained"
+                ]
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": -20
+                },
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "yard-return-soldier-intimidate",
+              "text": "Stand aside.",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 2
+              },
+              "effects": [
+                {
+                  "type": "START_CONFRONTATION",
+                  "instanceIds": [
+                    "guard-yard-01",
+                    "guard-yard-02"
+                  ]
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "yard-return-backoff",
+              "text": "We'll wait.",
+              "source": "NEUTRAL",
+              "effects": [],
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-holding-worker",
+      "participants": {
+        "right": "worker-holding-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startNodeId": "holding-worker-start",
+      "nodes": [
+        {
+          "nodeId": "holding-worker-start",
+          "speaker": "worker-holding-01",
+          "side": "RIGHT",
+          "text": "I don't know what they're doing with the sick people. They keep telling us to stay out of the way.",
+          "responses": [
+            {
+              "responseId": "holding-worker-smalltalk",
+              "text": "Where do they keep spare supplies?",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "holding-hidden-store-known"
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "holding-worker-leave",
+              "text": "That's all.",
+              "source": "NEUTRAL",
+              "effects": [],
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-holding-guard",
+      "participants": {
+        "right": "guard-holding-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startNodeId": "holding-guard-watch",
+      "nodes": [
+        {
+          "nodeId": "holding-guard-watch",
+          "speaker": "guard-holding-01",
+          "side": "RIGHT",
+          "text": "Help if you're here to help. Don't start opening things you weren't asked to open.",
+          "responses": [
+            {
+              "responseId": "holding-guard-acknowledge",
+              "text": "Understood.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-holding-01",
+                  "delta": -5
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "holding-guard-ask-why-held",
+              "text": "Why are these people being kept here?",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-holding-01",
+                  "delta": 15
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "holding-guard-security-question",
+              "text": "Who authorized the restrictions?",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-holding-01",
+                  "delta": 25
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-operative",
+      "participants": {
+        "right": "operative-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startWhen": {
+        "knowledge": "operative-located"
+      },
+      "startNodeId": "operative-contact",
+      "onStartEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "guard-holding-01",
+          "delta": 45
+        }
+      ],
+      "nodes": [
+        {
+          "nodeId": "operative-contact",
+          "speaker": "operative-01",
+          "side": "RIGHT",
+          "text": "Keep your voice down. I can move, but not through a checkpoint that's looking for me.",
+          "responses": [
+            {
+              "responseId": "operative-ready",
+              "text": "Stay put until we have a safe route.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "SET_EVAC_STATE",
+                  "instanceId": "operative-01",
+                  "value": "READY_TO_EVACUATE"
+                },
+                {
+                  "type": "ACTIVATE_OBJECTIVE",
+                  "objectiveId": "extract-operative"
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-processing-worker",
+      "participants": {
+        "right": "worker-processing-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startNodeId": "processing-worker-start",
+      "nodes": [
+        {
+          "nodeId": "processing-worker-start",
+          "speaker": "worker-processing-01",
+          "side": "RIGHT",
+          "text": "They've been pushing this equipment harder every week.",
+          "responses": [
+            {
+              "responseId": "processing-worker-diplomat",
+              "text": "Who told them to keep running it?",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "mcguffin-pushed-processing"
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-reynolds",
+      "participants": {
+        "right": "reynolds-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startNodeId": "reynolds-start",
+      "nodes": [
+        {
+          "nodeId": "reynolds-start",
+          "speaker": "reynolds-01",
+          "side": "RIGHT",
+          "text": "If you're here for the overseer, keep it brief.",
+          "responses": [
+            {
+              "responseId": "reynolds-routine",
+              "text": "Understood.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "office-access-routine-known"
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "reynolds-diplomat",
+              "text": "Anything we should know before we go in?",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "reynolds-01",
+                  "delta": 10
+                },
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "mcguffin-expects-operational-update"
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "dialogue-mcguffin-cover",
+      "participants": {
+        "right": "mcguffin-01",
+        "left": "ACTIVE_SGC_SPEAKER"
+      },
+      "startNodeId": "mcguffin-opening",
+      "nodes": [
+        {
+          "nodeId": "mcguffin-opening",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Good. You're finally here. Did they get the contamination under control?",
+          "responses": [
+            {
+              "responseId": "mcguffin-containment-routine",
+              "text": "Yes. It appears contained.",
+              "source": "NEUTRAL",
+              "requirements": {
+                "knowledge": "contamination-contained"
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -10
+                }
+              ],
+              "nextNodeId": "mcguffin-processing-question"
+            },
+            {
+              "responseId": "mcguffin-doctor-missing",
+              "text": "Contained, but the doctor isn't there anymore.",
+              "source": "MEDIC",
+              "requirements": {
+                "knowledgeAll": [
+                  "contamination-contained",
+                  "doctor-missing"
+                ]
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 25
+                }
+              ],
+              "nextNodeId": "mcguffin-processing-question"
+            },
+            {
+              "responseId": "mcguffin-containment-deflect",
+              "text": "That's what I was told.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -5
+                }
+              ],
+              "nextNodeId": "mcguffin-processing-question"
+            },
+            {
+              "responseId": "mcguffin-containment-play-dumb",
+              "text": "Medical wasn't part of my briefing.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 0
+                }
+              ],
+              "nextNodeId": "mcguffin-processing-question"
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-processing-question",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "And Processing? Reynolds said the line was still unstable.",
+          "responses": [
+            {
+              "responseId": "mcguffin-processing-correct",
+              "text": "The secondary fault is isolated. The line is stable for now.",
+              "source": "TECHNICIAN",
+              "requirements": {
+                "knowledge": "processing-fault-known"
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -10
+                }
+              ],
+              "nextNodeId": "mcguffin-lab-question"
+            },
+            {
+              "responseId": "mcguffin-processing-vague",
+              "text": "They're still working it.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 0
+                }
+              ],
+              "nextNodeId": "mcguffin-lab-question"
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-lab-question",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "What did the lab make of the last test?",
+          "responses": [
+            {
+              "responseId": "mcguffin-lab-correct",
+              "text": "The readings diverged during the extraction cycle.",
+              "source": "SCIENTIST",
+              "requirements": {
+                "knowledge": "mcguffin-answer-lab-status"
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -10
+                }
+              ],
+              "nextNodeId": "mcguffin-hidden-equipment-test"
+            },
+            {
+              "responseId": "mcguffin-lab-deflect",
+              "text": "I didn't get the full report.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 5
+                }
+              ],
+              "nextNodeId": "mcguffin-hidden-equipment-test"
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-hidden-equipment-test",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Anything else I need to know?",
+          "responses": [
+            {
+              "responseId": "mcguffin-sensitive-hidden-weapon",
+              "text": "The hidden weapon in storage is still secure.",
+              "source": "KNOWLEDGE",
+              "requirements": {
+                "knowledge": "hidden-store-item-identified"
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 60
+                }
+              ],
+              "nextNodeId": "mcguffin-suspicion-check"
+            },
+            {
+              "responseId": "mcguffin-play-dumb-hidden",
+              "text": "Nothing outside my assignment.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -10
+                }
+              ],
+              "nextNodeId": "mcguffin-suspicion-check"
+            },
+            {
+              "responseId": "mcguffin-neutral-no",
+              "text": "No.",
+              "source": "NEUTRAL",
+              "effects": [],
+              "nextNodeId": "mcguffin-suspicion-check"
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-suspicion-check",
+          "speaker": "SYSTEM",
+          "side": "NONE",
+          "branchByNpcState": {
+            "instanceId": "mcguffin-01",
+            "cases": [
+              {
+                "when": {
+                  "suspicionBelow": 100
+                },
+                "nextNodeId": "mcguffin-cover-maintained"
+              },
+              {
+                "when": {
+                  "suspicionAtLeast": 100,
+                  "hostilityBelow": 100
+                },
+                "nextNodeId": "mcguffin-confrontation"
+              },
+              {
+                "when": {
+                  "hostilityAtLeast": 100
+                },
+                "nextNodeId": "mcguffin-hostile"
+              }
+            ]
+          }
+        },
+        {
+          "nodeId": "mcguffin-cover-maintained",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Fine. Get the report to me when it's ready.",
+          "effects": [
+            {
+              "type": "EMIT_EVENT",
+              "event": "event_mcguffin_cover_maintained"
+            }
+          ],
+          "endConversation": true
+        },
+        {
+          "nodeId": "mcguffin-confrontation",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Who exactly sent you?",
+          "responses": [
+            {
+              "responseId": "mcguffin-confront-diplomat",
+              "text": "The same people who are going to be very unhappy if this operation stops producing.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 2
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -30
+                }
+              ],
+              "nextNodeId": "mcguffin-suspicion-check"
+            },
+            {
+              "responseId": "mcguffin-confront-soldier",
+              "text": "You don't need to know.",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 2
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_HOSTILITY",
+                  "instanceId": "mcguffin-01",
+                  "delta": 45
+                }
+              ],
+              "nextNodeId": "mcguffin-suspicion-check"
+            },
+            {
+              "responseId": "mcguffin-confront-engage",
+              "text": "Enough.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "START_HOSTILE_INCIDENT",
+                  "incidentId": "incident-office-guards"
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-hostile",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "You're not supposed to be here.",
+          "effects": [
+            {
+              "type": "SET_NPC_DISPOSITION",
+              "instanceId": "mcguffin-01",
+              "value": "HOSTILE"
+            },
+            {
+              "type": "EMIT_EVENT",
+              "event": "event_mcguffin_cover_blown"
+            },
+            {
+              "type": "EMIT_EVENT",
+              "event": "event_evidence_purge_started"
+            },
+            {
+              "type": "START_HOSTILE_INCIDENT",
+              "incidentId": "incident-office-guards"
+            }
+          ],
+          "endConversation": true
+        }
+      ]
+    }
+  ]
 }

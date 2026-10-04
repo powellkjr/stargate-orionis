@@ -35,7 +35,7 @@ test('regular hexagons tessellate with shared edges and no interior overlap at m
   }
 });
 test('inactive transitions are smaller, muted and noninteractive; adjacent movement is distinct',()=>{
-  const m=compileMission(read('offworld/missing-operative-001.finalized'),read('offworld/archetypes'));
+  const m=compileMission({...read('offworld/missing-operative-001.finalized'),dialogueScenes:[]},read('offworld/archetypes'));
   const s=createRuntime(m,presets.units.slice(0,4),'2026-09-24T14:00:00Z');chooseGate(m,s,true);move(m,s,'door-gate-to-yard');move(m,s,'door-yard-to-mainhall');
   const html=renderMap(m,s);
   assert(html.includes('door-selectable'));assert(html.includes('door-locked'));assert(html.includes('door-inactive'));
@@ -44,7 +44,7 @@ test('inactive transitions are smaller, muted and noninteractive; adjacent movem
 });
 
 test('action debug separates tier, Perception, equipment and local availability',()=>{
-  const m=compileMission(read('offworld/missing-operative-001.finalized'),read('offworld/archetypes'));
+  const m=compileMission({...read('offworld/missing-operative-001.finalized'),dialogueScenes:[]},read('offworld/archetypes'));
   const units=structuredClone(presets.units.slice(0,4));const tech=units.find(u=>u.profession==='TECHNICIAN');tech.perception=5;tech.tools=[createTool(tech,0,'TET2',3,m.toolCatalog)];
   const s=createRuntime(m,units,'2026-09-24T14:00:00Z');chooseGate(m,s,true);move(m,s,'door-gate-to-yard');move(m,s,'door-yard-to-mainhall');
   const r=m.indexes.recipes['hack-door-mainhall-to-security'];let row=requirementReport(m,s,r).units.find(u=>u.unitId===tech.unitId);
@@ -64,7 +64,7 @@ test('shared renderer omits interior edges and applies caller padding only to ex
   const slots=tileSlots([{x:0,y:0}]);assert.equal(slots.length,16);assert.equal(new Set(slots.map(p=>p.x)).size,4);assert.equal(new Set(slots.map(p=>p.y)).size,4);
 });
 test('map positions keep party members separate from visible people and objects in every mission Stage',()=>{
-  const m=compileMission(read('offworld/missing-operative-001.finalized'),read('offworld/archetypes'));
+  const m=compileMission({...read('offworld/missing-operative-001.finalized'),dialogueScenes:[]},read('offworld/archetypes'));
   const s=createRuntime(m,presets.units.slice(0,4),'2026-09-24T14:00:00Z');
   for(const stage of m.stages){s.currentStageId=stage.stageId;for(const st of Object.values(s.stageStates))st.visibility='HIDDEN';s.stageStates[stage.stageId].visibility='VISIBLE';for(const u of s.units)u.currentStageId=stage.stageId;
     const layout=mapLayout(m,s),points=Object.values(layout.points);

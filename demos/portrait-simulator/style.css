@@ -16,6 +16,7 @@ input,select{width:100%;margin-top:5px;min-height:34px;padding:6px 8px;backgroun
 input[type=color]{padding:2px;height:34px;cursor:pointer}
 input[type=checkbox]{width:auto;min-height:0;margin:0}
 .seed{width:150px}
+.configured-tool{display:flex;gap:6px;align-items:end}.configured-tool label:first-child{flex:1;min-width:0}.configured-tool label:nth-child(2){width:65px}.configured-tool select{max-width:100%}
 #error{margin:0;padding:12px 20px;background:#3a1d22;border-bottom:1px solid #7d2b34;color:#ffd7dc}
 .app{display:grid;grid-template-columns:290px minmax(320px,1fr) 300px;min-height:calc(100vh - 120px)}
 aside,main{padding:16px;min-width:0}

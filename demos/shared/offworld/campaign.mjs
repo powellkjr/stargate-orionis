@@ -1,4 +1,5 @@
 import {condition,activeWork,cancelWork,refreshField} from './field.mjs?v=dialogue-doors-1';
+import {npcEffectTypes,applyNpcEffect} from './npc.mjs?v=dialogue-doors-1';
 const active=p=>['ACTIVE'].includes(p.combatState);
 const emit=(s,event,data={})=>s.emittedEvents.push({event,atSeconds:s.missionElapsedSeconds,...data});
 export function initializeCampaign(m,s){
@@ -18,7 +19,8 @@ export function campaignCondition(s,c,event={}){
 }
 function effects(m,s,list,event){
   for(const e of list??[]){
-    if(e.type==='SET_INSTANCE_STATE')s.instanceStates[e.instanceId][e.field]=structuredClone(e.value);
+    if(npcEffectTypes.includes(e.type))applyNpcEffect(s,e);
+    else if(e.type==='SET_INSTANCE_STATE')s.instanceStates[e.instanceId][e.field]=structuredClone(e.value);
     else if(e.type==='EMIT_EVENT')emit(s,e.eventArchetypeId,{stageId:event.stageId});
     else if(e.type==='SCHEDULE_EVENT')s.scheduledEvents.push({event:e.eventArchetypeId,atSeconds:s.missionElapsedSeconds+e.delayMinutes*60,stageId:event.stageId});
     else if(e.type==='ACTIVATE_OBJECTIVE'){if(s.objectiveStates[e.objectiveId].state==='HIDDEN')s.objectiveStates[e.objectiveId].state='ACTIVE';}
@@ -38,8 +40,20 @@ export function processEvents(m,s){
     }
   }
 }
-export function localCombat(m,s){return m.incidents.filter(i=>i.kind==='COMBAT'&&i.stageId===s.currentStageId&&s.incidentStates[i.incidentId]?.state==='ACTIVE');}
+export const incidentKind=(i,s)=>s.incidentStates[i.incidentId]?.kind??i.kind;
+export function localCombat(m,s){return m.incidents.filter(i=>incidentKind(i,s)==='COMBAT'&&i.stageId===s.currentStageId&&s.incidentStates[i.incidentId]?.state==='ACTIVE');}
+export function startHostileIncident(m,s,id){
+  const i=m.indexes.incidents[id],state=s.incidentStates[id];
+  if(!i||!['COMBAT','CONFRONTATION'].includes(i.kind)||i.stageId!==s.currentStageId||!state||state.state==='RESOLVED'||!i.participantIds?.length||!Number.isFinite(i.roundSeconds)||i.roundSeconds<=0||!Number.isFinite(i.hostileHealth)||i.hostileHealth<=0||!Number.isFinite(i.hostileDamage)||i.hostileDamage<0)throw Error('Hostile incident unavailable or missing combat configuration.');
+  const participants=i.participantIds.map(id=>s.instanceStates[id]);
+  if(participants.some(p=>!p||p.custody!=='LOCAL')||!participants.some(p=>!['DOWN','SURRENDERED','CAPTURED','FLED'].includes(p.combatState)))throw Error('No local hostile participants available.');
+  if(state.state==='ACTIVE'&&incidentKind(i,s)==='COMBAT')return;
+  state.kind='COMBAT';state.state='ACTIVE';state.nextRoundAt=s.missionElapsedSeconds+i.roundSeconds;
+  for(const p of participants)if(!['DOWN','SURRENDERED','CAPTURED','FLED'].includes(p.combatState)){p.health??=i.hostileHealth;p.combatState='ACTIVE';if(p.npcState)p.npcState.disposition='HOSTILE';}
+  s.mode='ACTIVE_INCIDENT';s.resultEvents.push({type:'HOSTILE_INCIDENT_STARTED',incidentId:id,atSeconds:s.missionElapsedSeconds});
+}
 export function engagementEligibility(m,s,id){
+  if(s.dialogue)return {status:'BLOCKED',blocker:'Resolve the conversation before engaging.'};
   const i=m.indexes.incidents[id];
   if(!i||i.kind!=='COMBAT'||i.stageId!==s.currentStageId||s.status!=='ACTIVE'||s.gateState.choicePending||s.incidentStates[id]?.state!=='DORMANT')return {status:'BLOCKED',blocker:'Encounter is not available.'};
   if(!s.units.some(u=>u.currentStageId===i.stageId&&active(u)))return {status:'BLOCKED',blocker:'No local unit can fight.'};
@@ -52,7 +66,7 @@ export function engage(m,s,id){
   if(!i||i.kind!=='COMBAT'||i.stageId!==s.currentStageId||s.status!=='ACTIVE'||s.gateState.choicePending||state.state!=='DORMANT')throw new Error('Encounter is not available.');
   if(activeWork(s).some(w=>w.stageId===i.stageId))throw new Error('Finish or cancel local work before engaging.');
   state.state='ACTIVE';state.nextRoundAt=s.missionElapsedSeconds+i.roundSeconds;
-  for(const id of i.participantIds){const p=s.instanceStates[id];p.health??=i.hostileHealth;}
+  for(const id of i.participantIds){const p=s.instanceStates[id];p.health??=i.hostileHealth;if(p.npcState&&p.combatState==='NEUTRAL'){p.combatState='ACTIVE';p.npcState.disposition='HOSTILE';}}
   s.mode='ACTIVE_INCIDENT';s.actionLog.push({atSeconds:s.missionElapsedSeconds,message:'Hostile engagement started.'});
 }
 export function retreat(m,s,id){
@@ -74,17 +88,19 @@ export function combatTick(m,s){
     for(const u of units){
       const target=hostiles.find(({p})=>active(p));if(!target)break;
       u.activityState=weapon.mode==='MELEE'?'COMBAT_MELEE':'COMBAT_RANGED';
+      const damage=Math.min(target.p.health,weapon.damage);
       target.p.health=Math.max(0,target.p.health-weapon.damage);
       if(!target.p.health)target.p.combatState='DOWN';else target.p.combatState='ACTIVE';
-      s.resultEvents.push({type:'COMBAT_HIT',actorId:u.unitId,targetId:target.id,damage:weapon.damage,atSeconds:s.missionElapsedSeconds});
+      s.resultEvents.push({type:'COMBAT_HIT',actorId:u.unitId,targetId:target.id,damage,atSeconds:s.missionElapsedSeconds});
     }
     if(units.length&&weapon.mode==='RANGED')emit(s,'event_gunfire_occurred',{stageId:i.stageId});
     for(const {id,p} of hostiles.filter(({p})=>active(p))){
       const target=targets.find(active);if(!target)break;
+      const damage=Math.min(target.health,i.hostileDamage);
       target.health=Math.max(0,target.health-i.hostileDamage);
       if(!target.health){target.combatState='DOWN';target.activityState='DOWN';for(const w of activeWork(s).filter(w=>w.actorId===target.unitId))cancelWork(s,w.workId);target.activityState='DOWN';}
       else target.combatState='ACTIVE';
-      s.resultEvents.push({type:'COMBAT_HIT',actorId:id,targetId:target.unitId,damage:i.hostileDamage,atSeconds:s.missionElapsedSeconds});
+      s.resultEvents.push({type:'COMBAT_HIT',actorId:id,targetId:target.unitId,damage,atSeconds:s.missionElapsedSeconds});
     }
     if(!s.units.some(u=>u.partyStatus==='ACTIVE_PARTY'&&active(u))){s.status='INCAPACITATED';s.actionLog.push({atSeconds:s.missionElapsedSeconds,message:'The advancing party is incapacitated.'});}
   }
@@ -93,7 +109,7 @@ export function refreshCampaign(m,s){
   processEvents(m,s);
   for(const i of m.incidents){
     const state=s.incidentStates[i.incidentId];if(!i.implemented||state.state==='RESOLVED')continue;
-    const resolved=i.kind==='COMBAT'?i.participantIds.every(id=>!active(s.instanceStates[id])):i.resolutionCondition?campaignCondition(s,i.resolutionCondition):i.resolutionMode==='STABILIZE_IMMEDIATE_DETERIORATION'&&i.participantIds.every(id=>s.instanceStates[id].condition==='STABILIZED');
+    const resolved=incidentKind(i,s)==='COMBAT'?i.participantIds.every(id=>['DOWN','SURRENDERED','CAPTURED','FLED'].includes(s.instanceStates[id].combatState)):i.resolutionCondition?campaignCondition(s,i.resolutionCondition):i.resolutionMode==='STABILIZE_IMMEDIATE_DETERIORATION'&&i.participantIds.every(id=>s.instanceStates[id].condition==='STABILIZED');
     if(resolved){state.state='RESOLVED';state.resolvedAt=s.missionElapsedSeconds;state.nextRoundAt=null;emit(s,'event_incident_resolved',{incidentId:i.incidentId,stageId:i.stageId});s.resultEvents.push({type:'INCIDENT_RESOLVED',incidentId:i.incidentId,participants:(i.participantIds??[]).map(id=>({instanceId:id,state:s.instanceStates[id].combatState??s.instanceStates[id].condition})),atSeconds:s.missionElapsedSeconds});}
   }
   refreshField(m,s);
@@ -108,8 +124,8 @@ export function refreshCampaign(m,s){
 }
 export function missionResults(m,s){
   return {format:'offworld-results-wave-3',missionId:m.mission.missionId,status:s.status,sgcStartTime:s.sgcStartTime,sgcEndTime:s.sgcCurrentTime,elapsedSeconds:s.missionElapsedSeconds,
-    recoveryPlan:structuredClone(s.debrief??null),objectives:structuredClone(s.objectiveStates),incidents:structuredClone(s.incidentStates),personnel:structuredClone(s.units),knowledge:structuredClone(s.knowledgeState.gained),discoveries:structuredClone(s.discoveries),
+    recoveryPlan:structuredClone(s.debrief??null),dialogueHistory:structuredClone(s.dialogueHistory??[]),activeDialogue:structuredClone(s.dialogue??null),objectives:structuredClone(s.objectiveStates),incidents:structuredClone(s.incidentStates),personnel:structuredClone(s.units),knowledge:structuredClone(s.knowledgeState.gained),discoveries:structuredClone(s.discoveries),
     recoveredAssets:Object.entries(s.instanceStates).filter(([,v])=>v.custody==='RECOVERED_TO_SGC').map(([instanceId,state])=>({instanceId,state:structuredClone(state)})),
-    partyTools:structuredClone(s.partyTools),persistentInstances:structuredClone(s.instanceStates),events:structuredClone(s.emittedEvents),scheduledEvents:structuredClone(s.scheduledEvents),ledger:structuredClone(s.resultEvents),
+    partyStorage:structuredClone(s.partyStorage),partyTools:structuredClone(s.partyTools),persistentInstances:structuredClone(s.instanceStates),events:structuredClone(s.emittedEvents),scheduledEvents:structuredClone(s.scheduledEvents),ledger:structuredClone(s.resultEvents),
     bindings:m.resultBindings.map(b=>({bindingId:b.bindingId,declaredCategories:b.emit,watch:b.watch,snapshot:structuredClone(b.watch.instanceId?s.instanceStates[b.watch.instanceId]:s.incidentStates[b.watch.incidentId]),note:'Observed state only; no unauthored campaign rewards, addresses or faction deltas are invented.'}))};
 }

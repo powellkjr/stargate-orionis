@@ -12,6 +12,7 @@ export function toolTracks(unit){
   if(unit.tier===3&&unit.branch&&unit.branch.tier>0)tracks.push({id:unit.branch.id,tier:unit.branch.tier});
   return tracks;
 }
+export function secondToolSlotUnlocked(unit){return unit.tier===3&&!!unit.branch&&['cross','specialization'].includes(unit.branch.kind)&&Number.isInteger(unit.branch.tier)&&unit.branch.tier>=0&&unit.branch.tier<=3&&(unit.branch.kind==='cross'?professions.includes(unit.branch.id)&&unit.branch.id!==unit.profession:branches[unit.profession]?.includes(unit.branch.id));}
 export function toolOptions(unit,catalog={}){return toolTracks(unit).flatMap(track=>[
   ...Array.from({length:track.tier},(_,i)=>({id:`${codes[track.id]}T${i+1}`,track:track.id,tier:i+1,label:`${track.id} Tools ${i+1}`})),
   ...Object.entries(catalog.tools??{}).filter(([,t])=>t.variant&&t.track===track.id&&t.tier<=track.tier).map(([id,t])=>({id,track:t.track,tier:t.tier,label:t.label})),
@@ -19,7 +20,7 @@ export function toolOptions(unit,catalog={}){return toolTracks(unit).flatMap(tra
 export function createTool(unit,slot,kitId,charges,catalog){
   if(!kitId)return null;
   const option=toolOptions(unit,catalog).find(o=>o.id===kitId),definition=catalog.tools?.[kitId];
-  if(!option||!definition||slot<0||slot>1||(slot===1&&toolTracks(unit).length<2))throw new Error('Tool is not eligible for this progression/slot.');
+  if(!option||!definition||slot<0||slot>1||(slot===1&&!secondToolSlotUnlocked(unit)))throw new Error('Tool is not eligible for this progression/slot.');
   return {toolInstanceId:`${unit.unitId}-tool-${slot+1}`,slot,kitId,label:definition.label,tier:option.tier,providedServices:[...definition.providedServices],chargesRemaining:charges,damaged:false};
 }
 export function validateEquipment(unit,catalog){

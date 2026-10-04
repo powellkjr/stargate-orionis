@@ -9,9 +9,9 @@ import {engage,retreat,refreshCampaign,missionResults} from '../shared/offworld/
 import {startWork,recipeEligibility} from '../shared/offworld/field.mjs';
 import {createTool} from '../shared/offworld/equipment.mjs';
 const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const m=compileMission(read('missing-operative-001.finalized'),read('archetypes'));
+const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function state(){const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
-function place(s,stage){s.currentStageId=stage;for(const u of s.units)u.currentStageId=stage;visibility(m,s);refreshCampaign(m,s);}
+function place(s,stage){s.currentStageId=stage;for(const u of s.units)u.currentStageId=stage;for(const i of m.instances.filter(i=>i.stageId===stage&&i.npcState)){s.instanceStates[i.instanceId].combatState='ACTIVE';s.instanceStates[i.instanceId].npcState.disposition='HOSTILE';}visibility(m,s);refreshCampaign(m,s);}
 test('medical and radiation resolution require physical conditions; objectives follow authored watchers',()=>{
   const s=state();s.knowledgeState.gained.push('multiple-ill-patients-present');place(s,'stage-holding-area');
   s.instanceStates['patient-01'].condition='STABILIZED';s.instanceStates['patient-02'].condition='STABILIZED';refreshCampaign(m,s);
@@ -25,7 +25,7 @@ test('medical and radiation resolution require physical conditions; objectives f
 });
 test('automatic combat is deterministic across time slices, preserves downed identities and resolves security',()=>{
   const a=state(),b=state();for(const s of [a,b]){place(s,'stage-security-hall');engage(m,s,'incident-security-guards');}
-  advanceTime(m,a,90);for(let i=0;i<30;i++)advanceTime(m,b,3);
+  advanceTime(m,a,300);for(let i=0;i<100;i++)advanceTime(m,b,3);
   assert.deepEqual(a,b);assert.equal(a.incidentStates['incident-security-guards'].state,'RESOLVED');
   for(const id of ['guard-security-01','guard-security-02','reynolds-01']){assert.equal(a.instanceStates[id].combatState,'DOWN');assert.equal(a.instanceStates[id].custody,'LOCAL');}
   assert.equal(a.stageStates['stage-security-hall'].securityState,'SECURE');
@@ -92,6 +92,7 @@ test('Soldier intimidation and Diplomat negotiation are separate choices beside 
 });
 test('questioning reports its actual interview result without inventing Knowledge',()=>{
   const unit=read('party-presets').units.find(u=>u.profession==='DIPLOMAT');const s=createRuntime(m,[unit],'2026-09-25T12:00Z');chooseGate(m,s,true);place(s,'stage-outer-yard');
+  for(const id of ['guard-yard-01','guard-yard-02']){s.instanceStates[id].npcState.disposition='ROUTINE';s.instanceStates[id].combatState='NEUTRAL';}
   const knowledge=structuredClone(s.knowledgeState),w=startWork(m,s,'question-worker-yard',unit.unitId);advanceTime(m,s,180);
   assert.equal(w.status,'COMPLETED');assert.deepEqual(s.knowledgeState,knowledge);assert(outcomeLines(m,w).some(line=>line.includes('1 simulated minute instead of 3')));
   assert(w.outcome.changes.some(e=>e.type==='INSTANCE_CHANGED'&&e.field==='interviewed'&&e.value===true));

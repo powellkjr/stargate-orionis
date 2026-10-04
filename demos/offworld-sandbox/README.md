@@ -1,12 +1,113 @@
 # Offworld sandbox - Wave 3
 
-Start the writable local server from the repository root:
+## Playable authored conversations
+
+The current mission includes eight conversations: outer-yard entry/return,
+holding worker/guard, operative, processing worker, Reynolds and McGuffin.
+Active dialogue overlays the map and scrolls on smaller screens. Entry and
+operative contact use authored automatic triggers; other conversations are
+available through **Talk** in Stage context when their participants are local.
+Choose the **Conversation speaker** before starting a manual conversation:
+Profession-gated responses use that Unit's competency, not the whole party.
+Return-yard dialogue requires operative readiness and a revisit.
+
+These conversations are integrated into the existing mission, not a separate
+preview. Full replacement-schema item, evacuation and manifest integration
+remains separate work.
+
+## Combat feedback and pacing
+
+Combat advances one authored round every three real seconds in the browser.
+Authored simulation round lengths, damage rules and event timing remain unchanged;
+background-tab pauses do not trigger multi-round catch-up. Bulk **Wait** is disabled
+during active combat. NPC and Unit hits show rising, fading damage over visible
+map tokens for 1.8 real seconds, with stacked labels for simultaneous hits.
+The hit ledger records actual health lost (capped at remaining health).
+
+Guard-combat prototype HP is now 150: a lone NPC lasts three rounds against
+four party members dealing 18 damage each. Multi-NPC encounters last longer
+under the existing concentrated-fire rule; smaller/larger parties differ.
+Individual shot tracers and damage popups are staggered across each round,
+without randomizing runtime outcomes. Down is incapacitation, not death.
+
+## Dialogue graph (Wave B first runtime slice)
+
+The default playable mission now includes the replacement's authored outer-yard
+entry conversation. Start a fresh run, enter the outer yard, and answer the guard.
+Profession responses use the selected speaker's competency; the neutral response
+always allows ordinary travel to resume. The authored return conversation is not
+yet integrated because it depends on the replacement evacuation lifecycle.
+
+`START_HOSTILE_INCIDENT` explicitly escalates a local COMBAT/CONFRONTATION Incident
+using its existing participants and authored combat settings. It schedules the
+first round normally rather than dealing immediate damage. Runtime kind changes
+do not rewrite the immutable Incident definition or reset participant health.
+
+Optional mission-authored `dialogueScenes` are supported without changing legacy
+Recipe conversations. Each scene defines `dialogueSceneId`, `participants.left`
+and `.right` (exactly one `ACTIVE_SGC_SPEAKER`), `startNodeId` and `nodes`.
+Nodes have `nodeId`, `speaker`, `side` (`LEFT`/`RIGHT`), `text`, optional
+`responses`, `effects`, `conditions`, and either `nextNodeId` or
+`endConversation` when they have no responses. Continue advances automatic-next
+lines explicitly so their text is readable; terminal text remains until Finish.
+
+Responses use `responseId`, `text`, `source` (`NEUTRAL` or a Profession),
+`requirements`, `effects`, `conditions`, and `nextNodeId` or `endConversation`.
+Supported requirements are `profession`, `minimumTier`, `knowledge` and
+`knowledgeAll`. Profession source implies that Profession unless explicitly
+specified. Eligibility uses only the selected local SGC speaker, including
+existing cross-Profession competency, not a different party member.
+
+Supported effects are existing NPC-state effects, `ADD_KNOWLEDGE` with
+`knowledgeId`, and `EMIT_EVENT` with `eventArchetypeId`. Unsupported effects fail
+validation. Conditions use the existing runtime condition format, not the
+replacement mission's proposed untyped trigger format. Transactions apply on a
+draft and roll back failed response/node effects. Completed conversation history
+and an active conversation are included in exported results.
+
+Eligible explicit scenes show Talk controls and a speaker selector in Stage
+context. The dedicated lower-screen conversation area has two portraits,
+side-aligned speech and Profession-colored response controls. Time progression
+and unrelated execution pause while it is open. Authors must supply any Leave
+response; no global exit response or dialogue consequence is invented.
+
+Current legacy mission data has no scenes, so this UI is exercised by synthetic
+tests. Automatic `startWhen` supports the authored `all`, `knowledge`,
+`stageVisitCount` (`equals`/`minimum`), `npcDispositionIn` and
+`instanceEvacStateIn` triggers. Stage visit counts increment only on actual entry;
+deployment counts as the first Gate visit. A scene starts at most once per Stage
+visit (provisional repeat policy), in authored scene order. NPC state persists
+on revisits. Evacuation predicates read existing `evacState`; this slice does not
+implement the missing `SET_EVAC_STATE` effect or evacuation workflow.
+Recipe dialogue integration remains deferred because the supplied fixture authors
+no Recipe dialogue field/effect. Full repeat-policy schema, other next-schema
+conditions, and confrontation-to-combat conversion remain pending.
+
+### Read-only stat radar
+
+Deployment and active-party cards show PER, STA and END as a radar chart,
+normalized to the existing 10/100/10 stat maxima, with exact values and accessible
+labels. These stats are no longer editable from Offworld deployment. Tier,
+branch and equipment remain deployment controls. The existing portrait editor
+currently edits appearance only; gameplay stat editing there is not implemented.
+
+### NPC token details
+
+Tap, mouse over, or keyboard-focus a visible current-Stage NPC token to open
+known details below the mission controls. The panel uses the authored player
+label, visible disposition/condition and shared portrait renderer. Missing
+authored appearances use an explicitly labeled generic portrait. Remote,
+partial-view, hidden and recovered NPCs do not expose details. Hidden names and
+roles are not inferred from Reality. Dialogue and knowledge-backed name/role
+revelation remain pending authored schema integration.
+
+Start the shared writable server for every demo from the repository root:
 
 ```powershell
 node demos/serve.mjs
 ```
 
-Open `http://127.0.0.1:8001/demos/offworld-sandbox/`. It serves assets without caching and writes validated deployment edits atomically to `demos/shared/data/personnel-loadouts.json`. An optional port argument selects another port. The server listens only on loopback and accepts writes only to known personnel records.
+Open `http://127.0.0.1:8001/demos/` for the hub or `http://127.0.0.1:8001/demos/offworld-sandbox/` directly. It serves assets without caching and writes validated deployment edits atomically to `demos/shared/data/personnel-loadouts.json`, plus the existing base and portrait save endpoints. An optional port argument selects another port. The server listens only on loopback and accepts personnel writes only to known records. See `../README.md` for static/GitLab Pages limitations; Python's static server cannot confirm shared recovery reservations.
 
 Deployment always begins with **0/4 selected**. All 54 shared personnel remain available, with shared portraits and favorites. Stats, progression, two Tool selections and charge counts save on change. In read-only hosting, the same edits persist in this browser and the UI explicitly reports that JSON writing needs the writable server. Pending browser edits retry when the writable server becomes available on that origin. Mission damage and spent charges never overwrite deployment defaults.
 
@@ -53,8 +154,10 @@ Leader lines connect displaced hexes to their target; doorway controls reserve s
 ## Two Tool slots and progression
 
 Both slots are visible. Slot 1 uses the base Profession track. Slot 2 unlocks at
-base Tier III with a certified specialization or cross-path (branch Tier I or
-higher). Branch Tier 0 grants neither competency nor a second usable slot.
+base Tier III with a selected specialization or cross-path, including untrained
+branch Tier 0. T0 permits a second eligible base Profession Tool but grants no
+branch competency or specialist Tools. T1 promotion introduces branch Tools;
+the final-game Promotion Room and Tool-making workflow are not simulated here.
 As in `room-staffing-demo.js`'s `assignmentToolTracks`, either unlocked slot can
 hold any kit from the Unit's eligible tracks, up to that track's tier. Duplicate
 kit types are separate physical Tool instances with independent charges.
@@ -129,6 +232,60 @@ No objective completes merely because a room is entered. Work and recovery are
 recorded continuously; event escalation executes from authored bindings.
 
 ## Validation
+
+### Contextual action admission (runtime update, first slice)
+
+Recipes may author `availabilityContext` independently of execution requirements:
+
+```json
+{"normal": true, "activeIncidentKinds": ["COMBAT"], "requiresSecureStage": false}
+```
+
+Without active local Incidents, `normal` defaults to true. With active local
+Incidents, every active kind must be listed; omitted `activeIncidentKinds` means
+none. `requiresSecureStage` defaults to false and hides the action in an unsecure
+Stage. Non-admitted Recipes are omitted from both context buttons and map hexes,
+and cannot start work. Admitted Recipes still report missing Actor, Tool or
+Knowledge requirements normally. Admission is re-evaluated from current state,
+including when revisiting a Stage; it does not reset instance or Incident state.
+
+Legacy Recipes retain their ordinary noncombat admission. Active hostile
+instances or an active Combat Incident hide ordinary legacy Recipes;
+`allowHostiles: true` remains their explicit combat opt-in. An authored
+`availabilityContext` supersedes that compatibility flag. Dormant combat
+Incidents alone do not make neutral NPCs hostile. NPC suspicion, confrontation
+combat transition and the next-schema mission integration are not implemented by this slice.
+
+### NPC state foundation
+
+Instances may author `npcState` with a nonempty `disposition` string and finite
+`suspicion`/`hostility` values in 0..100. Runtime copies remain independent of
+definitions and persist across revisits. Opted-in neutral NPCs do not inherit
+active opponent status merely from an armed archetype; legacy instances without
+NPC state retain existing behavior. Dormant combat Incidents remain dormant
+until explicit engagement and are not resolved merely because participants are neutral.
+
+Recipes and campaign effects support `CHANGE_NPC_SUSPICION`,
+`CHANGE_NPC_HOSTILITY`, `SET_NPC_DISPOSITION`, and `START_CONFRONTATION`.
+Changes clamp to 0..100 in either direction. `START_CONFRONTATION` takes authored
+NPC `instanceIds`, changes their disposition to `CONFRONTING`, and does not start
+combat or apply damage. Context admission recognizes those local confrontations.
+`NPC_STATE` conditions support `instanceId`, optional `disposition`, and
+`suspicionAtLeast`, `suspicionBelow`, `hostilityAtLeast`, `hostilityBelow`.
+Field transactions revalidate contextual admission on commit.
+
+Visible current-Stage NPCs display white/yellow `?`, yellow/red `!`, then a red
+angry face as suspicion/hostility fill. Labels omit numeric values and hidden
+identity. No NPC indicator appears in an out-of-view Stage. The existing mission
+has not been rewritten to supply these fields; synthetic tests exercise them.
+
+Values alone never schedule combat. The proposed `START_HOSTILE_INCIDENT` effect
+targets a `CONFRONTATION` definition but does not yet specify its conversion to
+combat under the existing schema. That transition remains explicitly deferred,
+along with dialogue graphs and portrait/tap detail UI.
+
+The full Offworld unit suite, including contextual admission, can be run with
+`node --test demos/offworld-sandbox/*.test.mjs`.
 
 ```powershell
 node --test demos/offworld-sandbox/runtime.test.mjs demos/offworld-sandbox/field.test.mjs demos/offworld-sandbox/presentation.test.mjs demos/offworld-sandbox/campaign.test.mjs demos/offworld-sandbox/personnel-save.test.mjs demos/offworld-sandbox/party-tools.test.mjs

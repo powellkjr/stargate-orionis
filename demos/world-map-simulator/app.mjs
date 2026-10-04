@@ -1,5 +1,5 @@
 import {DEFAULTS,FACTIONS,generateCampaign,validateCampaign,emptyFailures,failureTest,route,sourceReachability,playerView,report,glyphPath,addressCodes,discPoint} from './model.mjs';
-import {RESOURCES,TRADE_RULES,balanceIndicator,matchesResource,tradeRelationships,havenSummary} from './havens.mjs';
+import {RESOURCES,TRADE_RULES,balanceIndicator,matchesResource,tradeRelationships,havenSummary,factionLabel} from './havens.mjs';
 import {encodeAddress,DEFAULT_ADDRESS_CODEC} from './address-codec.mjs';
 const $=id=>document.getElementById(id),esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const colors={'reachable':'#34d399','near limit':'#facc15','requires staging':'#f97316','unreachable':'#64748b','inactive':'#475569','unknown':'#94a3b8',Scions:'#14b8a6',CLP:'#38bdf8','Moy’na':'#c084fc',Independent:'#f472b6'};
@@ -86,7 +86,7 @@ function resourceMarkup(h) {
 }
 function havenDetails(a) {
   const h=a.haven;if(!h)return '';
-  return `<h2>${esc(h.name)}</h2><p>Faction: ${esc(h.faction??'Unknown')} · ${h.scale??'Capacity unknown'}</p>
+  return `<h2>${esc(h.name)}</h2><p>Faction: ${esc(factionLabel(h.faction)??'Unknown')} · ${h.scale??'Capacity unknown'}</p>
     <dl class="haven-stats"><dt>Sentient population</dt><dd>${millions(h.sentientPopulation)} individuals</dd><dt>Resident ration capacity</dt><dd>${millions(h.rationCapacity)} adult-equivalent / day</dd><dt>Resident ration demand</dt><dd>${millions(h.rationDemand)} adult-equivalent / day</dd><dt>Occupancy</dt><dd>${h.occupancy===undefined?'Unknown':pct(h.occupancy)}</dd></dl>
     <h2>Local resources</h2>${resourceMarkup(h)}<p>Material capability: ${h.materialQuality??'Unknown'}</p>
     <p>Gate status from Gate ${source}: ${god()?reach[a.id]:'Not yet known'}</p>
@@ -94,7 +94,7 @@ function havenDetails(a) {
     ${god()?`<details><summary>Population cohorts & history</summary><pre>${esc(JSON.stringify({populationCohorts:h.populationCohorts,nestHistory:h.nestHistory,ancientSite:h.ancientSite},null,2))}</pre></details>`:''}`;
 }
 function renderDialing() {
-  const query=$('search').value.toLowerCase(),list=records.filter(a=>`${a.id} ${addressText(a.address)} ${a.haven?.name??''} ${a.haven?.faction??''}`.toLowerCase().includes(query));
+  const query=$('search').value.toLowerCase(),list=records.filter(a=>`${a.id} ${addressText(a.address)} ${a.haven?.name??''} ${factionLabel(a.haven?.faction)??''}`.toLowerCase().includes(query));
   $('dialing').innerHTML=list.map(a=>`<div class="gate-row ${selected?.type==='gate'&&selected.id===a.id?'selected':''}" data-gate="${a.id}"><div class="gate-title"><b>Gate ${a.id}${a.id===campaign.sgcGateId?' · SGC':''}</b><span>${god()?reach[a.id]:'Known address'}</span></div>${glyphs(a.address)}${a.haven?`<span class="muted">${esc(a.haven.name)}</span>`:''}<div class="row"><button data-select="${a.id}">Inspect</button><button data-show="${a.id}" ${a.physical?'':'disabled'}>${a.physical?'Show me':'Uncorrelated'}</button></div></div>`).join('')||'<p class="muted">No known matching addresses.</p>';
 }
 function renderDetails() {
@@ -134,7 +134,7 @@ function renderTrade() {
 }
 function renderLegend() {
   const entries=god()&&layers.reach?Object.entries(colors).slice(0,5):[['Known location','#94a3b8']];
-  if(layers.factions) entries.push(...FACTIONS.map(f=>[f,colors[f]]));
+  if(layers.factions) entries.push(...FACTIONS.map(f=>[factionLabel(f),colors[f]]));
   if(god()&&layers.reach&&layers.factions) entries.push(['Reachability ring = staging','#f97316']);
   if(layers.threat) entries.push(['Infected','#ef4444']);
   if(layers.populationScale) entries.push(['Haven population scale: larger dot = more sentients','#cbd5e1']);
