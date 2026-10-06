@@ -5,7 +5,7 @@ import {compileMission} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,advanceTime,move} from '../shared/offworld/runtime.mjs';
 import {startDialogue,dialogueResponses,respondDialogue,continueDialogue,dialogueEligibility,refreshDialogue,dialogueTrigger} from '../shared/offworld/dialogue.mjs';
 import {conversationHtml} from './conversation.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 test('playable mission starts authored outer-yard dialogue and preserves normal travel after response',()=>{
   const m=compileMission(read('missing-operative-001.finalized'),read('archetypes'));
   const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);
@@ -221,4 +221,13 @@ test('failed start effects leave state and automatic-start ledger untouched',()=
   scene.onStartEffects=[{type:'ADD_KNOWLEDGE',knowledgeId:'partial'},{type:'SET_EVAC_STATE',instanceId:'operative-01',value:'READY_TO_EVACUATE'}];
   const m=compileMission(raw,catalog);s.knowledgeState.gained.push('trigger');delete s.instanceStates['operative-01'];const before=structuredClone(s);
   assert.throws(()=>refreshDialogue(m,s),/Evacuation instance unavailable/);assert.deepEqual(s,before);
+});test('response switching retains each Unit identity in player and authored SGC history lines',()=>{
+ const {raw,catalog,s}=fixture();s.knowledgeState.gained.push('secret');
+ const scene=raw.dialogueScenes[0];scene.nodes[0].responses[0].nextNodeId='sgc-echo';
+ scene.nodes.push({nodeId:'sgc-echo',speaker:'ACTIVE_SGC_SPEAKER',side:'LEFT',text:'We can follow up.',nextNodeId:'answer'},{nodeId:'bye',speaker:'worker-yard-01',side:'RIGHT',text:'Go ahead.',endConversation:true});
+ const answer=scene.nodes.find(n=>n.nodeId==='answer');delete answer.endConversation;answer.responses=[{responseId:'soldier-followup',source:'SOLDIER',text:'We will check the route.',nextNodeId:'bye'}];
+ const definition=compileMission(raw,catalog),diplomat=s.units.find(u=>u.profession==='DIPLOMAT'),soldier=s.units.find(u=>u.profession==='SOLDIER');
+ startDialogue(definition,s,'test-scene');assert.equal(s.dialogue.actorId,null);respondDialogue(definition,s,'disclose',diplomat.unitId);continueDialogue(definition,s);respondDialogue(definition,s,'soldier-followup',soldier.unitId);
+ assert.equal(s.dialogue.history.find(line=>line.text==='A sensitive truth.').actorId,diplomat.unitId);assert.equal(s.dialogue.history.find(line=>line.text==='We can follow up.').actorId,diplomat.unitId);assert.equal(s.dialogue.history.find(line=>line.text==='We will check the route.').actorId,soldier.unitId);
+ const html=conversationHtml(definition,s);assert(html.includes(diplomat.name));assert(html.includes(soldier.name));
 });

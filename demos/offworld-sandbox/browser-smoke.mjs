@@ -16,7 +16,7 @@ const server=createServer(async(req,res)=>{
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const browser=spawn(process.env.EDGE_PATH??'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',['--headless=new','--disable-gpu','--no-first-run','--remote-debugging-port=0',`--user-data-dir=${profile}`,'about:blank'],{windowsHide:true,stdio:'ignore'});
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
-const deadline=setTimeout(()=>{console.error('Browser smoke timed out.');browser.kill();server.close();process.exit(1);},45000);
+const deadline=setTimeout(()=>{console.error('Browser smoke timed out.');browser.kill();server.close();process.exit(1);},60000);
 let ws;
 try {
   let port;for(let n=0;n<100;n++){try{port=(await readFile(join(profile,'DevToolsActivePort'),'utf8')).split('\n')[0];break;}catch{await delay(100);}}
@@ -50,7 +50,7 @@ try {
   assert.equal(await evaluate("document.querySelector('[data-unit]').dataset.unit"),'53','Favorite survives reload');
   assert.equal(await evaluate("document.querySelector('[data-unit] [data-field=favorite]').checked"),true);
   assert.equal(await evaluate("document.querySelectorAll('[data-field=tier],[data-field=branch],[data-charges]').length"),0,'configuration belongs in character editor');
-  await evaluate(`(async()=>{const data=await (await fetch('../shared/data/personnel-loadouts.json')).json();const cached={};cached['unit-1']={...data.units['unit-1'],tier:3,branch:{kind:'cross',id:'DIPLOMAT',tier:1}};cached['unit-19']={...data.units['unit-19'],tier:3,branch:{kind:'cross',id:'MEDIC',tier:1},availableTools:[{type:'TET2',charges:3},{type:'MET1',charges:3}],toolSlots:[{kitId:'TET2',charges:3},{kitId:'MET1',charges:3}]};cached['unit-10']={...data.units['unit-10'],tier:2,availableTools:[{type:'STT2',charges:3}],toolSlots:[{kitId:'STT2',charges:3},{kitId:'',charges:0}]};localStorage.setItem('sgc-personnel-loadouts-v1',JSON.stringify(cached));})()`);
+  await evaluate(`(async()=>{const data=await (await fetch('../shared/data/personnel-loadouts.json')).json();const cached={};cached['unit-1']={...data.units['unit-1'],tier:3,branch:{kind:'cross',id:'DIPLOMAT',tier:1}};cached['unit-19']={...data.units['unit-19'],perception:9,tier:3,branch:{kind:'cross',id:'MEDIC',tier:1},availableTools:[{type:'TET2',charges:3},{type:'MET1',charges:3}],toolSlots:[{kitId:'TET2',charges:3},{kitId:'MET1',charges:3}]};cached['unit-10']={...data.units['unit-10'],tier:2,availableTools:[{type:'STT2',charges:3}],toolSlots:[{kitId:'STT2',charges:3},{kitId:'',charges:0}]};localStorage.setItem('sgc-personnel-loadouts-v1',JSON.stringify(cached));})()`);
   await call('Page.reload');
   for(let i=0;i<100;i++){if(await evaluate("document.querySelectorAll('[data-unit]').length===54"))break;await delay(100);}
   assert.equal(await evaluate("document.querySelector('[data-unit=\"18\"] [data-slot=\"1\"]').disabled"),false);
@@ -75,8 +75,12 @@ try {
   await evaluate("document.getElementById('deploy').click();document.getElementById('keepGate').click()");
   assert.equal(await evaluate("document.getElementById('mission').hidden"),false);
   assert.equal(await evaluate("document.querySelectorAll('#party .stats-radar').length"),4);
+  assert.equal(await evaluate("document.querySelectorAll('#party .unit-resource.stamina').length"),4);
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('#party .stamina .resource-fill')).backgroundColor"),'rgb(255, 255, 255)');
+  assert(await evaluate("[...document.querySelectorAll('#party .stats-radar')].every(svg=>svg.getAttribute('aria-label').includes('EXP')&&!svg.getAttribute('aria-label').includes('STA'))"));
   assert(await evaluate("document.getElementById('partyTools').textContent.includes('Signal receiver')"));
   const door=async id=>{await evaluate(`document.querySelector('[data-transition="${id}"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);await delay(330);};
+  const reply=async(id,actorId)=>{await evaluate(`document.querySelector('[data-dialogue-response="${id}"]').click()`);if(await evaluate("!!document.querySelector('[data-dialogue-actor]')"))await evaluate(actorId?`document.querySelector('[data-dialogue-actor="${actorId}"]').click()`:"document.querySelector('[data-dialogue-actor]').click()");};
   await door('door-gate-to-yard');
   assert(await evaluate("document.getElementById('mission').textContent.includes('Visitors check in with Reynolds inside.')"),'Authored yard dialogue appears during normal play');
   assert(await evaluate("document.querySelector('#conversation').parentElement.classList.contains('map-panel')&&getComputedStyle(document.querySelector('#conversation')).position==='absolute'"),'Conversation overlays map');
@@ -84,29 +88,16 @@ try {
   assert(await evaluate("document.querySelector('#conversation').getBoundingClientRect().width<=document.querySelector('.map-panel').getBoundingClientRect().width&&document.documentElement.scrollWidth<=innerWidth"),'Conversation overlay fits mobile map');
   await writeFile(join(profile,'dialogue-mobile.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
   await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
-  await evaluate("document.querySelector('[data-dialogue-response=yard-ignore]').click()");
+  assert.equal(await evaluate("document.querySelectorAll('#conversation .portrait svg').length"),1,'NPC opens without an SGC responder');
+  await reply('yard-ignore');
   await door('door-yard-to-mainhall');
   assert.equal(await evaluate("document.getElementById('stageTitle').textContent"),'Main Hall');
   assert(await evaluate("document.getElementById('context').textContent.includes('operative')"),'Scout observation should be presented');
-  await evaluate("document.querySelector('[data-recipe=\"hack-door-mainhall-to-security\"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))");
-  assert.equal(await evaluate("document.getElementById('actionDialog').open"),true);
-  await evaluate("document.getElementById('requirementsDebug').open=true");
-  assert(await evaluate("document.getElementById('actionRequirements').textContent.includes('TECH_SERVICE_II')"));
-  assert(await evaluate("document.getElementById('actionRequirements').textContent.includes('required 6')"));
-  assert.equal(await evaluate("document.querySelectorAll('#actionRequirements .requirement-unit').length"),4);
-
-  assert.equal(await evaluate("document.getElementById('startAction').disabled"),false);
-  await evaluate("document.getElementById('startAction').click()");
-  await delay(1300);
-  await evaluate("document.getElementById('debugView').value='runtime';document.getElementById('designerButton').click()");
-  const runtime=await evaluate("JSON.parse(document.getElementById('debugContent').textContent)");
-  assert.equal(runtime.transitionStates['door-mainhall-to-security'].state,'OPEN');
-  assert(await evaluate("document.getElementById('actionResults').textContent.includes('Door open')"));
-  assert.equal(runtime.units.find(u=>u.profession==='TECHNICIAN').tools[0].chargesRemaining,2);
-  assert.equal(runtime.units.find(u=>u.profession==='TECHNICIAN').tools.length,2);
-  await evaluate("document.getElementById('closeDesigner').click();document.querySelector('[data-station=\"unit-1\"]').click()");
+  assert(await evaluate("!!document.querySelector('[data-transition=\"door-mainhall-to-security\"]')"),'Normal corridor needs no hack');
+  await evaluate("document.querySelector('[data-station=\"unit-1\"]').click()");
   await door('door-yard-to-mainhall');
   await evaluate("document.getElementById('designerButton').click()");
+  await evaluate("document.getElementById('debugView').value='runtime';document.getElementById('debugView').dispatchEvent(new Event('change'))");
   const stationed=await evaluate("JSON.parse(document.getElementById('debugContent').textContent).units.find(u=>u.unitId==='unit-1')");
   assert.equal(stationed.partyStatus,'STATIONED');assert.equal(stationed.currentStageId,'stage-main-hall');
   await evaluate("document.getElementById('closeDesigner').click()");await door('door-yard-to-mainhall');
@@ -114,12 +105,28 @@ try {
   await writeFile(join(profile,'desktop.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
   assert(await evaluate("document.querySelectorAll('.door-inactive:not([data-transition])').length>0"));
   await door('door-mainhall-to-security');
+  assert(await evaluate("document.getElementById('conversation').textContent.includes(\"Don't wander\")"));
+  await reply('reynolds-routine');
   await evaluate(`document.querySelector('[data-npc="reynolds-01"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);
   assert(await evaluate("document.getElementById('npcDetails').textContent.includes('Security supervisor')"));
   assert(await evaluate("!!document.querySelector('#npcDetails .portrait svg')"));
   await evaluate("document.getElementById('closeNpcDetails').click()");
-  await evaluate("document.querySelector('[data-dialogue-start=dialogue-reynolds]').click();document.querySelector('[data-dialogue-response=reynolds-routine]').click()");
+
   assert(await evaluate("document.getElementById('conversation').hidden"),'Reynolds conversation completes');
+  await evaluate("document.querySelector('[data-recipe=\"hack-door-security-to-office\"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))");
+  assert.equal(await evaluate("document.getElementById('actionDialog').open"),true);
+  await evaluate("document.getElementById('requirementsDebug').open=true");
+  assert(await evaluate("document.getElementById('actionRequirements').textContent.includes('TECH_SERVICE_II')"));
+  assert(await evaluate("document.getElementById('actionRequirements').textContent.includes('required 7')"));
+  assert.equal(await evaluate("document.querySelectorAll('#actionRequirements .requirement-unit').length"),4);
+  await evaluate("document.getElementById('startAction').click()");await delay(1300);
+  await evaluate("document.getElementById('debugView').value='runtime';document.getElementById('designerButton').click()");
+  const runtime=await evaluate("JSON.parse(document.getElementById('debugContent').textContent)");
+  assert.equal(runtime.transitionStates['door-security-to-office'].state,'OPEN');
+  assert.equal(runtime.units.find(u=>u.profession==='TECHNICIAN').tools[0].chargesRemaining,2);
+  assert(await evaluate("document.getElementById('actionResults').textContent.includes('Door open')"));
+  await evaluate("document.getElementById('closeDesigner').click()");
+
   await evaluate(`document.querySelector('#map [data-engage="incident-security-guards"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);
   assert.equal(await evaluate("document.getElementById('wait').disabled"),true);
   await delay(2200);
@@ -135,10 +142,27 @@ try {
   assert(await evaluate("document.getElementById('context').textContent.includes('RESOLVED')"));
   assert(await evaluate("document.getElementById('context').textContent.includes('DOWN')"));
   await door('door-mainhall-to-security');
-  await door('door-mainhall-to-processing');await door('door-processing-to-office');
+  await door('door-mainhall-to-processing');await door('door-processing-to-lab');
+  assert.equal(await evaluate("document.getElementById('stageTitle').textContent"),'Analysis Lab');
+  assert(!await evaluate("document.getElementById('context').textContent.includes('Asgard')"),'Lab entry does not identify the item');
+  for(const id of ['characterize-lab-device','detach-lab-device']){
+    await evaluate(`document.querySelector('[data-recipe="${id}"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);
+    assert.equal(await evaluate("document.getElementById('startAction').disabled"),false);
+    await evaluate("document.getElementById('startAction').click()");
+    for(let i=0;i<140;i++){if(await evaluate("document.getElementById('work').textContent===''"))break;await delay(100);}
+    assert(await evaluate("document.getElementById('actionResults').textContent.includes('COMPLETED')"));
+  }
+  await evaluate("document.getElementById('debugView').value='runtime';document.getElementById('designerButton').click()");
+  const lab=await evaluate("JSON.parse(document.getElementById('debugContent').textContent)");
+  assert.equal(lab.instanceStates['lab-mounted-rifle-01'].physicalItem.state.mountState,'DETACHED');
+  assert.deepEqual(lab.instanceStates['lab-mounted-rifle-01'].physicalItem.knowledge.instanceFindings,['LAB_DEVICE_PULSE_CHARACTERIZED']);
+  assert(lab.discoveries.some(d=>d.discoveryId==='discovery-lab-device-behavior'));
+  assert(!lab.knowledgeState.gained.includes('ELECTROMAGNETIC_ACCELERATION_II'));
+  await evaluate("document.getElementById('closeDesigner').click()");
+  await door('door-processing-to-lab');await door('door-processing-to-office');
   assert(await evaluate("document.querySelectorAll('.action-hex polygon').length>=3"));
-  await evaluate("document.getElementById('dialogueActor').value='unit-1';document.querySelector('[data-dialogue-start=dialogue-mcguffin-cover]').click()");
-  for(const id of ['mcguffin-containment-play-dumb','mcguffin-processing-vague','mcguffin-lab-deflect','mcguffin-neutral-no']){assert(await evaluate(`document.querySelector('[data-dialogue-response=${id}]')?.disabled===false`),'Authored response eligible');await evaluate(`document.querySelector('[data-dialogue-response=${id}]').click()`);}
+  assert(await evaluate("document.getElementById('conversation').textContent.includes(\"You're finally here\")"),'Office dialogue starts automatically');
+  for(const id of ['mcguffin-containment-play-dumb','mcguffin-processing-vague','mcguffin-lab-deflect','mcguffin-neutral-no']){assert(await evaluate(`document.querySelector('[data-dialogue-response=${id}]')?.disabled===false`),'Authored response eligible');await reply(id,'unit-1');}
   assert(await evaluate("!document.getElementById('conversation').hidden&&document.querySelector('[data-dialogue-continue]')!==null"),'McGuffin silent branch resolves to spoken terminal node');
   await evaluate("document.querySelector('[data-dialogue-continue]').click()");
   await writeFile(join(profile,'office.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
@@ -176,7 +200,7 @@ try {
     raw.dialogueScenes=[{dialogueSceneId:'smoke',participants:{left:'worker-yard-01',right:'ACTIVE_SGC_SPEAKER'},startNodeId:'hello',nodes:[
       {nodeId:'hello',speaker:'worker-yard-01',side:'LEFT',text:'Authored greeting.',responses:[{responseId:'reply',text:'Authored reply.',source:'NEUTRAL',nextNodeId:'bye'}]},
       {nodeId:'bye',speaker:'worker-yard-01',side:'LEFT',text:'Authored farewell.',endConversation:true}]}];
-    const m=compileMission(raw,await get('../shared/data/offworld/archetypes.json'));
+    const m=compileMission(raw,{...await get('../shared/data/offworld/archetypes.json'),itemDefinitions:await get('../shared/data/item.json')});
     const units=(await get('../shared/data/offworld/party-presets.json')).units.slice(0,4);
     const s=createRuntime(m,units,'2026-09-25T12:00Z');chooseGate(m,s,true);s.currentStageId='stage-outer-yard';
     s.stageStates[s.currentStageId].visibility='VISIBLE';s.units.forEach(u=>u.currentStageId=s.currentStageId);
@@ -189,7 +213,9 @@ try {
     continueDialogue(m,s);panel.remove();return {portraits,left,right,overflow,ended:s.dialogue===null};
   })()`);
   assert.deepEqual(conversationChecks,{portraits:2,left:true,right:true,overflow:false,ended:true});
+  if(await evaluate("!document.getElementById('redial').disabled"))await evaluate("document.getElementById('redial').click()");
   await evaluate("document.getElementById('extract').click()");await delay(250);
+  assert(await evaluate("!!document.querySelector('[data-recovery=receiving][value=\"lab-mounted-rifle-01\"]:not(:disabled)')"),'Detached lab instance is a Receiving candidate');
   assert.equal(await evaluate("document.getElementById('debrief').hidden"),false);
   assert.equal(await evaluate("document.querySelectorAll('#objectives').length"),1);
   assert(await evaluate("!!document.querySelector('[data-recovery=receiving][value=\"supply-cache-01\"]:not(:disabled)')"));

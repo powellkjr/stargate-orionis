@@ -5,7 +5,7 @@ import {compileMission} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,advanceTime,visibility,exits,move} from '../shared/offworld/runtime.mjs';
 import {startWork,recipeEligibility} from '../shared/offworld/field.mjs';
 import {renderMap} from './map.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function setup(){const units=read('party-presets').units.filter(u=>['DIPLOMAT','SOLDIER','MEDIC','TECHNICIAN'].includes(u.profession));const s=createRuntime(m,units,'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
 function place(s,id){s.currentStageId=id;for(const u of s.units)u.currentStageId=id;s.stageStates[id].explored=true;s.stageStates[id].knownShape=true;visibility(m,s);}
@@ -28,7 +28,7 @@ test('Small talk and Inquire reveal only their authored doors and rooms',()=>{
 test('operative departure needs care or source resolution plus a Gate route; Talk explains it',()=>{
  const s=setup();place(s,'stage-holding-area');s.instanceStates['guard-holding-01'].combatState='DOWN';s.knowledgeState.gained.push('operative-located');s.instanceStates['operative-01'].detectionState='LOCATED';
  for(const stage of Object.values(s.stageStates))stage.knownShape=true;for(const edge of Object.values(s.transitionStates))Object.assign(edge,{known:true,state:'OPEN'});
- assert.equal(recipeEligibility(m,s,m.indexes.recipes['extract-operative']).blocker,'INVALID_TARGET_STATE');const w=startWork(m,s,'talk-operative');advanceTime(m,s,60);assert.match(w.outcome.text,/everybody is stabilized/);
+ assert.equal(recipeEligibility(m,s,m.indexes.recipes['extract-operative']).blocker,'INVALID_TARGET_STATE');assert.equal(m.indexes.recipes['talk-operative'],undefined);
  for(const id of ['patient-01','patient-02','patient-03'])s.instanceStates[id].condition='STABILIZED';startWork(m,s,'extract-operative');advanceTime(m,s,180);assert.equal(s.instanceStates['operative-01'].custody,'AT_GATE');assert.equal(s.instanceStates['operative-01'].currentStageId,m.gate.stageId);
 });
 test('downed supervisor gives door code and opening it spends no Tool charges',()=>{

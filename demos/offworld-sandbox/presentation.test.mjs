@@ -11,7 +11,7 @@ import {compileMission} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,move} from '../shared/offworld/runtime.mjs';
 import {renderMap,partyCard} from './map.mjs';
 import {layoutActionHexes} from './hex-layout.mjs';
-const read=name=>JSON.parse(readFileSync(new URL(`../shared/data/${name}.json`,import.meta.url)));
+const read=name=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/${name}.json`,import.meta.url)));return name.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const classes=read('base-classes'),names=read('personnel-names'),presets=read('offworld/party-presets');
 test('deployment preserves all 54 staffing identities and their exact progression',()=>{
   const original=buildPersonnelRoster(classes,names.pools,Object.fromEntries(Object.entries(branches).map(([id,items])=>[id.toLowerCase(),items])));
@@ -37,6 +37,7 @@ test('regular hexagons tessellate with shared edges and no interior overlap at m
 test('inactive transitions are smaller, muted and noninteractive; adjacent movement is distinct',()=>{
   const m=compileMission({...read('offworld/missing-operative-001.finalized'),dialogueScenes:[]},read('offworld/archetypes'));
   const s=createRuntime(m,presets.units.slice(0,4),'2026-09-24T14:00:00Z');chooseGate(m,s,true);move(m,s,'door-gate-to-yard');move(m,s,'door-yard-to-mainhall');
+  s.transitionStates['door-mainhall-to-security'].state='LOCKED';
   const html=renderMap(m,s);
   assert(html.includes('door-selectable'));assert(html.includes('door-locked'));assert(html.includes('door-inactive'));
   assert(!/class="door door-inactive"[^>]*data-transition=/.test(html));

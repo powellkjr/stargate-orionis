@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {compileMission,clone} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,advanceTime,move,returnRoute,redial,extract} from '../shared/offworld/runtime.mjs';
 import {portraitSvg} from '../shared/portraits/portrait.mjs';
-const read=name=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${name}.json`,import.meta.url)));
+const read=name=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${name}.json`,import.meta.url)));return name.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const raw=read('missing-operative-001.finalized'),catalog=read('archetypes'),party=read('party-presets').units.slice(0,4);
 const m=compileMission({...raw,dialogueScenes:[]},catalog),start='2026-09-24T14:00:00Z';
 const fresh=()=>createRuntime(m,party,start);
@@ -34,9 +34,10 @@ test('Gate choice required, atomic whole-party moves and closed routine doors',(
   const s=fresh();assert.throws(()=>move(m,s,'door-gate-to-yard'),/Gate/);
   chooseGate(m,s,true);move(m,s,'door-gate-to-yard');move(m,s,'door-yard-to-mainhall');
   assert.equal(s.stageStates['stage-holding-area'].visibility,'HIDDEN');
-  const before=JSON.stringify(s);assert.throws(()=>move(m,s,'door-mainhall-to-security'),/interaction/);assert.equal(JSON.stringify(s),before);
+  move(m,s,'door-mainhall-to-security');assert.equal(s.previousStageId,'stage-main-hall');assert(s.units.every(u=>u.currentStageId==='stage-security-hall'));
+  const before=JSON.stringify(s);assert.throws(()=>move(m,s,'door-security-to-office'),/interaction/);assert.equal(JSON.stringify(s),before);move(m,s,'door-mainhall-to-security');
   move(m,s,'door-mainhall-to-holding');assert(s.units.every(u=>u.currentStageId==='stage-holding-area'));
-  assert.equal(s.transitionStates['door-mainhall-to-holding'].state,'OPEN');assert.equal(s.sgcCurrentTime,'2026-09-24T14:03:00.000Z');
+  assert.equal(s.transitionStates['door-mainhall-to-holding'].state,'OPEN');assert.equal(s.sgcCurrentTime,'2026-09-24T14:05:00.000Z');
 });
 test('visibility, exploration and last-known security are independent',()=>{
   const s=fresh();assert.equal(s.stageStates['stage-outer-yard'].visibility,'PARTIAL');

@@ -5,8 +5,8 @@ import {compileMission,clone} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,move,advanceTime,extract} from '../shared/offworld/runtime.mjs';
 import {createTool,toolOptions,validateEquipment,professionTier} from '../shared/offworld/equipment.mjs';
 import {activeWork,recipeEligibility,startWork,cancelWork,stationUnit,observationEligibility,refreshField} from '../shared/offworld/field.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},catalog=read('archetypes'),presets=read('party-presets').units,m=compileMission(raw,catalog);
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
+const raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},catalog=read('archetypes'),presets=read('party-presets').units,m=compileMission({...raw,transitions:raw.transitions.map(t=>t.transitionId==='door-mainhall-to-security'?{...t,overrides:{...t.overrides,initialState:'LOCKED',routine:false}}:t)},catalog);
 function unit(role,kit,tier=2){const u=clone(presets.find(u=>u.profession===role));u.tier=tier;u.tools=kit?[createTool(u,0,kit,3,catalog)]:[];return u;}
 function fresh(units=[unit('TECHNICIAN','TET2'),unit('MEDIC','MET2'),unit('SCOUT','STT2'),unit('SCIENTIST','SCT2')],mission=m){const s=createRuntime(mission,units,'2026-09-24T14:00:00Z');chooseGate(mission,s,true);return s;}
 function hall(s,mission=m){move(mission,s,'door-gate-to-yard');move(mission,s,'door-yard-to-mainhall');}

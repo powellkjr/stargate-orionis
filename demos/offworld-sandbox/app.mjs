@@ -2,7 +2,7 @@ import {incidentKind} from '../shared/offworld/campaign.mjs?v=dialogue-doors-1';
 import {baseCapacity,loadBase,saveBase,reserveRecovery} from '../shared/js/base-configuration.mjs?v=dialogue-doors-1';
 import {combatPacer,damageFeedback} from './combat-feedback.mjs';
 import {npcDetailsHtml} from './npc-presentation.mjs';
-import {dialogueEligibility,startDialogue,respondDialogue,continueDialogue,refreshDialogue} from '../shared/offworld/dialogue.mjs';
+import {dialogueResponses,dialogueEligibility,startDialogue,respondDialogue,continueDialogue,refreshDialogue} from '../shared/offworld/dialogue.mjs';
 import {conversationHtml} from './conversation.mjs';
 let selectedNpc=null;
 const paceCombat=combatPacer(),damageFrames=damageFeedback();
@@ -53,6 +53,7 @@ function renderNpcDetails(){
 }
 function visibleObservations(){return definition.observations.filter(o=>state.observationStates[o.observationId].status==='PRESENTED'&&(o.stageId===state.currentStageId||(o.fromStageIds??[]).includes(state.currentStageId)));}
 function recipeButton(r){const e=recipeEligibility(definition,state,r);if(e.status==='HIDDEN'||e.status==='COMPLETED'||e.blocker==='INVALID_TARGET_STATE')return '';return `<button data-recipe="${esc(r.recipeInstanceId)}" class="recipe-button" style="--profession:${colors[r.profession]??'#879b9b'}" aria-disabled="${e.status!=='AVAILABLE'}"><b>${icons[r.actionType]??'…'} ${esc(title(r.actionType??r.archetypeId.replace('recipe_','').replaceAll('_',' ')))}</b><small>${esc(r.profession??'Deferred')} ${r.minimumTier??''} · ${esc(e.blocker??e.status)}</small></button>`;}
+let pendingDialogueResponse=null;
 function renderContext(){
   renderNpcDetails();
   const stage=definition.indexes.stages[state.currentStageId],st=state.stageStates[state.currentStageId];
@@ -63,7 +64,7 @@ function renderContext(){
       if(!recipes.length)return '';return `<section class="target-actions"><h3>${esc(t.transitionId?'Door controls':definition.indexes.instances[t.instanceId].playerLabel)}</h3>${recipeChoices(definition,state,recipes).map(recipeButton).join('')}</section>`;
     }).join('')+`<p class="muted">${exits(definition,state).map(e=>`${e.direction}: ${e.state==='LOCKED'?'locked':e.state==='CLOSED'?'closed routine door':'open passage'}`).join('<br>')}</p>`;
   const scenes=(definition.dialogueScenes??[]).filter(scene=>dialogueEligibility(definition,state,scene));
-  if(scenes.length)$('context').innerHTML+=`<label>Conversation speaker<select id="dialogueActor">${state.units.filter(u=>u.currentStageId===state.currentStageId&&u.partyStatus==='ACTIVE_PARTY'&&u.activityState==='IDLE').map(u=>`<option value="${esc(u.unitId)}">${esc(u.name)} · ${esc(u.profession)}</option>`).join('')}</select></label>`+scenes.map(scene=>`<button data-dialogue-start="${esc(scene.dialogueSceneId)}">Talk · ${esc(definition.indexes.instances[Object.values(scene.participants).find(id=>id!=='ACTIVE_SGC_SPEAKER')]?.playerLabel??'Conversation')}</button>`).join('');
+  if(scenes.length)$('context').innerHTML+=scenes.map(scene=>`<button data-dialogue-start="${esc(scene.dialogueSceneId)}">Talk · ${esc(definition.indexes.instances[Object.values(scene.participants).find(id=>id!=='ACTIVE_SGC_SPEAKER')]?.playerLabel??'Conversation')}</button>`).join('');
 }
 function renderDebug(){
   if(!definition)return;
@@ -73,7 +74,7 @@ function renderDebug(){
 function render(){
   if(state&&!busy)refreshDialogue(definition,state);
   $('conversation').hidden=!state?.dialogue;
-  $('conversation').innerHTML=state?.dialogue?conversationHtml(definition,state):'';
+  $('conversation').innerHTML=state?.dialogue?conversationHtml(definition,state,pendingDialogueResponse):'';
   for(const id of ['map','party','context','work'])$(id).inert=!!state?.dialogue;
   $('setup').hidden=!!state;$('mission').hidden=!state;if(!state)return;
   const primary=definition.objectives.find(o=>o.priority==='PRIMARY'&&state.objectiveStates[o.objectiveId].state==='ACTIVE')??definition.objectives.filter(o=>o.priority==='PRIMARY'&&state.objectiveStates[o.objectiveId].state!=='HIDDEN').at(-1);
@@ -133,7 +134,7 @@ $('cancelWorkMove').onclick=guard(async()=>{for(const w of movementWork(state))c
 $('waitWorkMove').onclick=guard(async()=>{const work=movementWork(state);advanceTime(definition,state,Math.max(0,...work.map(w=>w.durationSeconds-w.elapsedSeconds)));$('leaveDialog').close();await moveAnimated(pendingMove);});
 $('startAction').onclick=guard(()=>{const actor=$('actor').value;const recipe=recipeAlternatives(definition,definition.indexes.recipes[selectedRecipe]).find(r=>recipeEligibility(definition,state,r,actor).status==='AVAILABLE');if(!recipe)throw Error('No eligible action for this Actor.');startWork(definition,state,recipe.recipeInstanceId,actor);$('actionDialog').close();render();});$('cancelAction').onclick=()=>$('actionDialog').close();
 function delegated(event){
-  const dialogue=event.target.closest('[data-dialogue-start]');if(dialogue){startDialogue(definition,state,dialogue.dataset.dialogueStart,$('dialogueActor').value);render();$('conversation').scrollIntoView({block:'nearest'});return;}
+  const dialogue=event.target.closest('[data-dialogue-start]');if(dialogue){pendingDialogueResponse=null;startDialogue(definition,state,dialogue.dataset.dialogueStart);render();$('conversation').scrollIntoView({block:'nearest'});return;}
   if(event.target.closest('#closeNpcDetails')){selectedNpc=null;renderNpcDetails();return;}
   if(dragged&&event.currentTarget===$('map'))return;
   const npc=event.target.closest('[data-npc]');if(npc){selectedNpc=npc.dataset.npc;renderNpcDetails();return;}
@@ -148,7 +149,19 @@ function delegated(event){
 }
 for(const id of ['map','party','context','work'])$(id).addEventListener('click',guard(delegated));
 $('npcDetails').addEventListener('click',guard(delegated));
-$('conversation').addEventListener('click',guard(event=>{const response=event.target.closest('[data-dialogue-response]');if(response)respondDialogue(definition,state,response.dataset.dialogueResponse);else if(event.target.closest('[data-dialogue-continue]'))continueDialogue(definition,state);else return;render();}));
+$('conversation').addEventListener('click',guard(event=>{
+  const response=event.target.closest('[data-dialogue-response]'),actor=event.target.closest('[data-dialogue-actor]');
+  if(response){
+    const choice=dialogueResponses(definition,state).find(r=>r.responseId===response.dataset.dialogueResponse&&r.eligible);
+    if(!choice)return;
+    if(choice.candidates.length===1){respondDialogue(definition,state,choice.responseId,choice.candidates[0]);pendingDialogueResponse=null;}
+    else pendingDialogueResponse=choice.responseId;
+  }else if(actor){respondDialogue(definition,state,actor.dataset.responseId,actor.dataset.dialogueActor);pendingDialogueResponse=null;}
+  else if(event.target.closest('[data-dialogue-back]'))pendingDialogueResponse=null;
+  else if(event.target.closest('[data-dialogue-continue]')){continueDialogue(definition,state);pendingDialogueResponse=null;}
+  else return;
+  render();
+}));
 $('map').addEventListener('focusin',event=>{const npc=event.target.closest('[data-npc]');if(npc){selectedNpc=npc.dataset.npc;renderNpcDetails();}});
 $('map').addEventListener('pointerover',event=>{if(event.pointerType!=='mouse')return;const npc=event.target.closest('[data-npc]');if(npc){selectedNpc=npc.dataset.npc;renderNpcDetails();}});
 $('map').addEventListener('keydown',guard(e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();dragged=false;return delegated(e);}}));
@@ -176,4 +189,4 @@ setInterval(()=>{
     render();
   }catch(e){error(e);}
 },100);
-try{baseConfig=await loadBase();roomSchemas=await load('../shared/data/rooms_schema.json');const [c,r,p,classes,names,loadouts]=await Promise.all([load('../shared/data/offworld/archetypes.json'),load('../shared/data/offworld/missing-operative-001.finalized.json'),load('../shared/data/offworld/party-presets.json'),load('../shared/data/base-classes.json'),load('../shared/data/personnel-names.json'),load('../shared/data/personnel-loadouts.json')]);loadouts.units={...loadouts.units,...cachedLoadouts()};catalog=c;raw=r;presets=deploymentRoster(classes,names,p,loadouts);definition=compileMission(raw,catalog);renderSetup();for(const [id,value] of Object.entries(cachedLoadouts())){const unit=presets.units.find(u=>u.unitId===id);if(unit)savePersonnel(unit,value);}}catch(e){error(e);$('deploy').disabled=true;}
+try{baseConfig=await loadBase();roomSchemas=await load('../shared/data/rooms_schema.json');const [c,r,p,classes,names,loadouts,items]=await Promise.all([load('../shared/data/offworld/archetypes.json'),load('../shared/data/offworld/missing-operative-001.finalized.json'),load('../shared/data/offworld/party-presets.json'),load('../shared/data/base-classes.json'),load('../shared/data/personnel-names.json'),load('../shared/data/personnel-loadouts.json'),load('../shared/data/item.json')]);loadouts.units={...loadouts.units,...cachedLoadouts()};catalog={...c,itemDefinitions:items};raw=r;presets=deploymentRoster(classes,names,p,loadouts);definition=compileMission(raw,catalog);renderSetup();for(const [id,value] of Object.entries(cachedLoadouts())){const unit=presets.units.find(u=>u.unitId===id);if(unit)savePersonnel(unit,value);}}catch(e){error(e);$('deploy').disabled=true;}

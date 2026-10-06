@@ -2,6 +2,25 @@
 
 ## Status
 
+### Interaction wave and Analysis Lab benchmark wave
+
+- User authorized phased implementation, then explicitly authorized provisional Lab Recipes using existing requirements.
+- Interaction wave: removed redundant yard Question and timed operative Talk; operative contact is manual; office and directional Security Hall greetings are automatic. NPC openings leave the SGC responder empty; choices resolve a qualified local Unit and retain per-line identity. Honest office responses support parties without a Diplomat.
+- Holding contact and specified nonmedical work have authored suspicion effects. Added a real yard combat Incident and diplomatic/Soldier checkpoint passage. Readiness plus checkpoint clearance or defeated guards permits early operative departure; social passage remains separate from physical security. Main Hall corridor is routine. Codes have authored sources and visible terminal acceptance.
+- Lab wave: real Stage north of Processing at (4,0)/(5,0), preserving existing geometry. One complete mounted ASGARD_EM_RIFLE instance resolves stable metadata from shared item.json. Scientist characterization creates field evidence and a Research question; Technician II detaches the same device; Soldier interpretation follows the finding. No item identity, Asgard Pattern or Tier-II Theory is automatically granted.
+- Provisional content: Scientist I/SCT1/3m/1 charge; Technician II/TECH_SERVICE_II/60m/1 charge; ordinary securing 3m/no charge; tier-I profession observations use PER 0. Existing Pulsed Power I and EM Acceleration I are starting benchmark principles, explicitly required for characterization.
+- Generic item-state/finding transactions and Receiving recovery preserve identity, hidden Reality, instance Knowledge and physical state in physicalItem reservation payloads. Crate cargo remains compatible. Recovery reserves capacity before browser runtime commit; base room admission and institutional Research remain separate.
+- Updated demos READMEs to remove historical claims that dialogue and character stat editing are absent. Full replacement-schema integration and evacuation manifests remain pending.
+- Validation: all 188 automated tests passed across server, Offworld, portrait/editor, staffing and world map. Expanded Offworld Edge smoke passed with Lab work, dialogue responder selection, combat, debrief and 390px layout; no browser exceptions. Syntax and diff checks passed. Added rollback tests for invalid physical transitions and changed recovery identity.
+
+
+### Expertise radar and Stamina resource presentation
+
+- Replaced STA radar axis with EXP (0–8), including entered untrained rank 0 for base and branch paths. No Profession contributes 0. Existing I–III loadout validation and execution requirements are unchanged.
+- Added HP and white Stamina meters to active-party cards; HP maximum comes from configured starting combat health. Stamina retains its existing 0–100 resource range; its editor label now says Starting Stamina resource.
+- Editor progression changes update expertise preview without saving. No personnel values, movement costs, evacuation behavior or reset capacity changed in this slice.
+- Validation: all 149 automated tests passed; character-editor and Offworld Edge browser smoke passed, including expertise radar assertions, white Stamina meters, existing gameplay regressions and mobile layout. Syntax and diff checks passed.
+
 **Wave A foundation and combat feedback implemented. Wave B NPC details, dialogue runtime/UI, and automatic/revisit triggers implemented. The playable default mission now includes all eight authored conversations, displayed over the map. Explicit confrontation-to-combat escalation is supported. Full replacement mission integration, Recipe integration and repeat-policy reconciliation remain pending. Historical notes below describe earlier milestones and their then-current blockers.**
 
 ### All authored conversations / map overlay

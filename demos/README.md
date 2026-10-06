@@ -58,3 +58,10 @@ backend; no backend or credentials are added here.
 
 After local authored JSON edits, review and commit/push them through the normal
 repository workflow to publish updated static fixtures.
+## Offworld benchmark updates
+
+The [Offworld guide](offworld-sandbox/README.md) documents automatic NPC openings,
+response-based speaker selection, checkpoint evacuation alternatives and the
+Analysis Lab Scientist/Technician handoff. Direct shared items preserve their
+instance IDs and field findings in Receiving reservation payloads. Lab action
+requirements are explicitly provisional benchmark content.

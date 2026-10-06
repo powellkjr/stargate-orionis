@@ -8,6 +8,7 @@ export function dialogueTrigger(s,c){
   if(!c||typeof c!=='object')return false;
   if(c.all)return c.all.every(x=>dialogueTrigger(s,x));
   if(c.knowledge)return knows(s,c.knowledge);
+  if(c.enteredFromStage)return s.previousStageId===c.enteredFromStage;
   if(c.stageVisitCount){const v=c.stageVisitCount,n=s.stageStates[v.stageId]?.visitCount??0;return (v.equals===undefined||n===v.equals)&&(v.minimum===undefined||n>=v.minimum);}
   if(c.npcDispositionIn)return c.npcDispositionIn.values.includes(s.instanceStates[c.npcDispositionIn.instanceId]?.npcState?.disposition);
   if(c.instanceEvacStateIn)return c.instanceEvacStateIn.values.includes(s.instanceStates[c.instanceEvacStateIn.instanceId]?.evacState);
@@ -17,6 +18,7 @@ function validateTrigger(c,indexes,fail,path){
   if(!c||typeof c!=='object'||Array.isArray(c)||Object.keys(c).length!==1){fail(path,'trigger must have one supported operator');return;}
   if(c.all){if(!Array.isArray(c.all)||!c.all.length)fail(path,'all needs nonempty triggers');else c.all.forEach(x=>validateTrigger(x,indexes,fail,path));}
   else if(Object.hasOwn(c,'knowledge')){if(typeof c.knowledge!=='string'||!c.knowledge)fail(path,'knowledge trigger needs ID');}
+  else if(Object.hasOwn(c,'enteredFromStage')){if(!indexes.stages[c.enteredFromStage])fail(path,'unknown entry Stage');}
   else if(c.stageVisitCount){
     const v=c.stageVisitCount;
     if(!indexes.stages[v.stageId]||v.equals===undefined&&v.minimum===undefined||Object.keys(v).some(k=>!['stageId','equals','minimum'].includes(k)))fail(path,'invalid Stage visit trigger');
@@ -44,6 +46,7 @@ export function validateDialogue(scenes,indexes,fail,catalog){
         if(['ALL','ANY'].includes(c.type)){conditions(c.conditions);if(!Array.isArray(c.conditions))fail(path,'nested conditions required');}
         else if(c.type==='KNOWLEDGE_PRESENT'){if(typeof c.factId!=='string')fail(path,'condition factId required');}
         else if(c.type==='INCIDENT_STATE'){if(!indexes.incidents[c.incidentId])fail(path,'unknown condition Incident');}
+        else if(c.type==='STAGE_STATE'){if(!indexes.stages[c.stageId]||!['socialPassage','securityState'].includes(c.field)||!Object.hasOwn(c,'equals'))fail(path,'invalid Stage condition');}
         else if(c.type==='NPC_STATE'){if(!indexes.instances[c.instanceId]?.npcState)fail(path,'condition NPC state required');}
         else if(c.type==='ASSET_CUSTODY'){if(!indexes.instances[c.assetInstanceId])fail(path,'unknown condition asset');}
         else if(!indexes.instances[c.instanceId]||typeof c.field!=='string'||!Object.hasOwn(c,'equals'))fail(path,'unsupported dialogue condition');
@@ -74,6 +77,7 @@ export function validateDialogue(scenes,indexes,fail,catalog){
       if(list!==undefined&&!Array.isArray(list)){fail(path,'effects must be an array');return;}
       for(const e of list??[]){
         if(!e||typeof e!=='object'){fail(path,'effect must be an object');continue;}
+        if(e.when)conditions([e.when]);
         if(npcEffectTypes.includes(e.type))validateNpcEffect(e,indexes.instances,fail,path);
         else if(e.type==='ADD_KNOWLEDGE'){if(typeof e.knowledgeId!=='string'||!e.knowledgeId)fail(path,'knowledgeId required');}
         else if(e.type==='EMIT_EVENT'){
@@ -136,11 +140,12 @@ export function dialogueEligibility(m,s,scene,actorId,automatic=false){
   const opening=dialogueOpening(scene,s),node=scene.nodes.find(n=>n.nodeId===opening.nodeId);
   if(!node||(node.conditions??[]).some(c=>!condition(s,c)))return false;
   if(!(scene.conditions??[]).every(c=>condition(s,c)))return false;
-  if(Object.values(scene.participants).some(id=>id!=='ACTIVE_SGC_SPEAKER'&&(!m.indexes.instances[id]||m.indexes.instances[id].stageId!==s.currentStageId||s.stageStates[s.currentStageId].visibility!=='VISIBLE'||s.instanceStates[id]?.custody!=='LOCAL'||!condition(s,m.indexes.instances[id].revealedWhen))))return false;
+  if(Object.values(scene.participants).some(id=>id!=='ACTIVE_SGC_SPEAKER'&&(!m.indexes.instances[id]||m.indexes.instances[id].stageId!==s.currentStageId||s.stageStates[s.currentStageId].visibility!=='VISIBLE'||s.instanceStates[id]?.custody!=='LOCAL'||['DOWN','CAPTURED','FLED'].includes(s.instanceStates[id]?.combatState)||!condition(s,m.indexes.instances[id].revealedWhen))))return false;
   return s.units.some(u=>(!actorId||u.unitId===actorId)&&u.currentStageId===s.currentStageId&&u.partyStatus==='ACTIVE_PARTY'&&u.activityState==='IDLE');
 }
 function effects(m,s,list){
   for(const e of list??[]){
+    if(e.when&&!condition(s,e.when))continue;
     if(npcEffectTypes.includes(e.type))applyNpcEffect(s,e);
     else if(e.type==='ADD_KNOWLEDGE'){if(!knows(s,e.knowledgeId)){s.knowledgeState.gained.push(e.knowledgeId);s.resultEvents.push({type:'KNOWLEDGE_GAINED',factId:e.knowledgeId,atSeconds:s.missionElapsedSeconds});}}
     else if(e.type==='EMIT_EVENT')s.emittedEvents.push({event:e.event??e.eventArchetypeId,stageId:s.currentStageId,atSeconds:s.missionElapsedSeconds});
@@ -171,15 +176,14 @@ function enter(m,s,id,visited=new Set()){
     return enter(m,s,match.nextNodeId,visited);
   }
   s.dialogue.nodeId=id;effects(m,s,node.effects);
-  s.dialogue.history.push({speaker:node.speaker,side:node.side,text:node.text});
+  s.dialogue.history.push({speaker:node.speaker,...(node.speaker==='ACTIVE_SGC_SPEAKER'?{actorId:s.dialogue.actorId}:{}),side:node.side,text:node.text});
 }
 function transaction(m,s,change){const draft=structuredClone(s);change(draft);refreshCampaign(m,draft);Object.assign(s,draft);}
 export function startDialogue(m,s,id,actorId,automatic=false){
   const scene=dialogueScene(m,id);if(!dialogueEligibility(m,s,scene,actorId,automatic))throw Error('Conversation is unavailable.');
-  const actor=s.units.find(u=>(!actorId||u.unitId===actorId)&&u.currentStageId===s.currentStageId&&u.partyStatus==='ACTIVE_PARTY'&&u.activityState==='IDLE');
   const opening=dialogueOpening(scene,s);
   transaction(m,s,draft=>{
-    draft.dialogue={sceneId:id,actorId:actor.unitId,nodeId:null,variantId:opening.variantId,history:[]};
+    draft.dialogue={sceneId:id,actorId:actorId??null,fixedActorId:actorId??null,nodeId:null,variantId:opening.variantId,history:[]};
     effects(m,draft,scene.onStartEffects);enter(m,draft,opening.nodeId);
   });
 }
@@ -193,26 +197,30 @@ export function refreshDialogue(m,s){
   startDialogue(m,s,scene.dialogueSceneId,null,true);
   s.dialogueStarts??=[];s.dialogueStarts.push(key(scene));return true;
 }
-export function dialogueResponses(m,s){
+export function dialogueResponses(m,s,actorId){
   if(!s.dialogue)return [];
-  const node=dialogueScene(m,s.dialogue.sceneId).nodes.find(n=>n.nodeId===s.dialogue.nodeId),actor=s.units.find(u=>u.unitId===s.dialogue.actorId);
+  const node=dialogueScene(m,s.dialogue.sceneId).nodes.find(n=>n.nodeId===s.dialogue.nodeId);
+  const fixed=Object.hasOwn(s.dialogue,'fixedActorId')?s.dialogue.fixedActorId:s.dialogue.actorId;
+  const actors=s.units.filter(u=>(!fixed||u.unitId===fixed)&&(!actorId||u.unitId===actorId)&&u.currentStageId===s.currentStageId&&u.partyStatus==='ACTIVE_PARTY'&&u.activityState==='IDLE');
   return (node.responses??[]).map(r=>{
     const req=r.requirements??{},profession=req.profession??(!['NEUTRAL','KNOWLEDGE'].includes(r.source)?r.source:null);
-    const eligible=!!actor&&actor.currentStageId===s.currentStageId&&actor.activityState!=='DOWN'
-      &&(!profession||profession==='UNTRAINED'||professionTier(actor,profession)>=Math.max(1,req.minimumTier??1))
+    const candidates=actors.filter(actor=>(!profession||profession==='UNTRAINED'||professionTier(actor,profession)>=Math.max(1,req.minimumTier??1))
       &&(!req.knowledge||knows(s,req.knowledge))&&(req.knowledgeAll??[]).every(id=>knows(s,id))
       &&(req.knowledgeAny===undefined||req.knowledgeAny.some(id=>knows(s,id)))
-      &&(r.conditions??[]).every(c=>condition(s,c));
-    return {...r,eligible};
+      &&(r.conditions??[]).every(c=>condition(s,c))).map(u=>u.unitId);
+    return {...r,eligible:!!candidates.length,candidates};
   });
 }
-export function respondDialogue(m,s,id){
-  const response=dialogueResponses(m,s).find(r=>r.responseId===id&&r.eligible);if(!response)throw Error('Dialogue response is unavailable.');
+export function respondDialogue(m,s,id,actorId){
+  const response=dialogueResponses(m,s,actorId).find(r=>r.responseId===id&&r.eligible);if(!response)throw Error('Dialogue response is unavailable.');
+  const responder=actorId??s.dialogue.fixedActorId??response.candidates[0];
+  if(!responder||!response.candidates.includes(responder))throw Error('Choose a qualified responder.');
   const node=dialogueScene(m,s.dialogue.sceneId).nodes.find(n=>n.nodeId===s.dialogue.nodeId);
   if((node.conditions??[]).some(c=>!condition(s,c)))throw Error('Dialogue node is unavailable.');
   transaction(m,s,draft=>{
     const scene=dialogueScene(m,draft.dialogue.sceneId),side=scene.participants.left==='ACTIVE_SGC_SPEAKER'?'LEFT':'RIGHT';
-    draft.dialogue.history.push({speaker:'ACTIVE_SGC_SPEAKER',side,text:response.text});effects(m,draft,response.effects);
+    draft.dialogue.actorId=responder;
+    draft.dialogue.history.push({speaker:'ACTIVE_SGC_SPEAKER',actorId:responder,side,text:response.text});effects(m,draft,response.effects);
     if(response.endConversation)finish(draft);else enter(m,draft,response.nextNodeId);
   });
 }

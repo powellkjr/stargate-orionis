@@ -838,6 +838,17 @@
           "containsAddressLead": "boolean",
           "initialState": "object"
         }
+      },
+      "mounted_item": {
+        "defaults": {
+          "visibleWhenPartial": false,
+          "playerLabel": "Mounted device",
+          "mapGlyph": "OBJECT",
+          "initialState": {}
+        },
+        "tunableFields": {
+          "initialState": "object"
+        }
       }
     },
     "observation": {
@@ -1530,7 +1541,8 @@
           "requiresState": "object",
           "requiresKnowledge": "array",
           "chargeCost": "number",
-          "hiddenUntilKnowledge": "array"
+          "hiddenUntilKnowledge": "array",
+          "outcomeText": "string"
         }
       },
       "recipe_recover_component": {
@@ -1561,7 +1573,8 @@
           "requiresState": "object",
           "requiresKnowledge": "array",
           "chargeCost": "number",
-          "hiddenUntilKnowledge": "array"
+          "hiddenUntilKnowledge": "array",
+          "outcomeText": "string"
         }
       },
       "recipe_hack_terminal": {
@@ -1702,7 +1715,8 @@
           "requiresState": "object",
           "requiresKnowledge": "array",
           "chargeCost": "number",
-          "hiddenUntilKnowledge": "array"
+          "hiddenUntilKnowledge": "array",
+          "outcomeText": "string"
         }
       },
       "recipe_collect_evidence": {

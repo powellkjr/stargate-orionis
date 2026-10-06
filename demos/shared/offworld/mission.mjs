@@ -2,6 +2,9 @@ import {resolvePartyTools} from './party-tools.mjs?v=dialogue-doors-1';
 import {validateDialogue} from './dialogue.mjs';
 import {validNpcState,npcEffectTypes,validateNpcEffect} from './npc.mjs?v=dialogue-doors-1';
 export const clone = value => structuredClone(value);
+export function validPhysicalItem(item,id,itemId){
+  return !!item&&item.instanceId===id&&item.itemId===itemId&&[item.state,item.reality,item.knowledge].every(v=>v&&typeof v==='object'&&!Array.isArray(v))&&Number.isInteger(item.state.quantity)&&item.state.quantity>0&&Array.isArray(item.knowledge.instanceFindings);
+}
 export function freeze(value) {
   if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
   return value;
@@ -45,6 +48,14 @@ export function compileMission(input,catalog) {
       if(typeof row[idKey]!=='string'||!row[idKey]||indexes[group][row[idKey]])fail(path,'missing or duplicate ID');
       indexes[group][row[idKey]]=result;return result;
     });
+  }
+  // Shared item definitions supply stable metadata; the mission authors one physical instance.
+  for(const i of m.instances)if(i.itemId!==undefined){
+    const item=catalog.itemDefinitions?.[i.itemId],physical=i.physicalItem;
+    if(!item||item.id!==i.itemId||!Number.isInteger(item.storage?.handlingCost)||item.storage.handlingCost<0||i.recovery?.category==='RECEIVING'&&(item.storage.handlingCost<1||item.processCompatibility?.receiving!==true)){fail(i.instanceId,'shared item definition with compatible handling metadata required');continue;}
+    if(!validPhysicalItem({instanceId:i.instanceId,itemId:i.itemId,...physical},i.instanceId,i.itemId)){fail(i.instanceId,'authored physical item state, Reality and Knowledge required');continue;}
+    i.itemDefinition=clone(item);
+    i.initialState={...i.initialState,physicalItem:{...clone(physical),instanceId:i.instanceId,itemId:i.itemId,custody:{storageId:i.stageId,containerId:i.stageId,state:'STANDBY',status:'STORED',cost:{unitCost:item.storage.handlingCost,extendedCost:item.storage.handlingCost*(physical.state.quantity??1)}}}};
   }
   const ref=(g,id,p)=>{if(!Object.hasOwn(indexes[g],id))fail(p,`unknown ${g} reference ${id}`);};
   const eventRef=(id,p)=>{if(!Object.hasOwn(catalog.archetypes?.event??{},id))fail(p,`unknown event ${id}`);};
@@ -99,6 +110,8 @@ export function compileMission(input,catalog) {
   for(const i of m.instances)if(Object.hasOwn(i,'npcState')&&!validNpcState(i.npcState))fail(`${i.instanceId}.npcState`,'expected disposition and suspicion/hostility in 0..100');
   function validateNpcConditions(value,path){
     if(!value||typeof value!=='object')return;
+    if(value.type==='STAGE_STATE'&&(!indexes.stages[value.stageId]||!['socialPassage','securityState'].includes(value.field)||!Object.hasOwn(value,'equals')))fail(path,'invalid Stage condition');
+    if(value.type==='ITEM_STATE'&&(!indexes.instances[value.instanceId]?.itemId||typeof value.field!=='string'||!Object.hasOwn(value,'equals')))fail(path,'invalid physical item condition');
     if(value.type==='NPC_STATE'){
       if(!indexes.instances[value.instanceId]?.npcState)fail(path,'NPC state required');
       const keys=['type','instanceId','disposition','suspicionAtLeast','suspicionBelow','hostilityAtLeast','hostilityBelow'];
@@ -143,6 +156,10 @@ export function compileMission(input,catalog) {
       if(!['UNTRAINED','SOLDIER','SCOUT','TECHNICIAN','SCIENTIST','MEDIC','DIPLOMAT'].includes(r.profession)||!Number.isInteger(r.chargeCost)||r.chargeCost<0)fail(r.recipeInstanceId,'invalid Profession or charge cost');
       for(const e of r.effects??[]){
         if(npcEffectTypes.includes(e.type))validateNpcEffect(e,indexes.instances,fail,r.recipeInstanceId);
+        else if(['SET_ITEM_STATE','ADD_INSTANCE_FINDING'].includes(e.type)){
+          const item=indexes.instances[e.instanceId];
+          if(!item?.itemId||e.type==='SET_ITEM_STATE'&&(!e.field||['__proto__','constructor','prototype'].includes(e.field)||!Object.hasOwn(e,'value'))||e.type==='ADD_INSTANCE_FINDING'&&(typeof e.findingId!=='string'||!e.findingId))fail(r.recipeInstanceId,'invalid physical item effect');
+        }
         else if(Object.hasOwn(fieldStateEffects,e.type)){
           if(!indexes.instances[e.instanceId]||!fieldStateEffects[e.type].values.includes(e.value))fail(r.recipeInstanceId,`invalid ${e.type} instance or value`);
         }

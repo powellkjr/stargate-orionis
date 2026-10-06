@@ -6,7 +6,7 @@ import {compileMission} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,advanceTime,visibility} from '../shared/offworld/runtime.mjs';
 import {engage,localCombat,refreshCampaign} from '../shared/offworld/campaign.mjs';
 import {renderMap} from './map.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function encounter(){
   const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);

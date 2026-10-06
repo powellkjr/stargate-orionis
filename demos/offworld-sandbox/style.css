@@ -21,3 +21,5 @@
 .action-result{padding:10px;margin-bottom:10px;background:#233a3a;border-left:3px solid #8ad1ba;border-radius:4px;font-size:12px}.action-result strong,.action-result small{display:block}.action-result ul{padding-left:16px;margin:6px 0}#actionResults:empty{display:none}#actionResults details{margin-bottom:14px}
 
 #debrief{padding:24px;max-width:1100px;margin:auto}.recovery-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px}.recovery-choice{display:flex;align-items:center;gap:10px;padding:12px;margin:8px 0;border:1px solid #415962;border-radius:5px}.recovery-choice strong,.recovery-choice small,.loot-row strong,.loot-row small{display:block}.loot-row{margin:10px 0;font-size:12px}.mission-ended footer button:not(#export){display:none}#objectives{margin:8px 0 0;font-size:12px}#objectives li{margin:4px 0}@media(max-width:700px){.recovery-columns{grid-template-columns:1fr}}
+
+.unit-resource{margin:6px 0;font-size:11px}.resource-track{height:6px;background:#31434c;border-radius:3px;overflow:hidden;margin-top:3px}.resource-fill{height:100%;background:#d1495b}.unit-resource.stamina .resource-fill{background:#fff}

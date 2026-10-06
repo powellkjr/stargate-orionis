@@ -6,7 +6,7 @@ import {createRuntime,chooseGate,advanceTime,extract,visibility} from '../shared
 import {startWork,executionProfile,recipeEligibility} from '../shared/offworld/field.mjs';
 import {lootEntries,debriefOptions,finalizeDebrief} from '../shared/offworld/recovery.mjs';
 import {renderMap} from './map.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function state(){const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
 function explore(s){for(const stage of Object.values(s.stageStates))Object.assign(stage,{explored:true,knownShape:true});for(const edge of Object.values(s.transitionStates))Object.assign(edge,{state:'OPEN',known:true});}
@@ -41,7 +41,7 @@ test('interviews shorten later social work without granting Profession qualifica
  const unit=read('party-presets').units.find(u=>u.profession==='DIPLOMAT');unit.tier=1;
  const s=createRuntime(m,[unit],'2026-09-25T12:00Z');chooseGate(m,s,true);s.currentStageId=unit.currentStageId='stage-outer-yard';s.units[0].currentStageId=s.currentStageId;visibility(m,s);
  const r=m.indexes.recipes['negotiate-reynolds'];assert.equal(executionProfile(s,r).durationMinutes,3);
- startWork(m,s,'question-worker-yard',unit.unitId);advanceTime(m,s,180);
+ s.currentStageId=s.units[0].currentStageId='stage-overseer-office';visibility(m,s);startWork(m,s,'question-mcguffin',unit.unitId);advanceTime(m,s,180);
  assert.equal(executionProfile(s,r).durationMinutes,1);
  s.currentStageId=s.units[0].currentStageId='stage-security-hall';s.instanceStates['reynolds-01'].combatState='ACTIVE';s.instanceStates['reynolds-01'].npcState.disposition='HOSTILE';visibility(m,s);
  assert.equal(recipeEligibility(m,s,r,unit.unitId).status,'BLOCKED');s.units[0].tier=2;

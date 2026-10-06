@@ -6,7 +6,7 @@ export function initializeCampaign(m,s){
   s.incidentStates=Object.fromEntries(m.incidents.map(i=>[i.incidentId,{state:i.initialState,round:0,nextRoundAt:null}]));
   s.objectiveStates=Object.fromEntries(m.objectives.map(o=>[o.objectiveId,{state:o.initialState}]));
   s.scheduledEvents=structuredClone(m.scheduledEvents);s.processedEventCount=0;s.firedBindings=[];
-  for(const u of s.units){u.health=m.simulatorArtifact.combat?.partyHealth??100;u.combatState='ACTIVE';}
+  for(const u of s.units){u.health=m.simulatorArtifact.combat?.partyHealth??100;u.maxHealth=u.health;u.combatState='ACTIVE';}
   refreshCampaign(m,s);
 }
 export function campaignCondition(s,c,event={}){

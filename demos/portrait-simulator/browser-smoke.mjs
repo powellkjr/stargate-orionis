@@ -57,6 +57,7 @@ try {
   await evaluate("document.getElementById('stat-perception').value='9';document.getElementById('stat-perception').dispatchEvent(new Event('input',{bubbles:true}));document.getElementById('saveStats').click()");
   for(let i=0;i<50;i++){if(await evaluate("document.getElementById('statsStatus').textContent.includes('Saved in this browser')"))break;await delay(100);}
   assert(await evaluate("document.querySelector('#statsPreview svg').getAttribute('aria-label').includes('PER 9/10')"));
+  assert(await evaluate("document.querySelector('#statsPreview svg').getAttribute('aria-label').includes('EXP')&&!document.querySelector('#statsPreview svg').getAttribute('aria-label').includes('STA')"));
   const cached=await evaluate("JSON.parse(localStorage.getItem('sgc-personnel-loadouts-v1'))");
   assert.equal(Object.values(cached)[0].perception,9);
   await call('Page.reload');

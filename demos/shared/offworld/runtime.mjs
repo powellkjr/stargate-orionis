@@ -173,7 +173,7 @@ export function move(m,s,id) {
   if(s.dialogue)return;
 
   if(s.status!=='ACTIVE')return;
-  s.transitionStates[id].state='OPEN';s.currentStageId=edge.toStageId;
+  s.transitionStates[id].state='OPEN';s.previousStageId=s.currentStageId;s.currentStageId=edge.toStageId;
 
   s.stageStates[edge.toStageId].explored=true;s.stageStates[edge.toStageId].knownShape=true;
   s.stageStates[edge.toStageId].visitCount=(s.stageStates[edge.toStageId].visitCount??0)+1;

@@ -91,4 +91,10 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]
   }
   return html.join('');
 }
-export function partyCard(u){return `<div class="party-unit" style="--profession:${esc(u.color)}"><div class="portrait">${portraitBustSvg(u.appearance)}</div><div><strong>${esc(u.name)}</strong><span class="profession">${esc(u.profession)} ${u.tier}${u.branch?` / ${esc(u.branch.id)} ${u.branch.tier}`:''}</span><br><small>HP ${u.health??100}<br>${u.partyStatus==='STATIONED'?`Stationed · ${esc(title(u.currentStageId))}`:esc(u.activityState)}</small>${statsRadar(u)}${[0,1].map(slot=>{const t=u.tools.find(t=>t.slot===slot);return `<small class="tool-line">${slot+1}: ${t?`${esc(t.label)} · ${t.chargesRemaining} charges`:'empty'}</small>`;}).join('')}<button class="station-button" data-station="${esc(u.unitId)}">${u.partyStatus==='STATIONED'?'Rejoin party':'Station here'}</button></div></div>`;}
+export function resourceBars(u){
+  return [['health','HP',u.maxHealth??100],['stamina','Stamina',100]].map(([key,label,max])=>{
+    const value=Number.isFinite(u[key])?Math.max(0,u[key]):0,percent=Math.max(0,Math.min(100,value/max*100));
+    return `<div class="unit-resource ${key}" role="meter" aria-label="${label}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${value}"><span>${label} ${value}/${max}</span><div class="resource-track"><div class="resource-fill" style="width:${percent}%"></div></div></div>`;
+  }).join('');
+}
+export function partyCard(u){return `<div class="party-unit" style="--profession:${esc(u.color)}"><div class="portrait">${portraitBustSvg(u.appearance)}</div><div><strong>${esc(u.name)}</strong><span class="profession">${esc(u.profession)} ${u.tier}${u.branch?` / ${esc(u.branch.id)} ${u.branch.tier}`:''}</span><br>${resourceBars(u)}<small>${u.partyStatus==='STATIONED'?`Stationed · ${esc(title(u.currentStageId))}`:esc(u.activityState)}</small>${statsRadar(u)}${[0,1].map(slot=>{const t=u.tools.find(t=>t.slot===slot);return `<small class="tool-line">${slot+1}: ${t?`${esc(t.label)} · ${t.chargesRemaining} charges`:'empty'}</small>`;}).join('')}<button class="station-button" data-station="${esc(u.unitId)}">${u.partyStatus==='STATIONED'?'Rejoin party':'Station here'}</button></div></div>`;}

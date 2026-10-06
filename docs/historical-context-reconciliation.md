@@ -13,6 +13,8 @@ Unchecked means a decision or further domain review remains open.
 
 Related authorities:
 
+- [Current simulator decisions and remaining implementation gaps](simulator-decisions.md)
+
 - [Campaign context](campaign-context-reconciliation.md)
 - [Nine endings](faction-campaign-nine-endings-reconciliation.md)
 - [Central threat and deferred questions](central-threat-reconciliation.md)

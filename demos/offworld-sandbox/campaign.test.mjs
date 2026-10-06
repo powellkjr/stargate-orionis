@@ -8,7 +8,7 @@ import {createRuntime,chooseGate,advanceTime,move,extract,visibility} from '../s
 import {engage,retreat,refreshCampaign,missionResults} from '../shared/offworld/campaign.mjs';
 import {startWork,recipeEligibility} from '../shared/offworld/field.mjs';
 import {createTool} from '../shared/offworld/equipment.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function state(){const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
 function place(s,stage){s.currentStageId=stage;for(const u of s.units)u.currentStageId=stage;for(const i of m.instances.filter(i=>i.stageId===stage&&i.npcState)){s.instanceStates[i.instanceId].combatState='ACTIVE';s.instanceStates[i.instanceId].npcState.disposition='HOSTILE';}visibility(m,s);refreshCampaign(m,s);}
@@ -90,11 +90,11 @@ test('Soldier intimidation and Diplomat negotiation are separate choices beside 
   assert.equal(s.instanceStates['reynolds-01'].combatState,'SURRENDERED');assert.equal(s.incidentStates['incident-security-guards'].state,'RESOLVED');
   assert(outcomeLines(m,w).some(line=>line.includes('demand for surrender')));assert(!renderMap(m,s).includes('data-engage="incident-security-guards"'));
 });
-test('questioning reports its actual interview result without inventing Knowledge',()=>{
+test('questioning reports its interview result and authored terminal code',()=>{
   const unit=read('party-presets').units.find(u=>u.profession==='DIPLOMAT');const s=createRuntime(m,[unit],'2026-09-25T12:00Z');chooseGate(m,s,true);place(s,'stage-outer-yard');
   for(const id of ['guard-yard-01','guard-yard-02']){s.instanceStates[id].npcState.disposition='ROUTINE';s.instanceStates[id].combatState='NEUTRAL';}
-  const knowledge=structuredClone(s.knowledgeState),w=startWork(m,s,'question-worker-yard',unit.unitId);advanceTime(m,s,180);
-  assert.equal(w.status,'COMPLETED');assert.deepEqual(s.knowledgeState,knowledge);assert(outcomeLines(m,w).some(line=>line.includes('1 simulated minute instead of 3')));
+  place(s,'stage-overseer-office');s.instanceStates['mcguffin-01'].combatState='NEUTRAL';s.instanceStates['mcguffin-01'].npcState.disposition='ROUTINE';const w=startWork(m,s,'question-mcguffin',unit.unitId);advanceTime(m,s,180);
+  assert.equal(w.status,'COMPLETED');assert(s.knowledgeState.gained.includes('security-terminal-code-known'));assert(outcomeLines(m,w).some(line=>line.includes('terminal access code')));
   assert(w.outcome.changes.some(e=>e.type==='INSTANCE_CHANGED'&&e.field==='interviewed'&&e.value===true));
   const saved=JSON.stringify(w.outcome);advanceTime(m,s,60);assert.equal(JSON.stringify(w.outcome),saved);
 });

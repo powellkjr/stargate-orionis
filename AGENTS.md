@@ -1,5 +1,15 @@
 # AGENTS.md
 
+## Navigation — Read Before Broad Exploration
+
+Start with [REPO_MAP.md](REPO_MAP.md) for subsystem paths, authored fixtures,
+design authorities and test commands. Then read only the implementation,
+fixtures and tests relevant to the task. Check [CURRENT_TASK.md](CURRENT_TASK.md)
+for active Offworld status; its older milestone entries are historical.
+
+Maintain REPO_MAP.md when moving systems or changing launch/test entry points.
+The map is navigation, not an override of these rules or authored game data.
+
 ## Project
 
 This repository contains a simulator/prototype for a Stargate-themed strategy and base-management game.
@@ -24,7 +34,7 @@ The simulator is used to prove architecture before production implementation. Pr
 Simulator fixture data currently lives under:
 
 ```text
-room-sandbox/data/
+demos/shared/data/
 ├── theory/
 │   └── stargate_theory_simulator_import.json
 └── items/

@@ -40,7 +40,7 @@ test('legacy noncombat incidents preserve ordinary action admission',()=>{
   const {m,s,r}=fixture();m.incidents[0].kind='MEDICAL';s.incidentStates.encounter.state='ACTIVE';assert(recipeAdmission(m,s,r));
 });
 test('compiler validates contextual admission without modifying authored input',()=>{
-  const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
+  const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
   const raw=read('missing-operative-001.finalized'),catalog=read('archetypes');
   const context={normal:true,activeIncidentKinds:['COMBAT'],requiresSecureStage:false};
   const valid=clone(raw);valid.recipes[0].availabilityContext=context;const before=clone(valid);

@@ -36,6 +36,7 @@ function renderProgression(){
   if($('characterBranch').disabled)$('characterBranch').value='';
   $('characterBranchTier').disabled=!$('characterBranch').value;
   const options=toolOptions(draftProgression(),catalog);
+  $('statsPreview').innerHTML=statsRadar({...draftProgression(),...Object.fromEntries(statFields.map(([key])=>[key,$(`stat-${key}`).valueAsNumber]))});
   for(const select of document.querySelectorAll('[data-tool-type]')){const old=select.value;select.innerHTML='<option value="">Select Tool</option>'+options.map(t=>`<option value="${esc(t.id)}">${esc(t.label)}</option>`).join('');select.value=old;}
 }
 function addToolRow(tool={}){

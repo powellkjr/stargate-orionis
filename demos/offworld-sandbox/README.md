@@ -1,343 +1,206 @@
-# Offworld sandbox - Wave 3
+# Offworld sandbox
 
-## Playable authored conversations
+The playable Missing Operative benchmark combines field observations, persistent
+work, dialogue, explicit combat, Gate travel and selected recovery into one demo.
+Runtime systems live in `../shared/offworld/`; mission content lives in
+`../shared/data/offworld/missing-operative-001.finalized.json`.
 
-The current mission includes eight conversations: outer-yard entry/return,
-holding worker/guard, operative, processing worker, Reynolds and McGuffin.
-Active dialogue overlays the map and scrolls on smaller screens. Entry and
-operative contact use authored automatic triggers; other conversations are
-available through **Talk** in Stage context when their participants are local.
-Choose the **Conversation speaker** before starting a manual conversation:
-Profession-gated responses use that Unit's competency, not the whole party.
-Return-yard dialogue requires operative readiness and a revisit.
+## Run and validate
 
-These conversations are integrated into the existing mission, not a separate
-preview. Full replacement-schema item, evacuation and manifest integration
-remains separate work.
-
-## Combat feedback and pacing
-
-Combat advances one authored round every three real seconds in the browser.
-Authored simulation round lengths, damage rules and event timing remain unchanged;
-background-tab pauses do not trigger multi-round catch-up. Bulk **Wait** is disabled
-during active combat. NPC and Unit hits show rising, fading damage over visible
-map tokens for 1.8 real seconds, with stacked labels for simultaneous hits.
-The hit ledger records actual health lost (capped at remaining health).
-
-Guard-combat prototype HP is now 150: a lone NPC lasts three rounds against
-four party members dealing 18 damage each. Multi-NPC encounters last longer
-under the existing concentrated-fire rule; smaller/larger parties differ.
-Individual shot tracers and damage popups are staggered across each round,
-without randomizing runtime outcomes. Down is incapacitation, not death.
-
-## Dialogue graph (Wave B first runtime slice)
-
-The default playable mission now includes the replacement's authored outer-yard
-entry conversation. Start a fresh run, enter the outer yard, and answer the guard.
-Profession responses use the selected speaker's competency; the neutral response
-always allows ordinary travel to resume. The authored return conversation is not
-yet integrated because it depends on the replacement evacuation lifecycle.
-
-`START_HOSTILE_INCIDENT` explicitly escalates a local COMBAT/CONFRONTATION Incident
-using its existing participants and authored combat settings. It schedules the
-first round normally rather than dealing immediate damage. Runtime kind changes
-do not rewrite the immutable Incident definition or reset participant health.
-
-Optional mission-authored `dialogueScenes` are supported without changing legacy
-Recipe conversations. Each scene defines `dialogueSceneId`, `participants.left`
-and `.right` (exactly one `ACTIVE_SGC_SPEAKER`), `startNodeId` and `nodes`.
-Nodes have `nodeId`, `speaker`, `side` (`LEFT`/`RIGHT`), `text`, optional
-`responses`, `effects`, `conditions`, and either `nextNodeId` or
-`endConversation` when they have no responses. Continue advances automatic-next
-lines explicitly so their text is readable; terminal text remains until Finish.
-
-Responses use `responseId`, `text`, `source` (`NEUTRAL` or a Profession),
-`requirements`, `effects`, `conditions`, and `nextNodeId` or `endConversation`.
-Supported requirements are `profession`, `minimumTier`, `knowledge` and
-`knowledgeAll`. Profession source implies that Profession unless explicitly
-specified. Eligibility uses only the selected local SGC speaker, including
-existing cross-Profession competency, not a different party member.
-
-Supported effects are existing NPC-state effects, `ADD_KNOWLEDGE` with
-`knowledgeId`, and `EMIT_EVENT` with `eventArchetypeId`. Unsupported effects fail
-validation. Conditions use the existing runtime condition format, not the
-replacement mission's proposed untyped trigger format. Transactions apply on a
-draft and roll back failed response/node effects. Completed conversation history
-and an active conversation are included in exported results.
-
-Eligible explicit scenes show Talk controls and a speaker selector in Stage
-context. The dedicated lower-screen conversation area has two portraits,
-side-aligned speech and Profession-colored response controls. Time progression
-and unrelated execution pause while it is open. Authors must supply any Leave
-response; no global exit response or dialogue consequence is invented.
-
-Current legacy mission data has no scenes, so this UI is exercised by synthetic
-tests. Automatic `startWhen` supports the authored `all`, `knowledge`,
-`stageVisitCount` (`equals`/`minimum`), `npcDispositionIn` and
-`instanceEvacStateIn` triggers. Stage visit counts increment only on actual entry;
-deployment counts as the first Gate visit. A scene starts at most once per Stage
-visit (provisional repeat policy), in authored scene order. NPC state persists
-on revisits. Evacuation predicates read existing `evacState`; this slice does not
-implement the missing `SET_EVAC_STATE` effect or evacuation workflow.
-Recipe dialogue integration remains deferred because the supplied fixture authors
-no Recipe dialogue field/effect. Full repeat-policy schema, other next-schema
-conditions, and confrontation-to-combat conversion remain pending.
-
-### Read-only stat radar
-
-Deployment and active-party cards show PER, STA and END as a radar chart,
-normalized to the existing 10/100/10 stat maxima, with exact values and accessible
-labels. These stats are no longer editable from Offworld deployment. Tier,
-branch and equipment remain deployment controls. The existing portrait editor
-currently edits appearance only; gameplay stat editing there is not implemented.
-
-### NPC token details
-
-Tap, mouse over, or keyboard-focus a visible current-Stage NPC token to open
-known details below the mission controls. The panel uses the authored player
-label, visible disposition/condition and shared portrait renderer. Missing
-authored appearances use an explicitly labeled generic portrait. Remote,
-partial-view, hidden and recovered NPCs do not expose details. Hidden names and
-roles are not inferred from Reality. Dialogue and knowledge-backed name/role
-revelation remain pending authored schema integration.
-
-Start the shared writable server for every demo from the repository root:
+From the repository root:
 
 ```powershell
 node demos/serve.mjs
 ```
 
-Open `http://127.0.0.1:8001/demos/` for the hub or `http://127.0.0.1:8001/demos/offworld-sandbox/` directly. It serves assets without caching and writes validated deployment edits atomically to `demos/shared/data/personnel-loadouts.json`, plus the existing base and portrait save endpoints. An optional port argument selects another port. The server listens only on loopback and accepts personnel writes only to known records. See `../README.md` for static/GitLab Pages limitations; Python's static server cannot confirm shared recovery reservations.
-
-Deployment always begins with **0/4 selected**. All 54 shared personnel remain available, with shared portraits and favorites. Stats, progression, two Tool selections and charge counts save on change. In read-only hosting, the same edits persist in this browser and the UI explicitly reports that JSON writing needs the writable server. Pending browser edits retry when the writable server becomes available on that origin. Mission damage and spent charges never overwrite deployment defaults.
-
-## Field play
-
-1. Choose stats, progression and equipment, then deploy.
-2. Keep or close the Gate connection. Move through map doorways.
-3. Profession-colored observations appear when local competency, Perception,
-   Knowledge, state, visibility and any instrument requirements are satisfied.
-   Tap markers or observation cards for the observer and finding.
-4. Tap an action hex or a context-panel action. Blocked actions explain why;
-   hidden actions are omitted. Select an eligible Actor and start work.
-5. Different Actors may work on different targets concurrently. An Actor and
-   target each permit one job. Personal Tool identity is reserved with the job;
-   the lowest sufficient charged kit is selected. Charges are spent on commit.
-6. Moving with working party members offers Wait or Cancel work and move.
-   Cancel releases reservations without applying effects or consuming a charge.
-7. Station an idle Unit explicitly in a secure Stage. Rejoin requires returning
-   to that Stage. Stationed Units stay put; there is only one advancing party.
-8. Return follows the shortest known traversable route. Extraction requires the
-   physical Gate, no active work, and recalling stationed Units. Carried instance
-   IDs survive extraction and custody changes to RECOVERED_TO_SGC.
-
-Three simulated minutes take about one second during work; hour-long work takes
-about ten seconds. Time stops during idle decision-making. Reset recreates the
-same mission, deployment, and SGC start time. Party setup discards the current run
-and lets you change the deployment. Export records field state and its ledger;
-Wave 3 exports objective outcomes, recovered IDs, personnel/instance state, Knowledge deltas, discoveries, scheduled events and the event ledger. Result-binding categories include observed snapshots; unauthored faction rewards, addresses and mission-lead contents are not fabricated.
-
-## Portraits and map controls
-
-Deployment and party cards use the portrait simulator's shared 48x64 bust renderer.
-Appearance remains composed of independently configurable parts; overhead tokens
-stay small. Appearance comes from `personnel-presentation.json` and never changes competency. Loadouts live in `personnel-loadouts.json`; the full roster is built through `../shared/js/personnel-roster.mjs` and
-adapted by `../shared/offworld/roster.mjs`.
-
-Selectable exits are bright mint with arrows pointing out of the current Stage.
-Adjacent locked doors are amber; other known transitions are small muted markers
-without click or keyboard targets. During movement or the opening Gate choice,
-transitions are inactive. Action icons occupy a shared regular hexagonal lattice:
-six equal sides, common edges and no interior overlap, even across nearby targets.
-Leader lines connect displaced hexes to their target; doorway controls reserve space.
-
-## Two Tool slots and progression
-
-Both slots are visible. Slot 1 uses the base Profession track. Slot 2 unlocks at
-base Tier III with a selected specialization or cross-path, including untrained
-branch Tier 0. T0 permits a second eligible base Profession Tool but grants no
-branch competency or specialist Tools. T1 promotion introduces branch Tools;
-the final-game Promotion Room and Tool-making workflow are not simulated here.
-As in `room-staffing-demo.js`'s `assignmentToolTracks`, either unlocked slot can
-hold any kit from the Unit's eligible tracks, up to that track's tier. Duplicate
-kit types are separate physical Tool instances with independent charges.
-
-Offworld stores actual tiers I/II/III as 1/2/3; staffing internally stores these
-as 0/1/2. Cross-training uses the target Profession's normal competency.
-Specializations unlock their equipment track without inventing specialist powers.
-Their kit codes come from staffing, but unauthored specialized Service mappings
-remain empty. A specialized Unit may still put an eligible base kit in slot 2.
-
-Authority: [Profession handoff](../../docs/theory/professions/profession-context-handoff.md),
-[boundaries](../../docs/theory/professions/profession-boundaries.md), and each linked
-curriculum's Tool section. Kit codes use staffing's TET/SCT/MET/STT/SOT/DIT families.
-Outside Technician these generic Service identifiers remain provisional simulator
-mappings, not newly canonical technologies. TECH_SERVICE_II is provider-independent:
-Technician Tools II explicitly provide it; a future authored room could also
-provide it. Equipment capability never supplies missing competency or Theory.
-
-Scout transmitter observations require SIGNAL_DIRECTION_FINDING, supplied by the mission-issued **Signal receiver** in the Party equipment panel. Standard Scout Tools I/II/III remain the only generic Scout kits; there are no receiver variants. The receiver is an independent physical Tool with stable instance ID, custody, location, condition, Services and optional charges. It occupies neither personal slot. Missing Operative issues it through `deployment.partyTools`; the definition lives in `archetypes.json`'s `partyTools` catalog.
-
-Party equipment moves with the advancing party and returns to SGC on extraction. A qualified local Actor can use it; it does not grant Scout competency. Passive signal observation consumes no charge. Recipes resolve personal Tools first, then a local shared Tool, reserving one physical instance per job and revalidating it on completion. Shared equipment in use blocks party movement until work finishes or is cancelled. Stationed Actors cannot use a receiver that has left their Stage. Mission exports include party equipment separately from personal loadouts and recovered assets.
-
-Legacy saved STT1_SIGNAL/STT2_SIGNAL/STT3_SIGNAL selections migrate to the matching normal kit, preserving stats, branch and charges. This is a compatibility migration, not an additional equipment variant.
-
-## Implemented and deferred
-
-Implemented: immutable catalog resolution, typed legal overrides, reference and
-geometry validation; responsive top-down map; cardinal transitions; fog and known
-shape; four-Unit party; modular portraits; two-slot deployment; observations,
-Perception and supporting clues; instance detection and Knowledge; contextual
-hexes and action explanations; Actor choice and Tool reservations; concurrent
-work, cancellation, transactional effects; door hacking; bounded inspection,
-patient assessment/stabilization, sample-collection state, component/evidence/
-Supply recovery and escort; discovery records; stationing; Gate lifecycle;
-standalone SGC time; shortest-route return; reset; debug and field snapshot export.
-
-The full action list is in the context panel; two primary actions appear at each
-world target. Designer includes all observation candidates and unmet checks,
-including hidden Reality that ordinary rendering does not expose.
-
-Wave 3 now executes medical/radiation Incident conditions, explicit combat engagement, automatic rounds, disengagement, objective activation/completion, authored event bindings and scheduled evidence purge. Combat takes place on the existing map; health and Down states persist. Baseline combat uses a provisional separate ranged weapon per Unit (100 health, 18 damage each 30-second round), independent of the two Profession Tool slots. Guards use 45 health / 5 damage. No Profession is required for basic firing. These numbers are authored simulator tuning, not production balance.
-
-User-authorized provisional outcomes: Diplomat II negotiation surrenders Reynolds and his still-active guards, or McGuffin individually. Downed people are never revived by surrender. Technician I or Soldier I can destroy the terminal with a Tool charge; its same instance remains as WRECKAGE and can be recovered. The separate archive is not erased/restored by terminal destruction. Existing prisoner restraint requires a Down or Surrendered subject; capture is not automatic extraction.
-
-The artifact adds missing patient-03 medical targets and explicit holding/office combat Incidents. Hazard containment does not repair machinery or cure the outbreak. Evidence-purge bindings require local custody, so already-carried evidence cannot be destroyed remotely. Event time advances during actions, work, waits and combat; idle decisions remain paused. Scheduled events remain in the exported result at extraction, rather than silently advancing a campaign outside this standalone simulator.
-
-Wave 4 adds Auto and expanded presentation/Designer polish.
-
-## Files and data
-
-- `app.mjs`: startup, controls, camera, work presentation and UI orchestration.
-- `setup.mjs`, `map.mjs`: deployment and world presentation.
-- `../shared/offworld/mission.mjs`: immutable definition compiler/validation.
-- `../shared/offworld/runtime.mjs`: mission clock, party, Gate and movement.
-- `../shared/offworld/field.mjs`: observations, work, effects and stationing.
-- `../shared/offworld/equipment.mjs`: progression and physical kit eligibility.
-- `../shared/offworld/campaign.mjs`: Incidents, combat, authored event/condition execution and results.
-- `../shared/offworld/personnel-save.mjs`, `../serve.mjs`: validated personnel persistence.
-- `../shared/data/offworld/`: basic archetypes, Tool definitions, personnel
-  presets and the repository-owned Missing Operative mission artifact.
-- `../shared/portraits/`: independent portrait and overhead token composition.
-
-Mission geometry extends the security hall to (5,3) and office access to (6,2).
-Wave 2 adds authored door targets and hack Recipes, explicit initial instance
-state, security conditions and observation instrument requirements. No encounter
-is regenerated from the chosen party. Small assumptions are recorded under
-`simulatorArtifact`: 60 seconds per transition, 180 seconds to redial, no dialing
-interference yet, charge consumption on commit, and mission-issued receiver equipment.
-
-Player-facing labels, Knowledge and mutable physical state remain separate.
-No objective completes merely because a room is entered. Work and recovery are
-recorded continuously; event escalation executes from authored bindings.
-
-## Validation
-
-### Contextual action admission (runtime update, first slice)
-
-Recipes may author `availabilityContext` independently of execution requirements:
-
-```json
-{"normal": true, "activeIncidentKinds": ["COMBAT"], "requiresSecureStage": false}
-```
-
-Without active local Incidents, `normal` defaults to true. With active local
-Incidents, every active kind must be listed; omitted `activeIncidentKinds` means
-none. `requiresSecureStage` defaults to false and hides the action in an unsecure
-Stage. Non-admitted Recipes are omitted from both context buttons and map hexes,
-and cannot start work. Admitted Recipes still report missing Actor, Tool or
-Knowledge requirements normally. Admission is re-evaluated from current state,
-including when revisiting a Stage; it does not reset instance or Incident state.
-
-Legacy Recipes retain their ordinary noncombat admission. Active hostile
-instances or an active Combat Incident hide ordinary legacy Recipes;
-`allowHostiles: true` remains their explicit combat opt-in. An authored
-`availabilityContext` supersedes that compatibility flag. Dormant combat
-Incidents alone do not make neutral NPCs hostile. NPC suspicion, confrontation
-combat transition and the next-schema mission integration are not implemented by this slice.
-
-### NPC state foundation
-
-Instances may author `npcState` with a nonempty `disposition` string and finite
-`suspicion`/`hostility` values in 0..100. Runtime copies remain independent of
-definitions and persist across revisits. Opted-in neutral NPCs do not inherit
-active opponent status merely from an armed archetype; legacy instances without
-NPC state retain existing behavior. Dormant combat Incidents remain dormant
-until explicit engagement and are not resolved merely because participants are neutral.
-
-Recipes and campaign effects support `CHANGE_NPC_SUSPICION`,
-`CHANGE_NPC_HOSTILITY`, `SET_NPC_DISPOSITION`, and `START_CONFRONTATION`.
-Changes clamp to 0..100 in either direction. `START_CONFRONTATION` takes authored
-NPC `instanceIds`, changes their disposition to `CONFRONTING`, and does not start
-combat or apply damage. Context admission recognizes those local confrontations.
-`NPC_STATE` conditions support `instanceId`, optional `disposition`, and
-`suspicionAtLeast`, `suspicionBelow`, `hostilityAtLeast`, `hostilityBelow`.
-Field transactions revalidate contextual admission on commit.
-
-Visible current-Stage NPCs display white/yellow `?`, yellow/red `!`, then a red
-angry face as suspicion/hostility fill. Labels omit numeric values and hidden
-identity. No NPC indicator appears in an out-of-view Stage. The existing mission
-has not been rewritten to supply these fields; synthetic tests exercise them.
-
-Values alone never schedule combat. The proposed `START_HOSTILE_INCIDENT` effect
-targets a `CONFRONTATION` definition but does not yet specify its conversion to
-combat under the existing schema. That transition remains explicitly deferred,
-along with dialogue graphs and portrait/tap detail UI.
-
-The full Offworld unit suite, including contextual admission, can be run with
-`node --test demos/offworld-sandbox/*.test.mjs`.
+Open `http://127.0.0.1:8001/demos/offworld-sandbox/`, select up to four Units,
+and deploy. Choose whether to keep the Gate connection open. See
+[the demo hosting guide](../README.md) for shared saves and static hosting.
 
 ```powershell
-node --test demos/offworld-sandbox/runtime.test.mjs demos/offworld-sandbox/field.test.mjs demos/offworld-sandbox/presentation.test.mjs demos/offworld-sandbox/campaign.test.mjs demos/offworld-sandbox/personnel-save.test.mjs demos/offworld-sandbox/party-tools.test.mjs
+node --test demos/offworld-sandbox/*.test.mjs
 node --test demos/room-staffing-demo/receiving.test.mjs demos/room-staffing-demo/process-transfers.test.mjs
 node demos/offworld-sandbox/browser-smoke.mjs
 ```
 
-The browser smoke test uses installed Edge with an isolated temporary profile
-and no npm dependencies. EDGE_PATH can select another Chromium executable.
-It checks the roster, party cap, both Tool slots, cross-path eligibility,
-observation presentation, hacking, charge consumption, station/rejoin, return,
-reset, browser exceptions and a 390px mobile layout. It writes screenshots in
-its temporary profile. Edge rendering may require running outside the Codex
-filesystem sandbox; no user browser profile is opened or modified.
+The browser smoke uses Edge with an isolated temporary profile and intercepted
+save endpoints. `EDGE_PATH` can select another Chromium executable. It checks
+normal travel, dialogue and responder selection, restricted-door hacking,
+Scientist characterization, Technician detachment, combat pacing, recovery,
+station/rejoin, reset and a 390px layout. It never saves into the real fixtures.
 
-## Shared map renderer and simplified status
+## Conversations and checkpoint travel
 
-Both Room Sandbox and Offworld call `shared/map/renderer.mjs` for their floor and exposed-edge rendering. The room sandbox supplies its existing `joinedSides` decisions (including Room Groups), construction colors and padding; Offworld supplies authored Stage cells and fog colors. Internal cell boundaries are omitted in both. Room identity, joining legality, mission transitions and all gameplay rules remain in their own simulators.
+The mission has nine conversation scenes: yard entry/return/checkpoint,
+Holding worker/guard, operative, Processing worker, Reynolds and McGuffin.
+NPC openings appear on the right; the SGC side stays empty until a response is
+chosen. Choose a response first. If several local active-party Units qualify,
+choose who delivers it; a sole qualifying Unit answers directly. Each historical
+line retains its actual speaker. Profession responses use that responder's own
+base or cross-path competency, with Knowledge checked separately.
 
-Offworld uses a 4×4 placement grid per tile, reduced overhead tokens, and visual clearance around people, objects, labels and doors. Action hexes avoid occupied positions. This is presentation layout, not movement capacity or new game rules.
+Yard entry, the first office visit and each eligible Security Hall visit start
+automatically. From Main Hall, Reynolds reminds visitors to go straight to the
+overseer; from the office, he asks where they are going and offers authored
+Diplomat/Soldier responses. Downed, captured or absent participants do not start
+conversations. Main Hall to Security Hall is a routine doorway. Reynolds can
+supply the restricted office-door code; hacking remains an alternative there.
 
-Combatants remain ACTIVE while health is above zero; defeat sets DOWN. Accepted surrender sets SURRENDERED. Restraint accepts either. Patient treatment records the separate STABILIZED clinical outcome.
+Finding the operative does not start speech. Use **Talk** in Holding to contact
+them and establish readiness. Repeated operative contact or Holding worker
+questioning increases the watching guard's persistent suspicion. Specific
+nonmedical work also has explicit suspicion effects; ordinary medical treatment
+has no general suspicion penalty. The redundant yard Question work action and
+operative timed Talk action have been removed in favor of conversation controls.
 
-## Encounter choices and visible outcomes
+On return to the yard, the guard checks departure. The checkpoint conversation
+also remains available manually after backing off. Authored diplomacy or
+Soldier II pressure can grant social passage; explicit force starts the real yard
+combat Incident. Social passage is permission, and does not set physical security.
 
-Engage now appears as a map hex alongside the authored social options. Engage starts baseline combat; Soldier II Intimidate demands surrender, while Diplomat II Negotiate handles negotiated surrender. Intimidation is a user-requested provisional Recipe for these authored encounters, not a universal Soldier power or substitute for Diplomat competency. Both accepted-surrender outcomes set SURRENDERED, while combat incapacitation remains DOWN. Restraint accepts either state. The restored SURRENDERED state supersedes the earlier single-Down simplification above.
+The operative can depart once all patients are stabilized, the medical Incident
+is resolved, or the radiation source is contained. An early departure is also
+possible after Talk establishes readiness and the yard grants social passage or
+its guards are defeated. Every departure still needs a known traversable Gate
+route. The same operative waits at the Gate and returns with the extracting team.
+This is the current benchmark departure abstraction, not a full escort/manifest
+or universal secure-route system.
 
-The context panel lists completed actions with Actor, completion time, actual committed changes and Tool charge costs. Earlier results remain expandable. Incident resolutions also list participant outcomes. Question actions record interview preparation: subsequent authored negotiation and intimidation take one simulated minute instead of three. Profession requirements remain unchanged. This is provisional simulator tuning; no hidden Knowledge is granted. Result-ledger ACTION_COMPLETED records contain immutable snapshots of each action's actual output.
+Questioning McGuffin supplies the separate security-terminal code. **Enter code**
+unlocks the powered, locked terminal without a Tool charge and reports acceptance.
+An unlocked terminal cannot subsequently be destroyed as an alternate solution.
 
+## Analysis Lab benchmark wave
 
-## Extraction and recovery
+The Lab is a real Stage north of Processing, at `(4,0)` and `(5,0)`. The
+supplement's proposed `(4,1)` and `(5,1)` are occupied by the existing Processing
+footprint, so its allowed geometry normalization preserves all existing rooms.
 
-Discovered loot remains visible at its site until extraction. Collection secures it locally; it does not move it into party inventory. The debrief offers discovered recoverable loot and captured/surrendered people with known traversable paths to the Gate, without requiring earlier collection. Selection preserves physical instance IDs; unselected assets stay local. Recovery requirements are checked again at confirmation. Main and subordinate objectives appear together once.
+`lab-mounted-rifle-01` is one complete physical `ASGARD_EM_RIFLE` instance from
+mission start. The player sees **Mounted device**. Its identity, civilization,
+advanced Reality and manufacturing Patterns are not revealed on entry.
 
-No carrying limit is authored yet. Recovery destinations are Holding/Receiving admission requests exported with mission results. The shared base configuration supplies capacity, and confirmation persists reservations before committing recovery. Physical room processing remains a separate step. Retrieval does not advance the clock, following the requested end-of-mission recovery abstraction.
+The profession handoff is:
 
+1. Scientist observations notice local test logs and repeatable anomalies.
+2. Scientist characterization compares measurements against known basic
+   principles, records an instance finding and a field Discovery/Research question.
+3. Technician observations identify separable rig interfaces. Technician work
+   uses the characterization to isolate connections and detach the same item.
+4. A Soldier can interpret likely tactical significance after characterization.
+5. The detached item becomes a Receiving candidate. Optional securing leaves it
+   at the site; it never becomes ordinary party storage.
 
-## Shared base configuration and authored test crates
+User-authorized provisional requirements reuse existing benchmark actions:
 
-Room Simulator loads `shared/data/base-configuration.json`: a small editable default with Gate, Receiving, Holding, Analysis and Workshop. Use **Save shared base** after layout/tier edits; **Reload shared base** discards unsaved edits. `node demos/serve.mjs` provides atomic JSON saves with revision checks. Offworld reloads the base at extraction and confirmation, uses `rooms_schema.json` captive/inventory slot definitions, and reserves selected capacity persistently. Default CT1 capacity is four captives and 40 Receiving inventory units. Existing reservations prevent invalid capacity reductions. Reservations are pending room admission; this does not automatically execute staffing simulator Receiving workflows. There is still no separately authored party carrying limit.
+| Work | Profession | Tool Service | Time | Charges |
+| --- | --- | --- | --- | --- |
+| Characterize device | Scientist I | SCT1 | 3 minutes | 1 |
+| Isolate and detach | Technician II | TECH_SERVICE_II | 60 minutes | 1 |
+| Secure detached device | Untrained | None | 3 minutes | 0 |
 
-The Holding-area Diplomat now persuades the epidemiologist to reveal two hidden equipment crates. Each contains one authored physical rifle instance, respectively ASGARD_EM_RIFLE and HUMAN_ADVANCED_COIL_RIFLE from the staffing item catalog. IDs, hidden Reality, Knowledge and handling costs survive in recovery payloads and saved reservations. Revealing a crate does not identify or analyze its contents. This is an explicitly authored simulator fixture, not generated loot.
+Profession observations use tier I and Perception 0. The benchmark starts with
+existing `PULSED_POWER_I` and `ELECTROMAGNETIC_ACCELERATION_I` Knowledge; the
+Scientist Recipe explicitly requires them. These are provisional mission
+assumptions, not new canonical science or production balance. No Tier-II Theory,
+Asgard Pattern, institutional Hypothesis or Thesis is granted by field work.
+The field Discovery remains evidence about a Research question, separate from
+the authored institutional relationships in `../shared/data/discovery.json`.
 
-The terminal exposes Hack or Destroy as alternate resolutions. Technician and Soldier destruction recipes share one visible choice and resolve against the selected Actor's actual capability. Successful hacking leaves it unlocked and intact; destruction is no longer offered as a valid follow-up. Destruction leaves recoverable wreckage. Persuasion, like other completed actions, reports its outcome.
+## Shared physical items and recovery
 
+The browser supplies `../shared/data/item.json` as `catalog.itemDefinitions` when
+compiling missions. Instances with `itemId` must also author `physicalItem.state`,
+`.reality` and `.knowledge`. The compiler resolves stable handling metadata and
+preserves a unique instance ID; it never infers known identity from the catalog.
+Missions without shared item references remain compatible with the older catalog.
 
-## Dialogue, concealed doors, and Gate actions
+`ITEM_STATE` conditions read a physical item's state. Transactional
+`SET_ITEM_STATE` and `ADD_INSTANCE_FINDING` effects update its persistent state
+and instance Knowledge. Neither changes institutional Theory. The Lab uses
+`SET_RECOVERY_STATE` to make its detached item `ELIGIBLE_FOR_EVAC` and explicitly
+authors recovery category `RECEIVING`.
 
-Gate connection choices, redial and extraction also appear as map hexes. Ordinary work is blocked while an active hostile remains in the current Stage, both at start and commit; authored negotiation/intimidation remain encounter alternatives. Invalid-target and completed action hexes are removed on render.
+Discovered recoverable loot stays at its site until extraction. Ordinary
+collection secures it locally. Recovery options require valid physical conditions
+and known traversable paths to the Gate; the mounted Lab item is blocked until
+prepared. Unselected assets remain local. No carrying limit is authored.
 
-A Holding worker's Diplomat Small talk reveals a side store containing the second rifle crate. Holding persuasion reveals the first crate. After the Processing radiation source is contained, its worker's Diplomat Inquire reveals a safe room north of the Overseer office, with an additional intel package and Supply crate. Hidden transitions are excluded from movement and visibility until their authored Knowledge conditions are met.
+Debrief confirmation creates Holding/Receiving admission requests and reserves
+shared base capacity before committing recovery. Direct shared items include a
+`physicalItem` payload with their original ID, physical state, Reality, instance
+findings, process state and history. Receiving cost comes from the shared item
+definition and current quantity. Crate recovery retains the existing `cargo`
+payload format. The two rifle crates and Lab device are distinct authored
+instances; no postmission reward copy is spawned.
 
-The operative's untrained Talk explains departure conditions. Send to Gate requires all patients stabilized, the medical incident resolved, or the existing radiation source contained, plus a known traversable Gate route. The operative waits physically at the Gate and is recovered when the party extracts. Questioning the downed security supervisor grants the office-door code; Enter code spends no Tool charges.
+These reservations await room admission. They do not automatically run the
+staffing simulator's Receiving, Analysis or Research processes. `node demos/serve.mjs`
+is required for writable confirmation; static hosting cannot save shared capacity.
+Reset releases only reservations belonging to this run.
 
-Deployment shows free Holding/Receiving capacity. Reset releases only reservations keyed to this run, preserving other runs' reservations and the physical base configuration.
+## Work, combat and Gate behavior
+
+Recipes resolve one qualifying local Actor and one sufficient usable Tool.
+Actor and target reservations prevent concurrent conflicts. Effects and charges
+commit only after requirements are revalidated; cancellation releases reservations.
+Failed effects roll back item changes, Knowledge and discoveries. Completed work
+records actual outcomes in **Action results**.
+
+NPC suspicion/hostility persist and clamp to 0-100. Suspicion alone does not start
+combat. Explicit engagement or `START_HOSTILE_INCIDENT` schedules combat normally,
+preserving participant health. Neutral armed NPCs are not automatically opponents.
+Combat advances one round every three real seconds in the browser, with staggered
+hit feedback. Bulk Wait is disabled during combat. Benchmark guards have 150 HP;
+Units start with 100 HP and a separate provisional 18-damage weapon. Down means
+incapacitation. Surrender remains distinct; restraint accepts Down or Surrendered.
+
+Dialogue pauses time, work and combat, and blocks unrelated execution. Terminal
+NPC speech remains until Finish. Only authored responses can leave a graph.
+Automatic scenes start at most once per Stage visit, in authored scene order.
+Variants use the first matching authored condition, with a fixed opening as
+fallback. `enteredFromStage` reads the last successful movement's origin. Trigger
+refreshes and failed movement do not increment visits.
+
+Movement uses cardinal doorways and one advancing party. Stationing requires a
+secure Stage; stationed Units stay behind until recalled. Return follows the
+shortest known traversable route. Extraction requires the physical Gate, no
+active work and all stationed Units recalled. An open connection expires after
+37 simulated minutes; redial at the Gate before extracting if necessary.
+
+## Personnel, equipment and presentation
+
+Character & Portrait Editor owns stats, tiers, branches and configured Tools.
+Offworld deployment starts with 0/4 selected and offers only configured Tool
+choices. Its radar uses PER, END and EXP; HP and white Stamina meters are separate
+resources. Deployment does not edit stats, tiers or charges. Mission damage and
+spent charges never overwrite personnel defaults.
+
+Two personal Tool slots follow the existing progression contract: slot 2 requires
+base tier III and a configured branch. An untrained branch permits an eligible
+second base Tool, but grants no branch competency or specialist Tool. Profession
+and subject Knowledge remain separate. See the
+[Profession boundaries](../../docs/theory/professions/profession-boundaries.md).
+
+The mission-issued Signal receiver is a separate shared party Tool. It supplies
+`SIGNAL_DIRECTION_FINDING` without granting Scout competency or occupying a
+personal slot. Personal Tools resolve before shared Tools, and reserved shared
+equipment blocks party movement. Legacy receiver-kit loadouts migrate to the
+matching ordinary Scout kit without changing stats or charges.
+
+Portraits use shared authored presentation data and do not change competency.
+NPC details show only known local information. Hidden doors require authored
+Knowledge: Holding worker conversation can reveal the side store; Processing
+inquiry after containment reveals the office safe. Map action placement and the
+shared floor renderer are presentation, independent of execution semantics.
+
+## Implementation boundaries
+
+`mission.mjs` compiles immutable authored definitions; `runtime.mjs` owns travel
+and time; `field.mjs` owns observations and work; `campaign.mjs` owns Incidents and
+objectives; `dialogue.mjs` owns conversation transactions; `recovery.mjs` owns
+selected recovery. UI modules render those results rather than inventing rules.
+
+Full replacement-mission schema migration, institutional Discovery/Research
+handoff, physical base admission and a full evacuation manifest remain separate
+work. This benchmark does not implement every proposed next-schema field.

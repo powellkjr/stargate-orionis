@@ -1,7 +1,7 @@
 import {incidentKind} from './campaign.mjs?v=dialogue-doors-1';
 import {returnRoute} from './runtime.mjs?v=dialogue-doors-1';
 import {availableTools,toolReserved,resolvedWorkTool} from './party-tools.mjs?v=dialogue-doors-1';
-import {clone,fieldStateEffects} from './mission.mjs?v=dialogue-doors-1';
+import {clone,fieldStateEffects,validPhysicalItem} from './mission.mjs?v=dialogue-doors-1';
 import {professionTier} from './equipment.mjs?v=dialogue-doors-1';
 import {initializeNpc,npcHostile,npcConfronting,npcCondition,npcEffectTypes,applyNpcEffect} from './npc.mjs?v=dialogue-doors-1';
 const running=w=>['MOVING_TO_TARGET','EXECUTING'].includes(w.status);
@@ -14,6 +14,8 @@ export function condition(s,c){
   if(!c)return true;
   if(c.type==='NPC_STATE')return npcCondition(s,c);
   if(c.type==='INCIDENT_STATE')return s.incidentStates?.[c.incidentId]?.state===c.equals;
+  if(c.type==='STAGE_STATE')return s.stageStates[c.stageId]?.[c.field]===c.equals;
+  if(c.type==='ITEM_STATE')return s.instanceStates[c.instanceId]?.physicalItem?.state?.[c.field]===c.equals;
   if(c.type==='ANY')return c.conditions.some(v=>condition(s,v));
   if(c.type==='ALL')return c.conditions.every(v=>condition(s,v));
   if(c.type==='KNOWLEDGE_PRESENT')return knows(s,c.factId);
@@ -138,6 +140,17 @@ function applyEffects(m,s,r,t){
     const e=effect;
     if(e.when&&!condition(s,e.when))continue;
     if(npcEffectTypes.includes(e.type))applyNpcEffect(s,e);
+    else if(e.type==='SET_ITEM_STATE'){
+      const item=s.instanceStates[e.instanceId]?.physicalItem;
+      if(!item||!e.field||['__proto__','constructor','prototype'].includes(e.field))throw Error('Physical item unavailable.');
+      item.state[e.field]=clone(e.value);stamp(s,'ITEM_STATE_CHANGED',{instanceId:e.instanceId,field:e.field,value:clone(e.value)});
+      if(!Number.isInteger(item.state.quantity)||item.state.quantity<1)throw Error('Invalid physical item quantity.');
+    }
+    else if(e.type==='ADD_INSTANCE_FINDING'){
+      const findings=s.instanceStates[e.instanceId]?.physicalItem?.knowledge?.instanceFindings;
+      if(!Array.isArray(findings)||!e.findingId)throw Error('Physical item Knowledge unavailable.');
+      if(!findings.includes(e.findingId)){findings.push(e.findingId);stamp(s,'INSTANCE_FINDING_ADDED',{instanceId:e.instanceId,findingId:e.findingId});}
+    }
     else if(e.type==='ADD_TO_PARTY_STORAGE'){
       const definition=m.indexes.instances[e.instanceId],instance=s.instanceStates[e.instanceId];
       if(!['PARTY_STORAGE','PARTY_STORAGE_WHEN_COLLECTED'].includes(definition?.recovery?.category)||definition.stageId!==s.currentStageId||!instance||instance.custody!=='LOCAL'||s.partyStorage.includes(e.instanceId))throw new Error('Portable asset is not available locally.');
@@ -165,6 +178,7 @@ function applyEffects(m,s,r,t){
     }else throw new Error(`Unsupported effect ${e.type}`);
   }
   if(r.createsDiscoveryId)addDiscovery(m,s,r.createsDiscoveryId);
+  for(const item of m.instances.filter(i=>i.itemId))if(!validPhysicalItem(s.instanceStates[item.instanceId]?.physicalItem,item.instanceId,item.itemId))throw Error('Invalid resulting physical item state or identity.');
 }
 export function nextWorkBoundary(s){return Math.min(Infinity,...activeWork(s).map(w=>w.durationSeconds-w.elapsedSeconds));}
 export function tickWork(m,s,seconds){

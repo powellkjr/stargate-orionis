@@ -7,8 +7,8 @@ import {observationEligibility,recipeEligibility,startWork} from '../shared/offw
 import {toolOptions} from '../shared/offworld/equipment.mjs';
 import {migrateLoadout} from '../shared/offworld/personnel-save.mjs';
 import {missionResults} from '../shared/offworld/campaign.mjs';
-const read=n=>JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));
-const catalog=read('archetypes'),raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},m=compileMission(raw,catalog);
+const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
+const catalog=read('archetypes'),raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},m=compileMission({...raw,transitions:raw.transitions.map(t=>t.transitionId==='door-mainhall-to-security'?{...t,overrides:{...t.overrides,initialState:'LOCKED',routine:false}}:t)},catalog);
 function fresh(profession='SCOUT',mission=m){const u=read('party-presets').units.find(u=>u.profession===profession);u.tier=2;u.perception=9;u.tools=[];const s=createRuntime(mission,[u],'2026-09-25T12:00Z');chooseGate(mission,s,true);return s;}
 test('mission receiver is a separate physical instance; standard Scout kits have no variants',()=>{
   const s=fresh();assert.equal(s.units[0].tools.length,0);assert.equal(s.partyTools.length,1);
@@ -39,7 +39,7 @@ test('shared Tool work reserves an actual instance, blocks movement and commits 
 });
 test('missing or damaged shared Tool fails work without spending charges or applying effects',()=>{
   const c=structuredClone(catalog),r=structuredClone(raw);c.partyTools.TEST_KIT={label:'Test mission kit',providedServices:['TECH_SERVICE_II'],chargesRemaining:2};r.deployment.partyTools.push({toolInstanceId:'test-kit-01',toolId:'TEST_KIT'});
-  const mission=compileMission(r,c),s=fresh('TECHNICIAN',mission);move(mission,s,'door-gate-to-yard');move(mission,s,'door-yard-to-mainhall');
+  r.transitions.find(t=>t.transitionId==='door-mainhall-to-security').overrides.initialState='LOCKED';const mission=compileMission(r,c),s=fresh('TECHNICIAN',mission);move(mission,s,'door-gate-to-yard');move(mission,s,'door-yard-to-mainhall');
   const w=startWork(mission,s,'hack-door-mainhall-to-security',s.units[0].unitId);s.partyTools[1].damaged=true;advanceTime(mission,s,w.durationSeconds);
   assert.equal(w.status,'FAILED');assert.equal(s.partyTools[1].chargesRemaining,2);assert.equal(s.transitionStates['door-mainhall-to-security'].state,'LOCKED');
 });

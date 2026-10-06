@@ -54,7 +54,8 @@
       "recoverable_advanced_component",
       "medical_sample_source",
       "supply_cache_basic",
-      "equipment_crate"
+      "equipment_crate",
+      "mounted_item"
     ],
     "observation": [
       "obs_guard_discipline",
@@ -198,7 +199,9 @@
       "interactionTargetIds": [
         "target-worker-yard-01"
       ],
-      "incidentIds": [],
+      "incidentIds": [
+        "incident-yard-guards"
+      ],
       "securityConditions": {
         "noActiveIncidents": true,
         "noActiveHostiles": true
@@ -471,6 +474,39 @@
         "target-safe-loot-01"
       ],
       "incidentIds": []
+    },
+    {
+      "stageId": "stage-analysis-lab",
+      "archetypeId": "stage_room_basic",
+      "cells": [
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "knownShapeAtStart": false,
+      "instanceIds": [
+        "lab-mounted-rifle-01"
+      ],
+      "observationIds": [
+        "obs-lab-test-logs",
+        "obs-lab-rig-interface",
+        "obs-lab-tactical-role"
+      ],
+      "interactionTargetIds": [
+        "target-lab-mounted-rifle"
+      ],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
     }
   ],
   "transitions": [
@@ -518,12 +554,13 @@
       "directionFrom": "EAST",
       "directionTo": "WEST",
       "overrides": {
-        "initialState": "LOCKED",
+        "initialState": "CLOSED",
         "requiredTechTier": 2,
         "requiredToolService": "TECH_SERVICE_II",
         "hackPerceptionThreshold": 6,
         "destroyDifficulty": 5,
-        "codeState": "UNKNOWN"
+        "codeState": "UNKNOWN",
+        "routine": true
       }
     },
     {
@@ -577,6 +614,14 @@
         "type": "KNOWLEDGE_PRESENT",
         "factId": "office-hidden-safe-known"
       }
+    },
+    {
+      "transitionId": "door-processing-to-lab",
+      "archetypeId": "door_routine",
+      "fromStageId": "stage-processing",
+      "toStageId": "stage-analysis-lab",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH"
     }
   ],
   "instances": [
@@ -1067,6 +1112,95 @@
           "combatState": "NEUTRAL"
         }
       }
+    },
+    {
+      "instanceId": "lab-mounted-rifle-01",
+      "archetypeId": "mounted_item",
+      "stageId": "stage-analysis-lab",
+      "itemId": "ASGARD_EM_RIFLE",
+      "physicalItem": {
+        "state": {
+          "condition": "UNKNOWN",
+          "functionalState": "FUNCTIONAL",
+          "quantity": 1,
+          "percentOfWhole": 1000,
+          "powerState": "CHARGED",
+          "constructionState": "COMPLETE",
+          "damage": [],
+          "mountState": "MOUNTED"
+        },
+        "reality": {
+          "theoryBindings": [],
+          "authoredTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+            "FUNCTIONAL",
+            "CHARGED"
+          ],
+          "technology": [
+            "ELECTROMAGNETIC_ACCELERATION_II"
+          ],
+          "fabricationEcosystem": [
+            "ASGARD_FABRICATION_II"
+          ],
+          "materials": []
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null,
+          "recognizedCivilization": null,
+          "recognizedItemClass": null,
+          "handlingKnowledge": [],
+          "knownProcessRequirements": []
+        },
+        "processingTags": [
+          "RECEIVING_REQUIRED",
+          "IDENTITY_UNKNOWN"
+        ],
+        "processes": {
+          "receiving": {
+            "state": "NOT_STARTED",
+            "completedSteps": [],
+            "currentStep": null
+          },
+          "analysis": {
+            "state": "NOT_STARTED",
+            "completedSteps": [],
+            "currentStep": null,
+            "findingsProduced": []
+          },
+          "reverseEngineering": {
+            "state": "NOT_STARTED",
+            "recipeId": null,
+            "completedBubbles": [],
+            "currentBubble": null,
+            "partialProgress": 0
+          },
+          "salvage": {
+            "state": "NOT_STARTED"
+          }
+        },
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-analysis-lab"
+          }
+        ]
+      },
+      "overrides": {
+        "initialState": {
+          "recoveryState": "UNKNOWN"
+        }
+      },
+      "recovery": {
+        "category": "RECEIVING"
+      }
     }
   ],
   "observations": [
@@ -1321,6 +1455,60 @@
           "operative-located"
         ]
       }
+    },
+    {
+      "observationId": "obs-lab-test-logs",
+      "archetypeId": "obs_nonstandard_technology",
+      "stageId": "stage-analysis-lab",
+      "subjectInstanceId": "lab-mounted-rifle-01",
+      "overrides": {
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "minimumPerception": 0,
+        "text": "The local test logs contain repeated field pulses and output anomalies. They have useful measurements, but no consistent explanation.",
+        "revealsFacts": [
+          "lab-test-observations-known"
+        ],
+        "requiresKnowledge": [],
+        "setsDetectionState": {
+          "instanceId": "lab-mounted-rifle-01",
+          "value": "LOCATED"
+        }
+      }
+    },
+    {
+      "observationId": "obs-lab-rig-interface",
+      "archetypeId": "obs_nonstandard_technology",
+      "stageId": "stage-analysis-lab",
+      "subjectInstanceId": "lab-mounted-rifle-01",
+      "overrides": {
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "minimumPerception": 0,
+        "text": "The device has separable rig connections. Safe isolation needs a verified account of the pulse cycle.",
+        "revealsFacts": [
+          "lab-rig-interface-known"
+        ],
+        "requiresKnowledge": []
+      }
+    },
+    {
+      "observationId": "obs-lab-tactical-role",
+      "archetypeId": "obs_nonstandard_technology",
+      "stageId": "stage-analysis-lab",
+      "subjectInstanceId": "lab-mounted-rifle-01",
+      "overrides": {
+        "profession": "SOLDIER",
+        "minimumTier": 1,
+        "minimumPerception": 0,
+        "text": "The characterized pulse and aligned output suggest a directed weapon role. Its operating limits still need controlled testing.",
+        "revealsFacts": [
+          "lab-device-tactical-role-known"
+        ],
+        "requiresKnowledge": [
+          "lab-device-characterized"
+        ]
+      }
     }
   ],
   "interactionTargets": [
@@ -1329,9 +1517,7 @@
       "archetypeId": "target_npc_standard",
       "instanceId": "worker-yard-01",
       "stageId": "stage-outer-yard",
-      "recipeInstanceIds": [
-        "question-worker-yard"
-      ]
+      "recipeInstanceIds": []
     },
     {
       "targetId": "target-patient-01",
@@ -1368,8 +1554,7 @@
       "instanceId": "operative-01",
       "stageId": "stage-holding-area",
       "recipeInstanceIds": [
-        "extract-operative",
-        "talk-operative"
+        "extract-operative"
       ]
     },
     {
@@ -1537,17 +1722,20 @@
       "recipeInstanceIds": [
         "collect-safe-loot-01"
       ]
+    },
+    {
+      "targetId": "target-lab-mounted-rifle",
+      "archetypeId": "target_machine_standard",
+      "instanceId": "lab-mounted-rifle-01",
+      "stageId": "stage-analysis-lab",
+      "recipeInstanceIds": [
+        "characterize-lab-device",
+        "detach-lab-device",
+        "secure-lab-device"
+      ]
     }
   ],
   "recipes": [
-    {
-      "recipeInstanceId": "question-worker-yard",
-      "archetypeId": "recipe_question_npc",
-      "targetId": "target-worker-yard-01",
-      "overrides": {
-        "minimumTier": 1
-      }
-    },
     {
       "recipeInstanceId": "assess-patient-01",
       "archetypeId": "recipe_assess_patient",
@@ -1587,7 +1775,24 @@
       "archetypeId": "recipe_persuade_npc",
       "targetId": "target-epidemiologist-01",
       "overrides": {
-        "minimumTier": 1
+        "minimumTier": 1,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "cacheRevealed",
+            "value": true
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 10,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -1631,6 +1836,32 @@
               "instanceId": "radiation-source-01",
               "field": "active",
               "equals": false
+            },
+            {
+              "type": "ALL",
+              "conditions": [
+                {
+                  "instanceId": "operative-01",
+                  "field": "evacState",
+                  "equals": "READY_TO_EVACUATE"
+                },
+                {
+                  "type": "ANY",
+                  "conditions": [
+                    {
+                      "type": "STAGE_STATE",
+                      "stageId": "stage-outer-yard",
+                      "field": "socialPassage",
+                      "equals": true
+                    },
+                    {
+                      "type": "INCIDENT_STATE",
+                      "incidentId": "incident-yard-guards",
+                      "equals": "RESOLVED"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -1642,7 +1873,24 @@
       "archetypeId": "recipe_collect_medical_sample",
       "targetId": "target-medical-sample-01",
       "overrides": {
-        "minimumTier": 1
+        "minimumTier": 1,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "sampleCollected",
+            "value": true
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 10,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -1842,7 +2090,19 @@
       "archetypeId": "recipe_question_npc",
       "targetId": "target-mcguffin-01",
       "overrides": {
-        "minimumTier": 1
+        "minimumTier": 1,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "interviewed",
+            "value": true
+          },
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "security-terminal-code-known"
+          }
+        ],
+        "outcomeText": "McGuffin gives you the terminal access code. Enter code unlocks the intact terminal without a Tool charge."
       }
     },
     {
@@ -2006,10 +2266,21 @@
         ],
         "durationMinutes": 3,
         "requiresState": {
-          "instanceId": "security-terminal-01",
-          "field": "powered",
-          "equals": true
-        }
+          "type": "ALL",
+          "conditions": [
+            {
+              "instanceId": "security-terminal-01",
+              "field": "powered",
+              "equals": true
+            },
+            {
+              "instanceId": "security-terminal-01",
+              "field": "locked",
+              "equals": true
+            }
+          ]
+        },
+        "outcomeText": "The code is accepted. The security terminal is unlocked and intact. No Tool charge spent."
       }
     },
     {
@@ -2228,7 +2499,23 @@
       "recipeInstanceId": "collect-equipment-crate-01",
       "archetypeId": "recipe_collect_supply",
       "targetId": "target-equipment-crate-01",
-      "overrides": {}
+      "overrides": {
+        "effects": [
+          {
+            "type": "CARRY_TARGET"
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 10,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
+      }
     },
     {
       "recipeInstanceId": "collect-equipment-crate-02",
@@ -2245,6 +2532,16 @@
           {
             "type": "ADD_KNOWLEDGE",
             "factId": "holding-hidden-entrance-known"
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 10,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
           }
         ],
         "outcomeText": "The worker reveals a concealed entrance beside Holding. The hidden store is now accessible."
@@ -2296,15 +2593,6 @@
       }
     },
     {
-      "recipeInstanceId": "talk-operative",
-      "archetypeId": "recipe_dialogue_talk",
-      "targetId": "target-operative-01",
-      "overrides": {
-        "effects": [],
-        "outcomeText": "I am only leaving if everybody is stabilized or the source is resolved. Then send me to the Gate along a clear route."
-      }
-    },
-    {
       "recipeInstanceId": "enter-security-office-door-code",
       "archetypeId": "recipe_dialogue_enter_door_code",
       "targetId": "target-door-security-to-office",
@@ -2318,6 +2606,92 @@
         "requiresState": {
           "type": "KNOWLEDGE_PRESENT",
           "factId": "security-office-door-code-known"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "characterize-lab-device",
+      "archetypeId": "recipe_record_scientific_readings",
+      "targetId": "target-lab-mounted-rifle",
+      "overrides": {
+        "minimumTier": 1,
+        "durationMinutes": 3,
+        "requiresLocated": true,
+        "requiresKnowledge": [
+          "lab-test-observations-known",
+          "PULSED_POWER_I",
+          "ELECTROMAGNETIC_ACCELERATION_I"
+        ],
+        "requiresState": {
+          "type": "ITEM_STATE",
+          "instanceId": "lab-mounted-rifle-01",
+          "field": "mountState",
+          "equals": "MOUNTED"
+        },
+        "effects": [
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "lab-device-characterized"
+          },
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "mcguffin-answer-lab-status"
+          },
+          {
+            "type": "ADD_INSTANCE_FINDING",
+            "instanceId": "lab-mounted-rifle-01",
+            "findingId": "LAB_DEVICE_PULSE_CHARACTERIZED"
+          }
+        ],
+        "createsDiscoveryId": "discovery-lab-device-behavior",
+        "outcomeText": "Compared the local logs with repeatable measurements: output diverges during the rig extraction cycle. The pulse behavior is characterized and a Research question is recorded. The device remains unidentified; its maker and full capabilities are unknown."
+      }
+    },
+    {
+      "recipeInstanceId": "detach-lab-device",
+      "archetypeId": "recipe_recover_component",
+      "targetId": "target-lab-mounted-rifle",
+      "overrides": {
+        "minimumTier": 2,
+        "requiredToolService": "TECH_SERVICE_II",
+        "durationMinutes": 60,
+        "requiresKnowledge": [
+          "lab-device-characterized",
+          "lab-rig-interface-known"
+        ],
+        "requiresState": {
+          "type": "ITEM_STATE",
+          "instanceId": "lab-mounted-rifle-01",
+          "field": "mountState",
+          "equals": "MOUNTED"
+        },
+        "effects": [
+          {
+            "type": "SET_ITEM_STATE",
+            "instanceId": "lab-mounted-rifle-01",
+            "field": "mountState",
+            "value": "DETACHED"
+          },
+          {
+            "type": "SET_RECOVERY_STATE",
+            "instanceId": "lab-mounted-rifle-01",
+            "value": "ELIGIBLE_FOR_EVAC"
+          }
+        ],
+        "outcomeText": "Isolated the rig connections and detached the same complete device safely. It is eligible for Receiving recovery, with its field findings preserved."
+      }
+    },
+    {
+      "recipeInstanceId": "secure-lab-device",
+      "archetypeId": "recipe_collect_supply",
+      "targetId": "target-lab-mounted-rifle",
+      "overrides": {
+        "durationMinutes": 3,
+        "requiresState": {
+          "type": "ITEM_STATE",
+          "instanceId": "lab-mounted-rifle-01",
+          "field": "mountState",
+          "equals": "DETACHED"
         }
       }
     }
@@ -2389,6 +2763,21 @@
       "overrides": {
         "participantIds": [
           "mcguffin-01"
+        ],
+        "initialState": "DORMANT",
+        "allowRetreat": true,
+        "allowSurrender": true,
+        "activationMode": "ON_HOSTILE_ENGAGEMENT_OR_ESCALATION"
+      }
+    },
+    {
+      "incidentId": "incident-yard-guards",
+      "archetypeId": "incident_guard_combat_basic",
+      "stageId": "stage-outer-yard",
+      "overrides": {
+        "participantIds": [
+          "guard-yard-01",
+          "guard-yard-02"
         ],
         "initialState": "DORMANT",
         "allowRetreat": true,
@@ -2502,6 +2891,20 @@
         }
       ],
       "question": "How does the advanced mining technology alter or increase Supply extraction?"
+    },
+    {
+      "discoveryId": "discovery-lab-device-behavior",
+      "sourceInstanceIds": [
+        "lab-mounted-rifle-01"
+      ],
+      "evidenceRequirements": [
+        {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "lab-device-characterized"
+        }
+      ],
+      "question": "What produces the repeatable electromagnetic pulse, and why does output diverge during the rig extraction cycle?",
+      "contentStatus": "PROVISIONAL_BENCHMARK"
     }
   ],
   "eventBindings": [
@@ -2617,7 +3020,9 @@
     "destination-is-small-supply-mining-operation",
     "allied-operative-embedded-here",
     "operative-communications-stopped",
-    "operative-transmitter-code-known"
+    "operative-transmitter-code-known",
+    "PULSED_POWER_I",
+    "ELECTROMAGNETIC_ACCELERATION_I"
   ],
   "probeIntel": {
     "atmosphere": "SURVIVABLE",
@@ -3005,6 +3410,57 @@
                 }
               ],
               "endConversation": true
+            },
+            {
+              "responseId": "yard-clear-diplomat-0",
+              "text": "We need a quiet medical transfer. Keep this checkpoint clear.",
+              "source": "DIPLOMAT",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": -20
+                },
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              }
+            },
+            {
+              "responseId": "yard-clear-soldier-0",
+              "text": "Stand clear. We are taking responsibility for this transfer.",
+              "source": "SOLDIER",
+              "effects": [
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 2
+              }
+            },
+            {
+              "responseId": "yard-clear-combat-0",
+              "text": "We will clear the checkpoint by force.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "START_HOSTILE_INCIDENT",
+                  "incidentId": "incident-yard-guards"
+                }
+              ],
+              "endConversation": true
             }
           ]
         },
@@ -3041,29 +3497,61 @@
               "endConversation": true
             },
             {
-              "responseId": "yard-return-soldier-intimidate",
-              "text": "Stand aside.",
-              "source": "SOLDIER",
-              "requirements": {
-                "profession": "SOLDIER",
-                "minimumTier": 2
-              },
-              "effects": [
-                {
-                  "type": "START_CONFRONTATION",
-                  "instanceIds": [
-                    "guard-yard-01",
-                    "guard-yard-02"
-                  ]
-                }
-              ],
-              "endConversation": true
-            },
-            {
               "responseId": "yard-return-backoff",
               "text": "We'll wait.",
               "source": "NEUTRAL",
               "effects": [],
+              "endConversation": true
+            },
+            {
+              "responseId": "yard-clear-diplomat-1",
+              "text": "We need a quiet medical transfer. Keep this checkpoint clear.",
+              "source": "DIPLOMAT",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": -20
+                },
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              }
+            },
+            {
+              "responseId": "yard-clear-soldier-1",
+              "text": "Stand clear. We are taking responsibility for this transfer.",
+              "source": "SOLDIER",
+              "effects": [
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 2
+              }
+            },
+            {
+              "responseId": "yard-clear-combat-1",
+              "text": "We will clear the checkpoint by force.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "START_HOSTILE_INCIDENT",
+                  "incidentId": "incident-yard-guards"
+                }
+              ],
               "endConversation": true
             }
           ]
@@ -3095,7 +3583,7 @@
               "effects": [
                 {
                   "type": "ADD_KNOWLEDGE",
-                  "knowledgeId": "holding-hidden-store-known"
+                  "knowledgeId": "holding-hidden-entrance-known"
                 }
               ],
               "endConversation": true
@@ -3108,6 +3596,18 @@
               "endConversation": true
             }
           ]
+        }
+      ],
+      "onStartEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "guard-holding-01",
+          "delta": 10,
+          "when": {
+            "instanceId": "guard-holding-01",
+            "field": "combatState",
+            "equals": "NEUTRAL"
+          }
         }
       ]
     },
@@ -3182,15 +3682,17 @@
         "right": "operative-01",
         "left": "ACTIVE_SGC_SPEAKER"
       },
-      "startWhen": {
-        "knowledge": "operative-located"
-      },
       "startNodeId": "operative-contact",
       "onStartEffects": [
         {
           "type": "CHANGE_NPC_SUSPICION",
           "instanceId": "guard-holding-01",
-          "delta": 45
+          "delta": 45,
+          "when": {
+            "instanceId": "guard-holding-01",
+            "field": "combatState",
+            "equals": "NEUTRAL"
+          }
         }
       ],
       "nodes": [
@@ -3198,11 +3700,11 @@
           "nodeId": "operative-contact",
           "speaker": "operative-01",
           "side": "RIGHT",
-          "text": "Keep your voice down. I can move, but not through a checkpoint that's looking for me.",
+          "text": "Keep your voice down. I can move once the patients are safe or the source is contained. If you clear the yard checkpoint first, I can slip out early.",
           "responses": [
             {
               "responseId": "operative-ready",
-              "text": "Stay put until we have a safe route.",
+              "text": "Stay put while we make a route to the Gate.",
               "source": "NEUTRAL",
               "effects": [
                 {
@@ -3218,6 +3720,12 @@
               "endConversation": true
             }
           ]
+        }
+      ],
+      "conditions": [
+        {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "operative-located"
         }
       ]
     },
@@ -3267,7 +3775,7 @@
           "nodeId": "reynolds-start",
           "speaker": "reynolds-01",
           "side": "RIGHT",
-          "text": "If you're here for the overseer, keep it brief.",
+          "text": "Don't wander. Head straight to the overseer's office, and keep the visit brief.",
           "responses": [
             {
               "responseId": "reynolds-routine",
@@ -3277,6 +3785,10 @@
                 {
                   "type": "ADD_KNOWLEDGE",
                   "knowledgeId": "office-access-routine-known"
+                },
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "security-office-door-code-known"
                 }
               ],
               "endConversation": true
@@ -3298,11 +3810,91 @@
                 {
                   "type": "ADD_KNOWLEDGE",
                   "knowledgeId": "mcguffin-expects-operational-update"
+                },
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "security-office-door-code-known"
                 }
               ],
               "endConversation": true
             }
           ]
+        },
+        {
+          "nodeId": "reynolds-return",
+          "speaker": "reynolds-01",
+          "side": "RIGHT",
+          "text": "Finished with the overseer? Where are you heading now?",
+          "responses": [
+            {
+              "responseId": "reynolds-return-diplomat",
+              "text": "We are following up on the medical situation. Please keep the hall clear.",
+              "source": "DIPLOMAT",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "reynolds-01",
+                  "delta": -10
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              }
+            },
+            {
+              "responseId": "reynolds-return-soldier",
+              "text": "We are checking the route back to the Gate. Keep your patrol out of our way.",
+              "source": "SOLDIER",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "reynolds-01",
+                  "delta": 15
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 1
+              }
+            },
+            {
+              "responseId": "reynolds-return-leave",
+              "text": "Back the way we came.",
+              "source": "NEUTRAL",
+              "effects": [],
+              "endConversation": true
+            },
+            {
+              "responseId": "reynolds-return-engage",
+              "text": "Stand down, or we will force our way through.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "START_HOSTILE_INCIDENT",
+                  "incidentId": "incident-security-guards"
+                }
+              ],
+              "endConversation": true
+            }
+          ]
+        }
+      ],
+      "startWhen": {
+        "stageVisitCount": {
+          "stageId": "stage-security-hall",
+          "minimum": 1
+        }
+      },
+      "variants": [
+        {
+          "variantId": "return-from-office",
+          "when": {
+            "enteredFromStage": "stage-overseer-office"
+          },
+          "startNodeId": "reynolds-return"
         }
       ]
     },
@@ -3388,6 +3980,19 @@
                 }
               ],
               "nextNodeId": "mcguffin-processing-question"
+            },
+            {
+              "responseId": "mcguffin-containment-unbriefed",
+              "text": "We have not assessed the medical situation yet.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 40
+                }
+              ],
+              "nextNodeId": "mcguffin-processing-question"
             }
           ]
         },
@@ -3429,6 +4034,19 @@
                 }
               ],
               "nextNodeId": "mcguffin-lab-question"
+            },
+            {
+              "responseId": "mcguffin-processing-unbriefed",
+              "text": "We still need to inspect Processing.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 30
+                }
+              ],
+              "nextNodeId": "mcguffin-lab-question"
             }
           ]
         },
@@ -3467,6 +4085,19 @@
                   "type": "CHANGE_NPC_SUSPICION",
                   "instanceId": "mcguffin-01",
                   "delta": 5
+                }
+              ],
+              "nextNodeId": "mcguffin-hidden-equipment-test"
+            },
+            {
+              "responseId": "mcguffin-lab-unbriefed",
+              "text": "We have not reviewed the lab evidence yet.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 30
                 }
               ],
               "nextNodeId": "mcguffin-hidden-equipment-test"
@@ -3642,6 +4273,94 @@
             }
           ],
           "endConversation": true
+        }
+      ],
+      "startWhen": {
+        "stageVisitCount": {
+          "stageId": "stage-overseer-office",
+          "equals": 1
+        }
+      }
+    },
+    {
+      "dialogueSceneId": "dialogue-yard-checkpoint",
+      "participants": {
+        "left": "ACTIVE_SGC_SPEAKER",
+        "right": "guard-yard-01"
+      },
+      "conditions": [
+        {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "operative-located"
+        }
+      ],
+      "startNodeId": "yard-checkpoint",
+      "nodes": [
+        {
+          "nodeId": "yard-checkpoint",
+          "speaker": "guard-yard-01",
+          "side": "RIGHT",
+          "text": "What do you need from this checkpoint?",
+          "responses": [
+            {
+              "responseId": "yard-clear-diplomat",
+              "text": "We need a quiet medical transfer. Keep this checkpoint clear.",
+              "source": "DIPLOMAT",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "guard-yard-01",
+                  "delta": -20
+                },
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              }
+            },
+            {
+              "responseId": "yard-clear-soldier",
+              "text": "Stand clear. We are taking responsibility for this transfer.",
+              "source": "SOLDIER",
+              "effects": [
+                {
+                  "type": "MARK_ROUTE_SOCIAL_PASSAGE",
+                  "stageId": "stage-outer-yard",
+                  "value": true
+                }
+              ],
+              "endConversation": true,
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 2
+              }
+            },
+            {
+              "responseId": "yard-clear-combat",
+              "text": "We will clear the checkpoint by force.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "START_HOSTILE_INCIDENT",
+                  "incidentId": "incident-yard-guards"
+                }
+              ],
+              "endConversation": true
+            },
+            {
+              "responseId": "yard-clear-leave",
+              "text": "Nothing yet.",
+              "source": "NEUTRAL",
+              "effects": [],
+              "endConversation": true
+            }
+          ]
         }
       ]
     }
