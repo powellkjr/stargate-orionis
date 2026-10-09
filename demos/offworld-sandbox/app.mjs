@@ -20,11 +20,12 @@ import {createRuntime,chooseGate,advanceTime,exits,move,returnRoute,redial,extra
 import {activeWork,executionProfile,movementWork,recipeEligibility,startWork,cancelWork,stationUnit,observationEligibility,targetLocal} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
 import {setupRoster,esc} from './setup.mjs?v=dialogue-doors-1';
 import {renderMap,partyCard,title,colors,icons} from './map.mjs?v=dialogue-doors-1';
+import {spritePresentation,replaceMissingSprite} from './sprite-renderer.mjs';
 const $=id=>document.getElementById(id);
 const savePersonnel=personnelSaver($('personnelSaveStatus'));
 const clock=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(Math.floor(n%60)).padStart(2,'0')}`;
 let raw,catalog,definition,presets,state,deployment,startTime,selectedParty,busy=false,epoch=0,selectedRecipe=null,pendingMove=null;
-let camera={x:0,y:0,w:700,h:550},dragged=false;
+let camera={x:0,y:0,w:700,h:550},dragged=false,lastMapMarkup=null;
 const pointers=new Map();let gesture;
 const load=async path=>{const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(`Could not load ${path}: ${response.status}`);return response.json();};
 function error(e){$('error').textContent=e.message??String(e);$('error').hidden=false;}
@@ -40,11 +41,13 @@ function applyCamera(){$('map').setAttribute('viewBox',`${camera.x} ${camera.y} 
 function focus(){
   if(!state)return;const cells=definition.indexes.stages[state.currentStageId].cells;
   const cx=(Math.min(...cells.map(c=>c.x))+Math.max(...cells.map(c=>c.x))+1)*50,cy=(Math.min(...cells.map(c=>c.y))+Math.max(...cells.map(c=>c.y))+1)*50;
-  const aspect=Math.max(.6,$('map').clientWidth/Math.max(1,$('map').clientHeight)),h=480;
+  const aspect=Math.max(.6,$('map').clientWidth/Math.max(1,$('map').clientHeight)),sprite=$('rendererMode').value==='sprites',h=sprite?Math.max(240,(Math.max(...cells.map(c=>c.y))-Math.min(...cells.map(c=>c.y))+1)*100+100,((Math.max(...cells.map(c=>c.x))-Math.min(...cells.map(c=>c.x))+1)*100+100)/aspect):480;
   camera={x:cx-h*aspect/2,y:cy-h/2,w:h*aspect,h};applyCamera();drawMap();
 }
 function zoom(f){const w=Math.max(180,Math.min(1800,camera.w*f));f=w/camera.w;camera.x+=(camera.w-w)/2;camera.y+=(camera.h-camera.h*f)/2;camera.w=w;camera.h*=f;applyCamera();if(!pointers.size)drawMap();}
-function drawMap(){if(!state||pointers.size)return;const focused=document.activeElement?.dataset?.npc;$('map').innerHTML=renderMap(definition,state,Math.max(13,26*camera.w/Math.max(1,$('map').clientWidth)),!busy,damageFrames(state,performance.now()));if(focused)[...$('map').querySelectorAll('[data-npc]')].find(n=>n.dataset.npc===focused)?.focus({preventScroll:true});applyCamera();}
+function drawMap(){if(!state||pointers.size)return;const focused=document.activeElement?.dataset?.npc,sprites=$('rendererMode').value==='sprites';$('map').classList.toggle('sprite-map',sprites);const markup=renderMap(definition,state,Math.max(13,26*camera.w/Math.max(1,$('map').clientWidth)),!busy,damageFrames(state,performance.now()),sprites?spritePresentation:null);if(markup!==lastMapMarkup){$('map').innerHTML=markup;lastMapMarkup=markup;}if(focused)[...$('map').querySelectorAll('[data-npc]')].find(n=>n.dataset.npc===focused)?.focus({preventScroll:true});applyCamera();}
+$('rendererMode').onchange=()=>drawMap();
+$('map').addEventListener('error',event=>replaceMissingSprite(event.target),true);
 function renderNpcDetails(){
   const html=selectedNpc&&state?npcDetailsHtml(definition,state,selectedNpc):'';
   $('npcDetails').hidden=!html;

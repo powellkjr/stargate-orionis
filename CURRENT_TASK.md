@@ -1,3 +1,19 @@
+# Current Task: Offworld 2D Sprite Presentation Branch
+
+## Active request and resume checkpoint
+
+- October 9, 2026. User requests implementing `C:/Users/Powel/Downloads/offworld_2d_sprite_branch_handoff.md` on a new branch. The attachment defines the requested experiment, not new game rules.
+- Branch: `offworld-2d-sprite-renderer`, created from synchronized `main` at `45d8a6e`. Starting working tree was clean. No merge or remote push requested for this experiment.
+- Scope: complete placeholder 2D presentation for the same runnable Missing Operative mission, plus a replaceable asset contract and desktop/mobile screenshots. Preserve schematic rendering, runtime, authored mission, UI interactions, Profession colors and hidden-state boundaries.
+- Implementation: extend `map.mjs` with optional presentation hooks; add `sprite-renderer.mjs`, centralized `sprite-manifest.mjs`, SVG placeholder resources under `demos/shared/sprites/offworld/`, a UI renderer toggle, renderer tests and final-art specification. Reuse existing map-layout, camera, actions, observation markers, combat feedback and NPC UI. No second simulation or tactical positions.
+- Compatibility: unknown identity must use generic art; known-shape fog must not expose specific Stage art/objects; departed occupants must not collapse remaining placements. Existing action/click/keyboard selectors stay unchanged. Missing art falls back to a generic placeholder.
+- **Resume checkpoint: implementation complete and ready for visual review.** 272 combined Node tests pass, including five meaningful sprite tests. Full isolated Edge smoke passes sprite loading, renderer-toggle runtime parity, movement/dialogue/combat/Lab search/characterization/detachment, recovery/reset and 390px layout with no runtime errors. Changed JavaScript syntax, all 31 SVG XML resources and diff checks pass.
+- Delivered: presentation hooks in `map.mjs`, sprite renderer/manifest, 31 SVG placeholders, View toggle and Stage framing, idle-DOM caching, failed-asset fallback caching, tests, `SPRITE_ASSETS.md` and four review screenshots under `demos/offworld-sandbox/sprite-review/`. Existing `map-layout.mjs` supplies stable reserved positions; no additional layout system needed.
+- Runtime modules and authored mission fixtures have no changes. Art is provisional presentation only; no new game rules, Recipes, tactical positioning, animation library or hidden-Reality lookup. The original schematic renderer is retained. No architectural gap was resolved by changing gameplay; previously deferred runtime behavior stays deferred.
+- Next action: review scale/camera/silhouettes, then generate polished assets externally and update the manifest using the documented contract. This experiment is on its dedicated branch; no commit, merge or push requested in this task. Historical Mission Author checkpoint follows.
+
+---
+
 # Current Task: Mission Author Expanded Tables — Wave Plan
 
 ## Active request and resume checkpoint

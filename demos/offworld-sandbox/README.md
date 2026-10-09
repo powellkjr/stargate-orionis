@@ -29,6 +29,18 @@ normal travel, dialogue and responder selection, terminal hacking, parallel Lab 
 Scientist characterization, Technician detachment, combat pacing, recovery,
 station/rejoin, reset and a 390px layout. It never saves into the real fixtures.
 
+## 2D sprite presentation experiment
+
+On branch `offworld-2d-sprite-renderer`, the map defaults to Sprites. Use the
+**View** dropdown to compare Schematic without resetting the mission. Both views
+consume the same runtime, authored cells and visibility rules, and share action,
+observation, dialogue and combat UI. Placeholder art adds no gameplay rules.
+
+See [SPRITE_ASSETS.md](SPRITE_ASSETS.md) for the renderer boundary, centralized
+manifest, scale, state treatments and exact final-art requirements. The browser
+smoke also checks image loading and unchanged runtime across the toggle, and
+captures desktop/mobile Analysis Lab screenshots in its temporary output folder.
+
 ## Conversations and checkpoint travel
 
 The mission has nine conversation scenes: yard entry/return/checkpoint,

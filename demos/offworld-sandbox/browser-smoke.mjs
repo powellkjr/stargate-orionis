@@ -11,7 +11,7 @@ let failNextBaseSave=true;
 const server=createServer(async(req,res)=>{
   if(req.url==='/api/base-configuration'&&req.method==='PUT'){if(failNextBaseSave){failNextBaseSave=false;res.writeHead(501,{'Content-Type':'text/html'});res.end('<html>Unsupported method PUT</html>');return;}let body='';for await(const chunk of req)body+=chunk;testBase=JSON.parse(body);testBase.revision++;res.setHeader('Content-Type','application/json');res.end(JSON.stringify(testBase));return;}
   if(req.url.split('?')[0].endsWith('/base-configuration.json')){res.setHeader('Content-Type','application/json');res.end(JSON.stringify(testBase));return;}
-  try{const path=resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]));if(!path.startsWith(root))throw Error();const data=await readFile(path);res.setHeader('Content-Type',({'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.json':'application/json'})[extname(path)]??'application/octet-stream');res.end(data);}catch{res.statusCode=404;res.end();}
+  try{const path=resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]));if(!path.startsWith(root))throw Error();const data=await readFile(path);res.setHeader('Content-Type',({'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml'})[extname(path)]??'application/octet-stream');res.end(data);}catch{res.statusCode=404;res.end();}
 });
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const browser=spawn(process.env.EDGE_PATH??'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',['--headless=new','--disable-gpu','--no-first-run','--remote-debugging-port=0',`--user-data-dir=${profile}`,'about:blank'],{windowsHide:true,stdio:'ignore'});
@@ -73,6 +73,17 @@ try {
   await evaluate("(()=>{const search=document.querySelector('[data-roster-filter=search]');search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));})()");
   await writeFile(join(profile,'setup.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
   await evaluate("document.getElementById('deploy').click();document.getElementById('keepGate').click()");
+  assert.equal(await evaluate("document.getElementById('rendererMode').value"),'sprites');
+  assert(await evaluate("document.querySelectorAll('#map .world-sprite').length>0"));
+  const assetLoads=await evaluate(`Promise.all([...new Set([...document.querySelectorAll('#map image')].map(i=>i.getAttribute('href')))].map(src=>new Promise(resolve=>{const image=new Image();image.onload=()=>resolve(true);image.onerror=()=>resolve(src);image.src=src;})))`);
+  assert(assetLoads.every(v=>v===true),JSON.stringify(assetLoads));
+  await evaluate("document.getElementById('debugView').value='runtime';document.getElementById('designerButton').click()");
+  const beforeToggle=await evaluate("document.getElementById('debugContent').textContent");
+  await evaluate("document.getElementById('closeDesigner').click();document.getElementById('rendererMode').value='schematic';document.getElementById('rendererMode').dispatchEvent(new Event('change'))");
+  assert(await evaluate("!!document.querySelector('#map .shared-map-surface')&&!document.querySelector('#map .world-sprite')"));
+  await evaluate("document.getElementById('rendererMode').value='sprites';document.getElementById('rendererMode').dispatchEvent(new Event('change'));document.getElementById('designerButton').click()");
+  assert.equal(await evaluate("document.getElementById('debugContent').textContent"),beforeToggle,'Renderer toggle does not mutate runtime');
+  await evaluate("document.getElementById('closeDesigner').click()");
   assert.equal(await evaluate("document.getElementById('mission').hidden"),false);
   assert.equal(await evaluate("document.querySelectorAll('#party .stats-radar').length"),4);
   assert.equal(await evaluate("document.querySelectorAll('#party .unit-resource.stamina').length"),4);
@@ -156,6 +167,14 @@ try {
   for(let i=0;i<140;i++){if(await evaluate("document.getElementById('work').textContent===''"))break;await delay(100);}
   assert(await evaluate("!!document.querySelector('[data-recipe=\"characterize-lab-device\"]')"),'Search reveals the Scientist focus');
   console.log('Group Lab search completed.');
+  await evaluate("document.getElementById('focus').click()");await delay(150);
+  await writeFile(join(profile,'sprite-lab-desktop.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
+  await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await evaluate("document.getElementById('focus').click()");await delay(150);
+  assert(await evaluate('document.documentElement.scrollWidth<=innerWidth'),'Sprite toolbar and world fit mobile');
+  await writeFile(join(profile,'sprite-lab-mobile.png'),Buffer.from((await call('Page.captureScreenshot')).data,'base64'));
+  await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+  await evaluate("document.getElementById('focus').click()");
   for(const id of ['characterize-lab-device','detach-lab-device']){
     await evaluate(`document.querySelector('[data-recipe="${id}"]').dispatchEvent(new MouseEvent('click',{bubbles:true}))`);
     assert.equal(await evaluate("document.getElementById('startAction').disabled"),false);

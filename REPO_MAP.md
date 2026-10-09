@@ -72,6 +72,12 @@ Presentation is in **`demos/offworld-sandbox/`**:
 `recovery-ui.mjs` extraction UI; `outcomes.mjs` outcome presentation.
 `app.mjs` connects these to the runtime and base-save service.
 
+On the sprite experiment branch, `sprite-renderer.mjs` supplies optional world
+presentation hooks to the same map renderer; `sprite-manifest.mjs` owns lookup
+and `demos/shared/sprites/offworld/` contains placeholders.
+[Sprite asset contract](demos/offworld-sandbox/SPRITE_ASSETS.md) defines final-art
+requirements. The View selector retains the schematic renderer.
+
 Do not implement semantic game behavior only in UI markup.
 
 ## Shared systems and authored data
