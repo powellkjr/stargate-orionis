@@ -1,0 +1,380 @@
+{
+  "format": "mission-author-dynamics-1",
+  "version": 1,
+  "incidents": [
+    {
+      "id": "incident-holding-medical",
+      "catalogId": "MEDICAL_DETERIORATION",
+      "sourceIncidentId": "incident-holding-medical",
+      "detectionRefs": [
+        {
+          "kind": "missionObservation",
+          "id": "obs-holding-coughing"
+        },
+        {
+          "kind": "missionObservation",
+          "id": "obs-holding-patient-symptoms"
+        }
+      ],
+      "investigationRefs": [
+        {
+          "kind": "missionObservation",
+          "id": "obs-holding-outbreak-pattern"
+        }
+      ],
+      "restorationRefs": [],
+      "stateRequirement": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "instanceId": "patient-01",
+            "field": "condition",
+            "notEquals": "STABILIZED"
+          },
+          {
+            "instanceId": "patient-02",
+            "field": "condition",
+            "notEquals": "STABILIZED"
+          },
+          {
+            "instanceId": "patient-03",
+            "field": "condition",
+            "notEquals": "STABILIZED"
+          }
+        ]
+      }
+    },
+    {
+      "id": "incident-processing-radiation",
+      "catalogId": "RADIATION_LEAK",
+      "sourceIncidentId": "incident-processing-radiation",
+      "detectionRefs": [
+        {
+          "kind": "missionObservation",
+          "id": "obs-processing-radiation"
+        }
+      ],
+      "investigationRefs": [],
+      "restorationRefs": [],
+      "stateRequirement": {
+        "instanceId": "radiation-source-01",
+        "field": "active",
+        "equals": true
+      }
+    },
+    {
+      "id": "incident-security-guards",
+      "catalogId": "HOSTILE_CHECKPOINT",
+      "sourceIncidentId": "incident-security-guards",
+      "detectionRefs": [
+        {
+          "kind": "missionInstance",
+          "id": "guard-security-01"
+        },
+        {
+          "kind": "missionInstance",
+          "id": "guard-security-02"
+        },
+        {
+          "kind": "missionInstance",
+          "id": "reynolds-01"
+        }
+      ],
+      "investigationRefs": [],
+      "restorationRefs": [],
+      "stateRequirement": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "guard-security-01",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "guard-security-01",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "guard-security-01",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "guard-security-01",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          },
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "guard-security-02",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "guard-security-02",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "guard-security-02",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "guard-security-02",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          },
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "reynolds-01",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "reynolds-01",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "reynolds-01",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "reynolds-01",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "incident-holding-guards",
+      "catalogId": "HOSTILE_CHECKPOINT",
+      "sourceIncidentId": "incident-holding-guards",
+      "detectionRefs": [
+        {
+          "kind": "missionInstance",
+          "id": "guard-holding-01"
+        }
+      ],
+      "investigationRefs": [],
+      "restorationRefs": [],
+      "stateRequirement": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "guard-holding-01",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "guard-holding-01",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "guard-holding-01",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "guard-holding-01",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "incident-office-guards",
+      "catalogId": "HOSTILE_CHECKPOINT",
+      "sourceIncidentId": "incident-office-guards",
+      "detectionRefs": [
+        {
+          "kind": "missionInstance",
+          "id": "mcguffin-01"
+        }
+      ],
+      "investigationRefs": [],
+      "restorationRefs": [],
+      "stateRequirement": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "mcguffin-01",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "mcguffin-01",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "mcguffin-01",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "mcguffin-01",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "incident-yard-guards",
+      "catalogId": "HOSTILE_CHECKPOINT",
+      "sourceIncidentId": "incident-yard-guards",
+      "detectionRefs": [
+        {
+          "kind": "missionInstance",
+          "id": "guard-yard-01"
+        },
+        {
+          "kind": "missionInstance",
+          "id": "guard-yard-02"
+        }
+      ],
+      "investigationRefs": [],
+      "restorationRefs": [],
+      "stateRequirement": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "guard-yard-01",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "guard-yard-01",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "guard-yard-01",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "guard-yard-01",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          },
+          {
+            "type": "ALL",
+            "conditions": [
+              {
+                "instanceId": "guard-yard-02",
+                "field": "combatState",
+                "notEquals": "DOWN"
+              },
+              {
+                "instanceId": "guard-yard-02",
+                "field": "combatState",
+                "notEquals": "SURRENDERED"
+              },
+              {
+                "instanceId": "guard-yard-02",
+                "field": "combatState",
+                "notEquals": "CAPTURED"
+              },
+              {
+                "instanceId": "guard-yard-02",
+                "field": "combatState",
+                "notEquals": "FLED"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "guard-escape-alert",
+      "catalogId": "GUARD_RAISES_ALARM",
+      "sourceBindingId": "guard-escape-alerts-mcguffin",
+      "prerequisiteBindingIds": [],
+      "originIncidentIds": [
+        "incident-security-guards"
+      ]
+    },
+    {
+      "id": "evidence-purge-start",
+      "catalogId": "EVIDENCE_PURGE_BEGINS",
+      "sourceBindingId": "begin-evidence-purge",
+      "prerequisiteBindingIds": [
+        "gunfire-can-alert-mcguffin",
+        "mcguffin-starts-evidence-destruction"
+      ],
+      "originIncidentIds": [
+        "incident-security-guards",
+        "incident-office-guards"
+      ],
+      "stateRequirement": {
+        "instanceId": "evidence-archive-01",
+        "field": "evidenceState",
+        "equals": "INTACT"
+      }
+    }
+  ],
+  "complications": [
+    {
+      "id": "door-mainhall-to-holding",
+      "catalogId": "ACCESS_RESTRICTION",
+      "sourceKind": "missionTransition",
+      "sourceId": "door-mainhall-to-holding"
+    },
+    {
+      "id": "door-mainhall-to-processing",
+      "catalogId": "ACCESS_RESTRICTION",
+      "sourceKind": "missionTransition",
+      "sourceId": "door-mainhall-to-processing"
+    },
+    {
+      "id": "door-processing-to-lab",
+      "catalogId": "ACCESS_RESTRICTION",
+      "sourceKind": "missionTransition",
+      "sourceId": "door-processing-to-lab"
+    },
+    {
+      "id": "gate-connection-limit",
+      "catalogId": "TIME_PRESSURE",
+      "sourceKind": "gate",
+      "sourceId": "gate-01"
+    }
+  ]
+}

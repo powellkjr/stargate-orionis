@@ -1,3 +1,4 @@
+import {withOpenRoomAccess} from './test-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -6,7 +7,7 @@ import {createRuntime,chooseGate,advanceTime,move,returnRoute,redial,extract} fr
 import {portraitSvg} from '../shared/portraits/portrait.mjs';
 const read=name=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${name}.json`,import.meta.url)));return name.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const raw=read('missing-operative-001.finalized'),catalog=read('archetypes'),party=read('party-presets').units.slice(0,4);
-const m=compileMission({...raw,dialogueScenes:[]},catalog),start='2026-09-24T14:00:00Z';
+const m=compileMission({...raw,dialogueScenes:[],transitions:withOpenRoomAccess(read('missing-operative-001.finalized')).transitions},catalog),start='2026-09-24T14:00:00Z';
 const fresh=()=>createRuntime(m,party,start);
 test('resolves once, deep freezes definitions, and preserves input',()=>{
   const snapshot=JSON.stringify(raw);compileMission(raw,catalog);assert.equal(JSON.stringify(raw),snapshot);
@@ -35,7 +36,7 @@ test('Gate choice required, atomic whole-party moves and closed routine doors',(
   chooseGate(m,s,true);move(m,s,'door-gate-to-yard');move(m,s,'door-yard-to-mainhall');
   assert.equal(s.stageStates['stage-holding-area'].visibility,'HIDDEN');
   move(m,s,'door-mainhall-to-security');assert.equal(s.previousStageId,'stage-main-hall');assert(s.units.every(u=>u.currentStageId==='stage-security-hall'));
-  const before=JSON.stringify(s);assert.throws(()=>move(m,s,'door-security-to-office'),/interaction/);assert.equal(JSON.stringify(s),before);move(m,s,'door-mainhall-to-security');
+  s.transitionStates['door-security-to-office'].state='LOCKED';const before=JSON.stringify(s);assert.throws(()=>move(m,s,'door-security-to-office'),/interaction/);assert.equal(JSON.stringify(s),before);move(m,s,'door-mainhall-to-security');
   move(m,s,'door-mainhall-to-holding');assert(s.units.every(u=>u.currentStageId==='stage-holding-area'));
   assert.equal(s.transitionStates['door-mainhall-to-holding'].state,'OPEN');assert.equal(s.sgcCurrentTime,'2026-09-24T14:05:00.000Z');
 });
@@ -56,7 +57,7 @@ test('return uses known graph rather than breadcrumbs and does not teleport',()=
   for(const id of ['door-gate-to-yard','door-yard-to-mainhall','door-mainhall-to-holding','door-mainhall-to-holding','door-mainhall-to-processing','door-processing-to-office'])move(m,s,id);
   const route=returnRoute(m,s);assert.equal(route.length,4);assert.equal(s.currentStageId,'stage-overseer-office');
   for(const id of route)move(m,s,id);assert.equal(s.currentStageId,m.gate.stageId);
-  assert.equal(s.missionElapsedSeconds,600);assert.equal(s.transitionStates['door-security-to-office'].state,'LOCKED');
+  assert.equal(s.missionElapsedSeconds,600);assert.equal(s.transitionStates['door-security-to-office'].state,'CLOSED');
 });
 test('extraction requires physical Gate and redial after closing',()=>{
   const s=fresh();chooseGate(m,s,false);assert.throws(()=>extract(m,s),/Redial/);

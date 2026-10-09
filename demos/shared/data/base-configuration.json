@@ -1,6 +1,6 @@
 {
   "format": "simulator-base-1",
-  "revision": 4,
+  "revision": 5,
   "name": "Default test base",
   "rooms": [
     {

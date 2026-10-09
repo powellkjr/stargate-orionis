@@ -1,4 +1,5 @@
 import {condition} from './field.mjs?v=dialogue-doors-1';
+import {npcHostile,npcConfronting} from './npc.mjs?v=dialogue-doors-1';
 import {refreshDialogue} from './dialogue.mjs';
 import {initializePartyTools,movePartyTools,extractPartyTools} from './party-tools.mjs?v=dialogue-doors-1';
 import {initializeCampaign,refreshCampaign,nextCampaignBoundary,combatTick,localCombat} from './campaign.mjs?v=dialogue-doors-1';
@@ -185,7 +186,16 @@ export function move(m,s,id) {
 
 }
 
-export function returnRoute(m,s) {
+export function evacuationStageClear(m,s,stageId){
+  if(m.incidents.some(i=>i.stageId===stageId&&s.incidentStates[i.incidentId]?.state==='ACTIVE'))return false;
+  const potential=new Set(m.incidents.filter(i=>i.stageId===stageId&&['COMBAT','CONFRONTATION'].includes(i.kind)).flatMap(i=>i.participantIds??[]));
+  return !m.instances.some(i=>i.stageId===stageId&&s.instanceStates[i.instanceId]?.custody==='LOCAL'&&(
+    npcHostile(s.instanceStates[i.instanceId])||npcConfronting(s.instanceStates[i.instanceId])||potential.has(i.instanceId)&&!['DOWN','SURRENDERED','CAPTURED','FLED'].includes(s.instanceStates[i.instanceId].combatState)
+  ));
+}
+export function returnRoute(m,s,{secure=false}={}) {
+
+  if(secure&&!evacuationStageClear(m,s,s.currentStageId))return null;
 
   const queue=[{stage:s.currentStageId,path:[]}],seen=new Set([s.currentStageId]);
 
@@ -193,7 +203,7 @@ export function returnRoute(m,s) {
 
     const {stage,path}=queue[i];if(stage===m.gate.stageId)return path;
 
-    for(const e of exits(m,s,stage)) if(e.known&&(e.state==='OPEN'||(e.routine&&e.state==='CLOSED'))&&s.stageStates[e.toStageId].knownShape&&!seen.has(e.toStageId)) {
+    for(const e of exits(m,s,stage)) if(e.known&&(e.state==='OPEN'||(e.routine&&e.state==='CLOSED'))&&s.stageStates[e.toStageId].knownShape&&!seen.has(e.toStageId)&&(!secure||evacuationStageClear(m,s,e.toStageId))) {
 
       seen.add(e.toStageId);queue.push({stage:e.toStageId,path:[...path,e.transitionId]});
 

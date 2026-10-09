@@ -1,12 +1,12 @@
 import {incidentKind} from '../shared/offworld/campaign.mjs?v=dialogue-doors-1';
-import {baseCapacity,loadBase,saveBase,reserveRecovery} from '../shared/js/base-configuration.mjs?v=dialogue-doors-1';
+import {baseCapacity,loadBase,saveBase,reserveRecovery,releaseMissionRecovery} from '../shared/js/base-configuration.mjs?v=dialogue-doors-1';
 import {combatPacer,damageFeedback} from './combat-feedback.mjs';
 import {npcDetailsHtml} from './npc-presentation.mjs';
 import {dialogueResponses,dialogueEligibility,startDialogue,respondDialogue,continueDialogue,refreshDialogue} from '../shared/offworld/dialogue.mjs';
 import {conversationHtml} from './conversation.mjs';
 let selectedNpc=null;
 const paceCombat=combatPacer(),damageFrames=damageFeedback();
-import {recipeChoices,recipeAlternatives} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
+import {recipeChoices,recipeAlternatives,workGroupEligibility,startWorkGroup} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
 let baseConfig,roomSchemas;
 import {finalizeDebrief} from '../shared/offworld/recovery.mjs?v=dialogue-doors-1';
 import {lootHtml,debriefHtml} from './recovery-ui.mjs?v=dialogue-doors-1';
@@ -52,7 +52,7 @@ function renderNpcDetails(){
   if(!html)selectedNpc=null;
 }
 function visibleObservations(){return definition.observations.filter(o=>state.observationStates[o.observationId].status==='PRESENTED'&&(o.stageId===state.currentStageId||(o.fromStageIds??[]).includes(state.currentStageId)));}
-function recipeButton(r){const e=recipeEligibility(definition,state,r);if(e.status==='HIDDEN'||e.status==='COMPLETED'||e.blocker==='INVALID_TARGET_STATE')return '';return `<button data-recipe="${esc(r.recipeInstanceId)}" class="recipe-button" style="--profession:${colors[r.profession]??'#879b9b'}" aria-disabled="${e.status!=='AVAILABLE'}"><b>${icons[r.actionType]??'…'} ${esc(title(r.actionType??r.archetypeId.replace('recipe_','').replaceAll('_',' ')))}</b><small>${esc(r.profession??'Deferred')} ${r.minimumTier??''} · ${esc(e.blocker??e.status)}</small></button>`;}
+function recipeButton(r){const e=recipeEligibility(definition,state,r);if(r.workGroupId||e.status==='HIDDEN'||e.status==='COMPLETED'||e.blocker==='INVALID_TARGET_STATE')return '';return `<button data-recipe="${esc(r.recipeInstanceId)}" class="recipe-button" style="--profession:${colors[r.profession]??'#879b9b'}" aria-disabled="${e.status!=='AVAILABLE'}"><b>${icons[r.actionType]??'…'} ${esc(title(r.actionType??r.archetypeId.replace('recipe_','').replaceAll('_',' ')))}</b><small>${esc(r.profession??'Deferred')} ${r.minimumTier??''} · ${esc(e.blocker??e.status)}</small></button>`;}
 let pendingDialogueResponse=null;
 function renderContext(){
   renderNpcDetails();
@@ -60,9 +60,10 @@ function renderContext(){
   $('context').innerHTML=definition.incidents.filter(i=>i.stageId===state.currentStageId).map(i=>{const st=state.incidentStates[i.incidentId];return `<section class="incident-card"><strong>${esc(title(i.incidentId.replace('incident-','')))}</strong><p>${esc(st.state)}${incidentKind(i,state)==='COMBAT'?` · round ${st.round}`:''}</p>${incidentKind(i,state)==='COMBAT'&&st.state==='DORMANT'?`<button data-engage="${i.incidentId}">Engage hostiles</button>`:''}${incidentKind(i,state)==='COMBAT'&&st.state==='ACTIVE'&&i.allowRetreat?`<button data-retreat="${i.incidentId}">Disengage</button>`:''}${incidentKind(i,state)==='COMBAT'?i.participantIds.map(id=>`<small>${esc(definition.indexes.instances[id].playerLabel)} · ${esc(state.instanceStates[id].combatState)}</small>`).join('<br>'):''}</section>`;}).join('')+`<p>${esc(title(stage.stageId))}<br><small>${st.visibility} · ${st.securityState}</small></p>`+
     visibleObservations().map(o=>`<button class="observation-card" data-observation="${esc(o.observationId)}" style="--profession:${colors[o.profession]}"><small>${esc(o.profession)} OBSERVATION</small>${esc(o.text)}</button>`).join('')+
     definition.interactionTargets.filter(t=>targetLocal(definition,state,t)).map(t=>{
-      const recipes=t.recipeInstanceIds.map(id=>definition.indexes.recipes[id]).filter(r=>recipeEligibility(definition,state,r).status!=='HIDDEN');
+      const recipes=t.recipeInstanceIds.map(id=>definition.indexes.recipes[id]).filter(r=>!r.workGroupId&&!['HIDDEN','COMPLETED'].includes(recipeEligibility(definition,state,r).status)&&recipeEligibility(definition,state,r).blocker!=='INVALID_TARGET_STATE');
       if(!recipes.length)return '';return `<section class="target-actions"><h3>${esc(t.transitionId?'Door controls':definition.indexes.instances[t.instanceId].playerLabel)}</h3>${recipeChoices(definition,state,recipes).map(recipeButton).join('')}</section>`;
     }).join('')+`<p class="muted">${exits(definition,state).map(e=>`${e.direction}: ${e.state==='LOCKED'?'locked':e.state==='CLOSED'?'closed routine door':'open passage'}`).join('<br>')}</p>`;
+  for(const g of definition.workGroups??[]){const e=workGroupEligibility(definition,state,g.workGroupId);if(!['HIDDEN','COMPLETED'].includes(e.status))$('context').innerHTML+=`<button data-work-group="${esc(g.workGroupId)}" aria-disabled="${e.status!=='AVAILABLE'}">${esc(g.playerLabel)} · ${e.status}</button>`;}
   const scenes=(definition.dialogueScenes??[]).filter(scene=>dialogueEligibility(definition,state,scene));
   if(scenes.length)$('context').innerHTML+=scenes.map(scene=>`<button data-dialogue-start="${esc(scene.dialogueSceneId)}">Talk · ${esc(definition.indexes.instances[Object.values(scene.participants).find(id=>id!=='ACTIVE_SGC_SPEAKER')]?.playerLabel??'Conversation')}</button>`).join('');
 }
@@ -124,7 +125,7 @@ $('keepGate').onclick=guard(()=>{chooseGate(definition,state,true);render();});
 $('closeGate').onclick=$('closeLater').onclick=guard(()=>{chooseGate(definition,state,false);render();});
 $('wait').onclick=guard(()=>{if(localCombat(definition,state).length)throw Error('Combat rounds advance automatically every 3 seconds.');advanceTime(definition,state,180);log(state,'Waited 3 simulated minutes.');render();});
 $('redial').onclick=guard(()=>{redial(definition,state);render();});$('extract').onclick=guard(async()=>{baseConfig=await loadBase();extract(definition,state);render();});
-$('resetButton').onclick=guard(async()=>{if(state?.runId){const current=await loadBase();const reservations=current.reservations.filter(r=>!r.key.startsWith(state.runId+':'));baseConfig=reservations.length===current.reservations.length?current:await saveBase({...current,reservations});}epoch++;busy=false;closeDialogs();$('activity').textContent='';if(state){state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();render();focus();}else renderSetup();});
+$('resetButton').onclick=guard(async()=>{const current=await loadBase(),released=releaseMissionRecovery(current,definition.mission.missionId,definition.instances.map(i=>i.instanceId));baseConfig=released.reservations.length===current.reservations.length?current:await saveBase(released);epoch++;busy=false;closeDialogs();$('activity').textContent='';if(state){state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();render();focus();}else renderSetup();});
 $('setupButton').onclick=guard(()=>{epoch++;busy=false;state=null;closeDialogs();$('activity').textContent='';renderSetup();render();});
 $('return').onclick=guard(()=>{const route=returnRoute(definition,state);$('routeText').textContent=route===null?'No known traversable route.':`Shortest known route: ${route.length} Stage transitions. Stationed Units remain where assigned.`;$('confirmReturn').disabled=!route?.length;$('routeDialog').showModal();});
 $('cancelReturn').onclick=()=>$('routeDialog').close();
@@ -134,6 +135,7 @@ $('cancelWorkMove').onclick=guard(async()=>{for(const w of movementWork(state))c
 $('waitWorkMove').onclick=guard(async()=>{const work=movementWork(state);advanceTime(definition,state,Math.max(0,...work.map(w=>w.durationSeconds-w.elapsedSeconds)));$('leaveDialog').close();await moveAnimated(pendingMove);});
 $('startAction').onclick=guard(()=>{const actor=$('actor').value;const recipe=recipeAlternatives(definition,definition.indexes.recipes[selectedRecipe]).find(r=>recipeEligibility(definition,state,r,actor).status==='AVAILABLE');if(!recipe)throw Error('No eligible action for this Actor.');startWork(definition,state,recipe.recipeInstanceId,actor);$('actionDialog').close();render();});$('cancelAction').onclick=()=>$('actionDialog').close();
 function delegated(event){
+  const group=event.target.closest('[data-work-group]');if(group){if(group.getAttribute('aria-disabled')==='true')return;startWorkGroup(definition,state,group.dataset.workGroup);render();return;}
   const dialogue=event.target.closest('[data-dialogue-start]');if(dialogue){pendingDialogueResponse=null;startDialogue(definition,state,dialogue.dataset.dialogueStart);render();$('conversation').scrollIntoView({block:'nearest'});return;}
   if(event.target.closest('#closeNpcDetails')){selectedNpc=null;renderNpcDetails();return;}
   if(dragged&&event.currentTarget===$('map'))return;

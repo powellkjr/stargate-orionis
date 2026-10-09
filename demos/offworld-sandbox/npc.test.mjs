@@ -1,3 +1,4 @@
+import {withOpenRoomAccess} from './test-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -10,7 +11,7 @@ import {npcAlertSvg} from './npc-presentation.mjs';
 import {renderMap} from './map.mjs';
 import {createTool} from '../shared/offworld/equipment.mjs';
 const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
-const raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},catalog=read('archetypes'),party=read('party-presets').units.slice(0,4);
+const raw={...read('missing-operative-001.finalized'),dialogueScenes:[],transitions:withOpenRoomAccess(read('missing-operative-001.finalized')).transitions},catalog=read('archetypes'),party=read('party-presets').units.slice(0,4);
 function fixture(){
   const input=clone(raw),guard=input.instances.find(i=>i.instanceId==='guard-holding-01');
   guard.npcState={disposition:'WATCHING',suspicion:20,hostility:0};

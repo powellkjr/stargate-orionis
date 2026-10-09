@@ -1,0 +1,352 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://simulator.invalid/mission-author/information-draft.schema.json",
+  "title": "Mission Author information draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "skeleton",
+    "facts",
+    "clues",
+    "interactions",
+    "opportunityDerivation"
+  ],
+  "properties": {
+    "format": {
+      "const": "mission-author-information-draft-1"
+    },
+    "status": {
+      "const": "INFORMATION"
+    },
+    "skeleton": {
+      "$ref": "draft.schema.json"
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "factRoleId",
+          "subjectRoleId",
+          "status",
+          "truth",
+          "visibility"
+        ],
+        "properties": {
+          "factRoleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subjectRoleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "RESOLVED"
+          },
+          "truth": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "instanceId",
+                  "stageId"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "CURRENT_STAGE"
+                  },
+                  "instanceId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "stageId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "instanceId",
+                  "tag"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "REALITY_TAG"
+                  },
+                  "instanceId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "tag": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            ]
+          },
+          "visibility": {
+            "const": "AUTHOR_ONLY"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "clues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "clueId",
+          "factRoleId",
+          "clueSourceId",
+          "source",
+          "instanceId",
+          "stageId",
+          "knowledgeId",
+          "prerequisites",
+          "accessStatus",
+          "visibility"
+        ],
+        "properties": {
+          "clueId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "factRoleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "clueSourceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "id"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missionObservation",
+                  "missionDialogue"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "knowledgeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "prerequisites": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "knowledgeIds",
+              "sourceStateRequirement",
+              "sourceConditions",
+              "subjectVisibilityRequirement",
+              "minimumTier",
+              "minimumPerception"
+            ],
+            "properties": {
+              "knowledgeIds": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              },
+              "sourceStateRequirement": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "sourceConditions": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "subjectVisibilityRequirement": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "minimumTier": {
+                "type": "number",
+                "minimum": 0
+              },
+              "minimumPerception": {
+                "type": "number",
+                "minimum": 0
+              }
+            }
+          },
+          "accessStatus": {
+            "const": "UNRESOLVED"
+          },
+          "visibility": {
+            "const": "AUTHOR_ONLY"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "interactionId",
+          "intentId",
+          "clueId",
+          "instanceId",
+          "stageId",
+          "professionId",
+          "status",
+          "missingKnownPrerequisites",
+          "prerequisiteSources",
+          "executionStatus"
+        ],
+        "properties": {
+          "interactionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "intentId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "clueId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "professionId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "const": "BENCHMARK_REFERENCE"
+          },
+          "missingKnownPrerequisites": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "prerequisiteSources": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "knowledgeId",
+                "producers"
+              ],
+              "properties": {
+                "knowledgeId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "producers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "kind",
+                      "id"
+                    ],
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "missionObservation",
+                          "missionDialogue",
+                          "missionRecipe",
+                          "missionWorkGroup"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          "executionStatus": {
+            "const": "UNRESOLVED"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "opportunityDerivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reasons"
+      ],
+      "properties": {
+        "status": {
+          "const": "UNRESOLVED"
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}

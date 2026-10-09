@@ -1,0 +1,1478 @@
+{
+  "format": "mission-author-catalogs-1",
+  "id": "MISSING_OPERATIVE_AUTHORING_PROOF",
+  "version": 4,
+  "catalogs": {
+    "MISSION_HOOK_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "MISSING_PERSON",
+          "version": 1,
+          "label": "Missing person",
+          "description": "Authored loss of contact requests investigation or evacuation.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_undercover_operative"
+            }
+          ],
+          "links": {
+            "MISSION_PATTERN_CATALOG": [
+              "LOCATE_EVACUATE",
+              "INVESTIGATE"
+            ]
+          },
+          "requirements": {
+            "sourceTypes": [
+              "HAVEN_REQUEST"
+            ],
+            "realityFacts": [
+              "operative-communications-stopped"
+            ],
+            "knownFacts": [
+              "allied-operative-embedded-here"
+            ],
+            "roles": [
+              "SUBJECT"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "ARTIFACT_REPORT",
+          "version": 1,
+          "label": "Artifact report",
+          "description": "A characterized local object offers a recovery lead; its true identity is not automatically known.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "item",
+              "id": "ASGARD_EM_RIFLE"
+            }
+          ],
+          "links": {
+            "MISSION_PATTERN_CATALOG": [
+              "RECOVER"
+            ]
+          },
+          "requirements": {
+            "knownFacts": [
+              "lab-device-characterized"
+            ],
+            "roles": [
+              "RECOVERY_OBJECT"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "MEDICAL_OUTBREAK",
+          "version": 1,
+          "label": "Medical outbreak",
+          "description": "Reserved hook; clinical Theory/curriculum guidance is missing from the executable import.",
+          "weight": 1,
+          "support": "UNRESOLVED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          },
+          "unavailableReason": "No executable medical Theory/curriculum adapter for general outbreak composition."
+        }
+      ]
+    },
+    "MISSION_PATTERN_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "LOCATE_EVACUATE",
+          "version": 1,
+          "label": "Locate Evacuate",
+          "description": "Structural objective grammar only; no exact rooms, dialogue, Recipes or thresholds.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {
+            "MISSION_ROLE_CATALOG": [
+              "SUBJECT"
+            ],
+            "FACT_ROLE_CATALOG": [
+              "SUBJECT_LOCATION"
+            ]
+          },
+          "requirements": {
+            "roles": [
+              "SUBJECT"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "INVESTIGATE",
+          "version": 1,
+          "label": "Investigate",
+          "description": "Structural objective grammar only; no exact rooms, dialogue, Recipes or thresholds.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {
+            "MISSION_ROLE_CATALOG": [
+              "SUBJECT",
+              "EVIDENCE_SOURCE"
+            ],
+            "FACT_ROLE_CATALOG": [
+              "SUBJECT_LOCATION"
+            ]
+          },
+          "requirements": {
+            "roles": [
+              "SUBJECT",
+              "EVIDENCE_SOURCE"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "RECOVER",
+          "version": 1,
+          "label": "Recover",
+          "description": "Structural objective grammar only; no exact rooms, dialogue, Recipes or thresholds.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {
+            "MISSION_ROLE_CATALOG": [
+              "RECOVERY_OBJECT"
+            ],
+            "FACT_ROLE_CATALOG": [
+              "DEVICE_PURPOSE"
+            ]
+          },
+          "requirements": {
+            "roles": [
+              "RECOVERY_OBJECT"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "ASSIST_STABILIZE",
+          "version": 1,
+          "label": "Assist Stabilize",
+          "description": "Reserved structural vocabulary pending reference-backed proof content.",
+          "weight": 1,
+          "support": "UNRESOLVED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          },
+          "unavailableReason": "No validated objective composition template in this proof pack."
+        },
+        {
+          "id": "CONTACT_NEGOTIATE",
+          "version": 1,
+          "label": "Contact Negotiate",
+          "description": "Reserved structural vocabulary pending reference-backed proof content.",
+          "weight": 1,
+          "support": "UNRESOLVED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          },
+          "unavailableReason": "No validated objective composition template in this proof pack."
+        }
+      ]
+    },
+    "STAGE_PURPOSE_CATALOG": {
+      "version": 2,
+      "rows": [
+        {
+          "id": "ARRIVAL",
+          "version": 2,
+          "label": "Arrival",
+          "description": "Stage purpose chosen before physical environment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_gate_area"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "TRANSIT",
+          "version": 2,
+          "label": "Transit",
+          "description": "Stage purpose chosen before physical environment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_hallway_basic"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_processing_room"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "PRIMARY_SUBJECT",
+          "version": 2,
+          "label": "Primary Subject",
+          "description": "Stage purpose chosen before physical environment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_medical_holding"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_processing_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_hallway_basic"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "SUPPORTING_CLUE",
+          "version": 2,
+          "label": "Supporting Clue",
+          "description": "Stage purpose chosen before physical environment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_medical_holding"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_security_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_processing_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_hallway_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "OPTIONAL_RECOVERY",
+          "version": 2,
+          "label": "Optional Recovery",
+          "description": "Stage purpose chosen before physical environment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_processing_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_security_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "EXIT_ROUTE",
+          "version": 2,
+          "label": "Exit Route",
+          "description": "Stage purpose chosen before physical environment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_gate_area"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_hallway_basic"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "ENVIRONMENT_ROLE_CATALOG": {
+      "version": 2,
+      "rows": [
+        {
+          "id": "INDUSTRIAL",
+          "version": 2,
+          "label": "Industrial",
+          "description": "Environment vocabulary referencing existing generic room geometry, without invented domain behavior.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_processing_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {
+            "STAGE_PURPOSE_CATALOG": [
+              "TRANSIT",
+              "PRIMARY_SUBJECT",
+              "SUPPORTING_CLUE",
+              "OPTIONAL_RECOVERY"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "MEDICAL",
+          "version": 2,
+          "label": "Medical",
+          "description": "Environment vocabulary referencing existing generic room geometry, without invented domain behavior.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_medical_holding"
+            }
+          ],
+          "links": {
+            "STAGE_PURPOSE_CATALOG": [
+              "TRANSIT",
+              "PRIMARY_SUBJECT",
+              "SUPPORTING_CLUE",
+              "OPTIONAL_RECOVERY"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "LABORATORY",
+          "version": 2,
+          "label": "Laboratory",
+          "description": "Environment vocabulary referencing existing generic room geometry, without invented domain behavior.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {
+            "STAGE_PURPOSE_CATALOG": [
+              "TRANSIT",
+              "PRIMARY_SUBJECT",
+              "SUPPORTING_CLUE",
+              "OPTIONAL_RECOVERY"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "ADMINISTRATIVE",
+          "version": 2,
+          "label": "Administrative",
+          "description": "Environment vocabulary referencing existing generic room geometry, without invented domain behavior.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_hallway_basic"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_security_room"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {
+            "STAGE_PURPOSE_CATALOG": [
+              "TRANSIT",
+              "PRIMARY_SUBJECT",
+              "SUPPORTING_CLUE",
+              "OPTIONAL_RECOVERY"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "GATE_DISTRICT",
+          "version": 1,
+          "label": "Gate district",
+          "description": "Existing arrival and transit space around the Gate; no invented access or traffic rules.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "stageArchetype",
+              "id": "stage_gate_area"
+            },
+            {
+              "kind": "stageArchetype",
+              "id": "stage_room_basic"
+            }
+          ],
+          "links": {
+            "STAGE_PURPOSE_CATALOG": [
+              "ARRIVAL",
+              "TRANSIT",
+              "EXIT_ROUTE"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "MISSION_ROLE_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "SUBJECT",
+          "version": 1,
+          "label": "Subject",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_undercover_operative"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "WITNESS",
+          "version": 1,
+          "label": "Witness",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_worker_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "LOCAL_AUTHORITY",
+          "version": 1,
+          "label": "Local Authority",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_overseer"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "GUARD",
+          "version": 1,
+          "label": "Guard",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_guard_poorly_trained"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "EVIDENCE_SOURCE",
+          "version": 1,
+          "label": "Evidence Source",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "evidence_archive_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "RECOVERY_OBJECT",
+          "version": 1,
+          "label": "Recovery Object",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "mounted_item"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "HAZARD_SOURCE",
+          "version": 1,
+          "label": "Hazard Source",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "radiation_leak_source"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "PATIENT",
+          "version": 1,
+          "label": "Patient",
+          "description": "Role binds to an existing local mission instance; it grants no new capability or identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "patient_outbreak_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "GENERIC_NPC_ROLE_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "GENERIC_WORKER",
+          "version": 1,
+          "label": "Generic Worker",
+          "description": "Generic role template; does not duplicate a named campaign NPC.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_worker_basic"
+            }
+          ],
+          "links": {
+            "MISSION_ROLE_CATALOG": [
+              "WITNESS"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "GENERIC_GUARD",
+          "version": 1,
+          "label": "Generic Guard",
+          "description": "Generic role template; does not duplicate a named campaign NPC.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_guard_poorly_trained"
+            }
+          ],
+          "links": {
+            "MISSION_ROLE_CATALOG": [
+              "GUARD"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "INSTANCE_ROLE_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "CONTROL_TERMINAL",
+          "version": 1,
+          "label": "Control Terminal",
+          "description": "Resolve to an authored instance/item; keep hidden Reality separate from Known identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "security_terminal_basic"
+            },
+            {
+              "kind": "item",
+              "id": "SIM_SECURITY_TERMINAL"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "EVIDENCE_ARCHIVE",
+          "version": 1,
+          "label": "Evidence Archive",
+          "description": "Resolve to an authored instance/item; keep hidden Reality separate from Known identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "evidence_archive_basic"
+            },
+            {
+              "kind": "item",
+              "id": "SIM_INTEL_ARCHIVE"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "UNKNOWN_DEVICE",
+          "version": 1,
+          "label": "Unknown Device",
+          "description": "Resolve to an authored instance/item; keep hidden Reality separate from Known identity.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "mounted_item"
+            },
+            {
+              "kind": "item",
+              "id": "ASGARD_EM_RIFLE"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "INCIDENT_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "RADIATION_LEAK",
+          "version": 1,
+          "label": "Radiation Leak",
+          "description": "Existing benchmark Incident reference. General domain guidance and full lifecycle finalization remain unresolved.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "incidentArchetype",
+              "id": "incident_radiation_hazard"
+            }
+          ],
+          "links": {},
+          "requirements": {
+            "roles": [
+              "HAZARD_SOURCE"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "MEDICAL_DETERIORATION",
+          "version": 1,
+          "label": "Medical Deterioration",
+          "description": "Existing benchmark Incident reference. General domain guidance and full lifecycle finalization remain unresolved.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "incidentArchetype",
+              "id": "incident_medical_deterioration"
+            }
+          ],
+          "links": {},
+          "requirements": {
+            "roles": [
+              "PATIENT"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "HOSTILE_CHECKPOINT",
+          "version": 1,
+          "label": "Hostile Checkpoint",
+          "description": "Existing benchmark Incident reference. General domain guidance and full lifecycle finalization remain unresolved.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "incidentArchetype",
+              "id": "incident_guard_combat_basic"
+            }
+          ],
+          "links": {},
+          "requirements": {
+            "roles": [
+              "GUARD"
+            ]
+          },
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "EVENT_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "GUARD_RAISES_ALARM",
+          "version": 1,
+          "label": "Guard Raises Alarm",
+          "description": "Reference existing authored Event semantics; Finalizer owns exact triggers/bindings.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "eventArchetype",
+              "id": "event_guard_escaped"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "EVIDENCE_PURGE_BEGINS",
+          "version": 1,
+          "label": "Evidence Purge Begins",
+          "description": "Reference existing authored Event semantics; Finalizer owns exact triggers/bindings.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "eventArchetype",
+              "id": "event_evidence_purge_started"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "FACT_ROLE_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "SUBJECT_LOCATION",
+          "version": 1,
+          "label": "Subject Location",
+          "description": "A semantic truth role, not a Knowledge grant or Theory discovery.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "DEVICE_PURPOSE",
+          "version": 1,
+          "label": "Device Purpose",
+          "description": "A semantic truth role, not a Knowledge grant or Theory discovery.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "ACCESS_METHOD",
+          "version": 1,
+          "label": "Access Method",
+          "description": "A semantic truth role, not a Knowledge grant or Theory discovery.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "CLUE_SOURCE_CATALOG": {
+      "version": 2,
+      "rows": [
+        {
+          "id": "NPC_TESTIMONY",
+          "version": 2,
+          "label": "Npc Testimony",
+          "description": "Clue-source family; actual evidence validity needs subject guidance and state.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_worker_basic"
+            },
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_undercover_operative"
+            }
+          ],
+          "links": {
+            "FACT_ROLE_CATALOG": [
+              "SUBJECT_LOCATION"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "PHYSICAL_OBSERVATION",
+          "version": 2,
+          "label": "Physical Observation",
+          "description": "Clue-source family; actual evidence validity needs subject guidance and state.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "instanceArchetype",
+              "id": "mounted_item"
+            },
+            {
+              "kind": "instanceArchetype",
+              "id": "npc_undercover_operative"
+            }
+          ],
+          "links": {
+            "FACT_ROLE_CATALOG": [
+              "DEVICE_PURPOSE",
+              "SUBJECT_LOCATION"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "SCIENTIFIC_ANALYSIS",
+          "version": 1,
+          "label": "Scientific Analysis",
+          "description": "Clue-source family; actual evidence validity needs subject guidance and state.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "theory",
+              "id": "PULSED_POWER_I"
+            },
+            {
+              "kind": "profession",
+              "id": "scientist"
+            }
+          ],
+          "links": {
+            "FACT_ROLE_CATALOG": [
+              "DEVICE_PURPOSE"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "INTERACTION_INTENT_CATALOG": {
+      "version": 2,
+      "rows": [
+        {
+          "id": "QUESTION",
+          "version": 1,
+          "label": "Question",
+          "description": "Semantic intent only; reference is a benchmark example, not an executable Recipe selection or universal Profession assignment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "profession",
+              "id": "diplomat"
+            },
+            {
+              "kind": "recipeArchetype",
+              "id": "recipe_question_npc"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "ANALYZE",
+          "version": 1,
+          "label": "Analyze",
+          "description": "Semantic intent only; reference is a benchmark example, not an executable Recipe selection or universal Profession assignment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "profession",
+              "id": "scientist"
+            },
+            {
+              "kind": "recipeArchetype",
+              "id": "recipe_record_scientific_readings"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "RECOVER",
+          "version": 1,
+          "label": "Recover",
+          "description": "Semantic intent only; reference is a benchmark example, not an executable Recipe selection or universal Profession assignment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "profession",
+              "id": "technician"
+            },
+            {
+              "kind": "recipeArchetype",
+              "id": "recipe_recover_component"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "SEARCH",
+          "version": 1,
+          "label": "Search",
+          "description": "Semantic intent only; reference is a benchmark example, not an executable Recipe selection or universal Profession assignment.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "profession",
+              "id": "scout"
+            },
+            {
+              "kind": "recipeArchetype",
+              "id": "recipe_group_search"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "INSPECT",
+          "version": 1,
+          "label": "Inspect",
+          "description": "Inspection intent backed by authored observation methods; preserve each source Profession and prerequisites.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "observationArchetype",
+              "id": "obs_instance_identity"
+            },
+            {
+              "kind": "observationArchetype",
+              "id": "obs_nonstandard_technology"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "TALK",
+          "version": 1,
+          "label": "Talk",
+          "description": "Contact intent backed by the existing operative conversation; no universal Diplomat requirement.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "missionDialogue",
+              "id": "dialogue-operative"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "COMPLICATION_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "ACCESS_RESTRICTION",
+          "version": 1,
+          "label": "Access restriction",
+          "description": "Existing locked-transition vocabulary; no automatic lock or Tool requirement.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "recipeArchetype",
+              "id": "recipe_hack_transition"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "TIME_PRESSURE",
+          "version": 1,
+          "label": "Time pressure",
+          "description": "Existing Gate limit provides a benchmark example; no generic time limit is invented.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [
+            {
+              "kind": "eventArchetype",
+              "id": "event_wormhole_expired"
+            }
+          ],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "OPTIONAL_OPPORTUNITY_CATALOG": {
+      "version": 2,
+      "rows": [
+        {
+          "id": "RECOVERY",
+          "version": 2,
+          "label": "Recovery",
+          "description": "Optional source-backed recovery of an existing local physical item, portable asset or person. Shared systems retain admission authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {
+            "RECOVERY_ROLE_CATALOG": [
+              "RECEIVING",
+              "PARTY_STORAGE",
+              "HOLDING"
+            ]
+          },
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "RECOVERY_ROLE_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "PARTY_STORAGE",
+          "version": 1,
+          "label": "Party Storage",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "RECEIVING",
+          "version": 1,
+          "label": "Receiving",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "HOLDING",
+          "version": 1,
+          "label": "Holding",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "MISSION_EVACUEE",
+          "version": 1,
+          "label": "Mission Evacuee",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "SAMPLE",
+          "version": 1,
+          "label": "Sample",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "DOCUMENT",
+          "version": 1,
+          "label": "Document",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "NONE",
+          "version": 1,
+          "label": "None",
+          "description": "Semantic recovery role; shared systems retain custody, capacity and transfer authority.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "CONSEQUENCE_TYPE_CATALOG": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "CUSTODY",
+          "version": 1,
+          "label": "Custody",
+          "description": "Possible result category only; the Author does not apply persistent state changes.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "KNOWLEDGE",
+          "version": 1,
+          "label": "Knowledge",
+          "description": "Possible result category only; the Author does not apply persistent state changes.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "NPC_STATE",
+          "version": 1,
+          "label": "Npc State",
+          "description": "Possible result category only; the Author does not apply persistent state changes.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    },
+    "ACT_AVAILABILITY": {
+      "version": 1,
+      "rows": [
+        {
+          "id": "AVAILABLE",
+          "version": 1,
+          "label": "Available",
+          "description": "Explicit Act selection vocabulary; never overrides established Reality.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "PREFERRED",
+          "version": 1,
+          "label": "Preferred",
+          "description": "Explicit Act selection vocabulary; never overrides established Reality.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "RESTRICTED",
+          "version": 1,
+          "label": "Restricted",
+          "description": "Explicit Act selection vocabulary; never overrides established Reality.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        },
+        {
+          "id": "FORBIDDEN",
+          "version": 1,
+          "label": "Forbidden",
+          "description": "Explicit Act selection vocabulary; never overrides established Reality.",
+          "weight": 1,
+          "support": "SUPPORTED",
+          "refs": [],
+          "links": {},
+          "requirements": {},
+          "actAvailability": {
+            "*": "AVAILABLE"
+          }
+        }
+      ]
+    }
+  }
+}

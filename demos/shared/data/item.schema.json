@@ -143,14 +143,69 @@
             },
             "sourceRecipeId": {
               "$ref": "#/$defs/identifier"
+            },
+            "contentStatus": {
+              "type": "string",
+              "enum": [
+                "PROVISIONAL_SIMULATOR_BENCHMARK"
+              ]
+            },
+            "handlingCostProvisional": {
+              "type": "boolean"
             }
           }
         },
         "materials": {
-          "$ref": "#/$defs/materials",
-          "description": "Authored construction and destructive-salvage material economics. Independent of storage.storageClasses and all Reality, Known, and Processing Tags."
+          "anyOf": [
+            {
+              "$ref": "#/$defs/materials"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null explicitly records unauthored material economics for nonconstructible, nonsalvageable simulator objects. Enabled construction or salvage requires authored economics."
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "processCompatibility": {
+                "anyOf": [
+                  {
+                    "properties": {
+                      "construction": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "construction"
+                    ]
+                  },
+                  {
+                    "properties": {
+                      "salvage": {
+                        "const": true
+                      }
+                    },
+                    "required": [
+                      "salvage"
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "materials": {
+                "$ref": "#/$defs/materials"
+              }
+            }
+          }
+        }
+      ]
     },
     "storage": {
       "type": "object",
@@ -269,42 +324,64 @@
           "$ref": "#/$defs/identifierArray"
         }
       }
-    }
-    ,"processingExposure": {
+    },
+    "processingExposure": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "receiving": {"$ref": "#/$defs/receivingExposure"},
-        "analysis": {"$ref": "#/$defs/analysisExposure"}
+        "receiving": {
+          "$ref": "#/$defs/receivingExposure"
+        },
+        "analysis": {
+          "$ref": "#/$defs/analysisExposure"
+        }
       }
     },
     "receivingExposure": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "identityTags": {"$ref": "#/$defs/identifierArray"},
-        "conditionTags": {"$ref": "#/$defs/identifierArray"}
+        "identityTags": {
+          "$ref": "#/$defs/identifierArray"
+        },
+        "conditionTags": {
+          "$ref": "#/$defs/identifierArray"
+        }
       }
     },
     "analysisExposure": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "orderedFunctionalityTags": {"$ref": "#/$defs/identifierArray"}
+        "orderedFunctionalityTags": {
+          "$ref": "#/$defs/identifierArray"
+        }
       }
     },
     "nameResolution": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "initialName": {"type": "string", "minLength": 1},
+        "initialName": {
+          "type": "string",
+          "minLength": 1
+        },
         "processExitNames": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "receiving": {"type": "string", "minLength": 1},
-            "analysis": {"type": "string", "minLength": 1},
-            "workshop": {"type": "string", "minLength": 1}
+            "receiving": {
+              "type": "string",
+              "minLength": 1
+            },
+            "analysis": {
+              "type": "string",
+              "minLength": 1
+            },
+            "workshop": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       }

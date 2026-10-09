@@ -21,7 +21,7 @@ test('explicit hostile dialogue escalation converts confrontation without instan
   const {raw,catalog,s,actor}=fixture();
   const incident=raw.incidents.find(i=>i.incidentId==='incident-security-guards');
   assert(incident);incident.overrides={...incident.overrides};
-  const c=structuredClone(catalog);c.archetypes.incident[incident.archetypeId].defaults.kind='CONFRONTATION';
+  const c=structuredClone(catalog);c.archetypes.incident[incident.archetypeId].defaults.kind='CONFRONTATION';for(const i of raw.incidents)delete i.overrides?.activationCondition;
   raw.dialogueScenes[0].nodes[0].responses[1].effects=[{type:'START_HOSTILE_INCIDENT',incidentId:incident.incidentId}];
   s.currentStageId=incident.stageId;
   s.stageStates[incident.stageId].visibility='VISIBLE';

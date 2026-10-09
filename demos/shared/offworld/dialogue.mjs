@@ -80,12 +80,14 @@ export function validateDialogue(scenes,indexes,fail,catalog){
         if(e.when)conditions([e.when]);
         if(npcEffectTypes.includes(e.type))validateNpcEffect(e,indexes.instances,fail,path);
         else if(e.type==='ADD_KNOWLEDGE'){if(typeof e.knowledgeId!=='string'||!e.knowledgeId)fail(path,'knowledgeId required');}
+        else if(e.type==='HAND_OVER_PARTY_ITEM'){if(!['PARTY_STORAGE','PARTY_STORAGE_WHEN_COLLECTED'].includes(indexes.instances[e.instanceId]?.recovery?.category)||!indexes.instances[e.recipientId])fail(path,'handover needs portable item and recipient');}
         else if(e.type==='EMIT_EVENT'){
           if(e.event!==undefined&&e.eventArchetypeId!==undefined&&e.event!==e.eventArchetypeId)fail(path,'conflicting dialogue event IDs');
           if(!catalog.archetypes?.event?.[e.event??e.eventArchetypeId])fail(path,'unknown dialogue event');
         }
         else if(e.type==='MARK_ROUTE_SOCIAL_PASSAGE'){if(!indexes.stages[e.stageId]||typeof e.value!=='boolean')fail(path,'social passage needs a known Stage and boolean value');}
         else if(e.type==='SET_EVAC_STATE'){if(!indexes.instances[e.instanceId]||typeof e.value!=='string'||!e.value.trim())fail(path,'evacuation state needs a known instance and nonempty value');}
+        else if(e.type==='SET_DETECTION_STATE'){if(!indexes.instances[e.instanceId]||!['HIDDEN','SUSPECTED','LOCATED'].includes(e.value))fail(path,'invalid detection state');}
         else if(e.type==='START_HOSTILE_INCIDENT'){
           const i=indexes.incidents[e.incidentId];
           if(!i||!['COMBAT','CONFRONTATION'].includes(i.kind)||!i.participantIds?.length||!Number.isFinite(i.roundSeconds)||i.roundSeconds<=0||!Number.isFinite(i.hostileHealth)||i.hostileHealth<=0||!Number.isFinite(i.hostileDamage)||i.hostileDamage<0)fail(path,'hostile incident needs participants and combat configuration');
@@ -147,6 +149,12 @@ function effects(m,s,list){
   for(const e of list??[]){
     if(e.when&&!condition(s,e.when))continue;
     if(npcEffectTypes.includes(e.type))applyNpcEffect(s,e);
+    else if(e.type==='HAND_OVER_PARTY_ITEM'){
+      const item=s.instanceStates[e.instanceId],recipient=s.instanceStates[e.recipientId];
+      if(item?.custody!=='PARTY_STORAGE'||!s.partyStorage.includes(e.instanceId)||recipient?.custody!=='LOCAL'||m.indexes.instances[e.recipientId].stageId!==s.currentStageId)throw Error('Party item or recipient unavailable.');
+      item.custody='HELD_BY_NPC';item.holderId=e.recipientId;s.partyStorage=s.partyStorage.filter(id=>id!==e.instanceId);
+      s.resultEvents.push({type:'PARTY_ITEM_HANDED_OVER',instanceId:e.instanceId,recipientId:e.recipientId,atSeconds:s.missionElapsedSeconds});
+    }
     else if(e.type==='ADD_KNOWLEDGE'){if(!knows(s,e.knowledgeId)){s.knowledgeState.gained.push(e.knowledgeId);s.resultEvents.push({type:'KNOWLEDGE_GAINED',factId:e.knowledgeId,atSeconds:s.missionElapsedSeconds});}}
     else if(e.type==='EMIT_EVENT')s.emittedEvents.push({event:e.event??e.eventArchetypeId,stageId:s.currentStageId,atSeconds:s.missionElapsedSeconds});
     else if(e.type==='MARK_ROUTE_SOCIAL_PASSAGE'){
@@ -157,6 +165,7 @@ function effects(m,s,list){
       if(!s.instanceStates[e.instanceId])throw Error('Evacuation instance unavailable.');
       s.instanceStates[e.instanceId].evacState=e.value;
     }
+    else if(e.type==='SET_DETECTION_STATE')s.instanceStates[e.instanceId].detectionState=e.value;
     else if(e.type==='START_HOSTILE_INCIDENT')startHostileIncident(m,s,e.incidentId);
     else if(e.type==='ACTIVATE_OBJECTIVE'){
       if(!s.objectiveStates[e.objectiveId])throw Error('Dialogue objective unavailable.');

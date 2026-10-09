@@ -63,5 +63,177 @@
       {"theoryId": "ELECTROMAGNETIC_ACTUATION_II", "role": "IMPLEMENTATION_DEPENDENCY", "implementedProperties": ["RECEIVE_CONTROL_INPUT", "GENERATE_FIELD", "APPLY_ELECTROMAGNETIC_FORCE", "PRODUCE_CONTROLLED_MOTION", "RETURN_OR_HOLD"], "implementationTags": ["ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"]},
       {"theoryId": "PULSED_POWER_II", "role": "IMPLEMENTATION_DEPENDENCY", "implementedProperties": ["ACCUMULATE", "STORE", "SHAPE_DISCHARGE", "SYNCHRONIZE", "DELIVER_CONTROLLED_PULSE", "MONITOR_LOAD_RESPONSE", "RECOVER_COMPENSATE"], "implementationTags": ["PULSED_POWER_II_IMPLEMENTATION"]}
     ]
+  },
+  "SIM_SUPPLY_CRATE": {
+    "id": "SIM_SUPPLY_CRATE",
+    "name": "Supply crate",
+    "type": "ITEM",
+    "version": 1,
+    "tags": [
+      "PHYSICAL_OBJECT"
+    ],
+    "identity": {
+      "description": "Existing Missing Operative simulator object; provisional handling benchmark.",
+      "subjectTags": [
+        "PHYSICAL_OBJECT"
+      ]
+    },
+    "physical": {
+      "inventoryClass": "EQUIPMENT",
+      "isContainer": true,
+      "isTool": false
+    },
+    "storage": {
+      "storageClasses": [
+        "INV"
+      ],
+      "handlingCost": 1,
+      "isUnique": false,
+      "isStackable": false,
+      "isCargo": true
+    },
+    "processCompatibility": {
+      "receiving": true,
+      "analysis": true,
+      "construction": false,
+      "repair": false,
+      "reverseEngineering": false,
+      "salvage": false
+    },
+    "extension": {
+      "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+      "handlingCostProvisional": true
+    },
+    "theoryBindings": [],
+    "materials": null
+  },
+  "SIM_INTEL_ARCHIVE": {
+    "id": "SIM_INTEL_ARCHIVE",
+    "name": "Intel archive",
+    "type": "ITEM",
+    "version": 1,
+    "tags": [
+      "PHYSICAL_OBJECT"
+    ],
+    "identity": {
+      "description": "Existing Missing Operative simulator object; provisional handling benchmark.",
+      "subjectTags": [
+        "PHYSICAL_OBJECT"
+      ]
+    },
+    "physical": {
+      "inventoryClass": "EQUIPMENT",
+      "isContainer": false,
+      "isTool": false
+    },
+    "storage": {
+      "storageClasses": [
+        "INV"
+      ],
+      "handlingCost": 1,
+      "isUnique": false,
+      "isStackable": false,
+      "isCargo": true
+    },
+    "processCompatibility": {
+      "receiving": true,
+      "analysis": true,
+      "construction": false,
+      "repair": false,
+      "reverseEngineering": false,
+      "salvage": false
+    },
+    "extension": {
+      "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+      "handlingCostProvisional": true
+    },
+    "theoryBindings": [],
+    "materials": null
+  },
+  "SIM_MINING_COMPONENT": {
+    "id": "SIM_MINING_COMPONENT",
+    "name": "Mining component",
+    "type": "ITEM",
+    "version": 1,
+    "tags": [
+      "PHYSICAL_OBJECT"
+    ],
+    "identity": {
+      "description": "Existing Missing Operative simulator object; provisional handling benchmark.",
+      "subjectTags": [
+        "PHYSICAL_OBJECT"
+      ]
+    },
+    "physical": {
+      "inventoryClass": "EQUIPMENT",
+      "isContainer": false,
+      "isTool": false
+    },
+    "storage": {
+      "storageClasses": [
+        "INV"
+      ],
+      "handlingCost": 1,
+      "isUnique": false,
+      "isStackable": false,
+      "isCargo": true
+    },
+    "processCompatibility": {
+      "receiving": true,
+      "analysis": true,
+      "construction": false,
+      "repair": false,
+      "reverseEngineering": false,
+      "salvage": false
+    },
+    "extension": {
+      "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+      "handlingCostProvisional": true
+    },
+    "theoryBindings": [],
+    "materials": null
+  },
+  "SIM_SECURITY_TERMINAL": {
+    "id": "SIM_SECURITY_TERMINAL",
+    "name": "Security terminal",
+    "type": "ITEM",
+    "version": 1,
+    "tags": [
+      "PHYSICAL_OBJECT"
+    ],
+    "identity": {
+      "description": "Existing Missing Operative simulator object; provisional handling benchmark.",
+      "subjectTags": [
+        "PHYSICAL_OBJECT"
+      ]
+    },
+    "physical": {
+      "inventoryClass": "EQUIPMENT",
+      "isContainer": false,
+      "isTool": false
+    },
+    "storage": {
+      "storageClasses": [
+        "INV"
+      ],
+      "handlingCost": 1,
+      "isUnique": false,
+      "isStackable": false,
+      "isCargo": true
+    },
+    "processCompatibility": {
+      "receiving": true,
+      "analysis": true,
+      "construction": false,
+      "repair": false,
+      "reverseEngineering": false,
+      "salvage": false
+    },
+    "extension": {
+      "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+      "handlingCostProvisional": true
+    },
+    "theoryBindings": [],
+    "materials": null
   }
 }

@@ -1,4 +1,5 @@
-import {condition,recipeChoices} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
+import {dialogueEligibility} from '../shared/offworld/dialogue.mjs';
+import {condition,recipeChoices,workGroupEligibility} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
 import {statsRadar} from '../shared/portraits/stats-radar.mjs';
 import {lootEntries} from '../shared/offworld/recovery.mjs?v=dialogue-doors-1';
 import {renderMapSurface} from '../shared/map/renderer.mjs?v=dialogue-doors-1';
@@ -13,7 +14,7 @@ import {esc} from './setup.mjs?v=dialogue-doors-1';
 import {npcAlertSvg,visibleNpc} from './npc-presentation.mjs?v=dialogue-doors-1';
 export const title=id=>id.replace(/^stage-/,'').replaceAll('-',' ').replace(/\b\w/g,c=>c.toUpperCase());
 export const colors={SOLDIER:'#d1495b',SCOUT:'#2a9d8f',TECHNICIAN:'#f4a261',SCIENTIST:'#7b6ef6',MEDIC:'#4cc9f0',DIPLOMAT:'#b8a14f',UNTRAINED:'#acb8b8'};
-export const icons={KEEP_OPEN:'↔',CLOSE_GATE:'⊘',REDIAL:'◎',EXTRACT:'↑',SEND_TO_GATE:'⇧',TALK:'?',SMALL_TALK:'☷',INQUIRE:'?',COLLECT_SAFE:'↓',ENTER_DOOR_CODE:'#',ENGAGE:'⚔',INTIMIDATE:'!',NEGOTIATE:'☷',DESTROY:'×',RECOVER_WRECKAGE:'↓',HACK:'⌘',INSPECT:'⌕',COLLECT:'↓',SAMPLE:'◇',STABILIZE:'+',PROTECT:'◈',QUESTION:'?',REPAIR:'⚒',ENTER_CODE:'#',SECURE:'▣'};
+export const icons={SEARCH:'⌕',KEEP_OPEN:'↔',CLOSE_GATE:'⊘',REDIAL:'◎',EXTRACT:'↑',SEND_TO_GATE:'⇧',TALK:'?',SMALL_TALK:'☷',INQUIRE:'?',COLLECT_SAFE:'↓',ENTER_DOOR_CODE:'#',ENGAGE:'⚔',INTIMIDATE:'!',NEGOTIATE:'☷',DESTROY:'×',RECOVER_WRECKAGE:'↓',HACK:'⌘',INSPECT:'⌕',COLLECT:'↓',SAMPLE:'◇',STABILIZE:'+',PROTECT:'◈',QUESTION:'?',REPAIR:'⚒',ENTER_CODE:'#',SECURE:'▣'};
 export function transitionPoint(m,t){
   const d=directions[t.directionFrom],a=m.indexes.stages[t.fromStageId].cells.find(a=>m.indexes.stages[t.toStageId].cells.some(b=>b.x===a.x+d[0]&&b.y===a.y+d[1]));
   return {x:(a.x+.5+d[0]*.5)*100,y:(a.y+.5+d[1]*.5)*100};
@@ -67,9 +68,11 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]
   const actions=[];
   for(const t of m.interactionTargets){
     if(!targetLocal(m,s,t))continue;
-    const recipes=t.recipeInstanceIds.map(id=>m.indexes.recipes[id]).filter(r=>!['HIDDEN','COMPLETED'].includes(recipeEligibility(m,s,r).status)&&recipeEligibility(m,s,r).blocker!=='INVALID_TARGET_STATE');
+    const recipes=t.recipeInstanceIds.map(id=>m.indexes.recipes[id]).filter(r=>!r.workGroupId&&!['HIDDEN','COMPLETED'].includes(recipeEligibility(m,s,r).status)&&recipeEligibility(m,s,r).blocker!=='INVALID_TARGET_STATE');
     for(const r of recipeChoices(m,s,recipes))actions.push({recipe:r,target:t,anchor:targetPosition(t)});
   }
+  for(const scene of m.dialogueScenes??[])if(dialogueEligibility(m,s,scene)){const id=Object.values(scene.participants).find(id=>id!=='ACTIVE_SGC_SPEAKER');actions.push({scene,recipe:{actionType:'TALK',profession:'UNTRAINED'},target:{instanceId:id},anchor:point(id)});}
+  for(const group of m.workGroups??[]){const e=workGroupEligibility(m,s,group.workGroupId);if(!['HIDDEN','COMPLETED'].includes(e.status)){const t=m.indexes.interactionTargets[m.indexes.recipes[group.recipeInstanceIds[0]].targetId];actions.push({group,recipe:{actionType:'SEARCH',profession:'UNTRAINED'},target:t,anchor:targetPosition(t)});}}
   for(const incident of m.incidents.filter(i=>i.kind==='COMBAT'&&i.stageId===s.currentStageId&&s.incidentStates[i.incidentId].state==='DORMANT')){
     const id=incident.participantIds.findLast(id=>['ACTIVE','NEUTRAL'].includes(s.instanceStates[id].combatState));if(!id)continue;
     actions.push({incident,recipe:{actionType:'ENGAGE',profession:'SOLDIER'},target:{instanceId:id},anchor:point(id)});
@@ -81,9 +84,9 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]
   }
   const hexes=layoutActionHexes(actions,hexSize,[...doorObstacles,...layout.obstacles]);
   for(const h of hexes)html.push(`<path class="action-leader" d="M${h.anchor.x},${h.anchor.y} L${h.x},${h.y}" stroke="#789198" stroke-width="1" opacity=".55" fill="none" pointer-events="none"/>`);
-  for(const {recipe:r,target:t,incident,gateAction,x,y,vertices} of hexes){
-    const e=gateAction?{status:(['redial','extract'].includes(gateAction)&&s.activeWork.some(w=>['MOVING_TO_TARGET','EXECUTING'].includes(w.status)))||(gateAction==='extract'&&s.units.some(u=>u.partyStatus==='STATIONED'))?'BLOCKED':'AVAILABLE'}:incident?engagementEligibility(m,s,incident.incidentId):recipeEligibility(m,s,r),fill=colors[r.profession]??'#899391',label=t.transitionId?'Door controls':m.indexes.instances[t.instanceId].playerLabel;
-    html.push(`<g class="action-hex" ${gateAction?`data-gate-action="${gateAction}"`:incident?`data-engage="${esc(incident.incidentId)}"`:`data-recipe="${esc(r.recipeInstanceId)}"`} tabindex="0" role="button" aria-label="${esc(label)}: ${esc(r.actionType??'Deferred action')} ${e.status}" aria-disabled="${e.status!=='AVAILABLE'}"><title>${esc(label)} · ${esc(r.actionType)} · ${esc(e.blocker??e.status)}</title><polygon points="${vertices.map(p=>`${p.x},${p.y}`).join(' ')}" fill="${e.status==='AVAILABLE'?fill:'#24353b'}" stroke="${fill}" stroke-width="1.5" stroke-linejoin="round"/><text x="${x}" y="${y+5}" text-anchor="middle" fill="${e.status==='AVAILABLE'?'#13232a':fill}" font-size="16">${icons[r.actionType]??'…'}</text></g>`);
+  for(const {recipe:r,target:t,incident,scene,group,gateAction,x,y,vertices} of hexes){
+    const e=scene?{status:dialogueEligibility(m,s,scene)?'AVAILABLE':'BLOCKED'}:group?workGroupEligibility(m,s,group.workGroupId):gateAction?{status:(['redial','extract'].includes(gateAction)&&s.activeWork.some(w=>['MOVING_TO_TARGET','EXECUTING'].includes(w.status)))||(gateAction==='extract'&&s.units.some(u=>u.partyStatus==='STATIONED'))?'BLOCKED':'AVAILABLE'}:incident?engagementEligibility(m,s,incident.incidentId):recipeEligibility(m,s,r),fill=colors[r.profession]??'#899391',label=group?.playerLabel??(t.transitionId?'Door controls':m.indexes.instances[t.instanceId].playerLabel);
+    html.push(`<g class="action-hex" ${scene?`data-dialogue-start="${esc(scene.dialogueSceneId)}"`:group?`data-work-group="${esc(group.workGroupId)}"`:gateAction?`data-gate-action="${gateAction}"`:incident?`data-engage="${esc(incident.incidentId)}"`:`data-recipe="${esc(r.recipeInstanceId)}"`} tabindex="0" role="button" aria-label="${esc(label)}: ${esc(r.actionType??'Deferred action')} ${e.status}" aria-disabled="${e.status!=='AVAILABLE'}"><title>${esc(label)} · ${esc(r.actionType)} · ${esc(e.blocker??e.status)}</title><polygon points="${vertices.map(p=>`${p.x},${p.y}`).join(' ')}" fill="${e.status==='AVAILABLE'?fill:'#24353b'}" stroke="${fill}" stroke-width="1.5" stroke-linejoin="round"/><text x="${x}" y="${y+5}" text-anchor="middle" fill="${e.status==='AVAILABLE'?'#13232a':fill}" font-size="16">${icons[r.actionType]??'…'}</text></g>`);
   }
   for(const hit of damageFrames){
     const a=layout.points[hit.actorId],b=layout.points[hit.targetId];if(a&&b&&hit.shotVisible!==false)html.push(`<line class="combat-shot" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#ffd88d" stroke-width="2" pointer-events="none"/>`);

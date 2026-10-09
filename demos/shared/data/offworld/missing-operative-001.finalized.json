@@ -228,7 +228,9 @@
         "obs-mainhall-signal-weak"
       ],
       "interactionTargetIds": [
-        "target-door-mainhall-to-security"
+        "target-door-mainhall-to-security",
+        "target-door-mainhall-to-processing",
+        "target-door-mainhall-to-holding"
       ],
       "incidentIds": [],
       "securityConditions": {
@@ -338,7 +340,8 @@
         "target-mining-system-01",
         "target-advanced-component-01",
         "target-supply-cache-01",
-        "target-worker-processing-01"
+        "target-worker-processing-01",
+        "target-door-processing-to-lab"
       ],
       "incidentIds": [
         "incident-processing-radiation"
@@ -480,19 +483,41 @@
       "archetypeId": "stage_room_basic",
       "cells": [
         {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
           "x": 4,
           "y": 0
         },
         {
           "x": 5,
           "y": 0
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 1
         }
       ],
       "initialVisibility": "HIDDEN",
       "initialSecurityState": "UNKNOWN",
       "knownShapeAtStart": false,
       "instanceIds": [
-        "lab-mounted-rifle-01"
+        "lab-mounted-rifle-01",
+        "lab-search-station-1",
+        "lab-search-station-2",
+        "lab-search-station-3",
+        "lab-search-station-4",
+        "lab-report-terminal-01",
+        "lab-report-01"
       ],
       "observationIds": [
         "obs-lab-test-logs",
@@ -500,7 +525,12 @@
         "obs-lab-tactical-role"
       ],
       "interactionTargetIds": [
-        "target-lab-mounted-rifle"
+        "target-lab-mounted-rifle",
+        "target-lab-search-station-1",
+        "target-lab-search-station-2",
+        "target-lab-search-station-3",
+        "target-lab-search-station-4",
+        "target-lab-report-terminal"
       ],
       "incidentIds": [],
       "securityConditions": {
@@ -528,23 +558,35 @@
     },
     {
       "transitionId": "door-mainhall-to-holding",
-      "archetypeId": "door_restricted_basic",
+      "archetypeId": "door_hackable_basic",
       "fromStageId": "stage-main-hall",
       "toStageId": "stage-holding-area",
       "directionFrom": "WEST",
       "directionTo": "EAST",
       "overrides": {
-        "initialState": "CLOSED",
-        "routine": true
+        "initialState": "LOCKED",
+        "routine": false,
+        "requiredTechTier": 1,
+        "requiredToolService": "TECH_SERVICE_I",
+        "hackPerceptionThreshold": 0,
+        "codeState": "UNKNOWN"
       }
     },
     {
       "transitionId": "door-mainhall-to-processing",
-      "archetypeId": "door_routine",
+      "archetypeId": "door_hackable_basic",
       "fromStageId": "stage-main-hall",
       "toStageId": "stage-processing",
       "directionFrom": "NORTH",
-      "directionTo": "SOUTH"
+      "directionTo": "SOUTH",
+      "overrides": {
+        "initialState": "LOCKED",
+        "routine": false,
+        "requiredTechTier": 1,
+        "requiredToolService": "TECH_SERVICE_I",
+        "hackPerceptionThreshold": 0,
+        "codeState": "UNKNOWN"
+      }
     },
     {
       "transitionId": "door-mainhall-to-security",
@@ -571,12 +613,13 @@
       "directionFrom": "NORTH",
       "directionTo": "SOUTH",
       "overrides": {
-        "initialState": "LOCKED",
+        "initialState": "CLOSED",
         "requiredTechTier": 2,
         "requiredToolService": "TECH_SERVICE_II",
         "hackPerceptionThreshold": 7,
         "destroyDifficulty": 6,
-        "codeState": "UNKNOWN"
+        "codeState": "UNKNOWN",
+        "routine": true
       }
     },
     {
@@ -617,11 +660,19 @@
     },
     {
       "transitionId": "door-processing-to-lab",
-      "archetypeId": "door_routine",
+      "archetypeId": "door_hackable_basic",
       "fromStageId": "stage-processing",
       "toStageId": "stage-analysis-lab",
       "directionFrom": "NORTH",
-      "directionTo": "SOUTH"
+      "directionTo": "SOUTH",
+      "overrides": {
+        "initialState": "LOCKED",
+        "routine": false,
+        "requiredTechTier": 1,
+        "requiredToolService": "TECH_SERVICE_I",
+        "hackPerceptionThreshold": 0,
+        "codeState": "UNKNOWN"
+      }
     }
   ],
   "instances": [
@@ -629,19 +680,31 @@
       "instanceId": "gate-01",
       "archetypeId": "stargate_standard",
       "stageId": "stage-gate-yard",
-      "overrides": {}
+      "overrides": {},
+      "mapPosition": {
+        "x": 4.25,
+        "y": 6.35
+      }
     },
     {
       "instanceId": "worker-yard-01",
       "archetypeId": "npc_worker_basic",
       "stageId": "stage-outer-yard",
-      "overrides": {}
+      "overrides": {},
+      "mapPosition": {
+        "x": 4.25,
+        "y": 5.35
+      }
     },
     {
       "instanceId": "worker-yard-02",
       "archetypeId": "npc_worker_basic",
       "stageId": "stage-outer-yard",
-      "overrides": {}
+      "overrides": {},
+      "mapPosition": {
+        "x": 5.25,
+        "y": 5.35
+      }
     },
     {
       "instanceId": "operative-01",
@@ -654,6 +717,10 @@
         "initialState": {
           "condition": "INJURED"
         }
+      },
+      "mapPosition": {
+        "x": 2.25,
+        "y": 3.35
       }
     },
     {
@@ -664,6 +731,10 @@
         "transmitterCodeFact": "operative-transmitter-code-known",
         "signalState": "INTERMITTENT",
         "boundPersonId": "operative-01"
+      },
+      "mapPosition": {
+        "x": 3.25,
+        "y": 3.35
       }
     },
     {
@@ -674,6 +745,10 @@
         "initialState": {
           "condition": "DOWN"
         }
+      },
+      "mapPosition": {
+        "x": 2.25,
+        "y": 2.35
       }
     },
     {
@@ -684,6 +759,10 @@
         "initialState": {
           "condition": "DOWN"
         }
+      },
+      "mapPosition": {
+        "x": 3.25,
+        "y": 2.35
       }
     },
     {
@@ -694,6 +773,10 @@
         "initialState": {
           "condition": "DOWN"
         }
+      },
+      "mapPosition": {
+        "x": 2.75,
+        "y": 3.35
       }
     },
     {
@@ -702,6 +785,10 @@
       "stageId": "stage-holding-area",
       "overrides": {
         "relationshipState": "UNKNOWN_CONTACT"
+      },
+      "mapPosition": {
+        "x": 3.75,
+        "y": 3.35
       }
     },
     {
@@ -717,13 +804,21 @@
         "disposition": "WATCHING",
         "suspicion": 20,
         "hostility": 0
+      },
+      "mapPosition": {
+        "x": 2.75,
+        "y": 2.35
       }
     },
     {
       "instanceId": "medical-sample-source-01",
       "archetypeId": "medical_sample_source",
       "stageId": "stage-holding-area",
-      "overrides": {}
+      "overrides": {},
+      "mapPosition": {
+        "x": 3.75,
+        "y": 2.35
+      }
     },
     {
       "instanceId": "mining-system-01",
@@ -741,6 +836,10 @@
           "powerFeedIsolated": false,
           "repairIncomplete": true
         }
+      },
+      "mapPosition": {
+        "x": 4.25,
+        "y": 2.35
       }
     },
     {
@@ -758,6 +857,10 @@
         "initialState": {
           "active": true
         }
+      },
+      "mapPosition": {
+        "x": 5.25,
+        "y": 2.35
       }
     },
     {
@@ -770,6 +873,41 @@
           "field": "powerFeedIsolated",
           "equals": true
         }
+      },
+      "itemId": "SIM_MINING_COMPONENT",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-processing"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 4.25,
+        "y": 1.35
       }
     },
     {
@@ -778,6 +916,41 @@
       "stageId": "stage-processing",
       "overrides": {
         "quantity": 1
+      },
+      "itemId": "SIM_SUPPLY_CRATE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-processing"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 5.25,
+        "y": 1.35
       }
     },
     {
@@ -793,6 +966,10 @@
         "disposition": "ROUTINE",
         "suspicion": 10,
         "hostility": 0
+      },
+      "mapPosition": {
+        "x": 6.25,
+        "y": 3.35
       }
     },
     {
@@ -808,6 +985,10 @@
         "disposition": "ROUTINE",
         "suspicion": 10,
         "hostility": 0
+      },
+      "mapPosition": {
+        "x": 7.25,
+        "y": 3.35
       }
     },
     {
@@ -824,6 +1005,10 @@
         "disposition": "ROUTINE",
         "suspicion": 10,
         "hostility": 0
+      },
+      "mapPosition": {
+        "x": 5.25,
+        "y": 3.35
       }
     },
     {
@@ -843,6 +1028,10 @@
         "disposition": "ROUTINE",
         "suspicion": 0,
         "hostility": 0
+      },
+      "mapPosition": {
+        "x": 7.25,
+        "y": 2.35
       }
     },
     {
@@ -856,6 +1045,41 @@
           "powered": true,
           "locked": true
         }
+      },
+      "itemId": "SIM_SECURITY_TERMINAL",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-overseer-office"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 8.25,
+        "y": 2.35
       }
     },
     {
@@ -869,6 +1093,41 @@
         "initialState": {
           "evidenceState": "INTACT"
         }
+      },
+      "itemId": "SIM_INTEL_ARCHIVE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-overseer-office"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 6.25,
+        "y": 2.35
       }
     },
     {
@@ -935,6 +1194,41 @@
       "overrides": {
         "quantity": 1,
         "playerLabel": "Sealed equipment crate 01"
+      },
+      "itemId": "SIM_SUPPLY_CRATE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-holding-area"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 2.25,
+        "y": 3.75
       }
     },
     {
@@ -1061,27 +1355,140 @@
       "overrides": {
         "quantity": 1,
         "playerLabel": "Sealed equipment crate 02"
+      },
+      "itemId": "SIM_SUPPLY_CRATE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-hidden-store"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 1.25,
+        "y": 2.35
       }
     },
     {
       "instanceId": "worker-holding-01",
       "archetypeId": "npc_worker_basic",
-      "stageId": "stage-holding-area"
+      "stageId": "stage-holding-area",
+      "mapPosition": {
+        "x": 3.25,
+        "y": 3.75
+      }
     },
     {
       "instanceId": "worker-processing-01",
       "archetypeId": "npc_worker_basic",
-      "stageId": "stage-processing"
+      "stageId": "stage-processing",
+      "mapPosition": {
+        "x": 4.75,
+        "y": 2.35
+      }
     },
     {
       "instanceId": "safe-intel-01",
       "archetypeId": "hidden_evidence_archive_basic",
-      "stageId": "stage-hidden-safe"
+      "stageId": "stage-hidden-safe",
+      "itemId": "SIM_INTEL_ARCHIVE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-hidden-safe"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 8.25,
+        "y": 1.35
+      }
     },
     {
       "instanceId": "safe-loot-01",
       "archetypeId": "hidden_supply_cache_basic",
-      "stageId": "stage-hidden-safe"
+      "stageId": "stage-hidden-safe",
+      "itemId": "SIM_SUPPLY_CRATE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-hidden-safe"
+          }
+        ]
+      },
+      "mapPosition": {
+        "x": 8.75,
+        "y": 1.35
+      }
     },
     {
       "instanceId": "guard-yard-01",
@@ -1096,6 +1503,10 @@
         "initialState": {
           "combatState": "NEUTRAL"
         }
+      },
+      "mapPosition": {
+        "x": 4.75,
+        "y": 5.35
       }
     },
     {
@@ -1111,6 +1522,10 @@
         "initialState": {
           "combatState": "NEUTRAL"
         }
+      },
+      "mapPosition": {
+        "x": 5.75,
+        "y": 5.35
       }
     },
     {
@@ -1199,7 +1614,92 @@
         }
       },
       "recovery": {
-        "category": "RECEIVING"
+        "category": "RECEIVING",
+        "requiresPreparation": true
+      },
+      "revealedWhen": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "lab-search-completed"
+      },
+      "mapPosition": {
+        "x": 4.25,
+        "y": 0.35
+      }
+    },
+    {
+      "instanceId": "lab-search-station-1",
+      "archetypeId": "search_station",
+      "stageId": "stage-analysis-lab",
+      "overrides": {
+        "playerLabel": "Instrument benches"
+      },
+      "mapPosition": {
+        "x": 2.4,
+        "y": 0.65
+      }
+    },
+    {
+      "instanceId": "lab-search-station-2",
+      "archetypeId": "search_station",
+      "stageId": "stage-analysis-lab",
+      "overrides": {
+        "playerLabel": "Test log cabinets"
+      },
+      "mapPosition": {
+        "x": 3.4,
+        "y": 0.65
+      }
+    },
+    {
+      "instanceId": "lab-search-station-3",
+      "archetypeId": "search_station",
+      "stageId": "stage-analysis-lab",
+      "overrides": {
+        "playerLabel": "Rig parts shelves"
+      },
+      "mapPosition": {
+        "x": 4.4,
+        "y": 0.65
+      }
+    },
+    {
+      "instanceId": "lab-search-station-4",
+      "archetypeId": "search_station",
+      "stageId": "stage-analysis-lab",
+      "overrides": {
+        "playerLabel": "Sample racks"
+      },
+      "mapPosition": {
+        "x": 5.4,
+        "y": 0.65
+      }
+    },
+    {
+      "instanceId": "lab-report-terminal-01",
+      "archetypeId": "search_station",
+      "stageId": "stage-analysis-lab",
+      "overrides": {
+        "playerLabel": "Report terminal"
+      },
+      "mapPosition": {
+        "x": 2.8,
+        "y": 0.65
+      }
+    },
+    {
+      "instanceId": "lab-report-01",
+      "archetypeId": "search_station",
+      "stageId": "stage-analysis-lab",
+      "overrides": {
+        "playerLabel": "Scientific analysis report"
+      },
+      "recovery": {
+        "category": "PARTY_STORAGE_WHEN_COLLECTED"
+      },
+      "revealedWhen": {
+        "instanceId": "lab-report-terminal-01",
+        "field": "reportCreated",
+        "equals": true
       }
     }
   ],
@@ -1473,6 +1973,10 @@
         "setsDetectionState": {
           "instanceId": "lab-mounted-rifle-01",
           "value": "LOCATED"
+        },
+        "requiresState": {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "lab-search-completed"
         }
       }
     },
@@ -1489,7 +1993,11 @@
         "revealsFacts": [
           "lab-rig-interface-known"
         ],
-        "requiresKnowledge": []
+        "requiresKnowledge": [],
+        "requiresState": {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "lab-search-completed"
+        }
       }
     },
     {
@@ -1507,7 +2015,11 @@
         ],
         "requiresKnowledge": [
           "lab-device-characterized"
-        ]
+        ],
+        "requiresState": {
+          "type": "KNOWLEDGE_PRESENT",
+          "factId": "lab-search-completed"
+        }
       }
     }
   ],
@@ -1733,6 +2245,81 @@
         "detach-lab-device",
         "secure-lab-device"
       ]
+    },
+    {
+      "targetId": "target-lab-search-station-1",
+      "archetypeId": "target_machine_standard",
+      "instanceId": "lab-search-station-1",
+      "stageId": "stage-analysis-lab",
+      "recipeInstanceIds": [
+        "search-lab-station-1"
+      ]
+    },
+    {
+      "targetId": "target-lab-search-station-2",
+      "archetypeId": "target_machine_standard",
+      "instanceId": "lab-search-station-2",
+      "stageId": "stage-analysis-lab",
+      "recipeInstanceIds": [
+        "search-lab-station-2"
+      ]
+    },
+    {
+      "targetId": "target-lab-search-station-3",
+      "archetypeId": "target_machine_standard",
+      "instanceId": "lab-search-station-3",
+      "stageId": "stage-analysis-lab",
+      "recipeInstanceIds": [
+        "search-lab-station-3"
+      ]
+    },
+    {
+      "targetId": "target-lab-search-station-4",
+      "archetypeId": "target_machine_standard",
+      "instanceId": "lab-search-station-4",
+      "stageId": "stage-analysis-lab",
+      "recipeInstanceIds": [
+        "search-lab-station-4"
+      ]
+    },
+    {
+      "targetId": "target-door-mainhall-to-processing",
+      "archetypeId": "target_transition_standard",
+      "transitionId": "door-mainhall-to-processing",
+      "stageId": "stage-main-hall",
+      "recipeInstanceIds": [
+        "hack-door-mainhall-to-processing",
+        "enter-code-door-mainhall-to-processing"
+      ]
+    },
+    {
+      "targetId": "target-door-processing-to-lab",
+      "archetypeId": "target_transition_standard",
+      "transitionId": "door-processing-to-lab",
+      "stageId": "stage-processing",
+      "recipeInstanceIds": [
+        "hack-door-processing-to-lab",
+        "enter-code-door-processing-to-lab"
+      ]
+    },
+    {
+      "targetId": "target-door-mainhall-to-holding",
+      "archetypeId": "target_transition_standard",
+      "transitionId": "door-mainhall-to-holding",
+      "stageId": "stage-main-hall",
+      "recipeInstanceIds": [
+        "hack-door-mainhall-to-holding",
+        "enter-code-door-mainhall-to-holding"
+      ]
+    },
+    {
+      "targetId": "target-lab-report-terminal",
+      "archetypeId": "target_terminal_standard",
+      "stageId": "stage-analysis-lab",
+      "instanceId": "lab-report-terminal-01",
+      "recipeInstanceIds": [
+        "create-lab-report"
+      ]
     }
   ],
   "recipes": [
@@ -1741,7 +2328,24 @@
       "archetypeId": "recipe_assess_patient",
       "targetId": "target-patient-01",
       "overrides": {
-        "minimumTier": 1
+        "minimumTier": 1,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "assessed",
+            "value": true
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 20,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -1750,7 +2354,24 @@
       "targetId": "target-patient-01",
       "overrides": {
         "minimumTier": 1,
-        "durationMinutes": 3
+        "durationMinutes": 3,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "condition",
+            "value": "STABILIZED"
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 20,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -1758,7 +2379,24 @@
       "archetypeId": "recipe_assess_patient",
       "targetId": "target-patient-02",
       "overrides": {
-        "minimumTier": 1
+        "minimumTier": 1,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "assessed",
+            "value": true
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 20,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -1767,7 +2405,24 @@
       "targetId": "target-patient-02",
       "overrides": {
         "minimumTier": 1,
-        "durationMinutes": 3
+        "durationMinutes": 3,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "condition",
+            "value": "STABILIZED"
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 20,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -1785,7 +2440,7 @@
           {
             "type": "CHANGE_NPC_SUSPICION",
             "instanceId": "guard-holding-01",
-            "delta": 10,
+            "delta": 30,
             "when": {
               "instanceId": "guard-holding-01",
               "field": "combatState",
@@ -1802,62 +2457,71 @@
       "overrides": {
         "requiresLocated": true,
         "hiddenUntilKnowledge": [
-          "operative-located"
+          "operative-contacted"
         ],
         "requiresState": {
-          "type": "ANY",
+          "type": "ALL",
           "conditions": [
             {
-              "type": "ALL",
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "operative-contacted"
+            },
+            {
+              "type": "ANY",
               "conditions": [
                 {
-                  "instanceId": "patient-01",
-                  "field": "condition",
-                  "equals": "STABILIZED"
-                },
-                {
-                  "instanceId": "patient-02",
-                  "field": "condition",
-                  "equals": "STABILIZED"
-                },
-                {
-                  "instanceId": "patient-03",
-                  "field": "condition",
-                  "equals": "STABILIZED"
-                }
-              ]
-            },
-            {
-              "type": "INCIDENT_STATE",
-              "incidentId": "incident-holding-medical",
-              "equals": "RESOLVED"
-            },
-            {
-              "instanceId": "radiation-source-01",
-              "field": "active",
-              "equals": false
-            },
-            {
-              "type": "ALL",
-              "conditions": [
-                {
-                  "instanceId": "operative-01",
-                  "field": "evacState",
-                  "equals": "READY_TO_EVACUATE"
-                },
-                {
-                  "type": "ANY",
+                  "type": "ALL",
                   "conditions": [
                     {
-                      "type": "STAGE_STATE",
-                      "stageId": "stage-outer-yard",
-                      "field": "socialPassage",
-                      "equals": true
+                      "instanceId": "patient-01",
+                      "field": "condition",
+                      "equals": "STABILIZED"
                     },
                     {
-                      "type": "INCIDENT_STATE",
-                      "incidentId": "incident-yard-guards",
-                      "equals": "RESOLVED"
+                      "instanceId": "patient-02",
+                      "field": "condition",
+                      "equals": "STABILIZED"
+                    },
+                    {
+                      "instanceId": "patient-03",
+                      "field": "condition",
+                      "equals": "STABILIZED"
+                    }
+                  ]
+                },
+                {
+                  "type": "INCIDENT_STATE",
+                  "incidentId": "incident-holding-medical",
+                  "equals": "RESOLVED"
+                },
+                {
+                  "instanceId": "radiation-source-01",
+                  "field": "active",
+                  "equals": false
+                },
+                {
+                  "type": "ALL",
+                  "conditions": [
+                    {
+                      "instanceId": "operative-01",
+                      "field": "evacState",
+                      "equals": "READY_TO_EVACUATE"
+                    },
+                    {
+                      "type": "ANY",
+                      "conditions": [
+                        {
+                          "type": "STAGE_STATE",
+                          "stageId": "stage-outer-yard",
+                          "field": "socialPassage",
+                          "equals": true
+                        },
+                        {
+                          "type": "INCIDENT_STATE",
+                          "incidentId": "incident-yard-guards",
+                          "equals": "RESOLVED"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -1883,7 +2547,7 @@
           {
             "type": "CHANGE_NPC_SUSPICION",
             "instanceId": "guard-holding-01",
-            "delta": 10,
+            "delta": 30,
             "when": {
               "instanceId": "guard-holding-01",
               "field": "combatState",
@@ -2103,7 +2767,54 @@
           }
         ],
         "outcomeText": "McGuffin gives you the terminal access code. Enter code unlocks the intact terminal without a Tool charge."
-      }
+      },
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "negotiate-mcguffin",
@@ -2153,7 +2864,54 @@
           }
         ]
       },
-      "allowHostiles": true
+      "allowHostiles": true,
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "restrain-mcguffin",
@@ -2176,7 +2934,54 @@
             }
           ]
         }
-      }
+      },
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "hack-security-terminal",
@@ -2202,7 +3007,54 @@
           ]
         },
         "outcomeText": "Unlock the terminal intact. Destruction is an alternative, not a follow-up step."
-      }
+      },
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "destroy-security-terminal-tech",
@@ -2226,9 +3078,74 @@
             }
           ]
         },
-        "outcomeText": "Destroy the locked terminal instead of hacking it. Leaves recoverable wreckage; does not erase the separate archive."
+        "outcomeText": "Destroy the locked terminal instead of hacking it. Leaves recoverable wreckage; does not erase the separate archive.",
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "powered",
+            "value": false
+          },
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "condition",
+            "value": "WRECKAGE"
+          },
+          {
+            "type": "SET_ITEM_STATE",
+            "instanceId": "security-terminal-01",
+            "field": "condition",
+            "value": "WRECKAGE"
+          }
+        ]
       },
-      "choiceGroup": "destroy-terminal"
+      "choiceGroup": "destroy-terminal",
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "destroy-security-terminal-soldier",
@@ -2252,9 +3169,74 @@
             }
           ]
         },
-        "outcomeText": "Destroy the locked terminal instead of hacking it. Leaves recoverable wreckage; does not erase the separate archive."
+        "outcomeText": "Destroy the locked terminal instead of hacking it. Leaves recoverable wreckage; does not erase the separate archive.",
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "powered",
+            "value": false
+          },
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "condition",
+            "value": "WRECKAGE"
+          },
+          {
+            "type": "SET_ITEM_STATE",
+            "instanceId": "security-terminal-01",
+            "field": "condition",
+            "value": "WRECKAGE"
+          }
+        ]
       },
-      "choiceGroup": "destroy-terminal"
+      "choiceGroup": "destroy-terminal",
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "enter-security-code",
@@ -2281,7 +3263,54 @@
           ]
         },
         "outcomeText": "The code is accepted. The security terminal is unlocked and intact. No Tool charge spent."
-      }
+      },
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "collect-evidence-archive",
@@ -2294,7 +3323,54 @@
           "field": "evidenceState",
           "equals": "INTACT"
         }
-      }
+      },
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "hack-door-mainhall-to-security",
@@ -2303,7 +3379,12 @@
       "overrides": {
         "minimumTier": 2,
         "minimumPerception": 6,
-        "requiredToolService": "TECH_SERVICE_II"
+        "requiredToolService": "TECH_SERVICE_II",
+        "requiresState": {
+          "type": "TRANSITION_STATE",
+          "transitionId": "door-mainhall-to-security",
+          "equals": "LOCKED"
+        }
       }
     },
     {
@@ -2313,7 +3394,12 @@
       "overrides": {
         "minimumTier": 2,
         "minimumPerception": 7,
-        "requiredToolService": "TECH_SERVICE_II"
+        "requiredToolService": "TECH_SERVICE_II",
+        "requiresState": {
+          "type": "TRANSITION_STATE",
+          "transitionId": "door-security-to-office",
+          "equals": "LOCKED"
+        }
       }
     },
     {
@@ -2321,7 +3407,24 @@
       "archetypeId": "recipe_assess_patient",
       "targetId": "target-patient-03",
       "overrides": {
-        "minimumTier": 1
+        "minimumTier": 1,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "assessed",
+            "value": true
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 20,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -2330,7 +3433,24 @@
       "targetId": "target-patient-03",
       "overrides": {
         "minimumTier": 1,
-        "durationMinutes": 3
+        "durationMinutes": 3,
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "condition",
+            "value": "STABILIZED"
+          },
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 20,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          }
+        ]
       }
     },
     {
@@ -2343,7 +3463,54 @@
           "field": "condition",
           "equals": "WRECKAGE"
         }
-      }
+      },
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "intimidate-reynolds",
@@ -2493,7 +3660,54 @@
           }
         ]
       },
-      "allowHostiles": true
+      "allowHostiles": true,
+      "onCompleteEffects": [
+        {
+          "type": "CHANGE_NPC_SUSPICION",
+          "instanceId": "mcguffin-01",
+          "delta": 35,
+          "when": {
+            "type": "ALL",
+            "conditions": [
+              {
+                "type": "ASSET_CUSTODY",
+                "assetInstanceId": "mcguffin-01",
+                "equals": "LOCAL"
+              },
+              {
+                "type": "ANY",
+                "conditions": [
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "NEUTRAL"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "CONFRONTING"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ROUTINE"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "SUSPICIOUS"
+                  },
+                  {
+                    "type": "NPC_STATE",
+                    "instanceId": "mcguffin-01",
+                    "disposition": "ALERTED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "recipeInstanceId": "collect-equipment-crate-01",
@@ -2507,7 +3721,7 @@
           {
             "type": "CHANGE_NPC_SUSPICION",
             "instanceId": "guard-holding-01",
-            "delta": 10,
+            "delta": 30,
             "when": {
               "instanceId": "guard-holding-01",
               "field": "combatState",
@@ -2536,7 +3750,7 @@
           {
             "type": "CHANGE_NPC_SUSPICION",
             "instanceId": "guard-holding-01",
-            "delta": 10,
+            "delta": 30,
             "when": {
               "instanceId": "guard-holding-01",
               "field": "combatState",
@@ -2604,8 +3818,18 @@
         ],
         "outcomeText": "The code unlocks the office door. No Tool charge spent.",
         "requiresState": {
-          "type": "KNOWLEDGE_PRESENT",
-          "factId": "security-office-door-code-known"
+          "type": "ALL",
+          "conditions": [
+            {
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "security-office-door-code-known"
+            },
+            {
+              "type": "TRANSITION_STATE",
+              "transitionId": "door-security-to-office",
+              "equals": "LOCKED"
+            }
+          ]
         }
       }
     },
@@ -2644,7 +3868,10 @@
           }
         ],
         "createsDiscoveryId": "discovery-lab-device-behavior",
-        "outcomeText": "Compared the local logs with repeatable measurements: output diverges during the rig extraction cycle. The pulse behavior is characterized and a Research question is recorded. The device remains unidentified; its maker and full capabilities are unknown."
+        "outcomeText": "Compared the local logs with repeatable measurements: output diverges during the rig extraction cycle. The pulse behavior is characterized and a Research question is recorded. The device remains unidentified; its maker and full capabilities are unknown.",
+        "hiddenUntilKnowledge": [
+          "lab-search-completed"
+        ]
       }
     },
     {
@@ -2693,6 +3920,182 @@
           "field": "mountState",
           "equals": "DETACHED"
         }
+      }
+    },
+    {
+      "recipeInstanceId": "search-lab-station-1",
+      "archetypeId": "recipe_group_search",
+      "targetId": "target-lab-search-station-1",
+      "workGroupId": "search-analysis-lab"
+    },
+    {
+      "recipeInstanceId": "search-lab-station-2",
+      "archetypeId": "recipe_group_search",
+      "targetId": "target-lab-search-station-2",
+      "workGroupId": "search-analysis-lab"
+    },
+    {
+      "recipeInstanceId": "search-lab-station-3",
+      "archetypeId": "recipe_group_search",
+      "targetId": "target-lab-search-station-3",
+      "workGroupId": "search-analysis-lab"
+    },
+    {
+      "recipeInstanceId": "search-lab-station-4",
+      "archetypeId": "recipe_group_search",
+      "targetId": "target-lab-search-station-4",
+      "workGroupId": "search-analysis-lab"
+    },
+    {
+      "recipeInstanceId": "hack-door-mainhall-to-processing",
+      "archetypeId": "recipe_hack_transition",
+      "targetId": "target-door-mainhall-to-processing",
+      "overrides": {
+        "minimumTier": 1,
+        "minimumPerception": 0,
+        "requiredToolService": "TECH_SERVICE_I",
+        "requiresState": {
+          "type": "TRANSITION_STATE",
+          "transitionId": "door-mainhall-to-processing",
+          "equals": "LOCKED"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "enter-code-door-mainhall-to-processing",
+      "archetypeId": "recipe_dialogue_enter_door_code",
+      "targetId": "target-door-mainhall-to-processing",
+      "overrides": {
+        "effects": [
+          {
+            "type": "OPEN_TARGET_TRANSITION"
+          }
+        ],
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "facility-room-codes-known"
+            },
+            {
+              "type": "TRANSITION_STATE",
+              "transitionId": "door-mainhall-to-processing",
+              "equals": "LOCKED"
+            }
+          ]
+        },
+        "outcomeText": "The room code is accepted. No Tool charge spent."
+      }
+    },
+    {
+      "recipeInstanceId": "hack-door-processing-to-lab",
+      "archetypeId": "recipe_hack_transition",
+      "targetId": "target-door-processing-to-lab",
+      "overrides": {
+        "minimumTier": 1,
+        "minimumPerception": 0,
+        "requiredToolService": "TECH_SERVICE_I",
+        "requiresState": {
+          "type": "TRANSITION_STATE",
+          "transitionId": "door-processing-to-lab",
+          "equals": "LOCKED"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "enter-code-door-processing-to-lab",
+      "archetypeId": "recipe_dialogue_enter_door_code",
+      "targetId": "target-door-processing-to-lab",
+      "overrides": {
+        "effects": [
+          {
+            "type": "OPEN_TARGET_TRANSITION"
+          }
+        ],
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "facility-room-codes-known"
+            },
+            {
+              "type": "TRANSITION_STATE",
+              "transitionId": "door-processing-to-lab",
+              "equals": "LOCKED"
+            }
+          ]
+        },
+        "outcomeText": "The room code is accepted. No Tool charge spent."
+      }
+    },
+    {
+      "recipeInstanceId": "hack-door-mainhall-to-holding",
+      "archetypeId": "recipe_hack_transition",
+      "targetId": "target-door-mainhall-to-holding",
+      "overrides": {
+        "minimumTier": 1,
+        "minimumPerception": 0,
+        "requiredToolService": "TECH_SERVICE_I",
+        "requiresState": {
+          "type": "TRANSITION_STATE",
+          "transitionId": "door-mainhall-to-holding",
+          "equals": "LOCKED"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "enter-code-door-mainhall-to-holding",
+      "archetypeId": "recipe_dialogue_enter_door_code",
+      "targetId": "target-door-mainhall-to-holding",
+      "overrides": {
+        "effects": [
+          {
+            "type": "OPEN_TARGET_TRANSITION"
+          }
+        ],
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "facility-room-codes-known"
+            },
+            {
+              "type": "TRANSITION_STATE",
+              "transitionId": "door-mainhall-to-holding",
+              "equals": "LOCKED"
+            }
+          ]
+        },
+        "outcomeText": "The room code is accepted. No Tool charge spent."
+      }
+    },
+    {
+      "recipeInstanceId": "create-lab-report",
+      "archetypeId": "recipe_record_scientific_readings",
+      "targetId": "target-lab-report-terminal",
+      "overrides": {
+        "minimumTier": 1,
+        "requiredToolService": "",
+        "chargeCost": 0,
+        "durationMinutes": 3,
+        "requiresKnowledge": [
+          "lab-device-characterized"
+        ],
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "reportCreated",
+            "value": true
+          },
+          {
+            "type": "ADD_TO_PARTY_STORAGE",
+            "instanceId": "lab-report-01"
+          }
+        ],
+        "outcomeText": "Compiled a detailed report from the characterized device findings. The report is now in shared party inventory."
       }
     }
   ],
@@ -2753,7 +4156,12 @@
         "initialState": "DORMANT",
         "allowRetreat": true,
         "allowSurrender": true,
-        "activationMode": "ON_HOSTILE_ENGAGEMENT_OR_ESCALATION"
+        "activationMode": "ON_HOSTILE_ENGAGEMENT_OR_ESCALATION",
+        "activationCondition": {
+          "type": "NPC_STATE",
+          "instanceId": "guard-holding-01",
+          "suspicionAtLeast": 100
+        }
       }
     },
     {
@@ -3602,7 +5010,7 @@
         {
           "type": "CHANGE_NPC_SUSPICION",
           "instanceId": "guard-holding-01",
-          "delta": 10,
+          "delta": 45,
           "when": {
             "instanceId": "guard-holding-01",
             "field": "combatState",
@@ -3693,6 +5101,15 @@
             "field": "combatState",
             "equals": "NEUTRAL"
           }
+        },
+        {
+          "type": "ADD_KNOWLEDGE",
+          "knowledgeId": "operative-located"
+        },
+        {
+          "type": "SET_DETECTION_STATE",
+          "instanceId": "operative-01",
+          "value": "LOCATED"
         }
       ],
       "nodes": [
@@ -3715,17 +5132,15 @@
                 {
                   "type": "ACTIVATE_OBJECTIVE",
                   "objectiveId": "extract-operative"
+                },
+                {
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "operative-contacted"
                 }
               ],
               "endConversation": true
             }
           ]
-        }
-      ],
-      "conditions": [
-        {
-          "type": "KNOWLEDGE_PRESENT",
-          "factId": "operative-located"
         }
       ]
     },
@@ -3757,9 +5172,22 @@
                   "knowledgeId": "mcguffin-pushed-processing"
                 }
               ],
-              "endConversation": true
+              "nextNodeId": "processing-worker-finish"
+            },
+            {
+              "responseId": "processing-worker-leave",
+              "text": "We will take a look. Stay clear of the unstable equipment.",
+              "source": "NEUTRAL",
+              "nextNodeId": "processing-worker-finish"
             }
           ]
+        },
+        {
+          "nodeId": "processing-worker-finish",
+          "speaker": "worker-processing-01",
+          "side": "RIGHT",
+          "text": "The overseer. He wants more output, whatever the cost. If you are checking the equipment, look at the lab readings too. Just do not tell him I sent you.",
+          "endConversation": true
         }
       ]
     },
@@ -4041,12 +5469,11 @@
               "source": "NEUTRAL",
               "effects": [
                 {
-                  "type": "CHANGE_NPC_SUSPICION",
-                  "instanceId": "mcguffin-01",
-                  "delta": 30
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "facility-room-codes-known"
                 }
               ],
-              "nextNodeId": "mcguffin-lab-question"
+              "nextNodeId": "mcguffin-room-codes"
             }
           ]
         },
@@ -4056,6 +5483,31 @@
           "side": "RIGHT",
           "text": "What did the lab make of the last test?",
           "responses": [
+            {
+              "responseId": "mcguffin-hand-report",
+              "text": "Here is the report from the analysis lab.",
+              "source": "NEUTRAL",
+              "conditions": [
+                {
+                  "type": "ASSET_CUSTODY",
+                  "assetInstanceId": "lab-report-01",
+                  "equals": "PARTY_STORAGE"
+                }
+              ],
+              "effects": [
+                {
+                  "type": "HAND_OVER_PARTY_ITEM",
+                  "instanceId": "lab-report-01",
+                  "recipientId": "mcguffin-01"
+                },
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 45
+                }
+              ],
+              "nextNodeId": "mcguffin-report-suspicious"
+            },
             {
               "responseId": "mcguffin-lab-correct",
               "text": "The readings diverged during the extraction cycle.",
@@ -4095,12 +5547,11 @@
               "source": "NEUTRAL",
               "effects": [
                 {
-                  "type": "CHANGE_NPC_SUSPICION",
-                  "instanceId": "mcguffin-01",
-                  "delta": 30
+                  "type": "ADD_KNOWLEDGE",
+                  "knowledgeId": "facility-room-codes-known"
                 }
               ],
-              "nextNodeId": "mcguffin-hidden-equipment-test"
+              "nextNodeId": "mcguffin-room-codes"
             }
           ]
         },
@@ -4273,14 +5724,133 @@
             }
           ],
           "endConversation": true
+        },
+        {
+          "nodeId": "mcguffin-security-entry",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Are you the mercenary crew I sent for? I need you to check Holding, Processing, and the analysis lab.",
+          "responses": [
+            {
+              "responseId": "mcguffin-mercenary-yes",
+              "text": "That is us. We have not reached those rooms yet.",
+              "source": "NEUTRAL",
+              "nextNodeId": "mcguffin-room-codes"
+            },
+            {
+              "responseId": "mcguffin-mercenary-report",
+              "text": "We have started checking. What do you need reported?",
+              "source": "NEUTRAL",
+              "nextNodeId": "mcguffin-opening"
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-room-codes",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Use these access codes for Holding, Processing, and the lab. Check the equipment and bring me the lab report. Do not waste my time.",
+          "effects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "knowledgeId": "facility-room-codes-known"
+            }
+          ],
+          "endConversation": true
+        },
+        {
+          "nodeId": "mcguffin-processing-entry",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "Who are you, and how did you get access to Processing? I did not authorize visitors through that door.",
+          "responses": [
+            {
+              "responseId": "mcguffin-entry-diplomat",
+              "text": "Your staff directed us through Processing to check the equipment. We are the contractors you requested.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -10
+                }
+              ],
+              "nextNodeId": "mcguffin-opening"
+            },
+            {
+              "responseId": "mcguffin-entry-soldier",
+              "text": "We secured the approach and checked the machinery on the way. We are your mercenary crew.",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 1
+              },
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": -5
+                }
+              ],
+              "nextNodeId": "mcguffin-opening"
+            },
+            {
+              "responseId": "mcguffin-entry-neutral",
+              "text": "The door was accessible. We came to report.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "CHANGE_NPC_SUSPICION",
+                  "instanceId": "mcguffin-01",
+                  "delta": 15
+                }
+              ],
+              "nextNodeId": "mcguffin-opening"
+            }
+          ],
+          "effects": [
+            {
+              "type": "CHANGE_NPC_SUSPICION",
+              "instanceId": "mcguffin-01",
+              "delta": 30
+            }
+          ]
+        },
+        {
+          "nodeId": "mcguffin-report-suspicious",
+          "speaker": "mcguffin-01",
+          "side": "RIGHT",
+          "text": "This is far too detailed for a mercenary squad. These pulse-cycle conclusions would require specialist testing—or taking the device apart. Who are you really working for?",
+          "nextNodeId": "mcguffin-suspicion-check"
         }
       ],
       "startWhen": {
         "stageVisitCount": {
           "stageId": "stage-overseer-office",
-          "equals": 1
+          "minimum": 1
         }
-      }
+      },
+      "variants": [
+        {
+          "variantId": "processing-entry",
+          "when": {
+            "enteredFromStage": "stage-processing"
+          },
+          "startNodeId": "mcguffin-processing-entry"
+        },
+        {
+          "variantId": "security-entry",
+          "when": {
+            "enteredFromStage": "stage-security-hall"
+          },
+          "startNodeId": "mcguffin-security-entry"
+        }
+      ],
+      "onStartEffects": []
     },
     {
       "dialogueSceneId": "dialogue-yard-checkpoint",
@@ -4361,6 +5931,30 @@
               "endConversation": true
             }
           ]
+        }
+      ]
+    }
+  ],
+  "workGroups": [
+    {
+      "workGroupId": "search-analysis-lab",
+      "stageId": "stage-analysis-lab",
+      "playerLabel": "Group search · 1 hour",
+      "recipeInstanceIds": [
+        "search-lab-station-1",
+        "search-lab-station-2",
+        "search-lab-station-3",
+        "search-lab-station-4"
+      ],
+      "effects": [
+        {
+          "type": "ADD_KNOWLEDGE",
+          "factId": "lab-search-completed"
+        },
+        {
+          "type": "SET_DETECTION_STATE",
+          "instanceId": "lab-mounted-rifle-01",
+          "value": "LOCATED"
         }
       ]
     }

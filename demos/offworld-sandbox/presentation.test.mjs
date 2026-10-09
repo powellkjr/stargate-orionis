@@ -68,8 +68,16 @@ test('map positions keep party members separate from visible people and objects 
   const m=compileMission({...read('offworld/missing-operative-001.finalized'),dialogueScenes:[]},read('offworld/archetypes'));
   const s=createRuntime(m,presets.units.slice(0,4),'2026-09-24T14:00:00Z');
   for(const stage of m.stages){s.currentStageId=stage.stageId;for(const st of Object.values(s.stageStates))st.visibility='HIDDEN';s.stageStates[stage.stageId].visibility='VISIBLE';for(const u of s.units)u.currentStageId=stage.stageId;
-    const layout=mapLayout(m,s),points=Object.values(layout.points);
+    const layout=mapLayout(m,s),points=Object.entries(layout.points).filter(([id])=>m.indexes.instances[id]?.stageId===stage.stageId||s.units.some(u=>u.unitId===id&&u.currentStageId===stage.stageId)).map(([,p])=>p);
     for(let i=0;i<points.length;i++)for(let j=i+1;j<points.length;j++)assert(Math.hypot(points[i].x-points[j].x,points[i].y-points[j].y)>=19);
     for(const p of points)assert(stage.cells.some(c=>p.x>c.x*100&&p.x<(c.x+1)*100&&p.y>c.y*100&&p.y<(c.y+1)*100));
   }
+});
+
+test('people retain authored positions when another person departs and concealed objects appear',()=>{
+ const m=compileMission({...read('offworld/missing-operative-001.finalized'),dialogueScenes:[]},read('offworld/archetypes')),s=createRuntime(m,presets.units.slice(0,4),'2026-09-24T14:00:00Z');
+ s.currentStageId='stage-holding-area';s.stageStates[s.currentStageId].visibility='VISIBLE';for(const u of s.units)u.currentStageId=s.currentStageId;
+ const before=mapLayout(m,s);s.instanceStates['operative-01'].custody='AT_GATE';s.instanceStates['patient-01'].custody='RECOVERED_TO_SGC';s.knowledgeState.gained.push('lab-search-completed');
+ const after=mapLayout(m,s);for(const id of ['guard-holding-01','epidemiologist-01','patient-02','worker-holding-01'])assert.deepEqual(after.points[id],before.points[id]);
+ const locals=m.instances.filter(i=>i.stageId===s.currentStageId);assert(new Set(locals.map(i=>Math.floor(after.points[i.instanceId].x/100))).size>1,'Holding occupants use both physical tiles');
 });

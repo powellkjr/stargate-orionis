@@ -1,3 +1,5 @@
+import {debriefHtml} from './recovery-ui.mjs';
+import {releaseMissionRecovery} from '../shared/js/base-configuration.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -9,7 +11,7 @@ import {renderMap} from './map.mjs';
 const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
 const m=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},read('archetypes'));
 function state(){const s=createRuntime(m,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(m,s,true);return s;}
-function explore(s){for(const stage of Object.values(s.stageStates))Object.assign(stage,{explored:true,knownShape:true});for(const edge of Object.values(s.transitionStates))Object.assign(edge,{state:'OPEN',known:true});}
+function explore(s){for(const id of ['incident-processing-radiation','incident-holding-medical'])s.incidentStates[id].state='RESOLVED';s.instanceStates['radiation-source-01'].active=false;for(const id of ['patient-01','patient-02','patient-03'])s.instanceStates[id].condition='STABILIZED';for(const id of ['guard-yard-01','guard-yard-02','guard-holding-01','guard-security-01','guard-security-02','reynolds-01','mcguffin-01'])s.instanceStates[id].combatState='SURRENDERED';for(const stage of Object.values(s.stageStates))Object.assign(stage,{explored:true,knownShape:true});for(const edge of Object.values(s.transitionStates))Object.assign(edge,{state:'OPEN',known:true});}
 test('recovery offers discovered assets with routes, preserves IDs and leaves unselected assets local',()=>{
  const s=state();assert.equal(lootEntries(m,s).length,0);explore(s);
  s.instanceStates['mcguffin-01'].combatState='SURRENDERED';
@@ -57,4 +59,22 @@ test('Holding persuasion reveals authored rifle crates without exposing their hi
  assert.match(renderMap(m,s),/data-loot="equipment-crate-01"/);assert(!renderMap(m,s).includes('ASGARD'));
  s.currentStageId=s.units[0].currentStageId=m.gate.stageId;extract(m,s);finalizeDebrief(m,s,{receivingIds:['equipment-crate-01','equipment-crate-02']});
  const cargo=s.debrief.requests.flatMap(r=>r.cargo);assert.deepEqual(cargo.map(i=>i.itemId),['ASGARD_EM_RIFLE','HUMAN_ADVANCED_COIL_RIFLE']);assert.equal(new Set(cargo.map(i=>i.instanceId)).size,2);assert.deepEqual(cargo[0].knowledge.revealedTags,['PHYSICAL_OBJECT']);
+});
+
+test('extraction omits blocked office objects while preserving eligible physical item recovery',()=>{
+ const s=state();explore(s);extract(m,s);const html=debriefHtml(m,s,{HOLDING:{free:4,total:4},RECEIVING:{free:40,total:40}});
+ assert(!html.includes('Recovery requirements not met'));assert(!html.includes('value="security-terminal-01"'));assert(html.includes('value="supply-cache-01"'));
+ const before=structuredClone(s.instanceStates['supply-cache-01'].physicalItem);finalizeDebrief(m,s,{receivingIds:['supply-cache-01']});const request=s.debrief.requests[0];assert.equal(request.physicalItem.instanceId,before.instanceId);assert.deepEqual(request.physicalItem.reality,before.reality);assert.deepEqual(request.source,{simulator:'offworld-sandbox',missionId:m.mission.missionId});
+});
+test('handling costs come from shared definitions for direct objects and crate contents',()=>{
+ const c=read('archetypes');c.itemDefinitions.SIM_SUPPLY_CRATE.storage.handlingCost=3;c.itemDefinitions.HUMAN_ADVANCED_COIL_RIFLE.storage.handlingCost=5;
+ const mission=compileMission({...read('missing-operative-001.finalized'),dialogueScenes:[]},c),s=createRuntime(mission,read('party-presets').units.slice(0,4),'2026-09-25T12:00Z');chooseGate(mission,s,true);explore(s);
+ s.instanceStates['epidemiologist-01'].cacheRevealed=true;const rows=lootEntries(mission,s);assert.equal(rows.find(r=>r.instanceId==='supply-cache-01').cost,3);
+ const crate=mission.indexes.instances['equipment-crate-01'];const expected=3+crate.cargo.reduce((sum,i)=>sum+c.itemDefinitions[i.itemId].storage.handlingCost*(i.state?.quantity??1),0);assert.equal(rows.find(r=>r.instanceId===crate.instanceId).cost,expected);
+ assert(crate.cargo.every(i=>i.custody.cost.unitCost===c.itemDefinitions[i.itemId].storage.handlingCost));
+});
+test('reset releases earlier runs and legacy mission reservations but preserves other missions',()=>{
+ const ids=m.instances.map(i=>i.instanceId),missionId=m.mission.missionId,source={simulator:'offworld-sandbox',missionId};
+ const base={reservations:[{key:'old:mcguffin-01',instanceId:'mcguffin-01',destination:'HOLDING',cost:1,source},{key:'new:supply-cache-01',instanceId:'supply-cache-01',destination:'RECEIVING',cost:1,source},{key:'legacy:safe-intel-01',instanceId:'safe-intel-01',destination:'RECEIVING',cost:1},{key:'other:supply-cache-01',instanceId:'supply-cache-01',cost:1,destination:'RECEIVING',source:{simulator:'offworld-sandbox',missionId:'another-mission'}},{key:'base:unrelated',instanceId:'unrelated',cost:1,destination:'RECEIVING'}]};
+ const released=releaseMissionRecovery(base,missionId,ids);assert.deepEqual(released.reservations.map(r=>r.key),['other:supply-cache-01','base:unrelated']);assert.equal(base.reservations.length,5);assert.deepEqual(releaseMissionRecovery(released,missionId,ids),released);
 });

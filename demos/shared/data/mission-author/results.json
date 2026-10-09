@@ -1,0 +1,114 @@
+{
+  "format": "mission-author-results-1",
+  "version": 1,
+  "requiredRecovery": [
+    {
+      "id": "operative-evacuation",
+      "recoveryRoleId": "MISSION_EVACUEE",
+      "methodIds": [
+        "extract-operative"
+      ],
+      "patternId": "LOCATE_EVACUATE",
+      "objectiveId": "evacuate-subject",
+      "subjectRoleId": "SUBJECT"
+    },
+    {
+      "id": "primary-device-recovery",
+      "recoveryRoleId": "RECEIVING",
+      "methodIds": [
+        "detach-lab-device",
+        "secure-lab-device"
+      ],
+      "patternId": "RECOVER",
+      "objectiveId": "recover-object",
+      "subjectRoleId": "RECOVERY_OBJECT"
+    }
+  ],
+  "opportunities": [
+    {
+      "id": "lab-device-recovery",
+      "recoveryRoleId": "RECEIVING",
+      "methodIds": [
+        "detach-lab-device",
+        "secure-lab-device"
+      ],
+      "instanceId": "lab-mounted-rifle-01",
+      "catalogId": "RECOVERY",
+      "patternIds": [
+        "LOCATE_EVACUATE",
+        "INVESTIGATE",
+        "RECOVER"
+      ]
+    },
+    {
+      "id": "archive-recovery",
+      "recoveryRoleId": "RECEIVING",
+      "methodIds": [
+        "collect-evidence-archive"
+      ],
+      "instanceId": "evidence-archive-01",
+      "catalogId": "RECOVERY",
+      "patternIds": [
+        "LOCATE_EVACUATE",
+        "INVESTIGATE",
+        "RECOVER"
+      ]
+    },
+    {
+      "id": "supply-recovery",
+      "recoveryRoleId": "RECEIVING",
+      "methodIds": [
+        "collect-supply-cache"
+      ],
+      "instanceId": "supply-cache-01",
+      "catalogId": "RECOVERY",
+      "patternIds": [
+        "LOCATE_EVACUATE",
+        "INVESTIGATE",
+        "RECOVER"
+      ]
+    },
+    {
+      "id": "lab-report-cargo",
+      "recoveryRoleId": "PARTY_STORAGE",
+      "methodIds": [
+        "create-lab-report"
+      ],
+      "instanceId": "lab-report-01",
+      "catalogId": "RECOVERY",
+      "patternIds": [
+        "LOCATE_EVACUATE",
+        "INVESTIGATE",
+        "RECOVER"
+      ]
+    },
+    {
+      "id": "overseer-holding",
+      "recoveryRoleId": "HOLDING",
+      "methodIds": [
+        "restrain-mcguffin"
+      ],
+      "instanceId": "mcguffin-01",
+      "catalogId": "RECOVERY",
+      "patternIds": [
+        "LOCATE_EVACUATE",
+        "INVESTIGATE",
+        "RECOVER"
+      ]
+    }
+  ],
+  "consequences": [
+    {
+      "catalogId": "CUSTODY",
+      "from": "RECOVERY"
+    },
+    {
+      "catalogId": "KNOWLEDGE",
+      "from": "CLUES"
+    },
+    {
+      "catalogId": "NPC_STATE",
+      "from": "OPPORTUNITY_METHODS"
+    }
+  ]
+}

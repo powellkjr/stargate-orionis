@@ -25,7 +25,7 @@ node demos/offworld-sandbox/browser-smoke.mjs
 
 The browser smoke uses Edge with an isolated temporary profile and intercepted
 save endpoints. `EDGE_PATH` can select another Chromium executable. It checks
-normal travel, dialogue and responder selection, restricted-door hacking,
+normal travel, dialogue and responder selection, terminal hacking, parallel Lab search,
 Scientist characterization, Technician detachment, combat pacing, recovery,
 station/rejoin, reset and a 390px layout. It never saves into the real fixtures.
 
@@ -43,14 +43,17 @@ Yard entry, the first office visit and each eligible Security Hall visit start
 automatically. From Main Hall, Reynolds reminds visitors to go straight to the
 overseer; from the office, he asks where they are going and offers authored
 Diplomat/Soldier responses. Downed, captured or absent participants do not start
-conversations. Main Hall to Security Hall is a routine doorway. Reynolds can
-supply the restricted office-door code; hacking remains an alternative there.
+conversations. Main Hall to Security Hall and Security Hall to the office are
+routine visitor doorways. Their hack/code controls appear only when an authored
+or runtime state actually locks a door.
 
 Finding the operative does not start speech. Use **Talk** in Holding to contact
-them and establish readiness. Repeated operative contact or Holding worker
-questioning increases the watching guard's persistent suspicion. Specific
-nonmedical work also has explicit suspicion effects; ordinary medical treatment
-has no general suspicion penalty. The redundant yard Question work action and
+them and establish readiness; Send to Gate stays hidden until contact. Talk
+appears beside the person on the map and in the room actions without requiring
+prior signal detection. Watched medical work adds 20 suspicion per completed
+action; other Holding work adds 30, and conversation starts add 45. The Holding
+combat Incident explicitly activates at 100 suspicion while its guard is local
+and able to fight. These are authored mission balance values. The redundant yard Question work action and
 operative timed Talk action have been removed in favor of conversation controls.
 
 On return to the yard, the guard checks departure. The checkpoint conversation
@@ -72,9 +75,14 @@ An unlocked terminal cannot subsequently be destroyed as an alternate solution.
 
 ## Analysis Lab benchmark wave
 
-The Lab is a real Stage north of Processing, at `(4,0)` and `(5,0)`. The
-supplement's proposed `(4,1)` and `(5,1)` are occupied by the existing Processing
-footprint, so its allowed geometry normalization preserves all existing rooms.
+The Lab is a six-tile Stage north and west of Processing: `(2,0)` through
+`(5,0)`, plus `(2,1)` and `(3,1)`. Existing Processing tiles remain occupied.
+Start **Group search · 1 hour**: up to four local active party members each search
+a different instrument bench, cabinet, parts shelf or sample rack concurrently.
+Every job is a separate one-Actor Recipe bubble, with no Tool charge. The outcome
+reveals the mounted device only after all participating searches complete.
+Interrupted searches retain their Actor assignments when resumed; cancellation
+uses the ordinary work system and restarts unfinished personal work.
 
 `lab-mounted-rifle-01` is one complete physical `ASGARD_EM_RIFLE` instance from
 mission start. The player sees **Mounted device**. Its identity, civilization,
@@ -82,7 +90,7 @@ advanced Reality and manufacturing Patterns are not revealed on entry.
 
 The profession handoff is:
 
-1. Scientist observations notice local test logs and repeatable anomalies.
+1. Complete the group search; Scientist observations then notice local test logs and repeatable anomalies.
 2. Scientist characterization compares measurements against known basic
    principles, records an instance finding and a field Discovery/Research question.
 3. Technician observations identify separable rig interfaces. Technician work
@@ -95,6 +103,7 @@ User-authorized provisional requirements reuse existing benchmark actions:
 
 | Work | Profession | Tool Service | Time | Charges |
 | --- | --- | --- | --- | --- |
+| Group search (per Actor) | Untrained | None | 60 minutes | 0 |
 | Characterize device | Scientist I | SCT1 | 3 minutes | 1 |
 | Isolate and detach | Technician II | TECH_SERVICE_II | 60 minutes | 1 |
 | Secure detached device | Untrained | None | 3 minutes | 0 |
@@ -124,20 +133,32 @@ authors recovery category `RECEIVING`.
 Discovered recoverable loot stays at its site until extraction. Ordinary
 collection secures it locally. Recovery options require valid physical conditions
 and known traversable paths to the Gate; the mounted Lab item is blocked until
-prepared. Unselected assets remain local. No carrying limit is authored.
+prepared. Blocked candidates are omitted from the extraction screen. Unselected
+assets remain local. No carrying limit is authored.
 
 Debrief confirmation creates Holding/Receiving admission requests and reserves
 shared base capacity before committing recovery. Direct shared items include a
 `physicalItem` payload with their original ID, physical state, Reality, instance
 findings, process state and history. Receiving cost comes from the shared item
-definition and current quantity. Crate recovery retains the existing `cargo`
+definition and current quantity. Supply crates, archives, the mining component
+and security terminal now have shared simulator definitions and persistent
+physical instances. Their user-approved one-unit handling costs are provisional.
+Material economics are explicitly null because construction/salvage are disabled;
+no material class or manufacturing rule is inferred. Crate capacity includes the
+crate itself plus its contents, each cost resolved from the shared database.
+Crate recovery retains the existing `cargo`
 payload format. The two rifle crates and Lab device are distinct authored
 instances; no postmission reward copy is spawned.
 
 These reservations await room admission. They do not automatically run the
 staffing simulator's Receiving, Analysis or Research processes. `node demos/serve.mjs`
 is required for writable confirmation; static hosting cannot save shared capacity.
-Reset releases only reservations belonging to this run.
+Reset releases Holding and Receiving reservations for this mission across runs,
+including from setup or after a page reload. New requests carry simulator/mission
+provenance. Legacy unmarked reservations matching this mission's instance IDs are
+treated as older demo recoveries; explicitly identified other missions remain.
+NPC/object map positions reserve authored places independently of visibility or
+custody, so remaining occupants do not collapse together when someone departs.
 
 ## Work, combat and Gate behavior
 
@@ -147,8 +168,8 @@ commit only after requirements are revalidated; cancellation releases reservatio
 Failed effects roll back item changes, Knowledge and discoveries. Completed work
 records actual outcomes in **Action results**.
 
-NPC suspicion/hostility persist and clamp to 0-100. Suspicion alone does not start
-combat. Explicit engagement or `START_HOSTILE_INCIDENT` schedules combat normally,
+NPC suspicion/hostility persist and clamp to 0-100. Only an authored Incident
+activation condition (the Holding threshold), explicit engagement or `START_HOSTILE_INCIDENT` starts combat, scheduling its first round normally and
 preserving participant health. Neutral armed NPCs are not automatically opponents.
 Combat advances one round every three real seconds in the browser, with staggered
 hit feedback. Bulk Wait is disabled during combat. Benchmark guards have 150 HP;

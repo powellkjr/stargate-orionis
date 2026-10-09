@@ -1,9 +1,10 @@
+import {withOpenRoomAccess} from './test-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {compileMission} from '../shared/offworld/mission.mjs';
 import {createRuntime,chooseGate,move,advanceTime,extract,redial} from '../shared/offworld/runtime.mjs';
-import {startWork,recipeEligibility} from '../shared/offworld/field.mjs';
+import {startWork,recipeEligibility,startWorkGroup,cancelWork,workGroupEligibility} from '../shared/offworld/field.mjs';
 import {createTool} from '../shared/offworld/equipment.mjs';
 import {lootEntries,debriefOptions,finalizeDebrief} from '../shared/offworld/recovery.mjs';
 import {missionResults} from '../shared/offworld/campaign.mjs';
@@ -12,12 +13,13 @@ import {reserveRecovery} from '../shared/js/base-configuration.mjs';
 const read=p=>JSON.parse(readFileSync(new URL(`../shared/data/${p}.json`,import.meta.url)));
 const raw=read('offworld/missing-operative-001.finalized');
 const catalog={...read('offworld/archetypes'),itemDefinitions:read('item')};
-const m=compileMission({...raw,dialogueScenes:[]},catalog),id='lab-mounted-rifle-01';
-function fresh(){
+const m=compileMission({...withOpenRoomAccess(raw),dialogueScenes:[]},catalog),id='lab-mounted-rifle-01';
+function fresh(search=true){
  const units=read('offworld/party-presets').units.filter(u=>['SCIENTIST','TECHNICIAN','SOLDIER'].includes(u.profession));
  for(const u of units){u.tier=2;u.tools=[createTool(u,0,{SCIENTIST:'SCT2',TECHNICIAN:'TET2',SOLDIER:'SOT2'}[u.profession],3,catalog)];}
- const s=createRuntime(m,units,'2026-09-25T12:00Z');chooseGate(m,s,true);
+ const s=createRuntime(m,units,'2026-09-25T12:00Z');chooseGate(m,s,true);s.instanceStates['radiation-source-01'].active=false;s.incidentStates['incident-processing-radiation'].state='RESOLVED';for(const id of ['guard-yard-01','guard-yard-02'])s.instanceStates[id].combatState='SURRENDERED';
  for(const edge of ['door-gate-to-yard','door-yard-to-mainhall','door-mainhall-to-processing','door-processing-to-lab'])move(m,s,edge);
+ if(search){startWorkGroup(m,s,'search-analysis-lab');advanceTime(m,s,3600);assert.equal(s.workGroups['search-analysis-lab'].status,'COMPLETED');}
  return s;
 }
 function complete(s,recipe){const w=startWork(m,s,recipe);advanceTime(m,s,w.durationSeconds);assert.equal(w.status,'COMPLETED');return w;}
@@ -84,4 +86,32 @@ test('shared item compiler rejects missing definitions, identity mismatches and 
   const candidate=structuredClone(source);change(candidate.instances.find(i=>i.instanceId===id));assert.throws(()=>compileMission(candidate,catalog),/MISSION VALIDATION ERROR/);
  }
  const bad=structuredClone(source);bad.recipes.find(r=>r.recipeInstanceId==='detach-lab-device').overrides.effects[0].field='__proto__';assert.throws(()=>compileMission(bad,catalog),/invalid physical item effect/);
+});
+
+test('the whole local party searches separate stations for one hour before revealing the device',()=>{
+ const s=fresh(false),before=s.missionElapsedSeconds;
+ assert(!lootEntries(m,s).some(e=>e.instanceId===id));assert(!renderMap(m,s).includes('data-recipe="characterize-lab-device"'));
+ assert.throws(()=>startWork(m,s,'search-lab-station-1'),/group search/);
+ startWorkGroup(m,s,'search-analysis-lab');
+ const jobs=s.activeWork.filter(w=>w.status==='MOVING_TO_TARGET');assert.equal(jobs.length,s.units.length);assert.equal(new Set(jobs.map(w=>w.actorId)).size,s.units.length);assert.equal(new Set(jobs.map(w=>w.targetId)).size,s.units.length);
+ assert(jobs.every(w=>w.durationSeconds===3600&&w.chargeCost===0));
+ advanceTime(m,s,3599);assert(!s.knowledgeState.gained.includes('lab-search-completed'));assert(!renderMap(m,s).includes('data-recipe="characterize-lab-device"'));
+ advanceTime(m,s,1);assert.equal(s.missionElapsedSeconds-before,3600);assert.equal(s.workGroups['search-analysis-lab'].status,'COMPLETED');assert(s.knowledgeState.gained.includes('lab-search-completed'));assert(renderMap(m,s).includes('data-recipe="characterize-lab-device"'));assert.equal(s.instanceStates[id].physicalItem.knowledge.recognizedIdentity,null);
+ assert.equal(missionResults(m,s).workGroups['search-analysis-lab'].status,'COMPLETED');
+});
+test('group search admission is atomic and interrupted assignments retain their Actor identity',()=>{
+ const s=fresh(false);s.units[0].activityState='EXECUTING';const before=structuredClone(s);
+ assert.throws(()=>startWorkGroup(m,s,'search-analysis-lab'),/available/);assert.deepEqual(s,before);
+ s.units[0].activityState='IDLE';startWorkGroup(m,s,'search-analysis-lab');const assigned=structuredClone(s.workGroups['search-analysis-lab'].assignments);
+ for(const w of s.activeWork)cancelWork(s,w.workId);assert.equal(s.workGroups['search-analysis-lab'].status,'PARTIAL');
+ s.units[0].partyStatus='STATIONED';s.units[0].currentStageId=m.gate.stageId;
+ assert.equal(workGroupEligibility(m,s,'search-analysis-lab').status,'BLOCKED');assert(!s.knowledgeState.gained.includes('lab-search-completed'));
+ s.units[0].partyStatus='ACTIVE_PARTY';s.units[0].currentStageId=s.currentStageId;startWorkGroup(m,s,'search-analysis-lab');assert.deepEqual(s.workGroups['search-analysis-lab'].assignments.map(a=>a.actorId),assigned.map(a=>a.actorId));
+ advanceTime(m,s,3600);assert.equal(s.workGroups['search-analysis-lab'].status,'COMPLETED');
+});
+
+test('group definitions reject malformed outcomes and nonlocal or duplicate search jobs',()=>{
+ for(const mutate of [r=>r.workGroups=[null],r=>r.workGroups[0].effects={},r=>r.workGroups[0].effects=[{type:'ADD_KNOWLEDGE',factId:''}],r=>r.workGroups[0].recipeInstanceIds.push(r.workGroups[0].recipeInstanceIds[0]),r=>r.workGroups[0].stageId='stage-main-hall',r=>r.recipes.find(r=>r.workGroupId).workGroupId='missing-group']){
+  const input=structuredClone(raw);mutate(input);assert.throws(()=>compileMission(input,catalog),/MISSION VALIDATION ERROR/);
+ }
 });

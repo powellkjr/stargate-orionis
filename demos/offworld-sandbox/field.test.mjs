@@ -1,3 +1,4 @@
+import {withOpenRoomAccess} from './test-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -6,9 +7,9 @@ import {createRuntime,chooseGate,move,advanceTime,extract} from '../shared/offwo
 import {createTool,toolOptions,validateEquipment,professionTier} from '../shared/offworld/equipment.mjs';
 import {activeWork,recipeEligibility,startWork,cancelWork,stationUnit,observationEligibility,refreshField} from '../shared/offworld/field.mjs';
 const read=n=>{const data=JSON.parse(readFileSync(new URL(`../shared/data/offworld/${n}.json`,import.meta.url)));return n.endsWith('archetypes')?{...data,itemDefinitions:JSON.parse(readFileSync(new URL('../shared/data/item.json',import.meta.url)))}:data;};
-const raw={...read('missing-operative-001.finalized'),dialogueScenes:[]},catalog=read('archetypes'),presets=read('party-presets').units,m=compileMission({...raw,transitions:raw.transitions.map(t=>t.transitionId==='door-mainhall-to-security'?{...t,overrides:{...t.overrides,initialState:'LOCKED',routine:false}}:t)},catalog);
+const raw={...read('missing-operative-001.finalized'),dialogueScenes:[],transitions:withOpenRoomAccess(read('missing-operative-001.finalized')).transitions},catalog=read('archetypes'),presets=read('party-presets').units,m=compileMission({...raw,transitions:raw.transitions.map(t=>t.transitionId==='door-mainhall-to-security'?{...t,overrides:{...t.overrides,initialState:'LOCKED',routine:false}}:t)},catalog);
 function unit(role,kit,tier=2){const u=clone(presets.find(u=>u.profession===role));u.tier=tier;u.tools=kit?[createTool(u,0,kit,3,catalog)]:[];return u;}
-function fresh(units=[unit('TECHNICIAN','TET2'),unit('MEDIC','MET2'),unit('SCOUT','STT2'),unit('SCIENTIST','SCT2')],mission=m){const s=createRuntime(mission,units,'2026-09-24T14:00:00Z');chooseGate(mission,s,true);return s;}
+function fresh(units=[unit('TECHNICIAN','TET2'),unit('MEDIC','MET2'),unit('SCOUT','STT2'),unit('SCIENTIST','SCT2')],mission=m){const s=createRuntime(mission,units,'2026-09-24T14:00:00Z');chooseGate(mission,s,true);s.instanceStates['guard-holding-01'].combatState='SURRENDERED';for(const id of ['guard-yard-01','guard-yard-02'])s.instanceStates[id].combatState='SURRENDERED';return s;}
 function hall(s,mission=m){move(mission,s,'door-gate-to-yard');move(mission,s,'door-yard-to-mainhall');}
 const eligible=(s,id,mission=m)=>recipeEligibility(mission,s,mission.indexes.recipes[id]);
 function portableFixture(effects){
@@ -133,6 +134,6 @@ test('stationing is deliberate, local, secure, and never creates a second moving
   const one=fresh([unit('MEDIC','MET1')]);assert.throws(()=>stationUnit(m,one,one.units[0].unitId),/at least one/);
 });
 test('physical recovery preserves instance ID and changes custody at extraction',()=>{
-  const s=fresh();hall(s);move(m,s,'door-mainhall-to-holding');s.instanceStates['guard-holding-01'].combatState='DOWN';s.instanceStates['radiation-source-01'].active=false;startWork(m,s,'extract-operative');advanceTime(m,s,180);assert.equal(s.instanceStates['operative-01'].custody,'AT_GATE');
+  const s=fresh();hall(s);move(m,s,'door-mainhall-to-holding');s.instanceStates['guard-holding-01'].combatState='DOWN';s.instanceStates['radiation-source-01'].active=false;s.incidentStates['incident-holding-medical'].state='RESOLVED';s.knowledgeState.gained.push('operative-contacted');startWork(m,s,'extract-operative');advanceTime(m,s,180);assert.equal(s.instanceStates['operative-01'].custody,'AT_GATE');
   for(const id of ['door-mainhall-to-holding','door-yard-to-mainhall','door-gate-to-yard'])move(m,s,id);extract(m,s);assert.equal(s.instanceStates['operative-01'].custody,'RECOVERED_TO_SGC');assert.equal(s.instanceStates['operative-01'].partyStatus,'EXTRACTED');
 });

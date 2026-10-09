@@ -49,3 +49,10 @@ export async function saveBase(base,fetcher=fetch){
  if(result?.format!=='simulator-base-1'||result.revision!==base.revision+1||!Array.isArray(result.rooms)||!Array.isArray(result.reservations))throw Error(`The server did not acknowledge the saved base configuration. ${saveHelp} Recovery has not been confirmed.`);
  return result;
 }
+
+// Reset this simulator mission across browser reloads and repeated deployments.
+export function releaseMissionRecovery(base,missionId,instanceIds){
+ const ids=new Set(instanceIds),draft=structuredClone(base);
+ draft.reservations=draft.reservations.filter(r=>r.source?r.source.simulator!=='offworld-sandbox'||r.source.missionId!==missionId:!ids.has(r.instanceId));
+ return draft;
+}

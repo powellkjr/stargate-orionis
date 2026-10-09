@@ -1,0 +1,126 @@
+{
+  "format": "mission-author-skeletons-1",
+  "version": 1,
+  "patterns": [
+    {
+      "patternId": "LOCATE_EVACUATE",
+      "version": 1,
+      "stageRange": {
+        "min": 4,
+        "max": 8
+      },
+      "requiredPurposeIds": [
+        "ARRIVAL",
+        "TRANSIT",
+        "EXIT_ROUTE",
+        "PRIMARY_SUBJECT"
+      ],
+      "fillerPurposeIds": [
+        "TRANSIT",
+        "SUPPORTING_CLUE",
+        "OPTIONAL_RECOVERY"
+      ],
+      "rolePurposes": {
+        "SUBJECT": "PRIMARY_SUBJECT"
+      },
+      "objectives": [
+        {
+          "objectiveId": "locate-subject",
+          "intent": "LOCATE",
+          "roleId": "SUBJECT",
+          "factRoleId": "SUBJECT_LOCATION",
+          "after": []
+        },
+        {
+          "objectiveId": "evacuate-subject",
+          "intent": "EVACUATE",
+          "roleId": "SUBJECT",
+          "after": [
+            "locate-subject"
+          ]
+        }
+      ]
+    },
+    {
+      "patternId": "INVESTIGATE",
+      "version": 1,
+      "stageRange": {
+        "min": 4,
+        "max": 8
+      },
+      "requiredPurposeIds": [
+        "ARRIVAL",
+        "TRANSIT",
+        "EXIT_ROUTE",
+        "PRIMARY_SUBJECT",
+        "SUPPORTING_CLUE"
+      ],
+      "fillerPurposeIds": [
+        "TRANSIT",
+        "SUPPORTING_CLUE",
+        "OPTIONAL_RECOVERY"
+      ],
+      "rolePurposes": {
+        "SUBJECT": "PRIMARY_SUBJECT",
+        "EVIDENCE_SOURCE": "SUPPORTING_CLUE"
+      },
+      "objectives": [
+        {
+          "objectiveId": "locate-subject",
+          "intent": "LOCATE",
+          "roleId": "SUBJECT",
+          "factRoleId": "SUBJECT_LOCATION",
+          "after": []
+        },
+        {
+          "objectiveId": "investigate-evidence",
+          "intent": "INVESTIGATE",
+          "roleId": "EVIDENCE_SOURCE",
+          "factRoleId": "SUBJECT_LOCATION",
+          "after": [
+            "locate-subject"
+          ]
+        }
+      ]
+    },
+    {
+      "patternId": "RECOVER",
+      "version": 1,
+      "stageRange": {
+        "min": 4,
+        "max": 8
+      },
+      "requiredPurposeIds": [
+        "ARRIVAL",
+        "TRANSIT",
+        "EXIT_ROUTE",
+        "OPTIONAL_RECOVERY"
+      ],
+      "fillerPurposeIds": [
+        "TRANSIT",
+        "SUPPORTING_CLUE",
+        "OPTIONAL_RECOVERY"
+      ],
+      "rolePurposes": {
+        "RECOVERY_OBJECT": "OPTIONAL_RECOVERY"
+      },
+      "objectives": [
+        {
+          "objectiveId": "investigate-object",
+          "intent": "INVESTIGATE",
+          "roleId": "RECOVERY_OBJECT",
+          "factRoleId": "DEVICE_PURPOSE",
+          "after": []
+        },
+        {
+          "objectiveId": "recover-object",
+          "intent": "RECOVER",
+          "roleId": "RECOVERY_OBJECT",
+          "after": [
+            "investigate-object"
+          ]
+        }
+      ]
+    }
+  ]
+}

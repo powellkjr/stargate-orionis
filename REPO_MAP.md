@@ -20,15 +20,17 @@ including ones not yet implemented. Verify code/tests before claiming support.
 
 ## Run and validate
 
-- All five demos: `node demos/serve.mjs` from the root; open
+- All six demos: `node demos/serve.mjs` from the root; open
   `http://127.0.0.1:8001/demos/`. Optional port: `node demos/serve.mjs 8000`.
 - [Demo hosting/save guide](demos/README.md): local JSON writes versus static
   hosting. Static hosting does not implement the writable API.
 - Plain browser JS/ES modules and Node built-in tests; no root package manifest
   or npm install/build step is required for these demos.
-- All existing Node tests: `node --test demos/serve.test.mjs demos/offworld-sandbox/*.test.mjs demos/portrait-simulator/*.test.mjs demos/room-staffing-demo/*.test.mjs demos/world-map-simulator/*.test.mjs`
+- All Node tests: `node --test demos/mission-authoring-simulator/*.test.mjs demos/serve.test.mjs demos/offworld-sandbox/*.test.mjs demos/portrait-simulator/*.test.mjs demos/room-staffing-demo/*.test.mjs demos/world-map-simulator/*.test.mjs`
+- Mission Author draft review: `node --test demos/mission-authoring-simulator/*.test.mjs`; see its [README](demos/mission-authoring-simulator/README.md). Launch `/demos/mission-authoring-simulator/` for author review/import/export.
 - Browser checks: `node demos/offworld-sandbox/browser-smoke.mjs` and
-  `node demos/portrait-simulator/browser-smoke.mjs`. These launch Windows Edge;
+  `node demos/portrait-simulator/browser-smoke.mjs` and
+  `node demos/mission-authoring-simulator/browser-smoke.mjs`. These launch Windows Edge;
   `EDGE_PATH` overrides its executable. Read the scripts for environment details.
 - Syntax/diff: `node --check <changed-js-file>` and `git diff --check`.
 - Save/browser tests should use temporary files or intercepted endpoints, not
@@ -39,6 +41,7 @@ including ones not yet implemented. Verify code/tests before claiming support.
 | Area | Start here | Implementation / purpose |
 | --- | --- | --- |
 | Demo hub/server | [demos/README.md](demos/README.md) | `demos/index.html`, `demos/serve.mjs`, `demos/hosting-status.mjs`; shared writable endpoints and static assets |
+| Mission Author draft review | [README](demos/mission-authoring-simulator/README.md) | `demos/shared/mission-author/`; catalog validation, read-only adapters, deterministic selection, connected Stage/objective skeletons, source-backed Fact/clue/interaction drafts, dynamic possibilities, prospective recovery/result intent composition trace, whole-draft review/repair and Finalizer readiness report; browser UI in `demos/mission-authoring-simulator/` |
 | Offworld | [README](demos/offworld-sandbox/README.md) | `demos/offworld-sandbox/app.mjs`; mission UI, deployment, movement, work, combat, dialogue and extraction |
 | Character & portrait editor | [HTML](demos/portrait-simulator/index.html) | `demos/portrait-simulator/app.mjs`, `model.mjs`, `character-stats.mjs`; appearance, stats, progression and configured Tools |
 | Room layout sandbox | [README](demos/room-sandbox/README.md) | `demos/room-sandbox/room-sandbox.js`; physical layout, joins, CT and shared base saves |
@@ -55,7 +58,7 @@ All runtime modules below are in **`demos/shared/offworld/`**:
 | --- | --- |
 | `mission.mjs` | Compile/validate authored mission and archetypes; freeze definitions and build indexes |
 | `runtime.mjs` | Deployment, clock, Gate connection, movement, visibility, return route and extraction |
-| `field.mjs` | Observations, Recipe admission/execution, persistent work, effects and stationing |
+| `field.mjs` | Observations, Recipe admission/execution, persistent work, one-Actor group-search jobs, effects and stationing |
 | `campaign.mjs` | Objectives, incidents, combat, explicit hostile escalation and campaign refresh |
 | `dialogue.mjs` / `npc.mjs` | Conversation graph/triggers/eligibility/effects; NPC disposition/suspicion/hostility |
 | `recovery.mjs` | Loot/debrief eligibility and selected recovery requests; inspect before changing evacuation |
@@ -75,12 +78,13 @@ Do not implement semantic game behavior only in UI markup.
 
 | Location | Contents |
 | --- | --- |
-| `demos/shared/js/base-configuration.mjs` | Base validation, capacity, recovery reservations and save/revision handling |
+| `demos/shared/js/base-configuration.mjs` | Base validation, capacity, recovery reservations, mission reset cleanup and save/revision handling |
 | `demos/shared/js/personnel-roster.mjs` / `personnel-panel.mjs` | Shared personnel identity, favorites, portrait overrides and presentation |
 | `demos/shared/js/item-instances.mjs` / `process-transfers.mjs` | Persistent physical items, custody/process transfers |
 | `demos/shared/js/rooms.js` | Shared room helpers |
 | `demos/shared/map/renderer.mjs` | Reusable map surface rendering |
 | `demos/shared/portraits/` | Bust/icon/token renderers, palette and `stats-radar.mjs` expertise presentation |
+| `demos/shared/data/mission-author/` | Semantic authoring proof pack, catalog/draft schemas, structural/information/dynamic/result bindings and explicit Missing Operative context; unsupported guidance remains unresolved |
 | `demos/shared/data/offworld/` | `missing-operative-001.finalized.json` playable mission; `archetypes.json`, party presets and encounter data |
 | `demos/shared/data/personnel-*.json` | Names, presentation and loadouts (`personnel-loadouts.json` owns stats/progression/Tool configuration) |
 | `demos/shared/data/base-configuration.json` | Shared writable base room configuration and reservations |

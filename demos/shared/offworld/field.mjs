@@ -16,6 +16,7 @@ export function condition(s,c){
   if(c.type==='INCIDENT_STATE')return s.incidentStates?.[c.incidentId]?.state===c.equals;
   if(c.type==='STAGE_STATE')return s.stageStates[c.stageId]?.[c.field]===c.equals;
   if(c.type==='ITEM_STATE')return s.instanceStates[c.instanceId]?.physicalItem?.state?.[c.field]===c.equals;
+  if(c.type==='TRANSITION_STATE')return s.transitionStates[c.transitionId]?.state===c.equals;
   if(c.type==='ANY')return c.conditions.some(v=>condition(s,v));
   if(c.type==='ALL')return c.conditions.every(v=>condition(s,v));
   if(c.type==='KNOWLEDGE_PRESENT')return knows(s,c.factId);
@@ -29,7 +30,7 @@ function addDiscovery(m,s,id){
   if(d&&!s.discoveries.some(x=>x.discoveryId===id)&&(d.evidenceRequirements??[]).every(c=>condition(s,c))){s.discoveries.push(clone(d));stamp(s,'DISCOVERY_CREATED',{discoveryId:id});}
 }
 export function initializeField(m,s){
-  s.activeWork=[];s.observationStates={};s.interactionStates={};s.discoveries=[];s.carriedAssets=[];s.partyStorage=[];
+  s.activeWork=[];s.workGroups={};s.observationStates={};s.interactionStates={};s.discoveries=[];s.carriedAssets=[];s.partyStorage=[];
   for(const d of m.instances){Object.assign(s.instanceStates[d.instanceId],clone(d.initialState??{}));initializeNpc(d,s.instanceStates[d.instanceId]);}
   for(const o of m.observations)s.observationStates[o.observationId]={status:'HIDDEN',observedByUnitId:null};
   refreshField(m,s);
@@ -90,7 +91,7 @@ export function recipeEligibility(m,s,r,actorId=null){
   const result=(status,blocker,candidates=[])=>({status,blocker,candidates});
   if(!targetLocal(m,s,t)||(r.hiddenUntilKnowledge??[]).some(f=>!knows(s,f)))return result('HIDDEN',null);
   if(!recipeAdmission(m,s,r))return result('HIDDEN',null);
-  if(r.requiresGateRoute&&returnRoute(m,s)===null)return result('BLOCKED','NO_GATE_ROUTE');
+  if(r.requiresGateRoute&&returnRoute(m,s,{secure:true})===null)return result('BLOCKED','NO_SECURE_GATE_ROUTE');
   if(!r.implemented)return result('BLOCKED','AUTHORED_OUTCOME_REQUIRED');
   if(s.interactionStates[r.recipeInstanceId]==='COMPLETED')return result('COMPLETED',null);
   if(activeWork(s).some(w=>w.targetId===r.targetId))return result('BUSY','TARGET_BUSY');
@@ -121,9 +122,10 @@ export function recipeEligibility(m,s,r,actorId=null){
   return result('AVAILABLE',null,candidates);
 }
 export function executionProfile(s,r){const modifier=(r.durationModifiers??[]).find(mod=>condition(s,mod.when));return {durationMinutes:modifier?.durationMinutes??r.durationMinutes,preparation:modifier?.label??null};}
-export function startWork(m,s,recipeId,actorId){
+export function startWork(m,s,recipeId,actorId,workGroupId){
   if(s.dialogue)throw new Error('Resolve the conversation before starting work.');
   const r=m.indexes.recipes[recipeId];if(!r)throw new Error('Unknown Recipe.');
+  if(r.workGroupId&&r.workGroupId!==workGroupId)throw Error('Start this action through its group search.');
   const e=recipeEligibility(m,s,r,actorId);if(e.status!=='AVAILABLE')throw new Error(e.blocker??e.status);
   const candidate=e.candidates[0],actor=s.units.find(u=>u.unitId===candidate.actorId);
   const w={workId:`work-${s.activeWork.length+1}`,recipeId,targetId:r.targetId,...candidate,chargeCost:r.chargeCost??0,stageId:s.currentStageId,status:'MOVING_TO_TARGET',elapsedSeconds:0,durationSeconds:executionProfile(s,r).durationMinutes*60};
@@ -133,10 +135,11 @@ export function startWork(m,s,recipeId,actorId){
 export function cancelWork(s,id){
   const w=s.activeWork.find(w=>w.workId===id&&running(w));if(!w)return;
   w.status='CANCELLED';const actor=s.units.find(u=>u.unitId===w.actorId);actor.activityState='IDLE';actor.activeWorkId=null;
+  for(const group of Object.values(s.workGroups??{}))if(group.status==='ACTIVE'&&group.assignments.every(a=>!s.activeWork.some(w=>w.workId===a.workId&&running(w))))group.status='PARTIAL';
   s.actionLog.push({atSeconds:s.missionElapsedSeconds,message:`Cancelled ${w.recipeId}; reserved charge released.`});
 }
 function applyEffects(m,s,r,t){
-  for(const effect of r.effects??[]){
+  for(const effect of [...r.effects??[],...r.onCompleteEffects??[]]){
     const e=effect;
     if(e.when&&!condition(s,e.when))continue;
     if(npcEffectTypes.includes(e.type))applyNpcEffect(s,e);
@@ -170,7 +173,7 @@ function applyEffects(m,s,r,t){
       if(!s.transitionStates[t.transitionId])throw new Error('Invalid transition effect.');
       s.transitionStates[t.transitionId].state='OPEN';stamp(s,'TRANSITION_CHANGED',{transitionId:t.transitionId,state:'OPEN'});
     }else if(e.type==='ADD_KNOWLEDGE'){addKnowledge(s,e.factId);
-    }else if(e.type==='SEND_TARGET_TO_GATE'){if(returnRoute(m,s)===null)throw Error('No clear route to Gate.');Object.assign(s.instanceStates[t.instanceId],{custody:'AT_GATE',partyStatus:'AT_GATE',currentStageId:m.gate.stageId});stamp(s,'ASSET_SENT_TO_GATE',{instanceId:t.instanceId});
+    }else if(e.type==='SEND_TARGET_TO_GATE'){if(returnRoute(m,s,{secure:true})===null)throw Error('No secure route to Gate.');Object.assign(s.instanceStates[t.instanceId],{custody:'AT_GATE',partyStatus:'AT_GATE',currentStageId:m.gate.stageId});stamp(s,'ASSET_SENT_TO_GATE',{instanceId:t.instanceId});
     }else if(e.type==='CARRY_TARGET'){
       const instance=s.instanceStates[t.instanceId];if(!instance||instance.custody!=='LOCAL')throw new Error('Asset no longer local.');
       if(r.setsPartyEscort){instance.custody='CARRIED_OFFWORLD';instance.partyStatus='ESCORTED';s.carriedAssets.push(t.instanceId);stamp(s,'ASSET_CARRIED',{instanceId:t.instanceId});}
@@ -189,7 +192,7 @@ export function tickWork(m,s,seconds){
     if(w.elapsedSeconds<w.durationSeconds)continue;
     const r=m.indexes.recipes[w.recipeId],t=m.indexes.interactionTargets[r.targetId];
     try{
-      if(!recipeAdmission(m,{...s,currentStageId:w.stageId},r)||actor.currentStageId!==w.stageId||actor.activityState==='DOWN'||!['ACTIVE_PARTY','STATIONED'].includes(actor.partyStatus)||professionTier(actor,r.profession)<r.minimumTier||!targetLocal(m,{...s,currentStageId:w.stageId},t)||!condition(s,r.requiresState)||(r.requiresKnowledge??[]).some(f=>!knows(s,f)))throw new Error('Work requirements changed.');
+      if(!recipeAdmission(m,{...s,currentStageId:w.stageId},r)||actor.currentStageId!==w.stageId||actor.activityState==='DOWN'||!['ACTIVE_PARTY','STATIONED'].includes(actor.partyStatus)||professionTier(actor,r.profession)<r.minimumTier||!targetLocal(m,{...s,currentStageId:w.stageId},t)||!condition(s,r.requiresState)||(r.requiresKnowledge??[]).some(f=>!knows(s,f))||r.requiresGateRoute&&returnRoute(m,{...s,currentStageId:w.stageId},{secure:true})===null)throw new Error('Work requirements changed.');
       const tool=resolvedWorkTool(s,actor,w);
       if(w.toolInstanceId&&(!tool||tool.damaged||(tool.chargesRemaining!==null&&tool.chargesRemaining<w.chargeCost)||!tool.providedServices.includes(r.requiredToolService)))throw new Error('Reserved Tool unavailable.');
       const eventStart=s.resultEvents.length,draft=clone(s);applyEffects(m,draft,r,t);
@@ -204,6 +207,33 @@ export function tickWork(m,s,seconds){
     if(actor.activityState!=='DOWN')actor.activityState='IDLE';actor.activeWorkId=null;
   }
   refreshField(m,s);
+  refreshWorkGroups(m,s);
+}
+export function workGroupEligibility(m,s,id){
+  const g=m.workGroups?.find(g=>g.workGroupId===id),prior=s.workGroups?.[id];
+  if(!g||g.stageId!==s.currentStageId||s.status!=='ACTIVE'||s.gateState.choicePending||s.dialogue)return {status:'HIDDEN',assignments:[]};
+  if(prior?.status==='COMPLETED')return {status:'COMPLETED',assignments:[]};
+  if(prior?.status==='ACTIVE')return {status:'BUSY',assignments:[]};
+  const actors=s.units.filter(u=>u.currentStageId===s.currentStageId&&u.partyStatus==='ACTIVE_PARTY'&&u.activityState!=='DOWN');
+  const assignments=prior?.assignments??actors.map((u,i)=>({actorId:u.unitId,recipeId:g.recipeInstanceIds[i]}));
+  if(!assignments.length||assignments.some(a=>!a.recipeId||s.interactionStates[a.recipeId]!=='COMPLETED'&&(s.units.find(u=>u.unitId===a.actorId)?.activityState!=='IDLE'||recipeEligibility(m,s,m.indexes.recipes[a.recipeId],a.actorId).status!=='AVAILABLE')))return {status:'BLOCKED',assignments};
+  return {status:'AVAILABLE',assignments};
+}
+export function startWorkGroup(m,s,id){
+  const e=workGroupEligibility(m,s,id);if(e.status!=='AVAILABLE')throw Error('Group search requires every participating Actor to be available.');
+  const draft=clone(s),assignments=clone(e.assignments);
+  for(const a of assignments)if(draft.interactionStates[a.recipeId]!=='COMPLETED')a.workId=startWork(m,draft,a.recipeId,a.actorId,id).workId;
+  draft.workGroups[id]={status:'ACTIVE',assignments};refreshWorkGroups(m,draft);Object.assign(s,draft);
+}
+function refreshWorkGroups(m,s){
+  for(const g of m.workGroups??[]){
+    const state=s.workGroups[g.workGroupId];if(state?.status!=='ACTIVE')continue;
+    if(state.assignments.every(a=>s.interactionStates[a.recipeId]==='COMPLETED')){
+      const draft=clone(s);applyEffects(m,draft,{effects:g.effects},{});
+      for(const key of ['instanceStates','transitionStates','carriedAssets','partyStorage','discoveries','resultEvents','knowledgeState'])s[key]=draft[key];
+      state.status='COMPLETED';stamp(s,'WORK_GROUP_COMPLETED',{workGroupId:g.workGroupId});refreshField(m,s);
+    }else if(state.assignments.every(a=>!s.activeWork.some(w=>w.workId===a.workId&&running(w))))state.status='PARTIAL';
+  }
 }
 export function stationUnit(m,s,id){
   if(s.dialogue)throw new Error('Resolve the conversation before stationing Units.');

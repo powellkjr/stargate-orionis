@@ -849,6 +849,18 @@
         "tunableFields": {
           "initialState": "object"
         }
+      },
+      "search_station": {
+        "defaults": {
+          "implemented": true,
+          "mapGlyph": "OBJECT",
+          "playerLabel": "Search station",
+          "visibleWhenPartial": false,
+          "initialState": {}
+        },
+        "tunableFields": {
+          "playerLabel": "string"
+        }
       }
     },
     "observation": {
@@ -1883,7 +1895,8 @@
         "tunableFields": {
           "minimumTier": "number",
           "minimumPerception": "number",
-          "requiredToolService": "string"
+          "requiredToolService": "string",
+          "requiresState": "object"
         }
       },
       "recipe_recover_wreckage": {
@@ -2081,6 +2094,21 @@
           "requiresState": "object",
           "outcomeText": "string"
         }
+      },
+      "recipe_group_search": {
+        "defaults": {
+          "implemented": true,
+          "profession": "UNTRAINED",
+          "minimumTier": 0,
+          "durationMinutes": 60,
+          "actionType": "SEARCH",
+          "requiredToolService": "",
+          "chargeCost": 0,
+          "effects": [],
+          "requiresKnowledge": [],
+          "hiddenUntilKnowledge": []
+        },
+        "tunableFields": {}
       }
     },
     "incident": {
@@ -2101,7 +2129,8 @@
           "allowSurrender": "boolean",
           "allowRetreat": "boolean",
           "onEscapeEvent": "string",
-          "activationMode": "string"
+          "activationMode": "string",
+          "activationCondition": "object"
         }
       },
       "incident_medical_deterioration": {

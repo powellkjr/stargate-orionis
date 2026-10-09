@@ -109,6 +109,7 @@ export function refreshCampaign(m,s){
   processEvents(m,s);
   for(const i of m.incidents){
     const state=s.incidentStates[i.incidentId];if(!i.implemented||state.state==='RESOLVED')continue;
+    if(i.kind==='COMBAT'&&state.state==='DORMANT'&&i.stageId===s.currentStageId&&i.activationCondition&&campaignCondition(s,i.activationCondition)&&i.participantIds.some(id=>!['DOWN','SURRENDERED','CAPTURED','FLED'].includes(s.instanceStates[id].combatState)))startHostileIncident(m,s,i.incidentId);
     const resolved=incidentKind(i,s)==='COMBAT'?i.participantIds.every(id=>['DOWN','SURRENDERED','CAPTURED','FLED'].includes(s.instanceStates[id].combatState)):i.resolutionCondition?campaignCondition(s,i.resolutionCondition):i.resolutionMode==='STABILIZE_IMMEDIATE_DETERIORATION'&&i.participantIds.every(id=>s.instanceStates[id].condition==='STABILIZED');
     if(resolved){state.state='RESOLVED';state.resolvedAt=s.missionElapsedSeconds;state.nextRoundAt=null;emit(s,'event_incident_resolved',{incidentId:i.incidentId,stageId:i.stageId});s.resultEvents.push({type:'INCIDENT_RESOLVED',incidentId:i.incidentId,participants:(i.participantIds??[]).map(id=>({instanceId:id,state:s.instanceStates[id].combatState??s.instanceStates[id].condition})),atSeconds:s.missionElapsedSeconds});}
   }
@@ -124,7 +125,7 @@ export function refreshCampaign(m,s){
 }
 export function missionResults(m,s){
   return {format:'offworld-results-wave-3',missionId:m.mission.missionId,status:s.status,sgcStartTime:s.sgcStartTime,sgcEndTime:s.sgcCurrentTime,elapsedSeconds:s.missionElapsedSeconds,
-    recoveryPlan:structuredClone(s.debrief??null),dialogueHistory:structuredClone(s.dialogueHistory??[]),activeDialogue:structuredClone(s.dialogue??null),objectives:structuredClone(s.objectiveStates),incidents:structuredClone(s.incidentStates),personnel:structuredClone(s.units),knowledge:structuredClone(s.knowledgeState.gained),discoveries:structuredClone(s.discoveries),
+    workGroups:structuredClone(s.workGroups??{}),recoveryPlan:structuredClone(s.debrief??null),dialogueHistory:structuredClone(s.dialogueHistory??[]),activeDialogue:structuredClone(s.dialogue??null),objectives:structuredClone(s.objectiveStates),incidents:structuredClone(s.incidentStates),personnel:structuredClone(s.units),knowledge:structuredClone(s.knowledgeState.gained),discoveries:structuredClone(s.discoveries),
     recoveredAssets:Object.entries(s.instanceStates).filter(([,v])=>v.custody==='RECOVERED_TO_SGC').map(([instanceId,state])=>({instanceId,state:structuredClone(state)})),
     partyStorage:structuredClone(s.partyStorage),partyTools:structuredClone(s.partyTools),persistentInstances:structuredClone(s.instanceStates),events:structuredClone(s.emittedEvents),scheduledEvents:structuredClone(s.scheduledEvents),ledger:structuredClone(s.resultEvents),
     bindings:m.resultBindings.map(b=>({bindingId:b.bindingId,declaredCategories:b.emit,watch:b.watch,snapshot:structuredClone(b.watch.instanceId?s.instanceStates[b.watch.instanceId]:s.incidentStates[b.watch.incidentId]),note:'Observed state only; no unauthored campaign rewards, addresses or faction deltas are invented.'}))};

@@ -11,13 +11,15 @@ export function lootEntries(m,s){
     const state=s.instanceStates[d.instanceId],known=s.stageStates[d.stageId].explored||state.detectionState!=='HIDDEN'||state.custody!=='LOCAL';
     if(!known||!condition(s,d.revealedWhen))continue;
     const collected=['CARRIED_OFFWORLD','RECOVERED_TO_SGC'].includes(state.custody);
-    const itemReady=!d.itemId||state.recoveryState==='ELIGIBLE_FOR_EVAC'||state.custody==='RECOVERED_TO_SGC';
-    byInstance.set(d.instanceId,{instanceId:d.instanceId,label:d.playerLabel,stageId:d.stageId,quantity:state.physicalItem?.state.quantity??d.quantity??1,cost:d.itemId?d.itemDefinition.storage.handlingCost*state.physicalItem.state.quantity:d.cargo?.reduce((sum,item)=>sum+item.custody.cost.extendedCost,0)??d.quantity??1,collected:collected||!!state.securedForExtraction,status:state.custody==='RECOVERED_TO_SGC'?'Recovered':!itemReady||!condition(s,r.requiresState)?'Blocked':state.securedForExtraction?'Secured':collected?'Collected':'Available',recipeId:r.recipeInstanceId});
+    const itemReady=!d.recovery?.requiresPreparation||state.recoveryState==='ELIGIBLE_FOR_EVAC'||state.custody==='RECOVERED_TO_SGC';
+    byInstance.set(d.instanceId,{instanceId:d.instanceId,label:d.playerLabel,stageId:d.stageId,quantity:state.physicalItem?.state.quantity??d.quantity??1,cost:(d.itemId?d.itemDefinition.storage.handlingCost*state.physicalItem.state.quantity:0)+(d.cargo?.reduce((sum,item)=>sum+item.custody.cost.extendedCost,0)??0)||d.quantity||1,collected:collected||!!state.securedForExtraction,status:state.custody==='RECOVERED_TO_SGC'?'Recovered':!itemReady||!condition(s,r.requiresState)?'Blocked':state.securedForExtraction?'Secured':collected?'Collected':'Available',recipeId:r.recipeInstanceId});
   }
   return [...byInstance.values()];
 }
 export function debriefOptions(m,s){
-  return {loot:lootEntries(m,s).map(e=>({...e,eligible:e.status!=='Blocked'&&returnRoute(m,{...s,currentStageId:e.stageId})!==null,reason:e.status==='Blocked'?'Recovery requirements not met':returnRoute(m,{...s,currentStageId:e.stageId})===null?'No traversable route to Gate':null})),people:m.instances.filter(d=>d.mapGlyph==='PERSON'&&s.stageStates[d.stageId].explored&&['CAPTURED','SURRENDERED'].includes(s.instanceStates[d.instanceId].combatState)).map(d=>({instanceId:d.instanceId,label:d.playerLabel,stageId:d.stageId,state:s.instanceStates[d.instanceId].combatState,eligible:returnRoute(m,{...s,currentStageId:d.stageId})!==null,reason:returnRoute(m,{...s,currentStageId:d.stageId})===null?'No traversable route to Gate':null}))};
+  const route=id=>returnRoute(m,{...s,currentStageId:id},{secure:true})!==null;
+  const delivered=id=>['AT_GATE','RECOVERED_TO_SGC'].includes(s.instanceStates[id]?.custody);
+  return {loot:lootEntries(m,s).map(e=>({...e,eligible:e.status!=='Blocked'&&(delivered(e.instanceId)||route(e.stageId)),reason:e.status==='Blocked'?'Recovery requirements not met':!delivered(e.instanceId)&&!route(e.stageId)?'No secure route to Gate':null})),people:m.instances.filter(d=>d.mapGlyph==='PERSON'&&s.stageStates[d.stageId].explored&&['CAPTURED','SURRENDERED'].includes(s.instanceStates[d.instanceId].combatState)).map(d=>({instanceId:d.instanceId,label:d.playerLabel,stageId:d.stageId,state:s.instanceStates[d.instanceId].combatState,eligible:delivered(d.instanceId)||route(d.stageId),reason:!delivered(d.instanceId)&&!route(d.stageId)?'No secure route to Gate':null}))};
 }
 // Debrief recovery follows a valid known path to the Gate. Physical IDs persist.
 // Room destinations remain admission requests until room capacity is validated.
@@ -29,6 +31,7 @@ export function finalizeDebrief(m,s,{holdingIds=[],receivingIds=[]}){
   for(const id of receivingIds){const d=m.indexes.instances[id];if(d.itemId&&!validPhysicalItem(s.instanceStates[id].physicalItem,id,d.itemId))throw Error('Invalid recovery item state or identity.');}
   const requests=[...holdingIds.map(instanceId=>({instanceId,destination:'HOLDING',status:'AWAITING_ADMISSION',cost:1})),...receivingIds.map(instanceId=>({instanceId,destination:'RECEIVING',status:'AWAITING_ADMISSION',cost:options.loot.find(e=>e.instanceId===instanceId).cost,cargo:structuredClone(m.indexes.instances[instanceId].cargo??[])}))];
   for(const request of requests){
+    request.source={simulator:'offworld-sandbox',missionId:m.mission.missionId};
     const item=s.instanceStates[request.instanceId].physicalItem;
     if(!item)continue;
     // One stable instance payload, including field findings, survives the admission request.

@@ -1,0 +1,450 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://simulator.invalid/mission-author/dynamic-draft.schema.json",
+  "title": "Mission Author dynamic possibilities",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "information",
+    "incidents",
+    "events",
+    "complications"
+  ],
+  "properties": {
+    "format": {
+      "const": "mission-author-dynamic-draft-1"
+    },
+    "status": {
+      "const": "DYNAMICS"
+    },
+    "information": {
+      "$ref": "information-draft.schema.json"
+    },
+    "incidents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "possibilityId",
+          "catalogId",
+          "sourceIncidentId",
+          "stageId",
+          "subjectInstanceIds",
+          "sourceState",
+          "activation",
+          "lifecycle",
+          "executionStatus"
+        ],
+        "properties": {
+          "possibilityId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalogId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceIncidentId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subjectInstanceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "sourceState": {
+            "enum": [
+              "DORMANT",
+              "ACTIVE"
+            ]
+          },
+          "activation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "condition"
+            ],
+            "properties": {
+              "mode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "condition": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            }
+          },
+          "lifecycle": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "detection",
+              "investigation",
+              "resolution",
+              "restoration"
+            ],
+            "properties": {
+              "detection": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "sources"
+                ],
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "BENCHMARK_REFERENCE",
+                      "UNRESOLVED"
+                    ]
+                  },
+                  "sources": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "kind",
+                        "id"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "missionObservation",
+                            "missionInstance",
+                            "missionRecipe"
+                          ]
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "investigation": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "sources"
+                ],
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "BENCHMARK_REFERENCE",
+                      "UNRESOLVED"
+                    ]
+                  },
+                  "sources": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "kind",
+                        "id"
+                      ],
+                      "properties": {
+                        "kind": {
+                          "enum": [
+                            "missionObservation",
+                            "missionInstance",
+                            "missionRecipe"
+                          ]
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "resolution": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "sourceIncidentId",
+                  "mode",
+                  "condition"
+                ],
+                "properties": {
+                  "status": {
+                    "const": "BENCHMARK_REFERENCE"
+                  },
+                  "sourceIncidentId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "mode": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "condition": {
+                    "type": [
+                      "object",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "restoration": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "status",
+                  "sources"
+                ],
+                "properties": {
+                  "status": {
+                    "const": "UNRESOLVED"
+                  },
+                  "sources": {
+                    "type": "array",
+                    "maxItems": 0
+                  }
+                }
+              }
+            }
+          },
+          "executionStatus": {
+            "const": "UNRESOLVED"
+          }
+        }
+      },
+      "maxItems": 2
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "possibilityId",
+          "catalogId",
+          "sourceBindingId",
+          "originIncidentIds",
+          "subjectInstanceIds",
+          "triggerIntent",
+          "effectIntent",
+          "executionStatus"
+        ],
+        "properties": {
+          "possibilityId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalogId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceBindingId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "originIncidentIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "subjectInstanceIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "triggerIntent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "eventArchetypeId",
+              "provenance"
+            ],
+            "properties": {
+              "eventArchetypeId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "provenance": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "bindingId",
+                    "eventArchetypeId",
+                    "conditions",
+                    "effects",
+                    "once"
+                  ],
+                  "properties": {
+                    "bindingId": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "eventArchetypeId": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "conditions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "effects": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "once": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "effectIntent": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "executionStatus": {
+            "const": "UNRESOLVED"
+          }
+        }
+      },
+      "maxItems": 3
+    },
+    "complications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "possibilityId",
+          "catalogId",
+          "source",
+          "intent",
+          "executionStatus"
+        ],
+        "properties": {
+          "possibilityId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalogId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "id"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "missionTransition",
+                  "gate"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "intent": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "state"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "ACCESS_RESTRICTION"
+                  },
+                  "state": {
+                    "const": "LOCKED"
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "kind",
+                  "maxContinuousConnectionMinutes",
+                  "elapsedSeconds",
+                  "onMaxDurationEvent"
+                ],
+                "properties": {
+                  "kind": {
+                    "const": "TIME_PRESSURE"
+                  },
+                  "maxContinuousConnectionMinutes": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "elapsedSeconds": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "onMaxDurationEvent": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            ]
+          },
+          "executionStatus": {
+            "const": "UNRESOLVED"
+          }
+        }
+      },
+      "maxItems": 2
+    }
+  }
+}

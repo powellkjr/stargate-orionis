@@ -1,0 +1,163 @@
+{
+  "version": 2,
+  "actId": "BENCHMARK_CONTEXT",
+  "knownFacts": [
+    "destination-is-small-supply-mining-operation",
+    "allied-operative-embedded-here",
+    "operative-communications-stopped",
+    "operative-transmitter-code-known",
+    "PULSED_POWER_I",
+    "ELECTROMAGNETIC_ACCELERATION_I"
+  ],
+  "destinations": [
+    {
+      "id": "benchmark-supply-mine-001",
+      "version": 2,
+      "sourceType": "HAVEN_REQUEST",
+      "realityFacts": [
+        "operative-communications-stopped"
+      ],
+      "roleBindings": [
+        {
+          "roleId": "SUBJECT",
+          "instanceId": "operative-01"
+        },
+        {
+          "roleId": "WITNESS",
+          "instanceId": "worker-yard-01"
+        },
+        {
+          "roleId": "LOCAL_AUTHORITY",
+          "instanceId": "mcguffin-01"
+        },
+        {
+          "roleId": "GUARD",
+          "instanceId": "guard-yard-01"
+        },
+        {
+          "roleId": "GUARD",
+          "instanceId": "guard-yard-02"
+        },
+        {
+          "roleId": "EVIDENCE_SOURCE",
+          "instanceId": "evidence-archive-01"
+        },
+        {
+          "roleId": "RECOVERY_OBJECT",
+          "instanceId": "lab-mounted-rifle-01"
+        },
+        {
+          "roleId": "HAZARD_SOURCE",
+          "instanceId": "radiation-source-01"
+        },
+        {
+          "roleId": "PATIENT",
+          "instanceId": "patient-01"
+        }
+      ],
+      "stageBindings": [
+        {
+          "stageId": "stage-gate-yard",
+          "purposeIds": [
+            "ARRIVAL",
+            "EXIT_ROUTE"
+          ],
+          "environmentIds": [
+            "GATE_DISTRICT"
+          ]
+        },
+        {
+          "stageId": "stage-outer-yard",
+          "purposeIds": [
+            "TRANSIT"
+          ],
+          "environmentIds": [
+            "GATE_DISTRICT"
+          ]
+        },
+        {
+          "stageId": "stage-main-hall",
+          "purposeIds": [
+            "TRANSIT",
+            "PRIMARY_SUBJECT",
+            "SUPPORTING_CLUE"
+          ],
+          "environmentIds": [
+            "ADMINISTRATIVE"
+          ]
+        },
+        {
+          "stageId": "stage-holding-area",
+          "purposeIds": [
+            "PRIMARY_SUBJECT",
+            "SUPPORTING_CLUE"
+          ],
+          "environmentIds": [
+            "MEDICAL"
+          ]
+        },
+        {
+          "stageId": "stage-processing",
+          "purposeIds": [
+            "TRANSIT",
+            "PRIMARY_SUBJECT",
+            "SUPPORTING_CLUE",
+            "OPTIONAL_RECOVERY"
+          ],
+          "environmentIds": [
+            "INDUSTRIAL"
+          ]
+        },
+        {
+          "stageId": "stage-security-hall",
+          "purposeIds": [
+            "TRANSIT",
+            "SUPPORTING_CLUE"
+          ],
+          "environmentIds": [
+            "ADMINISTRATIVE"
+          ]
+        },
+        {
+          "stageId": "stage-overseer-office",
+          "purposeIds": [
+            "SUPPORTING_CLUE",
+            "OPTIONAL_RECOVERY"
+          ],
+          "environmentIds": [
+            "ADMINISTRATIVE"
+          ]
+        },
+        {
+          "stageId": "stage-hidden-store",
+          "purposeIds": [
+            "OPTIONAL_RECOVERY"
+          ],
+          "environmentIds": [
+            "INDUSTRIAL"
+          ]
+        },
+        {
+          "stageId": "stage-hidden-safe",
+          "purposeIds": [
+            "SUPPORTING_CLUE",
+            "OPTIONAL_RECOVERY"
+          ],
+          "environmentIds": [
+            "ADMINISTRATIVE"
+          ]
+        },
+        {
+          "stageId": "stage-analysis-lab",
+          "purposeIds": [
+            "SUPPORTING_CLUE",
+            "OPTIONAL_RECOVERY"
+          ],
+          "environmentIds": [
+            "LABORATORY"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -91,9 +91,11 @@ export function compileMission(input,catalog) {
   }
   const singles={stageId:'stages',fromStageId:'stages',toStageId:'stages',instanceId:'instances',subjectInstanceId:'instances',sourceInstanceId:'instances',assetInstanceId:'instances',boundPersonId:'instances',linkedSystemId:'instances',targetId:'interactionTargets',objectiveId:'objectives',incidentId:'incidents',createsDiscoveryId:'discoveries',transitionId:'transitions'};
   const plural={stageIds:'stages',fromStageIds:'stages',instanceIds:'instances',sourceInstanceIds:'instances',participantIds:'instances',observationIds:'observations',supportsObservationIds:'observations',interactionTargetIds:'interactionTargets',revealsInteractionIds:'interactionTargets',recipeInstanceIds:'recipes',incidentIds:'incidents'};
+  for(const i of m.instances)if(i.mapPosition){const p=i.mapPosition;if(!Number.isFinite(p.x)||!Number.isFinite(p.y)||!indexes.stages[i.stageId]?.cells.some(c=>Math.floor(p.x)===c.x&&Math.floor(p.y)===c.y))fail(i.instanceId,'mapPosition must lie inside its Stage');}
   const cargoIds=new Set(m.instances.map(i=>i.instanceId));
   for(const container of m.instances)for(const item of container.cargo??[]){
     if(typeof item.instanceId!=='string'||cargoIds.has(item.instanceId)||!item.itemId||!item.reality||!item.knowledge||item.custody?.containerId!==container.instanceId||!Number.isInteger(item.custody?.cost?.extendedCost)||item.custody.cost.extendedCost<1)fail(container.instanceId,'invalid or duplicate cargo instance');
+    if(catalog.itemDefinitions){const def=catalog.itemDefinitions[item.itemId],quantity=item.state?.quantity??1;if(!def||!Number.isInteger(def.storage?.handlingCost)||def.storage.handlingCost<1||!Number.isInteger(quantity)||quantity<1)fail(container.instanceId,'shared cargo handling definition required');else item.custody.cost={unitCost:def.storage.handlingCost,extendedCost:def.storage.handlingCost*quantity};}
     cargoIds.add(item.instanceId);
   }
   function walk(value,path) {
@@ -112,6 +114,7 @@ export function compileMission(input,catalog) {
     if(!value||typeof value!=='object')return;
     if(value.type==='STAGE_STATE'&&(!indexes.stages[value.stageId]||!['socialPassage','securityState'].includes(value.field)||!Object.hasOwn(value,'equals')))fail(path,'invalid Stage condition');
     if(value.type==='ITEM_STATE'&&(!indexes.instances[value.instanceId]?.itemId||typeof value.field!=='string'||!Object.hasOwn(value,'equals')))fail(path,'invalid physical item condition');
+    if(value.type==='TRANSITION_STATE'&&(!indexes.transitions[value.transitionId]||!['OPEN','CLOSED','LOCKED'].includes(value.equals)))fail(path,'invalid transition condition');
     if(value.type==='NPC_STATE'){
       if(!indexes.instances[value.instanceId]?.npcState)fail(path,'NPC state required');
       const keys=['type','instanceId','disposition','suspicionAtLeast','suspicionBelow','hostilityAtLeast','hostilityBelow'];
@@ -122,6 +125,7 @@ export function compileMission(input,catalog) {
     for(const [key,item] of Object.entries(value))validateNpcConditions(item,`${path}.${key}`);
   }
   validateNpcConditions(m,'mission');
+  for(const i of m.incidents)if(i.activationCondition&&i.kind!=='COMBAT')fail(i.incidentId,'automatic hostile activation requires a combat Incident');
   for(const i of m.incidents)if(i.implemented&&i.kind==='COMBAT'){
     if(!Array.isArray(i.participantIds)||!i.participantIds.length)fail(i.incidentId,'combat needs participants');
     for(const key of ['roundSeconds','hostileHealth','hostileDamage'])if(!(i[key]>0))fail(i.incidentId,`invalid ${key}`);
@@ -154,7 +158,8 @@ export function compileMission(input,catalog) {
     for(const mod of r.durationModifiers??[])if(!mod.when||!(mod.durationMinutes>0)||typeof mod.label!=='string')fail(r.recipeInstanceId,'invalid duration modifier');
     if(r.implemented){
       if(!['UNTRAINED','SOLDIER','SCOUT','TECHNICIAN','SCIENTIST','MEDIC','DIPLOMAT'].includes(r.profession)||!Number.isInteger(r.chargeCost)||r.chargeCost<0)fail(r.recipeInstanceId,'invalid Profession or charge cost');
-      for(const e of r.effects??[]){
+      if(r.onCompleteEffects!==undefined&&!Array.isArray(r.onCompleteEffects))fail(r.recipeInstanceId,'onCompleteEffects must be an array');
+      for(const e of [...r.effects??[],...Array.isArray(r.onCompleteEffects)?r.onCompleteEffects:[]]){
         if(npcEffectTypes.includes(e.type))validateNpcEffect(e,indexes.instances,fail,r.recipeInstanceId);
         else if(['SET_ITEM_STATE','ADD_INSTANCE_FINDING'].includes(e.type)){
           const item=indexes.instances[e.instanceId];
@@ -176,6 +181,17 @@ export function compileMission(input,catalog) {
     if(t.transitionId){const edge=indexes.transitions[t.transitionId];if(edge&&edge.fromStageId!==t.stageId&&edge.toStageId!==t.stageId)fail(t.targetId,'target is not beside transition');}
     else if(indexes.instances[t.instanceId]?.stageId!==t.stageId)fail(t.targetId,'target and instance stages differ');
   }
+  const workGroupIds=new Set();
+  if(m.workGroups!==undefined&&!Array.isArray(m.workGroups))fail('workGroups','expected array');
+  else for(const g of m.workGroups??[]){
+    if(!g||typeOf(g)!=='object'){fail('workGroups','expected group object');continue;}
+    if(typeof g.workGroupId!=='string'||!g.workGroupId||workGroupIds.has(g.workGroupId)||!indexes.stages[g.stageId]||!Array.isArray(g.recipeInstanceIds)||!g.recipeInstanceIds.length||new Set(g.recipeInstanceIds).size!==g.recipeInstanceIds.length)fail('workGroups','invalid group definition');
+    workGroupIds.add(g.workGroupId);
+    for(const id of Array.isArray(g.recipeInstanceIds)?g.recipeInstanceIds:[]){const r=indexes.recipes[id];if(!r||r.workGroupId!==g.workGroupId||indexes.interactionTargets[r.targetId]?.stageId!==g.stageId)fail(g.workGroupId,'group Recipes must be local and bound to the group');}
+    if(!Array.isArray(g.effects))fail(g.workGroupId,'group outcomes must be an array');
+    else for(const e of g.effects)if(!e||(e.type==='ADD_KNOWLEDGE'?typeof e.factId!=='string'||!e.factId:e.type==='SET_DETECTION_STATE'?!indexes.instances[e.instanceId]||!fieldStateEffects.SET_DETECTION_STATE.values.includes(e.value):true))fail(g.workGroupId,'unsupported group outcome');
+  }
+  for(const r of m.recipes)if(r.workGroupId&&!workGroupIds.has(r.workGroupId))fail(r.recipeInstanceId,'unknown work group');
   if(indexes.instances[m.gate?.instanceId]?.stageId!==m.gate?.stageId)fail('gate','instance must be on Gate stage');
   if(m.stages.filter(s=>s.initialVisibility==='VISIBLE').length!==1||indexes.stages[m.gate?.stageId]?.initialVisibility!=='VISIBLE')fail('stages','Wave 1 starts with exactly the Gate stage visible');
   if(m.gate?.maxContinuousConnectionMinutes!==37)fail('gate','expected 37 minute connection limit');

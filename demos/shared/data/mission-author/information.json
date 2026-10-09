@@ -1,0 +1,55 @@
+{
+  "format": "mission-author-information-1",
+  "version": 1,
+  "facts": [
+    {
+      "factRoleId": "SUBJECT_LOCATION",
+      "subjectRoleId": "SUBJECT",
+      "truth": {
+        "kind": "CURRENT_STAGE"
+      },
+      "clues": [
+        {
+          "id": "operative-identity-observation",
+          "clueSourceId": "PHYSICAL_OBSERVATION",
+          "intentId": "INSPECT",
+          "source": {
+            "kind": "missionObservation",
+            "id": "obs-operative-identity"
+          },
+          "knowledgeId": "operative-located"
+        },
+        {
+          "id": "operative-contact-testimony",
+          "clueSourceId": "NPC_TESTIMONY",
+          "intentId": "TALK",
+          "source": {
+            "kind": "missionDialogue",
+            "id": "dialogue-operative"
+          },
+          "knowledgeId": "operative-located"
+        }
+      ]
+    },
+    {
+      "factRoleId": "DEVICE_PURPOSE",
+      "subjectRoleId": "RECOVERY_OBJECT",
+      "truth": {
+        "kind": "REALITY_TAG",
+        "tag": "WEAPON"
+      },
+      "clues": [
+        {
+          "id": "lab-tactical-role-observation",
+          "clueSourceId": "PHYSICAL_OBSERVATION",
+          "intentId": "INSPECT",
+          "source": {
+            "kind": "missionObservation",
+            "id": "obs-lab-tactical-role"
+          },
+          "knowledgeId": "lab-device-tactical-role-known"
+        }
+      ]
+    }
+  ]
+}

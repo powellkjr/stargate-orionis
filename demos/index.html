@@ -55,6 +55,8 @@
     .status{padding:5px 8px;border:1px solid rgba(74,222,128,.35);border-radius:999px;color:var(--green);font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
     h2{margin:20px 0 8px;font-size:1.25rem;line-height:1.15}
     .demo-card p{margin:0;color:var(--muted)}
+    .demo-card .save-scope{margin-top:12px;font-size:.8rem}
+    .save-scope strong{color:var(--text)}
     .card-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:24px;color:var(--blue);font-weight:800}
     .arrow{font-size:1.25rem;transition:transform .15s ease}.demo-card:hover .arrow,.demo-card:focus-visible .arrow{transform:translateX(4px)}
     footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem}
@@ -73,43 +75,55 @@
     <header>
       <p class="eyebrow">Stargate Orionis / Browser Prototypes</p>
       <h1>Simulation demos</h1>
-      <p class="intro"><strong>Explore the current prototypes.</strong> These small instruments test room architecture, staffing, strategic map generation, and offworld mission flow before production implementation.</p>
+      <p class="intro"><strong>Explore all six current prototypes.</strong> Launch missions, review authored drafts, configure the shared base and personnel, or inspect strategic map generation. Each demo below identifies its current scope and save behavior.</p>
     </header>
 
     <main class="demo-grid" aria-label="Available demos">
       <a class="demo-card" href="./offworld-sandbox/">
         <div class="card-top"><span class="icon" aria-hidden="true">✦</span><span class="status">Playable</span></div>
         <h2>Offworld Mission Sandbox</h2>
-        <p>Assemble an expedition party, deploy through the Gate, explore a mission map, manage the connection, and extract the team.</p>
+        <p>Equip an expedition party, deploy into the Missing Operative benchmark, explore, work, negotiate and fight. Evacuate people and recover items with shared-base capacity checks.</p>
+        <p class="save-scope"><strong>Persistence:</strong> Recovery confirmation and reservation reset require the writable local server.</p>
         <div class="card-footer"><span>Open mission sandbox</span><span class="arrow" aria-hidden="true">→</span></div>
       </a>
 
       <a class="demo-card" href="./room-sandbox/">
         <div class="card-top"><span class="icon" aria-hidden="true">▦</span><span class="status">Playable</span></div>
         <h2>Room Sandbox</h2>
-        <p>Place physical rooms, inspect base tiles, join compatible rooms, upgrade construction tiers, and generate procedural layouts.</p>
+        <p>Place physical rooms, inspect base tiles, join and split compatible Room Groups, upgrade construction tiers, and generate procedural base layouts.</p>
+        <p class="save-scope"><strong>Persistence:</strong> Save shared base writes validated local JSON through the writable server.</p>
         <div class="card-footer"><span>Open room sandbox</span><span class="arrow" aria-hidden="true">→</span></div>
       </a>
 
       <a class="demo-card" href="./room-staffing-demo/">
-        <div class="card-top"><span class="icon" aria-hidden="true">◎</span><span class="status">Playable</span></div>
+        <div class="card-top"><span class="icon" aria-hidden="true">◎</span><span class="status">Instrument</span></div>
         <h2>Room Staffing Demo</h2>
-        <p>Experiment with joined-room capacity, staff slots, prefab personnel, resources, theories, and room configuration state.</p>
+        <p>Inspect joined-room staffing, functional tabs, storage compatibility and capacity. Place personnel, item and Theory references, and test persistent Receiving instances within the page session; process buttons are not executable.</p>
+        <p class="save-scope"><strong>Persistence:</strong> Receiving queues are session-only; reload restarts their simulation.</p>
         <div class="card-footer"><span>Open staffing demo</span><span class="arrow" aria-hidden="true">→</span></div>
       </a>
 
       <a class="demo-card" href="./world-map-simulator/">
-        <div class="card-top"><span class="icon" aria-hidden="true">◌</span><span class="status">Playable</span></div>
+        <div class="card-top"><span class="icon" aria-hidden="true">◌</span><span class="status">Instrument</span></div>
         <h2>World Map Simulator</h2>
-        <p>Generate Stargate network geometry, inspect routes and Havens, test failures, evaluate campaigns, and explore map projections.</p>
+        <p>Generate seeded Stargate networks and campaigns, inspect routes and Havens, test infrastructure failures, compare SGC Knowledge with debug Reality, and evaluate seeds in batches.</p>
+        <p class="save-scope"><strong>Persistence:</strong> Export debug snapshots and batch results; reproduce maps with their seed and settings.</p>
         <div class="card-footer"><span>Open world map</span><span class="arrow" aria-hidden="true">→</span></div>
       </a>
 
       <a class="demo-card" href="./portrait-simulator/">
         <div class="card-top"><span class="icon" aria-hidden="true">☺</span><span class="status">Instrument</span></div>
         <h2>Character &amp; Portrait Editor</h2>
-        <p>Compose personnel busts from interchangeable pixel parts, tune skin, hair, uniform and collar colors, and export the appearance record the roster icon and map token already read.</p>
-        <div class="card-footer"><span>Open portrait simulator</span><span class="arrow" aria-hidden="true">→</span></div>
+        <p>Edit personnel portraits, character stats, Profession progression and configured Tools. Preview expertise and the appearance used by roster icons and Offworld map tokens.</p>
+        <p class="save-scope"><strong>Persistence:</strong> Shared appearance, stats, progression and Tool saves use the writable local server.</p>
+        <div class="card-footer"><span>Open character editor</span><span class="arrow" aria-hidden="true">→</span></div>
+      </a>
+      <a class="demo-card" href="./mission-authoring-simulator/">
+        <div class="card-top"><span class="icon" aria-hidden="true">◇</span><span class="status">Author review</span></div>
+        <h2>Mission Author</h2>
+        <p>Compose deterministic source-backed mission drafts, review Stages, clues, interactions and recovery intent, inspect selection traces, and assess unresolved Finalizer readiness. Drafts are not deployed playable missions.</p>
+        <p class="save-scope"><strong>Persistence:</strong> Import/export Draft and trace JSON; no shared saves or live mission changes.</p>
+        <div class="card-footer"><span>Open Mission Author</span><span class="arrow" aria-hidden="true">→</span></div>
       </a>
     </main>
 

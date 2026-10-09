@@ -1,0 +1,406 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://simulator.invalid/mission-author/result-draft.schema.json",
+  "title": "Mission Author prospective result draft",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "status",
+    "dynamic",
+    "opportunities",
+    "recoveryIntents",
+    "consequences"
+  ],
+  "properties": {
+    "format": {
+      "const": "mission-author-result-draft-1"
+    },
+    "status": {
+      "const": "RESULT_INTENT"
+    },
+    "dynamic": {
+      "$ref": "dynamic-draft.schema.json"
+    },
+    "opportunities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "opportunityId",
+          "catalogId",
+          "instanceId",
+          "recoveryIntentId",
+          "status"
+        ],
+        "properties": {
+          "opportunityId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalogId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recoveryIntentId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "BENCHMARK_REFERENCE"
+          }
+        }
+      },
+      "maxItems": 2
+    },
+    "recoveryIntents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "recoveryIntentId",
+          "instanceId",
+          "stageId",
+          "recoveryRoleId",
+          "destination",
+          "sourceCustody",
+          "physicalItem",
+          "cargo",
+          "preparationRequired",
+          "subjectVisibilityRequirement",
+          "methods",
+          "handlingCost",
+          "capacity",
+          "transportStatus",
+          "applicationStatus"
+        ],
+        "properties": {
+          "recoveryIntentId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recoveryRoleId": {
+            "enum": [
+              "MISSION_EVACUEE",
+              "RECEIVING",
+              "PARTY_STORAGE",
+              "HOLDING"
+            ]
+          },
+          "destination": {
+            "enum": [
+              "GATE",
+              "RECEIVING",
+              "PARTY_STORAGE",
+              "HOLDING"
+            ]
+          },
+          "sourceCustody": {
+            "const": "LOCAL"
+          },
+          "physicalItem": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "cargo": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "preparationRequired": {
+            "type": "boolean"
+          },
+          "subjectVisibilityRequirement": {
+            "type": [
+              "object",
+              "null"
+            ]
+          },
+          "methods": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "sourceMethodId",
+                "targetId",
+                "profession",
+                "minimumTier",
+                "requiredToolService",
+                "chargeCost",
+                "durationMinutes",
+                "requiresKnowledge",
+                "hiddenUntilKnowledge",
+                "requiresState",
+                "requiresLocated",
+                "requiresGateRoute",
+                "effects",
+                "onCompleteEffects",
+                "executionStatus"
+              ],
+              "properties": {
+                "sourceMethodId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "targetId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "profession": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minimumTier": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "requiredToolService": {
+                  "type": "string"
+                },
+                "chargeCost": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "durationMinutes": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "requiresKnowledge": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "hiddenUntilKnowledge": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "requiresState": {
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                },
+                "requiresLocated": {
+                  "type": "boolean"
+                },
+                "requiresGateRoute": {
+                  "type": "boolean"
+                },
+                "effects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "onCompleteEffects": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "executionStatus": {
+                  "const": "UNRESOLVED"
+                }
+              }
+            },
+            "minItems": 1
+          },
+          "handlingCost": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "source"
+            ],
+            "properties": {
+              "value": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "source": {
+                "enum": [
+                  "SHARED_ITEM_DEFINITIONS",
+                  null
+                ]
+              }
+            }
+          },
+          "capacity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "owner",
+              "status"
+            ],
+            "properties": {
+              "owner": {
+                "enum": [
+                  "SHARED_BASE_RECOVERY",
+                  "SHARED_PARTY_STORAGE",
+                  "MISSION_EVACUATION"
+                ]
+              },
+              "status": {
+                "const": "PENDING_SHARED_ADMISSION"
+              }
+            }
+          },
+          "transportStatus": {
+            "const": "UNRESOLVED"
+          },
+          "applicationStatus": {
+            "const": "NOT_APPLIED"
+          }
+        }
+      }
+    },
+    "consequences": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "consequenceId",
+          "catalogId",
+          "source",
+          "instanceId",
+          "intent",
+          "applicationStatus"
+        ],
+        "properties": {
+          "consequenceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "catalogId": {
+            "enum": [
+              "CUSTODY",
+              "KNOWLEDGE",
+              "NPC_STATE"
+            ]
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "id"
+            ],
+            "properties": {
+              "kind": {
+                "enum": [
+                  "RECOVERY_INTENT",
+                  "CLUE",
+                  "SOURCE_METHOD"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "intent": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "destination",
+                  "requiresSharedAdmission"
+                ],
+                "properties": {
+                  "destination": {
+                    "enum": [
+                      "GATE",
+                      "RECEIVING",
+                      "PARTY_STORAGE",
+                      "HOLDING"
+                    ]
+                  },
+                  "requiresSharedAdmission": {
+                    "const": true
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "knowledgeId",
+                  "requiresSourceCompletion",
+                  "institutionalUnlock"
+                ],
+                "properties": {
+                  "knowledgeId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "requiresSourceCompletion": {
+                    "const": true
+                  },
+                  "institutionalUnlock": {
+                    "const": false
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "effects",
+                  "requiresSourceCompletion"
+                ],
+                "properties": {
+                  "effects": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "minItems": 1
+                  },
+                  "requiresSourceCompletion": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          },
+          "applicationStatus": {
+            "const": "NOT_APPLIED"
+          }
+        }
+      }
+    }
+  }
+}

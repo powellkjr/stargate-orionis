@@ -1,0 +1,236 @@
+{
+  "type": "object",
+  "required": [
+    "format",
+    "status",
+    "destinationId",
+    "hookId",
+    "patternId",
+    "sourceMissionId",
+    "entryStageId",
+    "exitStageId",
+    "stages",
+    "transitions",
+    "roles",
+    "objectives",
+    "factSockets"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format": {
+      "const": "mission-author-draft-1"
+    },
+    "status": {
+      "const": "SKELETON"
+    },
+    "destinationId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hookId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "patternId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceMissionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entryStageId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exitStageId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "stageId",
+          "sourceStageId",
+          "archetypeId",
+          "purposeIds",
+          "environmentId"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceStageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "archetypeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "purposeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          },
+          "environmentId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "transitionId",
+          "sourceTransitionId",
+          "fromStageId",
+          "toStageId",
+          "accessStatus"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "transitionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceTransitionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fromStageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toStageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "accessStatus": {
+            "const": "UNRESOLVED"
+          }
+        }
+      }
+    },
+    "roles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "roleId",
+          "instanceId",
+          "stageId"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "roleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "objectives": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "objectiveId",
+          "intent",
+          "roleId",
+          "instanceId",
+          "stageId",
+          "after"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "objectiveId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "intent": {
+            "enum": [
+              "LOCATE",
+              "EVACUATE",
+              "INVESTIGATE",
+              "RECOVER"
+            ]
+          },
+          "roleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "after": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "factRoleId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "factSockets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "factRoleId",
+          "status",
+          "truth"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "factRoleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "const": "UNRESOLVED"
+          },
+          "truth": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Semantic Mission Draft skeleton, not an executable Offworld mission"
+}

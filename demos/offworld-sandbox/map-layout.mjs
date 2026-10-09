@@ -1,16 +1,14 @@
-import {condition,recipeChoices} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
-import {lootEntries} from '../shared/offworld/recovery.mjs?v=dialogue-doors-1';
 import {surfaceGeometry,tileSlots} from '../shared/map/renderer.mjs?v=dialogue-doors-1';
 export const stageEdges=cells=>surfaceGeometry(cells).flatMap(t=>t.edges);
 export const stageSlots=cells=>tileSlots(cells);
 export function mapLayout(m,s){
-  const points={},obstacles=[],knownLoot=new Set(s.status==='ACTIVE'?lootEntries(m,s).map(r=>r.instanceId):[]);
+  const points={},obstacles=[];
   for(const stage of m.stages){
     const slots=stageSlots(stage.cells),occupied=[];
     const label=stage.cells[0];
     occupied.push({x:label.x*100+50,y:label.y*100+12,halfWidth:50,halfHeight:12});
     const vectors={NORTH:[0,-1],EAST:[1,0],SOUTH:[0,1],WEST:[-1,0]};
-    for(const t of m.transitions.filter(t=>s.transitionStates[t.transitionId].known&&(t.fromStageId===stage.stageId||t.toStageId===stage.stageId))){
+    for(const t of m.transitions.filter(t=>(t.fromStageId===stage.stageId||t.toStageId===stage.stageId))){
       const [dx,dy]=vectors[t.directionFrom],cell=m.indexes.stages[t.fromStageId].cells.find(c=>m.indexes.stages[t.toStageId].cells.some(b=>b.x===c.x+dx&&b.y===c.y+dy));
       const x=(cell.x+.5+dx*.5)*100,y=(cell.y+.5+dy*.5)*100;
       occupied.push({x,y,halfWidth:27,halfHeight:27});
@@ -25,12 +23,11 @@ export function mapLayout(m,s){
       const point=candidates[0];if(!point)throw new Error(`No free map position in ${stage.stageId}`);
       points[id]=point;occupied.push({...point,radius});obstacles.push({...point,halfWidth:radius+3,halfHeight:radius+3});
     };
-    const visible=s.stageStates[stage.stageId].visibility;
-    const instances=m.instances.filter(i=>i.stageId===stage.stageId&&condition(s,i.revealedWhen)&&(knownLoot.has(i.instanceId)||s.instanceStates[i.instanceId].custody==='LOCAL'&&(visible==='VISIBLE'||visible==='PARTIAL'&&i.visibleWhenPartial)));
-    for(const d of instances){
-      const c=stage.cells[0];
+    const instances=m.instances.filter(i=>i.stageId===stage.stageId);
+    for(const [index,d] of instances.entries()){
+      const c=stage.cells[index%stage.cells.length];
       if(d.instanceId===m.gate.instanceId){const p={x:c.x*100+50,y:c.y*100+50};points[d.instanceId]=p;occupied.push({...p,radius:28});obstacles.push({...p,halfWidth:30,halfHeight:30});}
-      else reserve(d.instanceId,{x:c.x*100+37.5,y:c.y*100+37.5},d.mapGlyph==='PERSON'?8:10);
+      else reserve(d.instanceId,d.mapPosition?{x:d.mapPosition.x*100,y:d.mapPosition.y*100}:{x:c.x*100+25+(Math.floor(index/stage.cells.length)%2)*50,y:c.y*100+40+(Math.floor(index/(stage.cells.length*2))%2)*35},d.mapGlyph==='PERSON'?8:10);
     }
     for(const u of s.units.filter(u=>u.currentStageId===stage.stageId&&['ACTIVE_PARTY','STATIONED'].includes(u.partyStatus))){
       const work=s.activeWork.find(w=>w.actorId===u.unitId&&['MOVING_TO_TARGET','EXECUTING'].includes(w.status));

@@ -8,7 +8,9 @@ node demos/serve.mjs
 
 Open `http://127.0.0.1:8001/demos/` and choose any demo. Keep the terminal
 running; Ctrl+C stops it. No package installation or build step is required.
-The demo hub detects whether shared JSON saves are available.
+The demo hub lists all six demos with their current feature scope and persistence
+limits, and detects whether shared JSON saves are available. Mission Author reviews
+and exports drafts; it does not deploy them as playable Offworld missions.
 
 To use port 8000 instead, stop any Python/static server occupying that port:
 
@@ -62,6 +64,26 @@ repository workflow to publish updated static fixtures.
 
 The [Offworld guide](offworld-sandbox/README.md) documents automatic NPC openings,
 response-based speaker selection, checkpoint evacuation alternatives and the
-Analysis Lab Scientist/Technician handoff. Direct shared items preserve their
+Analysis Lab group search and Scientist/Technician handoff. Visitor doors require
+no hack, Holding work escalates guard suspicion, and Reset clears this mission's
+recovery reservations across runs. Direct shared items preserve their
 instance IDs and field findings in Receiving reservation payloads. Lab action
 requirements are explicitly provisional benchmark content.
+
+## Mission Author draft review
+
+The [Mission Author guide](mission-authoring-simulator/README.md) describes the
+semantic catalogs, read-only shared-data adapters, deterministic selection,
+rejection traces, connected objective/Stage/role skeletons and source-backed
+Fact/clue/interaction drafts, bounded dynamic possibilities and prospective
+opportunity/recovery/consequence intent. Run
+`node --test demos/mission-authoring-simulator/*.test.mjs`.
+Waves A–F include browser review, bounded optional-choice repair and Draft/trace
+JSON import/export. Open `/demos/mission-authoring-simulator/` through the same
+server, or choose Mission Author on the hub. Run its isolated Edge check with
+`node demos/mission-authoring-simulator/browser-smoke.mjs`. No shared saves change.
+Drafts preserve source topology and identities. Fact truths remain private author
+data; clues retain source requirements without granting Knowledge. Door access,
+general Profession-method derivation and runtime integration remain unresolved.
+Recovery capacity and consequence application stay with shared systems; authoring
+does not reserve slots, transfer assets or apply campaign changes.
