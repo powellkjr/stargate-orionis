@@ -1,0 +1,1288 @@
+{
+  "formatVersion": "0.1.0",
+  "mission": {
+    "missionId": "last-transmission-001",
+    "title": "The Last Transmission",
+    "missionType": [
+      "INVESTIGATION",
+      "LOCATE",
+      "EXTRACTION"
+    ],
+    "source": {
+      "type": "HAVEN_REQUEST",
+      "relationship": "ALLIED",
+      "request": "Investigate a distress call from a mountain relay station using an old allied recognition code."
+    },
+    "destinationId": "mountain-relay-001",
+    "seed": 271828,
+    "briefing": {
+      "playerText": "A distress call using an old allied recognition code has reached the SGC from a remote mountain relay station. Find the caller, verify the signal, and evacuate anyone who needs help. An armed salvage crew is reported nearby. Recommended team: Medic I with a medical kit, Technician I with a technical kit, Diplomat I, and Soldier. A Technician II kit offers an alternate route through the generator-room lock. Recover the transmission log if possible. No manufacturing Patterns or scientific Theories are expected as mission rewards.",
+      "specialIntel": [
+        "relay-allied-recognition-code-known"
+      ]
+    }
+  },
+  "map": {
+    "width": 6,
+    "height": 8,
+    "orientation": "TOP_DOWN",
+    "adjacency": "CARDINAL_ONLY",
+    "notes": "Six connected Stages. The generator room is behind one powered service lock."
+  },
+  "gate": {
+    "instanceId": "relay-gate-01",
+    "stageId": "relay-gate-clearing",
+    "initialConnectionState": "OPEN_TO_SGC",
+    "requiresOpeningChoice": true,
+    "maxContinuousConnectionMinutes": 37,
+    "onMaxDurationEvent": "event_wormhole_expired",
+    "closedGateAllowsLocalUse": true
+  },
+  "startingKnowledge": [
+    "relay-distress-call-received",
+    "relay-allied-recognition-code-known"
+  ],
+  "stages": [
+    {
+      "stageId": "relay-gate-clearing",
+      "archetypeId": "stage_gate_area",
+      "playerLabel": "Gate clearing",
+      "cells": [
+        {
+          "x": 2,
+          "y": 6
+        },
+        {
+          "x": 3,
+          "y": 6
+        },
+        {
+          "x": 2,
+          "y": 7
+        },
+        {
+          "x": 3,
+          "y": 7
+        }
+      ],
+      "initialVisibility": "VISIBLE",
+      "initialSecurityState": "SECURE",
+      "knownShapeAtStart": true,
+      "instanceIds": [
+        "relay-gate-01"
+      ],
+      "observationIds": [],
+      "interactionTargetIds": [],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "relay-approach-trail",
+      "archetypeId": "stage_hallway_basic",
+      "playerLabel": "Mountain approach",
+      "cells": [
+        {
+          "x": 2,
+          "y": 4
+        },
+        {
+          "x": 3,
+          "y": 4
+        },
+        {
+          "x": 2,
+          "y": 5
+        },
+        {
+          "x": 3,
+          "y": 5
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "instanceIds": [],
+      "observationIds": [
+        "relay-obs-tracks"
+      ],
+      "interactionTargetIds": [],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "relay-courtyard",
+      "archetypeId": "stage_room_basic",
+      "playerLabel": "Relay courtyard",
+      "cells": [
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 3
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNSECURE",
+      "instanceIds": [
+        "relay-rhel-01",
+        "relay-salvager-01",
+        "relay-salvager-02"
+      ],
+      "observationIds": [
+        "relay-obs-crew"
+      ],
+      "interactionTargetIds": [
+        "relay-target-rhel"
+      ],
+      "incidentIds": [
+        "relay-crew-combat"
+      ],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "relay-control-room",
+      "archetypeId": "stage_security_room",
+      "playerLabel": "Control room",
+      "cells": [
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 5,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 5,
+          "y": 3
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "instanceIds": [
+        "relay-transmission-log-01"
+      ],
+      "observationIds": [
+        "relay-obs-log"
+      ],
+      "interactionTargetIds": [
+        "relay-target-log",
+        "relay-target-service-door"
+      ],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "relay-maintenance-shelter",
+      "archetypeId": "stage_medical_holding",
+      "playerLabel": "Maintenance shelter",
+      "cells": [
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 3
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "instanceIds": [
+        "relay-taren-01"
+      ],
+      "observationIds": [
+        "relay-obs-caller",
+        "relay-obs-injury"
+      ],
+      "interactionTargetIds": [
+        "relay-target-taren"
+      ],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    },
+    {
+      "stageId": "relay-generator-room",
+      "archetypeId": "stage_processing_room",
+      "playerLabel": "Generator room",
+      "cells": [
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 5,
+          "y": 1
+        }
+      ],
+      "initialVisibility": "HIDDEN",
+      "initialSecurityState": "UNKNOWN",
+      "instanceIds": [
+        "relay-vessa-01"
+      ],
+      "observationIds": [
+        "relay-obs-engineer"
+      ],
+      "interactionTargetIds": [
+        "relay-target-vessa"
+      ],
+      "incidentIds": [],
+      "securityConditions": {
+        "noActiveIncidents": true,
+        "noActiveHostiles": true
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "transitionId": "relay-door-gate-trail",
+      "archetypeId": "door_routine",
+      "fromStageId": "relay-gate-clearing",
+      "toStageId": "relay-approach-trail",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH"
+    },
+    {
+      "transitionId": "relay-door-trail-courtyard",
+      "archetypeId": "door_routine",
+      "fromStageId": "relay-approach-trail",
+      "toStageId": "relay-courtyard",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH"
+    },
+    {
+      "transitionId": "relay-door-courtyard-control",
+      "archetypeId": "door_routine",
+      "fromStageId": "relay-courtyard",
+      "toStageId": "relay-control-room",
+      "directionFrom": "EAST",
+      "directionTo": "WEST"
+    },
+    {
+      "transitionId": "relay-door-courtyard-shelter",
+      "archetypeId": "door_routine",
+      "fromStageId": "relay-courtyard",
+      "toStageId": "relay-maintenance-shelter",
+      "directionFrom": "WEST",
+      "directionTo": "EAST"
+    },
+    {
+      "transitionId": "relay-door-control-generator",
+      "archetypeId": "door_hackable_basic",
+      "fromStageId": "relay-control-room",
+      "toStageId": "relay-generator-room",
+      "directionFrom": "NORTH",
+      "directionTo": "SOUTH",
+      "overrides": {
+        "initialState": "LOCKED",
+        "routine": false,
+        "requiredTechTier": 2,
+        "requiredToolService": "TECH_SERVICE_II"
+      }
+    }
+  ],
+  "instances": [
+    {
+      "instanceId": "relay-gate-01",
+      "archetypeId": "stargate_standard",
+      "stageId": "relay-gate-clearing",
+      "overrides": {
+        "operational": true
+      }
+    },
+    {
+      "instanceId": "relay-rhel-01",
+      "archetypeId": "npc_security_supervisor",
+      "stageId": "relay-courtyard",
+      "npcState": {
+        "disposition": "NEUTRAL",
+        "suspicion": 20,
+        "hostility": 0
+      },
+      "overrides": {
+        "name": "Commander Rhel",
+        "initialState": {
+          "combatState": "NEUTRAL"
+        },
+        "playerLabel": "Salvage commander"
+      },
+      "mapPosition": {
+        "x": 2.5,
+        "y": 2.35
+      },
+      "revealedWhen": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "instanceId": "relay-rhel-01",
+            "field": "combatState",
+            "equals": "NEUTRAL"
+          },
+          {
+            "instanceId": "relay-rhel-01",
+            "field": "combatState",
+            "equals": "ACTIVE"
+          },
+          {
+            "instanceId": "relay-rhel-01",
+            "field": "combatState",
+            "equals": "DOWN"
+          },
+          {
+            "instanceId": "relay-rhel-01",
+            "field": "combatState",
+            "equals": "SURRENDERED"
+          },
+          {
+            "instanceId": "relay-rhel-01",
+            "field": "combatState",
+            "equals": "CAPTURED"
+          }
+        ]
+      }
+    },
+    {
+      "instanceId": "relay-salvager-01",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "relay-courtyard",
+      "npcState": {
+        "disposition": "NEUTRAL",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      "overrides": {
+        "initialState": {
+          "combatState": "NEUTRAL"
+        },
+        "playerLabel": "Armed salvager"
+      },
+      "mapPosition": {
+        "x": 2.2,
+        "y": 3.4
+      },
+      "revealedWhen": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "instanceId": "relay-salvager-01",
+            "field": "combatState",
+            "equals": "NEUTRAL"
+          },
+          {
+            "instanceId": "relay-salvager-01",
+            "field": "combatState",
+            "equals": "ACTIVE"
+          },
+          {
+            "instanceId": "relay-salvager-01",
+            "field": "combatState",
+            "equals": "DOWN"
+          },
+          {
+            "instanceId": "relay-salvager-01",
+            "field": "combatState",
+            "equals": "SURRENDERED"
+          },
+          {
+            "instanceId": "relay-salvager-01",
+            "field": "combatState",
+            "equals": "CAPTURED"
+          }
+        ]
+      }
+    },
+    {
+      "instanceId": "relay-salvager-02",
+      "archetypeId": "npc_guard_poorly_trained",
+      "stageId": "relay-courtyard",
+      "npcState": {
+        "disposition": "NEUTRAL",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      "overrides": {
+        "initialState": {
+          "combatState": "NEUTRAL"
+        },
+        "playerLabel": "Armed salvager"
+      },
+      "mapPosition": {
+        "x": 3.6,
+        "y": 2.7
+      },
+      "revealedWhen": {
+        "type": "ANY",
+        "conditions": [
+          {
+            "instanceId": "relay-salvager-02",
+            "field": "combatState",
+            "equals": "NEUTRAL"
+          },
+          {
+            "instanceId": "relay-salvager-02",
+            "field": "combatState",
+            "equals": "ACTIVE"
+          },
+          {
+            "instanceId": "relay-salvager-02",
+            "field": "combatState",
+            "equals": "DOWN"
+          },
+          {
+            "instanceId": "relay-salvager-02",
+            "field": "combatState",
+            "equals": "SURRENDERED"
+          },
+          {
+            "instanceId": "relay-salvager-02",
+            "field": "combatState",
+            "equals": "CAPTURED"
+          }
+        ]
+      }
+    },
+    {
+      "instanceId": "relay-taren-01",
+      "archetypeId": "npc_undercover_operative",
+      "stageId": "relay-maintenance-shelter",
+      "npcState": {
+        "disposition": "FRIENDLY",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      "overrides": {
+        "name": "Taren",
+        "initialCondition": "INJURED",
+        "mobility": "IMPAIRED",
+        "identityKnownAtStart": false,
+        "initialState": {
+          "condition": "INJURED",
+          "evacState": "NOT_READY"
+        },
+        "playerLabel": "Injured relay operator"
+      }
+    },
+    {
+      "instanceId": "relay-vessa-01",
+      "archetypeId": "npc_worker_basic",
+      "stageId": "relay-generator-room",
+      "npcState": {
+        "disposition": "FRIENDLY",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      "overrides": {
+        "name": "Vessa",
+        "identityKnownAtStart": false,
+        "initialState": {
+          "evacState": "NOT_READY"
+        },
+        "playerLabel": "Trapped engineer"
+      }
+    },
+    {
+      "instanceId": "relay-transmission-log-01",
+      "archetypeId": "evidence_archive_basic",
+      "stageId": "relay-control-room",
+      "itemId": "SIM_INTEL_ARCHIVE",
+      "recovery": {
+        "category": "RECEIVING"
+      },
+      "overrides": {
+        "evidenceState": "INTACT",
+        "containsMissionLead": false,
+        "containsAddressLead": false,
+        "initialState": {
+          "evidenceState": "INTACT",
+          "inspected": false
+        },
+        "playerLabel": "Transmission log"
+      },
+      "physicalItem": {
+        "state": {
+          "quantity": 1,
+          "condition": "INTACT",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "relay-control-room"
+          }
+        ]
+      }
+    }
+  ],
+  "observations": [
+    {
+      "observationId": "relay-obs-tracks",
+      "archetypeId": "obs_recent_disturbance",
+      "stageId": "relay-approach-trail",
+      "overrides": {
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "text": "Fresh boot tracks and a drag mark lead toward the relay courtyard. The station has been occupied recently.",
+        "revealsFacts": [
+          "relay-recent-occupation"
+        ]
+      }
+    },
+    {
+      "observationId": "relay-obs-crew",
+      "archetypeId": "obs_guard_discipline",
+      "stageId": "relay-courtyard",
+      "subjectInstanceId": "relay-rhel-01",
+      "overrides": {
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "text": "Three armed salvagers control the courtyard. They are watching the team, but have not opened fire.",
+        "revealsFacts": [
+          "relay-salvage-crew-present"
+        ]
+      }
+    },
+    {
+      "observationId": "relay-obs-log",
+      "archetypeId": "obs_security_activity",
+      "stageId": "relay-control-room",
+      "subjectInstanceId": "relay-transmission-log-01",
+      "overrides": {
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "text": "An intact physical transmission log remains beside the relay console. Compare its last signal with the allied recognition code using a Technician's kit.",
+        "revealsFacts": [
+          "relay-log-found"
+        ],
+        "setsDetectionState": {
+          "instanceId": "relay-transmission-log-01",
+          "value": "LOCATED"
+        }
+      }
+    },
+    {
+      "observationId": "relay-obs-caller",
+      "archetypeId": "obs_instance_identity",
+      "stageId": "relay-maintenance-shelter",
+      "subjectInstanceId": "relay-taren-01",
+      "overrides": {
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "text": "An injured operator is sheltering beside a portable radio. They recognize the allied code in your call and ask whether you received their distress signal.",
+        "revealsFacts": [
+          "relay-caller-found"
+        ],
+        "setsDetectionState": {
+          "instanceId": "relay-taren-01",
+          "value": "LOCATED"
+        }
+      }
+    },
+    {
+      "observationId": "relay-obs-injury",
+      "archetypeId": "obs_patient_symptoms",
+      "stageId": "relay-maintenance-shelter",
+      "subjectInstanceId": "relay-taren-01",
+      "overrides": {
+        "profession": "MEDIC",
+        "minimumTier": 1,
+        "text": "The operator's injury needs field stabilization before the walk to the Gate. There is no sign here of a spreading outbreak.",
+        "revealsFacts": [
+          "relay-taren-needs-stabilization"
+        ]
+      }
+    },
+    {
+      "observationId": "relay-obs-engineer",
+      "archetypeId": "obs_instance_identity",
+      "stageId": "relay-generator-room",
+      "subjectInstanceId": "relay-vessa-01",
+      "overrides": {
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "text": "A trapped engineer answers from inside the generator room. They can walk and are ready to speak to the rescue team.",
+        "revealsFacts": [
+          "relay-engineer-found"
+        ],
+        "setsDetectionState": {
+          "instanceId": "relay-vessa-01",
+          "value": "LOCATED"
+        }
+      }
+    }
+  ],
+  "interactionTargets": [
+    {
+      "targetId": "relay-target-rhel",
+      "archetypeId": "target_npc_standard",
+      "stageId": "relay-courtyard",
+      "instanceId": "relay-rhel-01",
+      "recipeInstanceIds": []
+    },
+    {
+      "targetId": "relay-target-taren",
+      "archetypeId": "target_patient_standard",
+      "stageId": "relay-maintenance-shelter",
+      "instanceId": "relay-taren-01",
+      "recipeInstanceIds": [
+        "relay-stabilize-taren",
+        "relay-evacuate-taren"
+      ]
+    },
+    {
+      "targetId": "relay-target-vessa",
+      "archetypeId": "target_npc_standard",
+      "stageId": "relay-generator-room",
+      "instanceId": "relay-vessa-01",
+      "recipeInstanceIds": [
+        "relay-evacuate-vessa"
+      ]
+    },
+    {
+      "targetId": "relay-target-log",
+      "archetypeId": "target_recovery_standard",
+      "stageId": "relay-control-room",
+      "instanceId": "relay-transmission-log-01",
+      "recipeInstanceIds": [
+        "relay-verify-log",
+        "relay-secure-log"
+      ]
+    },
+    {
+      "targetId": "relay-target-service-door",
+      "archetypeId": "target_transition_standard",
+      "stageId": "relay-control-room",
+      "transitionId": "relay-door-control-generator",
+      "recipeInstanceIds": [
+        "relay-enter-service-code",
+        "relay-hack-service-door"
+      ]
+    }
+  ],
+  "recipes": [
+    {
+      "recipeInstanceId": "relay-stabilize-taren",
+      "archetypeId": "recipe_stabilize_patient",
+      "targetId": "relay-target-taren",
+      "overrides": {
+        "requiresState": {
+          "instanceId": "relay-taren-01",
+          "field": "condition",
+          "equals": "INJURED"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "relay-evacuate-taren",
+      "archetypeId": "recipe_extract_person",
+      "targetId": "relay-target-taren",
+      "requiresGateRoute": true,
+      "overrides": {
+        "requiresLocated": true,
+        "hiddenUntilKnowledge": [
+          "relay-taren-contacted"
+        ],
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "instanceId": "relay-taren-01",
+              "field": "condition",
+              "equals": "STABILIZED"
+            },
+            {
+              "instanceId": "relay-taren-01",
+              "field": "evacState",
+              "equals": "READY_TO_EVACUATE"
+            },
+            {
+              "type": "ASSET_CUSTODY",
+              "assetInstanceId": "relay-vessa-01",
+              "equals": "AT_GATE"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "relay-evacuate-vessa",
+      "archetypeId": "recipe_extract_person",
+      "targetId": "relay-target-vessa",
+      "requiresGateRoute": true,
+      "overrides": {
+        "requiresLocated": true,
+        "hiddenUntilKnowledge": [
+          "relay-vessa-contacted"
+        ],
+        "requiresState": {
+          "instanceId": "relay-vessa-01",
+          "field": "evacState",
+          "equals": "READY_TO_EVACUATE"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "relay-verify-log",
+      "archetypeId": "recipe_inspect_machine",
+      "targetId": "relay-target-log",
+      "overrides": {
+        "requiresKnowledge": [
+          "relay-allied-recognition-code-known"
+        ],
+        "requiresState": {
+          "instanceId": "relay-transmission-log-01",
+          "field": "inspected",
+          "equals": false
+        },
+        "effects": [
+          {
+            "type": "SET_TARGET_STATE",
+            "field": "inspected",
+            "value": true
+          },
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "relay-signal-authenticated"
+          },
+          {
+            "type": "ADD_KNOWLEDGE",
+            "factId": "relay-lock-command-recorded"
+          },
+          {
+            "type": "ADD_INSTANCE_FINDING",
+            "instanceId": "relay-transmission-log-01",
+            "findingId": "relay-distress-code-and-service-lock-sequence"
+          }
+        ],
+        "outcomeText": "The recorded recognition code matches the allied code supplied by the SGC. The distress transmission preceded a service-door lock command from the courtyard control link. This verifies the call and gives you evidence to challenge Rhel. The finding remains attached to this physical log; it grants no institutional Theory."
+      }
+    },
+    {
+      "recipeInstanceId": "relay-secure-log",
+      "archetypeId": "recipe_collect_evidence",
+      "targetId": "relay-target-log",
+      "overrides": {
+        "requiresKnowledge": [
+          "relay-signal-authenticated"
+        ],
+        "requiresState": {
+          "instanceId": "relay-transmission-log-01",
+          "field": "evidenceState",
+          "equals": "INTACT"
+        }
+      }
+    },
+    {
+      "recipeInstanceId": "relay-enter-service-code",
+      "archetypeId": "recipe_dialogue_enter_door_code",
+      "targetId": "relay-target-service-door",
+      "overrides": {
+        "requiresState": {
+          "type": "ALL",
+          "conditions": [
+            {
+              "type": "TRANSITION_STATE",
+              "transitionId": "relay-door-control-generator",
+              "equals": "LOCKED"
+            },
+            {
+              "type": "KNOWLEDGE_PRESENT",
+              "factId": "relay-service-code-known"
+            }
+          ]
+        },
+        "effects": [
+          {
+            "type": "OPEN_TARGET_TRANSITION"
+          }
+        ],
+        "outcomeText": "Taren's service code is accepted. The generator-room door opens without using a Tool charge."
+      }
+    },
+    {
+      "recipeInstanceId": "relay-hack-service-door",
+      "archetypeId": "recipe_hack_transition",
+      "targetId": "relay-target-service-door",
+      "overrides": {
+        "requiresState": {
+          "type": "TRANSITION_STATE",
+          "transitionId": "relay-door-control-generator",
+          "equals": "LOCKED"
+        }
+      }
+    }
+  ],
+  "incidents": [
+    {
+      "incidentId": "relay-crew-combat",
+      "archetypeId": "incident_guard_combat_basic",
+      "stageId": "relay-courtyard",
+      "overrides": {
+        "participantIds": [
+          "relay-rhel-01",
+          "relay-salvager-01",
+          "relay-salvager-02"
+        ],
+        "initialState": "DORMANT",
+        "activationMode": "EXPLICIT",
+        "resolutionMode": "COMBAT",
+        "allowRetreat": true
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "objectiveId": "relay-find-caller",
+      "priority": "PRIMARY",
+      "initialState": "ACTIVE",
+      "playerText": "Locate the source of the distress call.",
+      "completionCondition": {
+        "type": "INSTANCE_DETECTION_STATE",
+        "instanceId": "relay-taren-01",
+        "equals": "LOCATED"
+      },
+      "onComplete": [
+        {
+          "type": "ACTIVATE_OBJECTIVE",
+          "objectiveId": "relay-rescue-taren"
+        }
+      ]
+    },
+    {
+      "objectiveId": "relay-verify-signal",
+      "priority": "PRIMARY",
+      "initialState": "ACTIVE",
+      "playerText": "Verify the distress signal against the allied recognition code.",
+      "completionCondition": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "relay-signal-authenticated"
+      }
+    },
+    {
+      "objectiveId": "relay-rescue-vessa",
+      "priority": "PRIMARY",
+      "initialState": "HIDDEN",
+      "playerText": "Free the trapped engineer and bring them back through the Gate.",
+      "completionCondition": {
+        "instanceId": "relay-vessa-01",
+        "field": "partyStatus",
+        "equals": "EXTRACTED"
+      }
+    },
+    {
+      "objectiveId": "relay-rescue-taren",
+      "priority": "PRIMARY",
+      "initialState": "HIDDEN",
+      "playerText": "Stabilize the caller, deliver their colleague to the Gate, then evacuate the caller.",
+      "completionCondition": {
+        "instanceId": "relay-taren-01",
+        "field": "partyStatus",
+        "equals": "EXTRACTED"
+      }
+    },
+    {
+      "objectiveId": "relay-arrange-withdrawal",
+      "priority": "OPTIONAL",
+      "initialState": "ACTIVE",
+      "playerText": "Persuade the salvage crew to withdraw peacefully.",
+      "completionCondition": {
+        "type": "KNOWLEDGE_PRESENT",
+        "factId": "relay-crew-withdrawal-agreed"
+      },
+      "onComplete": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "relay-rhel-01",
+          "field": "combatState",
+          "value": "FLED"
+        },
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "relay-salvager-01",
+          "field": "combatState",
+          "value": "FLED"
+        },
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "relay-salvager-02",
+          "field": "combatState",
+          "value": "FLED"
+        }
+      ]
+    },
+    {
+      "objectiveId": "relay-recover-log",
+      "priority": "OPTIONAL",
+      "initialState": "ACTIVE",
+      "playerText": "Recover the physical transmission log for Receiving.",
+      "completionCondition": {
+        "type": "ASSET_CUSTODY",
+        "assetInstanceId": "relay-transmission-log-01",
+        "equals": "RECOVERED_TO_SGC"
+      }
+    }
+  ],
+  "dialogueScenes": [
+    {
+      "dialogueSceneId": "relay-dialogue-arrival",
+      "participants": {
+        "left": "ACTIVE_SGC_SPEAKER",
+        "right": "relay-rhel-01"
+      },
+      "startWhen": {
+        "stageVisitCount": {
+          "stageId": "relay-courtyard",
+          "equals": 1
+        }
+      },
+      "startNodeId": "arrival-opening",
+      "nodes": [
+        {
+          "nodeId": "arrival-opening",
+          "speaker": "relay-rhel-01",
+          "side": "RIGHT",
+          "text": "Hold there. Commander Rhel, salvage crew. This station was deserted when we arrived. If you have questions, speak to me before disturbing our work.",
+          "responses": [
+            {
+              "responseId": "arrival-acknowledge",
+              "text": "We received a distress call. We will speak with you and check the station.",
+              "source": "NEUTRAL",
+              "endConversation": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "relay-dialogue-rhel",
+      "participants": {
+        "left": "ACTIVE_SGC_SPEAKER",
+        "right": "relay-rhel-01"
+      },
+      "startNodeId": "rhel-opening",
+      "nodes": [
+        {
+          "nodeId": "rhel-opening",
+          "speaker": "relay-rhel-01",
+          "side": "RIGHT",
+          "text": "Commander Rhel. This relay was deserted when we arrived. We are salvaging it. You may look around, but keep out of our business and leave when you are done.",
+          "responses": [
+            {
+              "responseId": "rhel-investigate",
+              "text": "We received a distress call. We will check the station before leaving.",
+              "source": "NEUTRAL",
+              "nextNodeId": "rhel-watch"
+            },
+            {
+              "responseId": "rhel-negotiate",
+              "text": "Our task is a rescue. Withdraw your crew from the approach and we will leave your salvage claim for others to settle.",
+              "source": "DIPLOMAT",
+              "requirements": {
+                "profession": "DIPLOMAT",
+                "minimumTier": 1
+              },
+              "nextNodeId": "rhel-withdraw"
+            },
+            {
+              "responseId": "rhel-evidence",
+              "text": "The log records a distress call before your crew locked the generator room. There are survivors. Clear the route and let us evacuate them.",
+              "source": "KNOWLEDGE",
+              "requirements": {
+                "knowledge": "relay-lock-command-recorded"
+              },
+              "nextNodeId": "rhel-admit"
+            },
+            {
+              "responseId": "rhel-force",
+              "text": "If you intend to hold these people here, we will take the station by force.",
+              "source": "SOLDIER",
+              "requirements": {
+                "profession": "SOLDIER",
+                "minimumTier": 1
+              },
+              "nextNodeId": "rhel-fight"
+            }
+          ]
+        },
+        {
+          "nodeId": "rhel-watch",
+          "speaker": "relay-rhel-01",
+          "side": "RIGHT",
+          "text": "Check your signal, then go. The service door is locked; I am not handing over the station's codes.",
+          "endConversation": true
+        },
+        {
+          "nodeId": "rhel-withdraw",
+          "speaker": "relay-rhel-01",
+          "side": "RIGHT",
+          "text": "Fine. We will withdraw from the courtyard and approach. Take the survivors. This is an evacuation agreement, not a surrender or a transfer of the station.",
+          "effects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "knowledgeId": "relay-crew-withdrawal-agreed"
+            }
+          ],
+          "endConversation": true
+        },
+        {
+          "nodeId": "rhel-admit",
+          "speaker": "relay-rhel-01",
+          "side": "RIGHT",
+          "text": "We locked the service door to stop anyone interfering with salvage. I did not check behind it. We will withdraw. Get them out.",
+          "effects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "knowledgeId": "relay-crew-withdrawal-agreed"
+            }
+          ],
+          "endConversation": true
+        },
+        {
+          "nodeId": "rhel-fight",
+          "speaker": "relay-rhel-01",
+          "side": "RIGHT",
+          "text": "You are not taking this station from us. Crew, weapons up!",
+          "effects": [
+            {
+              "type": "START_HOSTILE_INCIDENT",
+              "incidentId": "relay-crew-combat"
+            }
+          ],
+          "endConversation": true
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "relay-dialogue-taren",
+      "participants": {
+        "left": "ACTIVE_SGC_SPEAKER",
+        "right": "relay-taren-01"
+      },
+      "startNodeId": "taren-opening",
+      "nodes": [
+        {
+          "nodeId": "taren-opening",
+          "speaker": "relay-taren-01",
+          "side": "RIGHT",
+          "text": "I am Taren. I sent the distress call. Vessa, our engineer, is trapped in the generator room. Its service code is 7314. I need treatment, but I will not leave until Vessa is safely at the Gate. The transmission log can verify my call.",
+          "effects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "knowledgeId": "relay-taren-contacted"
+            },
+            {
+              "type": "ADD_KNOWLEDGE",
+              "knowledgeId": "relay-service-code-known"
+            },
+            {
+              "type": "SET_DETECTION_STATE",
+              "instanceId": "relay-taren-01",
+              "value": "LOCATED"
+            },
+            {
+              "type": "ACTIVATE_OBJECTIVE",
+              "objectiveId": "relay-rescue-vessa"
+            }
+          ],
+          "responses": [
+            {
+              "responseId": "taren-plan",
+              "text": "We will treat your injury, free Vessa and make a safe route back. Wait here until your colleague reaches the Gate.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "SET_EVAC_STATE",
+                  "instanceId": "relay-taren-01",
+                  "value": "READY_TO_EVACUATE"
+                }
+              ],
+              "nextNodeId": "taren-wait"
+            }
+          ]
+        },
+        {
+          "nodeId": "taren-wait",
+          "speaker": "relay-taren-01",
+          "side": "RIGHT",
+          "text": "Thank you. Stabilize my injury before I move. If Rhel will not withdraw, you will have to clear his crew from the route.",
+          "endConversation": true
+        }
+      ]
+    },
+    {
+      "dialogueSceneId": "relay-dialogue-vessa",
+      "participants": {
+        "left": "ACTIVE_SGC_SPEAKER",
+        "right": "relay-vessa-01"
+      },
+      "startNodeId": "vessa-opening",
+      "nodes": [
+        {
+          "nodeId": "vessa-opening",
+          "speaker": "relay-vessa-01",
+          "side": "RIGHT",
+          "text": "I am Vessa. Rhel's crew sealed the service door while I was working here. Taren kept the relay powered long enough to send the call. I can walk. Please do not leave Taren behind.",
+          "effects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "knowledgeId": "relay-vessa-contacted"
+            },
+            {
+              "type": "SET_DETECTION_STATE",
+              "instanceId": "relay-vessa-01",
+              "value": "LOCATED"
+            },
+            {
+              "type": "ACTIVATE_OBJECTIVE",
+              "objectiveId": "relay-rescue-vessa"
+            }
+          ],
+          "responses": [
+            {
+              "responseId": "vessa-plan",
+              "text": "We will send you to the Gate along the cleared route, then return for Taren.",
+              "source": "NEUTRAL",
+              "effects": [
+                {
+                  "type": "SET_EVAC_STATE",
+                  "instanceId": "relay-vessa-01",
+                  "value": "READY_TO_EVACUATE"
+                }
+              ],
+              "nextNodeId": "vessa-ready"
+            }
+          ]
+        },
+        {
+          "nodeId": "vessa-ready",
+          "speaker": "relay-vessa-01",
+          "side": "RIGHT",
+          "text": "I will wait until you confirm the route is safe, then meet you at the Gate.",
+          "endConversation": true
+        }
+      ]
+    }
+  ],
+  "discoveries": [],
+  "scheduledEvents": [],
+  "eventBindings": [],
+  "resultBindings": [
+    {
+      "bindingId": "relay-taren-result",
+      "watch": {
+        "instanceId": "relay-taren-01"
+      },
+      "emit": [
+        "PERSONNEL_CHANGE",
+        "OBJECTIVE_RESULT"
+      ]
+    },
+    {
+      "bindingId": "relay-vessa-result",
+      "watch": {
+        "instanceId": "relay-vessa-01"
+      },
+      "emit": [
+        "PERSONNEL_CHANGE",
+        "OBJECTIVE_RESULT"
+      ]
+    },
+    {
+      "bindingId": "relay-log-result",
+      "watch": {
+        "instanceId": "relay-transmission-log-01"
+      },
+      "emit": [
+        "RECOVERY_RESULT"
+      ]
+    },
+    {
+      "bindingId": "relay-crew-result",
+      "watch": {
+        "incidentId": "relay-crew-combat"
+      },
+      "emit": [
+        "OBJECTIVE_RESULT"
+      ]
+    }
+  ],
+  "simulatorArtifact": {
+    "movementSeconds": 60,
+    "redialSeconds": 180,
+    "combat": {
+      "partyHealth": 100,
+      "partyWeapon": {
+        "mode": "RANGED",
+        "damage": 18
+      }
+    },
+    "note": "Authored Last Transmission scenario using existing Offworld execution mechanics. Not a generated semantic Draft or a campaign-world deployment.",
+    "assumptions": [
+      "The user approved authoring the proposed new setting and cast. All relay-prefixed facts and instances are scenario content, not canonical science or new Services.",
+      "Existing bounded Medic I stabilization and Technician I log inspection each take three minutes and one compatible Tool charge. Log inspection verifies evidence against an explicitly known recognition code, not a Theory.",
+      "Diplomat I can arrange crew withdrawal; the log supplies a Profession-independent evidence alternative. Authored withdrawal uses the existing FLED non-participating combat state, not surrender, prisoner transfer or social permission as physical security.",
+      "The three crew members use the existing combat archetype and prototype weapons. They do not attack automatically; dialogue escalation or explicit engagement starts combat.",
+      "The generator door accepts Taren's code for one minute with no Tool, or the existing Technician II hack for three minutes and one TECH_SERVICE_II charge.",
+      "Both evacuees use the existing Send-to-Gate abstraction. It requires a known clear route; there is no physical escort simulation. Taren must be stabilized and Vessa must already be AT_GATE.",
+      "The transmission log uses the existing SIM_INTEL_ARCHIVE handling definition and persistent instance identity. Securing it does not transfer it; optional Receiving admission is selected at debrief.",
+      "No permanent recruit, faction delta, address reward, institutional Theory or manufacturing Pattern is granted. The result reports actual runtime state."
+    ]
+  }
+}

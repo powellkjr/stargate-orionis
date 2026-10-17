@@ -1,0 +1,38 @@
+{
+  "input": "C:\\Users\\Powel\\Downloads\\floor-room-equipment-storage__sheet.png",
+  "sha256": "0b11dc9d2f140170555e5c8c550bc07fb3b33ca5b9c4a9ea24f066bd7729e097",
+  "inputSize": [
+    2172,
+    724
+  ],
+  "method": "Exact square cells; no bounding-box crop, recentering, padding or background cleanup. Masters resized to 1024; runtime previews resized from saved masters to 128. Unregistered presentation studies only.",
+  "variants": [
+    {
+      "variant": "v01",
+      "sourceRectangle": [
+        0,
+        0,
+        724,
+        724
+      ]
+    },
+    {
+      "variant": "v02",
+      "sourceRectangle": [
+        724,
+        0,
+        1448,
+        724
+      ]
+    },
+    {
+      "variant": "v03",
+      "sourceRectangle": [
+        1448,
+        0,
+        2172,
+        724
+      ]
+    }
+  ]
+}

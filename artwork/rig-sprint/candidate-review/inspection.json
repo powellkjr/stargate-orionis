@@ -1,0 +1,317 @@
+{
+  "purpose": "Diagnostic only; no master approved; source files unchanged.",
+  "zip_crc": "passed",
+  "palette_rule": "Shared module ramps; display base only; outline included.",
+  "pivots": {
+    "torso": [
+      512,
+      512
+    ],
+    "head": [
+      512,
+      432
+    ],
+    "left_arm": [
+      624,
+      352
+    ],
+    "right_arm": [
+      400,
+      352
+    ],
+    "left_leg": [
+      560,
+      568
+    ],
+    "right_leg": [
+      464,
+      568
+    ],
+    "equipment": [
+      600,
+      512
+    ]
+  },
+  "candidates": [
+    {
+      "id": "palette-master",
+      "original": "artwork/rig-sprint/candidate-review/originals/palette-master.png",
+      "sha256": "153e17db76688ab5d3c889bba6537e13460abd88fce85bcfde46e6899afb5072",
+      "format": "PNG",
+      "mode": "RGBA",
+      "size": [
+        1024,
+        1024
+      ],
+      "frames": 1,
+      "alpha_bounds_by_minimum": {
+        "1": [
+          243,
+          167,
+          780,
+          895
+        ],
+        "16": [
+          245,
+          169,
+          778,
+          893
+        ],
+        "128": [
+          245,
+          169,
+          778,
+          892
+        ],
+        "240": [
+          246,
+          170,
+          777,
+          891
+        ],
+        "255": [
+          247,
+          170,
+          777,
+          891
+        ]
+      },
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque_pixel_count": 223372,
+      "opaque_unique_rgb": 34,
+      "opaque_allowed_rgb_pixels": 223372,
+      "source_size_pass": true,
+      "source_64px_padding_pass": true,
+      "visible_pixel_count": 232165,
+      "visible_off_palette_pixels": 0,
+      "overlay_transform": "Whole canvas resized to 1024; no crop/translation; diagnostic only."
+    },
+    {
+      "id": "preferred-camera",
+      "original": "artwork/rig-sprint/candidate-review/originals/Top-Down Tactical Agent Sprite.png",
+      "sha256": "d685c230ae33ee437c4b84dc17b9b2f01f14b5aae868fd791ce3660960dbdbcd",
+      "format": "PNG",
+      "mode": "RGBA",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "alpha_bounds_by_minimum": {
+        "1": [
+          55,
+          77,
+          1095,
+          1166
+        ],
+        "16": [
+          302,
+          235,
+          953,
+          1094
+        ],
+        "128": [
+          302,
+          235,
+          952,
+          1093
+        ],
+        "240": [
+          303,
+          237,
+          952,
+          1093
+        ],
+        "255": [
+          303,
+          238,
+          951,
+          1093
+        ]
+      },
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque_pixel_count": 325992,
+      "opaque_unique_rgb": 35745,
+      "opaque_allowed_rgb_pixels": 910,
+      "source_size_pass": false,
+      "source_64px_padding_pass": false,
+      "visible_pixel_count": 341079,
+      "visible_off_palette_pixels": 340169,
+      "overlay_transform": "Whole canvas resized to 1024; no crop/translation; diagnostic only."
+    },
+    {
+      "id": "older-reference",
+      "original": "artwork/rig-sprint/candidate-review/originals/Top-Down Tactical Character Sprite.png",
+      "sha256": "a8ba95c5024ba3795b6d0d7261c9b4c503459725635ddf16c6028c7bacf334c7",
+      "format": "PNG",
+      "mode": "RGBA",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "alpha_bounds_by_minimum": {
+        "1": [
+          69,
+          251,
+          1226,
+          1109
+        ],
+        "16": [
+          376,
+          253,
+          878,
+          933
+        ],
+        "128": [
+          377,
+          254,
+          877,
+          933
+        ],
+        "240": [
+          378,
+          255,
+          876,
+          932
+        ],
+        "255": [
+          378,
+          255,
+          874,
+          932
+        ]
+      },
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque_pixel_count": 196913,
+      "opaque_unique_rgb": 30209,
+      "opaque_allowed_rgb_pixels": 55,
+      "source_size_pass": false,
+      "source_64px_padding_pass": false,
+      "visible_pixel_count": 207436,
+      "visible_off_palette_pixels": 207381,
+      "overlay_transform": "Whole canvas resized to 1024; no crop/translation; diagnostic only."
+    },
+    {
+      "id": "stage-a-attempt-01",
+      "original": "artwork/rig-sprint/stage-a-correction-b001/generated-master.png",
+      "sha256": "3ce67f9cfd7a2f655f1495e88f8b3d48c63705a4ebe585e1ee81297bee4de8af",
+      "format": "PNG",
+      "mode": "RGBA",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "alpha_bounds_by_minimum": {
+        "1": [
+          49,
+          39,
+          1190,
+          1220
+        ],
+        "16": [
+          272,
+          207,
+          982,
+          1121
+        ],
+        "128": [
+          273,
+          207,
+          981,
+          1120
+        ],
+        "240": [
+          274,
+          208,
+          980,
+          1119
+        ],
+        "255": [
+          274,
+          242,
+          980,
+          1119
+        ]
+      },
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque_pixel_count": 375736,
+      "opaque_unique_rgb": 36072,
+      "opaque_allowed_rgb_pixels": 523,
+      "source_size_pass": false,
+      "source_64px_padding_pass": false,
+      "visible_pixel_count": 390859,
+      "visible_off_palette_pixels": 390333,
+      "overlay_transform": "Whole canvas resized to 1024; no crop/translation; diagnostic only."
+    },
+    {
+      "id": "stage-a-attempt-02",
+      "original": "artwork/rig-sprint/stage-a-new-master-b002/generated-master.png",
+      "sha256": "1a55f0e8a5f4927ff553ad6cda0248704ad50a75e15ac21ad61ea6c614b64dc2",
+      "format": "PNG",
+      "mode": "RGBA",
+      "size": [
+        1254,
+        1254
+      ],
+      "frames": 1,
+      "alpha_bounds_by_minimum": {
+        "1": [
+          87,
+          20,
+          1184,
+          1222
+        ],
+        "16": [
+          268,
+          99,
+          988,
+          1168
+        ],
+        "128": [
+          268,
+          100,
+          988,
+          1167
+        ],
+        "240": [
+          269,
+          101,
+          987,
+          1166
+        ],
+        "255": [
+          269,
+          101,
+          987,
+          1166
+        ]
+      },
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "opaque_pixel_count": 428237,
+      "opaque_unique_rgb": 29472,
+      "opaque_allowed_rgb_pixels": 38,
+      "source_size_pass": false,
+      "source_64px_padding_pass": false,
+      "visible_pixel_count": 447053,
+      "visible_off_palette_pixels": 447007,
+      "overlay_transform": "Whole canvas resized to 1024; no crop/translation; diagnostic only."
+    }
+  ]
+}

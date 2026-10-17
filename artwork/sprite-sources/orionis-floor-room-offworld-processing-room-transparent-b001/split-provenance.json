@@ -1,0 +1,38 @@
+{
+  "input": "C:\\Users\\Powel\\Downloads\\floor-room-offworld-processing-room__sheet.png",
+  "sha256": "b841577a7b4fed3f3400b623f7782550487eef0271821ab270b7dc8ed1e6ca29",
+  "inputSize": [
+    2172,
+    724
+  ],
+  "method": "Exact square-cell extraction; no crop to alpha bounds, recentering, padding or cleanup. 1024px masters; 128px runtime previews resized from saved masters.",
+  "variants": [
+    {
+      "variant": "v01",
+      "sourceRectangle": [
+        0,
+        0,
+        724,
+        724
+      ]
+    },
+    {
+      "variant": "v02",
+      "sourceRectangle": [
+        724,
+        0,
+        1448,
+        724
+      ]
+    },
+    {
+      "variant": "v03",
+      "sourceRectangle": [
+        1448,
+        0,
+        2172,
+        724
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+## Image Generation and Packaging Workflow
+
+Generate one reference image containing exactly three variations of the requested asset, arranged horizontally in three clearly separated columns.
+
+Each variation must:
+- Follow the locked Stargate Orionis art direction.
+- Show one complete subject, with nothing clipped.
+- Use exactly the same overhead camera, lighting direction, scale, and footprint.
+- Have a clear gap separating it from neighboring variations.
+- Use a transparent background.
+- Use the assigned v01/v02/v03 shape/design style; palette swaps and tiny surface-detail changes do not count as distinct variants.
+
+The generated image is an intermediate production sheet, not the delivered asset.
+
+After generation:
+1. Extract each variation into a separate image.
+2. Remove the surrounding background, preserving true RGBA transparency.
+3. Center each subject on its own 1024×1024 transparent canvas.
+4. Preserve proportions without stretching.
+5. Validate transparency, padding, dimensions, and complete silhouettes.
+6. Save as `civilian__v01__source.png`, `civilian__v02__source.png`, `civilian__v03__source.png`.
+7. Package the three PNGs in `orionis-civilian-bNNN.zip` under a root folder matching the ZIP filename without `.zip` (use the batch number specified below).
+8. Verify the ZIP and provide a clickable download link.
+
+Do not include the intermediate sheet, previews, or any additional files in the archive.
+
+For seamless floors and registered state pairs, use their asset-specific production workflows instead.
+
+BATCH PACKAGING: Produce exactly three visual variants v01, v02, v03.
+ZIP FILENAME: orionis-civilian-b001.zip (increment b002, b003 for later batches)
+ZIP ROOT FOLDER: orionis-civilian-b001/
+SOURCE FILENAMES: civilian__v01__source.png, civilian__v02__source.png, civilian__v03__source.png
+VARIATION: Follow the three shape/design style briefs below, not colorway swaps. Preserve camera, subject scale, pivot, lighting and occupied footprint envelope. State pairs must match within each variant. No gameplay/identity changes.
+ARCHIVE CONTENTS: PNG source files only inside the named root; no previews, contact sheets, nested folders or extra files. Attach an actual ZIP, not an image of filenames.
+If ZIP/file export is unavailable, say so and deliver separate PNG files with these exact names; do not claim an archive exists.
+
+ASSET ID: civilian
+OUTPUT FILENAME: civilian__vNN__source.png (NN=01,02,03)
+SOURCE ART SIZE: 1024x1024 PNG, single frame
+RUNTIME FILENAME: civilian.png
+RUNTIME SIZE: 128x128 pixels; 22x22 SVG world units
+BACKGROUND: True RGBA transparency; no baked backdrop
+CAMERA: Direct overhead, north up; no isometric or front-facing surfaces
+ORIENTATION: North-facing neutral overhead
+VISIBLE FOOTPRINT: One isolated subject, preserve aspect ratio; tool centers its alpha bounds
+PIVOT: [0.5, 0.5], canvas center
+PADDING: 8px minimum transparent runtime border; normalizer supplies border for isolated sprites
+SHADOW: Tight centered translucent contact shadow; no directional cast shadow or backdrop
+LIGHTING: Soft upper-left, low contrast; walls/doors/characters must tolerate 90-degree rotation
+ROTATION POLICY: Programmatic 90 degrees for down/dead; no direction variants
+MATCHING ASSET: None
+ART DIRECTION: Bright clean chunky mature stylized 2D sci-fi, simplified painted materials, low noise, controlled cyan/amber emissives
+SPECIAL REQUIREMENTS: No UI, labels, scripts or hidden technology/identity cues
+SUBJECT DETAILS: One ordinary adult civilian in neutral practical clothing, directly overhead in a relaxed north-facing pose; no insignia or hidden-role clues.
+VARIANT DESIGN BRIEF — three different shape/design styles, NOT three colorways:
+v01 — Clean angular tailoring: straight jacket hems, squared collar/shoulder shapes, crisp garment panels and rectangular existing gear housings.
+v02 — Soft rounded tailoring: curved jacket seams, rounded collar/shoulder shapes, continuous fabric panels and rounded existing gear housings.
+v03 — Chunky layered tailoring: overlapping garment panels, reinforced cuffs/hems, broader strap shapes and stepped existing gear housings.
+DESIGN DIFFERENCE: change at least three major visible shape features between each pair of variants, such as contour treatment, panel/seam layout and component or garment shape. These must read at runtime size, not only as tiny texture details. Do not duplicate a design and recolor it. Keep the same palette across all three; color changes do not count as variation.
+LOCKED PRESENTATION: same bright clean chunky mature stylized painted sci-fi rendering, camera, orientation, lighting, subject scale, occupied footprint envelope and pivot. Different design styles are NOT different rendering media: no pixel-art/anime/photorealistic mixture. Contours and internal geometry may differ within the required envelope; do not enlarge one variant to make it look different.
+SEMANTIC LIMITS: preserve the exact public subject, required components, equipment inventory and purpose. Do not add/remove Tools, change capability or tier, imply a new faction/civilization, expose hidden identity, or turn surface appearance into a new game rule. Subject-specific prohibitions take priority over design suggestions; do not add panels to a natural subject or decoration to an empty/void floor.
+CHARACTER LIMITS: keep anatomy, neutral pose and equipment attachment slots consistent; vary clothing cut, seam structure, collar/cuff shapes and existing accessory housings, not equipment inventory. Distinct hairstyles/head shapes are permitted public appearance, but are not a substitute for different garment designs. Material RGB assignments remain identical across variants. Matching portraits must reproduce each variant's own design, not a shared generic outfit.
+VARIATION CHECK: inspect v01/v02/v03 side by side at runtime dimensions and in grayscale. Each should be distinguishable by major shape structure without color cues. Reject colorway-only duplicates and regenerate before packaging. If the subject constraints prevent meaningful differences, report the limitation rather than inventing new content.
+
+CHARACTER MATERIAL PALETTE (shared by overhead sprites and matching profile pictures):
+STRICT RGB SOURCE PALETTE: use these integer 8-bit sRGB values, not approximate named colors. Hex values are equivalents for reference. These source colors encode recolorable materials; final skin/hair/clothing colors are applied later by the simulator.
+Shirt / jacket fabric: base RGB(146, 147, 148) (#929394); allowed shadow -> highlight values: RGB(114, 115, 116) | RGB(130, 131, 132) | RGB(146, 147, 148) | RGB(162, 163, 164) | RGB(178, 179, 180).
+Trousers: base RGB(82, 111, 137) (#526f89); allowed shadow -> highlight values: RGB(50, 79, 105) | RGB(66, 95, 121) | RGB(82, 111, 137) | RGB(98, 127, 153) | RGB(114, 143, 169).
+Harness / fabric straps: base RGB(186, 169, 141) (#baa98d); allowed shadow -> highlight values: RGB(154, 137, 109) | RGB(170, 153, 125) | RGB(186, 169, 141) | RGB(202, 185, 157) | RGB(218, 201, 173).
+Gear, gloves, boots and protective pads: base RGB(52, 58, 64) (#343a40); allowed shadow -> highlight values: RGB(20, 26, 32) | RGB(36, 42, 48) | RGB(52, 58, 64) | RGB(68, 74, 80) | RGB(84, 90, 96).
+Accent trim / small fasteners: base RGB(227, 165, 46) (#e3a52e); allowed shadow -> highlight values: RGB(195, 133, 14) | RGB(211, 149, 30) | RGB(227, 165, 46) | RGB(243, 181, 62) | RGB(255, 197, 78).
+Exposed skin / head / ears: base RGB(213, 155, 112) (#d59b70); allowed shadow -> highlight values: RGB(181, 123, 80) | RGB(197, 139, 96) | RGB(213, 155, 112) | RGB(229, 171, 128) | RGB(245, 187, 144).
+Hair / eyebrows / facial hair: base RGB(112, 67, 34) (#704322); allowed shadow -> highlight values: RGB(80, 35, 2) | RGB(96, 51, 18) | RGB(112, 67, 34) | RGB(128, 83, 50) | RGB(144, 99, 66).
+Electronic displays only: RGB(0, 217, 238) (#00d9ee); never use this value on clothing. No emissive color spill.
+Ink outlines: RGB(20, 22, 24). Lens pixels on separate layers: RGB(200, 210, 220), alpha 0..80 of 255, with sparse highlights RGB(240, 244, 248), alpha at most 128. Opaque material interiors use alpha 255; transparent background uses alpha 0. Antialiasing may use intermediate alpha at silhouette edges, but retain the owning material's listed RGB instead of baking a background into it.
+SHADING RULE: only the five listed tones per matte material, ordered deepest shadow, shadow, base, light, highlight. Use broad simplified cel-painted shading; no additional RGB values, smooth gradients, colored bounce light, hue shifts, tinted highlights, mottled fabric or multicolored texture. Keep material regions distinct, with clean boundaries. Eye whites/iris and facial detail must stay within the listed skin/hair/outline tones for these recolorable source masters.
+Apply the identical values and shade assignments to corresponding materials in overhead, portrait and head-kit views. Source palette takes priority over reference colors: preserve reference geometry, identity, hairstyle, shading placement and accessories while normalizing BOTH matched views to these values. Do not recolor just one view or alter previously downloaded original files. Do not change palette assignments by class or variant; class differences use clothing/equipment shapes. No faction insignia, labels or hidden-role clues.
+DELIVERY CHECK: inspect actual PNG pixel values before claiming strict compliance. Quantize interior material pixels to the listed ramp after generation if needed, without changing registration or silhouette. If pixel-level verification/quantization is unavailable, say the palette is requested but unverified; do not claim exact RGB compliance.
+Do not generate a separate guessed segmentation mask. Masks will be derived and reviewed from the final source pixels.
+
+MATCHED PORTRAITS: retain each final variant as the exact visual reference for its matching profile picture. Keep anatomy, pose and equipment attachment slots consistent across variants; vary clothing design and existing accessory shapes according to the style briefs. Palette assignments stay fixed.

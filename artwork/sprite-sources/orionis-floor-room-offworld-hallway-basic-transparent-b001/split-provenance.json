@@ -1,0 +1,38 @@
+{
+  "input": "C:\\Users\\Powel\\Downloads\\floor-room-offworld-hallway-basic__sheet.png",
+  "sha256": "08390e6227f280420a0ca518ca3104aaee7b3c68c844b20f957a271563b15785",
+  "inputSize": [
+    2172,
+    724
+  ],
+  "method": "Exact square-cell extraction; no crop to alpha bounds, recentering, padding or cleanup. 1024px masters; 128px runtime previews resized from saved masters.",
+  "variants": [
+    {
+      "variant": "v01",
+      "sourceRectangle": [
+        0,
+        0,
+        724,
+        724
+      ]
+    },
+    {
+      "variant": "v02",
+      "sourceRectangle": [
+        724,
+        0,
+        1448,
+        724
+      ]
+    },
+    {
+      "variant": "v03",
+      "sourceRectangle": [
+        1448,
+        0,
+        2172,
+        724
+      ]
+    }
+  ]
+}

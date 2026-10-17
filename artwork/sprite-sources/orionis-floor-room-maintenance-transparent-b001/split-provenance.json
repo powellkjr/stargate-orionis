@@ -1,0 +1,39 @@
+{
+  "input": "C:\\Users\\Powel\\Downloads\\Sci-Fi Engineering Room Tile Set.png",
+  "sha256": "29c73be850ebb8a79690eed51d36233e758b769fbf76b7ff2bf1326cd3e7cba0",
+  "inputSize": [
+    2172,
+    724
+  ],
+  "roomMapping": "User confirmed",
+  "method": "Exact square cells; no bounding-box crop, recentering, padding or background cleanup. Masters resized to 1024; runtime previews resized from saved masters to 128. Unregistered presentation studies only.",
+  "variants": [
+    {
+      "variant": "v01",
+      "sourceRectangle": [
+        0,
+        0,
+        724,
+        724
+      ]
+    },
+    {
+      "variant": "v02",
+      "sourceRectangle": [
+        724,
+        0,
+        1448,
+        724
+      ]
+    },
+    {
+      "variant": "v03",
+      "sourceRectangle": [
+        1448,
+        0,
+        2172,
+        724
+      ]
+    }
+  ]
+}

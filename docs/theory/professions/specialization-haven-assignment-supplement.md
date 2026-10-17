@@ -12,10 +12,13 @@ over older terminology in the supplied assignment material. Detailed base
 Profession curricula and the World Map population/economy specification retain
 their existing authority. This supplement assigns origins, not capabilities.
 
-The referenced **Profession Specialization Story Handoff** has not been located
-in the repository. Recover or provide it before treating its additional story
-requirements as documented rules; the assignments below are nevertheless
-confirmed inputs and must not be reassigned during story authoring.
+The supplied specialization handoff's paired mentor concepts, 36 approved Tool
+skills and story hooks are now documented in the
+[mentor Tool catalog](specialization-mentor-tools-and-stories.md). Its origins
+match every assignment below. The older referenced **Profession Specialization
+Story Handoff** remains unlocated; do not infer its additional requirements or
+treat the new mentor concepts as complete story chains. The assignments below
+remain fixed during story authoring.
 
 ## Canonical Names and Historical Terminology
 

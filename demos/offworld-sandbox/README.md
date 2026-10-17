@@ -5,11 +5,36 @@ work, dialogue, explicit combat, Gate travel and selected recovery into one demo
 Runtime systems live in `../shared/offworld/`; mission content lives in
 `../shared/data/offworld/missing-operative-001.finalized.json`.
 
+An additional complete mission, **The Last Transmission**, lives in
+[`last-transmission-001.finalized.json`](../shared/data/offworld/last-transmission-001.finalized.json).
+It uses a new mountain relay setting and cast, six Stages, two civilian evacuations,
+signal verification, peaceful/evidence/combat routes and optional log recovery.
+In Mission Author, choose it and click **Load selected mission**, then
+**Save ready mission JSON**. Import the downloaded file with **Load finalized mission**
+here. Recommended team: equipped Medic I, equipped Technician I, Diplomat I and
+Soldier. Technician II with a compatible kit can hack the service lock instead
+of using the caller's code. See the [author guide](../mission-authoring-simulator/README.md)
+for its walkthrough and authored assumptions. The default benchmark is unchanged.
+
+Installed sprite variants are selected per Unit/NPC/object and per room when
+the map loads, deploys or resets. Choices stay stable through movement and
+redraws; state-pair art stays matched. Only installed, unrejected candidates
+participate. Restart the local server after code updates and refresh the page
+after installing or reviewing variants.
+
+Optional seven-part character rigs are defined in
+[CHARACTER_RIG_CONTRACT.md](CHARACTER_RIG_CONTRACT.md). The ready one-technician
+master/part queue is `artwork/sprite-prompts-v4/rig-proof/`. Existing sprites
+remain active until reviewed rig art is registered; no rig art is generated here.
+The shared pose sampler supports presentation-time walking, while current room
+movement remains instant. Normalize whole sets with `rig-prepare`, never crop
+individual parts with ordinary `prepare`.
+
 ## Run and validate
 
 From the repository root:
 
-```powershell
+```bash
 node demos/serve.mjs
 ```
 
@@ -28,6 +53,26 @@ save endpoints. `EDGE_PATH` can select another Chromium executable. It checks
 normal travel, dialogue and responder selection, terminal hacking, parallel Lab search,
 Scientist characterization, Technician detachment, combat pacing, recovery,
 station/rejoin, reset and a 390px layout. It never saves into the real fixtures.
+
+## 2D sprite presentation experiment
+
+The [Sprite Viewer](../sprite-viewer/README.md) displays all current sprites and
+local PNG variants side by side, including scale and repeated-floor previews.
+Open `/demos/sprite-viewer/` from the shared demo server. Previewing does not install art.
+
+On branch `offworld-2d-sprite-renderer`, the map defaults to Sprites. Use the
+**View** dropdown to compare Schematic without resetting the mission. Both views
+consume the same runtime, authored cells and visibility rules, and share action,
+observation, dialogue and combat UI. Placeholder art adds no gameplay rules.
+
+See [SPRITE_ASSETS.md](SPRITE_ASSETS.md) for the renderer boundary, centralized
+manifest, scale and state treatments.
+[SPRITE_PRODUCTION_CONTRACT.md](SPRITE_PRODUCTION_CONTRACT.md) defines authoritative
+PNG ingestion, source/output sizes, pair registration and the offline preparation
+command `node demos/offworld-sandbox/prepare-sprite.mjs`. The optional offline tool
+requires Python/Pillow; browser execution does not. The browser
+smoke also checks image loading and unchanged runtime across the toggle, and
+captures desktop/mobile Analysis Lab screenshots in its temporary output folder.
 
 ## Conversations and checkpoint travel
 

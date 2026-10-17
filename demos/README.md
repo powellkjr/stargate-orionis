@@ -8,7 +8,7 @@ node demos/serve.mjs
 
 Open `http://127.0.0.1:8001/demos/` and choose any demo. Keep the terminal
 running; Ctrl+C stops it. No package installation or build step is required.
-The demo hub lists all six demos with their current feature scope and persistence
+The demo hub lists all seven demos with their current feature scope and persistence
 limits, and detects whether shared JSON saves are available. Mission Author reviews
 and exports drafts; it does not deploy them as playable Offworld missions.
 
@@ -22,6 +22,11 @@ Then open `http://127.0.0.1:8000/demos/`. All demos use the same server and
 shared files. Choose one consistent hostname and port for browser-local data.
 
 ## What writable means
+
+The [Sprite Viewer](sprite-viewer/README.md) previews the shared sprite manifest
+and local PNG variants. ZIP imports can save recognized source PNGs in
+`artwork/sprite-sources` through the local server and reload them automatically.
+Saving sources does not install active art. Static hosting supports previews only.
 
 Configure character stats, base tier, cross-path/specialization and available
 Tools in the Character & Portrait Editor. Base Profession remains the authored

@@ -28,6 +28,7 @@ Profession competency never substitutes for missing subject Theory.
 * [Compact Context Handoff](./profession-context-handoff.md)
 * [Specializations and Haven Context Handoff](./specializations-and-haven-context-handoff.md) — design context, repo evidence and authority boundaries.
 * [Specialization Haven Assignment Supplement](./specialization-haven-assignment-supplement.md) — fixed curriculum story origins using confirmed names.
+* [Specialization Mentor Tools and Stories](./specialization-mentor-tools-and-stories.md) — 36 approved Tool skills, paired mentor concepts, story hooks and authored opportunity boundaries; documentation only.
 * [Specialization and Haven Decision Checklist](./specializations-and-haven-decisions.md) — unresolved conflicts and authoring work.
 * [Profession Boundaries](./profession-boundaries.md)
 * [Technician](./technician/technician-summary.md)

@@ -1,0 +1,88 @@
+{
+  "neutral_differing_pixels": 0,
+  "visible_pixel_partition": "exactly one original owner",
+  "hidden_overlap": {
+    "head": {
+      "hidden_pixels": 1324,
+      "torso_backing_pixels": 1661,
+      "proximal_zone_radii": [
+        34,
+        28
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "left_upper_arm": {
+      "hidden_pixels": 1769,
+      "torso_backing_pixels": 901,
+      "proximal_zone_radii": [
+        62,
+        60
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "right_upper_arm": {
+      "hidden_pixels": 1769,
+      "torso_backing_pixels": 901,
+      "proximal_zone_radii": [
+        62,
+        60
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "left_forearm": {
+      "hidden_pixels": 2449,
+      "torso_backing_pixels": 2308,
+      "proximal_zone_radii": [
+        46,
+        38
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "right_forearm": {
+      "hidden_pixels": 2447,
+      "torso_backing_pixels": 2306,
+      "proximal_zone_radii": [
+        46,
+        38
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "left_upper_leg": {
+      "hidden_pixels": 12468,
+      "torso_backing_pixels": 4554,
+      "proximal_zone_radii": [
+        78,
+        96
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "right_upper_leg": {
+      "hidden_pixels": 12251,
+      "torso_backing_pixels": 4561,
+      "proximal_zone_radii": [
+        78,
+        96
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "left_lower_leg": {
+      "hidden_pixels": 3496,
+      "torso_backing_pixels": 3543,
+      "proximal_zone_radii": [
+        52,
+        44
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "right_lower_leg": {
+      "hidden_pixels": 3498,
+      "torso_backing_pixels": 3543,
+      "proximal_zone_radii": [
+        52,
+        44
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    }
+  },
+  "acceptance": "Proof only; maximum rotation seams and walk require visual review."
+}

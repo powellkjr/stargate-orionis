@@ -37,14 +37,19 @@ curricula and the World Map population/economy supplement retain authority.
 
 ## Specialization Authoring
 
-- [ ] Recover or provide the referenced Profession Specialization Story Handoff;
-  it has not been located in the repository.
+- [x] Record the supplied specialization handoff's 18 paired mentor concepts,
+  36 approved Tool skills and story hooks in the
+  [mentor Tool catalog](specialization-mentor-tools-and-stories.md).
+  Complete story chains and certification curricula remain open; the older
+  referenced Profession Specialization Story Handoff is still unlocated.
 - [ ] Recover or author specific origin Havens and NPCs without changing the
   fixed assignments; Independent A/B/C must remain unrelated Havens.
 
 - [x] Confirm the complete three-specialization roster for all six Professions
   (unchanged Soldier, Technician and Diplomat rosters plus confirmations above).
-- [ ] Author dedicated capabilities and boundaries for each specialization.
+- [x] Document the approved exceptional Tool methods and boundaries for all
+  18 specializations in the mentor Tool catalog; executable opportunities and
+  dedicated certification curricula remain unauthored.
 - [ ] Define specialization progression/tier structure.
 - [ ] Define Tool Service requirements.
 - [ ] Define equipment relationships without automatically granting equipment.

@@ -1,0 +1,2767 @@
+{
+  "frames": [
+    {
+      "frame": 0,
+      "time_ms": 0.0,
+      "alpha128_component_areas": [
+        3441
+      ]
+    },
+    {
+      "frame": 1,
+      "time_ms": 37.5,
+      "alpha128_component_areas": [
+        3442
+      ]
+    },
+    {
+      "frame": 2,
+      "time_ms": 75.0,
+      "alpha128_component_areas": [
+        3434
+      ]
+    },
+    {
+      "frame": 3,
+      "time_ms": 112.5,
+      "alpha128_component_areas": [
+        3435
+      ]
+    },
+    {
+      "frame": 4,
+      "time_ms": 150.0,
+      "alpha128_component_areas": [
+        3439
+      ]
+    },
+    {
+      "frame": 5,
+      "time_ms": 187.5,
+      "alpha128_component_areas": [
+        3437
+      ]
+    },
+    {
+      "frame": 6,
+      "time_ms": 225.0,
+      "alpha128_component_areas": [
+        3438
+      ]
+    },
+    {
+      "frame": 7,
+      "time_ms": 262.5,
+      "alpha128_component_areas": [
+        3439
+      ]
+    },
+    {
+      "frame": 8,
+      "time_ms": 300.0,
+      "alpha128_component_areas": [
+        3441
+      ]
+    },
+    {
+      "frame": 9,
+      "time_ms": 337.5,
+      "alpha128_component_areas": [
+        3439
+      ]
+    },
+    {
+      "frame": 10,
+      "time_ms": 375.0,
+      "alpha128_component_areas": [
+        3438
+      ]
+    },
+    {
+      "frame": 11,
+      "time_ms": 412.5,
+      "alpha128_component_areas": [
+        3437
+      ]
+    },
+    {
+      "frame": 12,
+      "time_ms": 450.0,
+      "alpha128_component_areas": [
+        3439
+      ]
+    },
+    {
+      "frame": 13,
+      "time_ms": 487.5,
+      "alpha128_component_areas": [
+        3435
+      ]
+    },
+    {
+      "frame": 14,
+      "time_ms": 525.0,
+      "alpha128_component_areas": [
+        3434
+      ]
+    },
+    {
+      "frame": 15,
+      "time_ms": 562.5,
+      "alpha128_component_areas": [
+        3442
+      ]
+    }
+  ],
+  "matrices_and_poses": {
+    "walk": [
+      {
+        "label": "WALK 0ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.075,
+            "right_upper_arm": 0.925,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.92,
+            "right_upper_leg": 1.08,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.25,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ]
+        }
+      },
+      {
+        "label": "WALK 37.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.05625,
+            "right_upper_arm": 0.94375,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.94,
+            "right_upper_leg": 1.06,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.1875,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ]
+        }
+      },
+      {
+        "label": "WALK 75ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.0375,
+            "right_upper_arm": 0.9625,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.96,
+            "right_upper_leg": 1.04,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.125,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ]
+        }
+      },
+      {
+        "label": "WALK 112.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.01875,
+            "right_upper_arm": 0.98125,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.98,
+            "right_upper_leg": 1.02,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.0625,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ]
+        }
+      },
+      {
+        "label": "WALK 150ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "WALK 187.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.98125,
+            "right_upper_arm": 1.01875,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.02,
+            "right_upper_leg": 0.98,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.0625,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ]
+        }
+      },
+      {
+        "label": "WALK 225ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.9625,
+            "right_upper_arm": 1.0375,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.04,
+            "right_upper_leg": 0.96,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.125,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ]
+        }
+      },
+      {
+        "label": "WALK 262.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.94375,
+            "right_upper_arm": 1.05625,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.06,
+            "right_upper_leg": 0.94,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.1875,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ]
+        }
+      },
+      {
+        "label": "WALK 300ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.925,
+            "right_upper_arm": 1.075,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.08,
+            "right_upper_leg": 0.92,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.25,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ]
+        }
+      },
+      {
+        "label": "WALK 337.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.94375,
+            "right_upper_arm": 1.05625,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.06,
+            "right_upper_leg": 0.94,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.1875,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ]
+        }
+      },
+      {
+        "label": "WALK 375ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.9625,
+            "right_upper_arm": 1.0375,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.04,
+            "right_upper_leg": 0.96,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.125,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ]
+        }
+      },
+      {
+        "label": "WALK 412.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.98125,
+            "right_upper_arm": 1.01875,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.02,
+            "right_upper_leg": 0.98,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.0625,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ]
+        }
+      },
+      {
+        "label": "WALK 450ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "WALK 487.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.01875,
+            "right_upper_arm": 0.98125,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.98,
+            "right_upper_leg": 1.02,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.0625,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.01875,
+            0,
+            -0.9625000000000057
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.98125,
+            0,
+            0.8375000000000057
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.98,
+            0,
+            1.460000000000008
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.02,
+            0,
+            -1.460000000000008
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.0625
+          ]
+        }
+      },
+      {
+        "label": "WALK 525ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.0375,
+            "right_upper_arm": 0.9625,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.96,
+            "right_upper_leg": 1.04,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.125,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.0375,
+            0,
+            -1.9250000000000043
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.9625,
+            0,
+            1.6749999999999972
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.96,
+            0,
+            2.9200000000000017
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.04,
+            0,
+            -2.9200000000000017
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.125
+          ]
+        }
+      },
+      {
+        "label": "WALK 562.5ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.05625,
+            "right_upper_arm": 0.94375,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.94,
+            "right_upper_leg": 1.06,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.1875,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.05625,
+            0,
+            -2.8874999999999957
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.94375,
+            0,
+            2.512500000000003
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.94,
+            0,
+            4.38000000000001
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.06,
+            0,
+            -4.38000000000001
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.1875
+          ]
+        }
+      }
+    ],
+    "examples": [
+      {
+        "label": "IDLE",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "WALK 0ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1.075,
+            "right_upper_arm": 0.925,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 0.92,
+            "right_upper_leg": 1.08,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.25,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ]
+        }
+      },
+      {
+        "label": "WALK 150ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "WALK 300ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 0.925,
+            "right_upper_arm": 1.075,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1.08,
+            "right_upper_leg": 0.92,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": -0.25,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            0.925,
+            0,
+            3.3499999999999943
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1.075,
+            0,
+            -3.8499999999999943
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1.08,
+            0,
+            -5.840000000000003
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            0.92,
+            0,
+            5.840000000000003
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            -0.25
+          ]
+        }
+      },
+      {
+        "label": "WALK 450ms",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "elbows +/-15",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0,
+          "left_forearm": 15,
+          "right_forearm": -15
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            0.9659258262890683,
+            0.25881904510252074,
+            -0.25881904510252074,
+            0.9659258262890683,
+            19.61405743368971,
+            -20.983557419175973
+          ],
+          "right_forearm": [
+            0.9659258262890683,
+            -0.25881904510252074,
+            0.25881904510252074,
+            0.9659258262890683,
+            -15.25256319869046,
+            12.145280353946681
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "knees +/-15",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 0,
+          "left_lower_leg": 15,
+          "right_lower_leg": -15
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            0.9659258262890683,
+            0.25881904510252074,
+            -0.25881904510252074,
+            0.9659258262890683,
+            25.590458042444226,
+            -16.37882692241614
+          ],
+          "right_lower_leg": [
+            0.9659258262890683,
+            -0.25881904510252074,
+            0.25881904510252074,
+            0.9659258262890683,
+            -21.228963807444963,
+            16.750010850706516
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      {
+        "label": "DOWN",
+        "pose": {
+          "scaleY": {
+            "torso": 1,
+            "head": 1,
+            "left_upper_arm": 1,
+            "right_upper_arm": 1,
+            "left_forearm": 1,
+            "right_forearm": 1,
+            "left_upper_leg": 1,
+            "right_upper_leg": 1,
+            "left_lower_leg": 1,
+            "right_lower_leg": 1,
+            "equipment": 1
+          },
+          "torsoY": 0,
+          "rootAngle": 90
+        },
+        "matrices": {
+          "torso": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "head": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_arm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_forearm": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_upper_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "left_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "right_lower_leg": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "equipment": [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ]
+        }
+      }
+    ]
+  },
+  "criterion": "No detached alpha>=128 component of 3 or more pixels beside the main character."
+}

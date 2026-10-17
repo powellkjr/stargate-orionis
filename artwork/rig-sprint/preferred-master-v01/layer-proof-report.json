@@ -1,0 +1,52 @@
+{
+  "neutral_differing_pixels": 0,
+  "visible_pixel_partition": "exactly one original owner",
+  "hidden_overlap": {
+    "right_arm": {
+      "hidden_pixels": 4122,
+      "torso_backing_pixels": 2509,
+      "proximal_zone_radii": [
+        90,
+        60
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "left_arm": {
+      "hidden_pixels": 4122,
+      "torso_backing_pixels": 2509,
+      "proximal_zone_radii": [
+        90,
+        60
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "right_leg": {
+      "hidden_pixels": 2811,
+      "torso_backing_pixels": 1622,
+      "proximal_zone_radii": [
+        42,
+        42
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "left_leg": {
+      "hidden_pixels": 2872,
+      "torso_backing_pixels": 1622,
+      "proximal_zone_radii": [
+        42,
+        42
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    },
+    "head": {
+      "hidden_pixels": 1324,
+      "torso_backing_pixels": 1661,
+      "proximal_zone_radii": [
+        34,
+        28
+      ],
+      "method": "Nearest original proximal RGBA inside opaque torso; source pixels back socket."
+    }
+  },
+  "acceptance": "Proof only; maximum rotation seams and walk require visual review."
+}

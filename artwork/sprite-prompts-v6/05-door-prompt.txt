@@ -1,0 +1,38 @@
+ASSET-SPECIFIC PRODUCTION WORKFLOW: Generate three registered matching-state pairs (six separate source PNGs). Preserve the shared canvas, frame pixels and prescribed bounds across each pair. Do not independently crop or recenter states, or use the ordinary three-column extraction workflow.
+
+BATCH PACKAGING: Produce exactly three visual variants v01, v02, v03.
+ZIP FILENAME: orionis-door-b001.zip (increment b002, b003 for later batches)
+ZIP ROOT FOLDER: orionis-door-b001/
+SOURCE FILENAMES: door__vNN__source.png and door-open__vNN__source.png for NN=01,02,03
+VARIATION: Follow the three shape/design style briefs below, not colorway swaps. Preserve camera, subject scale, pivot, lighting and occupied footprint envelope. State pairs must match within each variant. No gameplay/identity changes.
+ARCHIVE CONTENTS: PNG source files only inside the named root; no previews, contact sheets, nested folders or extra files. Attach an actual ZIP, not an image of filenames.
+If ZIP/file export is unavailable, say so and deliver separate PNG files with these exact names; do not claim an archive exists.
+
+ASSET ID: door
+OUTPUT FILENAME: door__vNN__source.png (NN=01,02,03)
+SOURCE ART SIZE: 1024x1024 PNG, single frame
+RUNTIME FILENAME: door.png
+RUNTIME SIZE: 128x128 pixels; 32x32 SVG world units
+BACKGROUND: True RGBA transparency; no baked backdrop
+CAMERA: Direct overhead, north up; no isometric or front-facing surfaces
+ORIENTATION: Horizontal long axis, left to right
+VISIBLE FOOTPRINT: Registered frame bounds [112,320,912,704] on source canvas
+PIVOT: [0.5, 0.5], canvas center
+PADDING: 8px minimum transparent runtime border; preserve shared source canvas and frame exactly
+SHADOW: Tight centered translucent contact shadow; no directional cast shadow or backdrop
+LIGHTING: Soft upper-left, low contrast; walls/doors/characters must tolerate 90-degree rotation
+ROTATION POLICY: Programmatic 90 degrees
+MATCHING ASSET: door-open
+ART DIRECTION: Bright clean chunky mature stylized 2D sci-fi, simplified painted materials, low noise, controlled cyan/amber emissives
+SPECIAL REQUIREMENTS: Reuse identical outer frame pixels; source aperture bounds [256,352,768,672]; leave open aperture transparent
+SUBJECT DETAILS: A matching closed/open pair of neutral-gray facility doors. Closed state has a solid door leaf; open state removes the leaf and leaves the aperture transparent. Keep identical outer frame pixels in both states.
+VARIANT DESIGN BRIEF — three different shape/design styles, NOT three colorways:
+v01 — Clean angular design: broad flat panels, crisp chamfers, squared corners and a simple rectilinear organization.
+v02 — Soft rounded design: curved shell/panel boundaries, rounded corners and a flowing organization of the same visible components.
+v03 — Chunky utilitarian design: stepped contours, layered panel construction and a robust block-like organization of the same visible components.
+DESIGN DIFFERENCE: change at least three major visible shape features between each pair of variants, such as contour treatment, panel/seam layout and component or garment shape. These must read at runtime size, not only as tiny texture details. Do not duplicate a design and recolor it. Keep the same palette across all three; color changes do not count as variation.
+LOCKED PRESENTATION: same bright clean chunky mature stylized painted sci-fi rendering, camera, orientation, lighting, subject scale, occupied footprint envelope and pivot. Different design styles are NOT different rendering media: no pixel-art/anime/photorealistic mixture. Contours and internal geometry may differ within the required envelope; do not enlarge one variant to make it look different.
+SEMANTIC LIMITS: preserve the exact public subject, required components, equipment inventory and purpose. Do not add/remove Tools, change capability or tier, imply a new faction/civilization, expose hidden identity, or turn surface appearance into a new game rule. Subject-specific prohibitions take priority over design suggestions; do not add panels to a natural subject or decoration to an empty/void floor.
+STATE-PAIR LIMITS: each variant is a complete matching state pair. Design may differ BETWEEN v01/v02/v03; within each pair, reuse identical frame/ring pixels, registered bounds and attachments. Never redesign the open/active state separately.
+VARIATION CHECK: inspect v01/v02/v03 side by side at runtime dimensions and in grayscale. Each should be distinguishable by major shape structure without color cues. Reject colorway-only duplicates and regenerate before packaging. If the subject constraints prevent meaningful differences, report the limitation rather than inventing new content.
+

@@ -24,21 +24,21 @@ export function instancePoint(m,id){
   const cell=stage.cells[Math.floor(index/3)%stage.cells.length];return {x:cell.x*100+22+(index%3)*27,y:cell.y*100+38};
 }
 export function targetPoint(m,t){return t.transitionId?transitionPoint(m,m.indexes.transitions[t.transitionId]):instancePoint(m,t.instanceId);}
-export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]){
+export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[],presentation=null){
   const knownLoot=new Map(s.status==='ACTIVE'?lootEntries(m,s).map(r=>[r.instanceId,r]):[]);
   const layout=mapLayout(m,s),point=id=>layout.points[id]??instancePoint(m,id),targetPosition=t=>t.transitionId?transitionPoint(m,m.indexes.transitions[t.transitionId]):point(t.instanceId);
-  const html=['<defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0H0V100" fill="none" stroke="#1c2931"/></pattern><pattern id="secure" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="#283438"/><rect width="6" height="12" fill="#635e39"/></pattern></defs><rect x="-2000" y="-2000" width="5000" height="5000" fill="url(#grid)"/>'];
+  const html=[presentation?.background??'<defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0H0V100" fill="none" stroke="#1c2931"/></pattern><pattern id="secure" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="12" height="12" fill="#283438"/><rect width="6" height="12" fill="#635e39"/></pattern></defs><rect x="-2000" y="-2000" width="5000" height="5000" fill="url(#grid)"/>'];
   for(const stage of m.stages){
     const st=s.stageStates[stage.stageId];if(st.visibility==='HIDDEN'&&!st.knownShape)continue;
     const fill=st.visibility==='VISIBLE'?'#344e57':st.visibility==='PARTIAL'?'#233b43':st.securityState==='SECURE'&&st.explored?'url(#secure)':'#202b32';
-    html.push(`<g class="stage-floor" data-stage="${esc(stage.stageId)}">${renderMapSurface(stage.cells,{fill,stroke:st.visibility==='VISIBLE'?'#93d8c4':'#4d6670'})}</g>`);
-    const anchor=stage.cells[0];html.push(`<text x="${anchor.x*100+9}" y="${anchor.y*100+17}" fill="#bdd0d3" font-size="10">${esc(title(stage.stageId))}</text>`);
+    html.push(`<g class="stage-floor" data-stage="${esc(stage.stageId)}">${presentation?presentation.stage(stage,st):renderMapSurface(stage.cells,{fill,stroke:st.visibility==='VISIBLE'?'#93d8c4':'#4d6670'})}</g>`);
+    const anchor=stage.cells[0];html.push(`<text class="stage-label" x="${anchor.x*100+9}" y="${anchor.y*100+17}" fill="${presentation?'#203b40':'#bdd0d3'}" font-size="10">${esc(title(stage.stageId))}</text>`);
     for(const d of m.instances.filter(d=>d.stageId===stage.stageId&&condition(s,d.revealedWhen)&&(knownLoot.has(d.instanceId)||s.instanceStates[d.instanceId].custody==='LOCAL'&&(st.visibility==='VISIBLE'||st.visibility==='PARTIAL'&&d.visibleWhenPartial)))){
       const {x,y}=point(d.instanceId),isGate=d.instanceId===m.gate.instanceId;
       if(visibleNpc(m,s,d.instanceId))html.push(`<g class="npc-token" data-npc="${esc(d.instanceId)}" role="button" tabindex="0" aria-label="Inspect ${esc(d.playerLabel)}">`);
       const loot=knownLoot.get(d.instanceId);if(loot)html.push(`<g class="loot-marker" data-loot="${esc(d.instanceId)}"><title>${esc(loot.label)} · ${loot.status}</title><rect x="${x-11}" y="${y-11}" width="22" height="22" rx="3" fill="none" stroke="${loot.collected?'#8ad1ba':'#efd174'}" ${loot.collected?'stroke-dasharray="3 2"':''}/><text x="${x}" y="${y+20}" font-size="7" fill="#e5dcae" text-anchor="middle">${loot.status}</text></g>`);
       if(!isGate&&st.visibility==='VISIBLE')html.push(`<g transform="translate(${x},${y})">${npcAlertSvg(s.instanceStates[d.instanceId])}</g>`);
-      html.push(isGate?`<circle cx="${x}" cy="${y}" r="22" fill="${s.gateState.connection==='OPEN_TO_SGC'?'#4ca0b5':'#18262e'}" stroke="#83bccd" stroke-width="7"/>`:`<g transform="translate(${x},${y})"><title>${esc(d.playerLabel)} ${esc(s.instanceStates[d.instanceId].combatState??'')}</title>${s.instanceStates[d.instanceId].combatState?`<circle r="10" fill="none" stroke="${['ACTIVE'].includes(s.instanceStates[d.instanceId].combatState)?'#ff817e':'#8ad1ba'}"/>`:''}${d.mapGlyph==='PERSON'?`<g transform="scale(.85)">${mapToken()}</g>`:`<rect x="-6" y="-6" width="12" height="12" rx="2" fill="${s.instanceStates[d.instanceId].operational===false?'#48514b':'#71878a'}" stroke="#a0b0b0"/>`}</g>`);
+      html.push(presentation?presentation.instance(d,s.instanceStates[d.instanceId],{x,y},s,m):isGate?`<circle cx="${x}" cy="${y}" r="22" fill="${s.gateState.connection==='OPEN_TO_SGC'?'#4ca0b5':'#18262e'}" stroke="#83bccd" stroke-width="7"/>`:`<g transform="translate(${x},${y})"><title>${esc(d.playerLabel)} ${esc(s.instanceStates[d.instanceId].combatState??'')}</title>${s.instanceStates[d.instanceId].combatState?`<circle r="10" fill="none" stroke="${['ACTIVE'].includes(s.instanceStates[d.instanceId].combatState)?'#ff817e':'#8ad1ba'}"/>`:''}${d.mapGlyph==='PERSON'?`<g transform="scale(.85)">${mapToken()}</g>`:`<rect x="-6" y="-6" width="12" height="12" rx="2" fill="${s.instanceStates[d.instanceId].operational===false?'#48514b':'#71878a'}" stroke="#a0b0b0"/>`}</g>`);
       if(visibleNpc(m,s,d.instanceId))html.push(`<circle cx="${x}" cy="${y}" r="15" fill="transparent"/></g>`);
     }
   }
@@ -51,6 +51,7 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]
     const fill=selectable?(locked?'#aa7139':'#94e1c0'):'#19282e',stroke=selectable?(locked?'#ffd08b':'#e4fff4'):'#40565d';
     const dir=t.fromStageId===s.currentStageId?t.directionFrom:t.directionTo,arrow={NORTH:'↑',SOUTH:'↓',EAST:'→',WEST:'←'}[dir];
     doorObstacles.push({x,y,halfWidth:size/2+4,halfHeight:size/2+4});
+    if(presentation)html.push(presentation.door(t,s.transitionStates[t.transitionId],{x,y}));
     html.push(`<g class="door door-${mode}" data-transition-state="${mode}" ${selectable?`data-transition="${esc(t.transitionId)}" role="button" tabindex="0" aria-label="${locked?'Inspect locked doorway':'Move '+dir.toLowerCase()} ${esc(t.transitionId)}"`:''}><title>${selectable?(locked?'Locked · inspect requirements':'Move '+dir.toLowerCase()):'Inactive passage'}</title>${selectable?`<rect x="${x-27}" y="${y-27}" width="54" height="54" rx="12" fill="none" stroke="${stroke}" opacity=".35"/>`:''}<rect x="${x-size/2}" y="${y-size/2}" width="${size}" height="${size}" rx="${selectable?9:4}" fill="${fill}" stroke="${stroke}" stroke-width="${selectable?3:1}"/>${selectable?`<text x="${x}" y="${y+7}" text-anchor="middle" fill="#122f2b" font-weight="bold" font-size="23">${locked?'▣':arrow}</text>`:`<path d="M${x-4},${y}h8" stroke="#60747a"/>`}</g>`);
   }
   for(const o of m.observations){
@@ -62,7 +63,7 @@ export function renderMap(m,s,hexSize=22,interactionEnabled=true,damageFrames=[]
     if(s.stageStates[stage.stageId].visibility==='HIDDEN')continue;
     s.units.filter(u=>u.currentStageId===stage.stageId&&['ACTIVE_PARTY','STATIONED'].includes(u.partyStatus)).forEach((u,i)=>{
       const {x,y}=point(u.unitId);
-      html.push(`<g transform="translate(${x},${y})"><title>${esc(u.name)} · ${u.partyStatus}</title>${u.partyStatus==='STATIONED'?'<circle r="10" fill="none" stroke="#dfcf88"/>':''}<g transform="scale(.85)">${mapToken(u.appearance)}</g></g>`);
+      html.push(presentation?presentation.unit(u,{x,y}):`<g transform="translate(${x},${y})"><title>${esc(u.name)} · ${u.partyStatus}</title>${u.partyStatus==='STATIONED'?'<circle r="10" fill="none" stroke="#dfcf88"/>':''}<g transform="scale(.85)">${mapToken(u.appearance)}</g></g>`);
     });
   }
   const actions=[];

@@ -7,6 +7,8 @@ import {validateLoadout} from './shared/offworld/personnel-save.mjs';
 import {buildPersonnelRoster} from './shared/js/personnel-roster.mjs';
 import {branches} from './shared/offworld/equipment.mjs';
 import {normalizeAppearance} from './shared/portraits/portrait-bust.mjs';
+import {listSpriteSources,saveSpriteSources,readSpriteReviews,setSpriteRejected} from './sprite-viewer/sources-server.mjs';
+import {readActiveSprites,installSpriteVariant} from './sprite-viewer/install-server.mjs';
 const project=fileURLToPath(new URL('../',import.meta.url));
 export function demoServer(root=project){
   const canonicalRoot=realpath(resolve(root));
@@ -16,6 +18,31 @@ export function demoServer(root=project){
     res.setHeader('Cache-Control','no-store');
     try{
       const url=new URL(req.url,'http://localhost');
+      if(url.pathname==='/api/sprite-install'){
+        if(req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({service:'sprite-install',active:await readActiveSprites(root)}));return;}
+        if(req.method!=='POST'){res.writeHead(405).end();return;}
+        if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host){res.writeHead(403).end();return;}
+        let body='';for await(const chunk of req){body+=chunk;if(body.length>8192)throw Error('Install request too large.');}
+        const input=JSON.parse(body);let result;const save=queue.then(async()=>{result=await installSpriteVariant(root,input.id);});queue=save.catch(()=>{});await save;
+        res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify(result));return;
+      }
+      if(url.pathname==='/api/sprite-reviews'){
+        if(req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({service:'sprite-reviews',rejected:await readSpriteReviews(root)}));return;}
+        if(req.method!=='POST'){res.writeHead(405).end();return;}
+        if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host){res.writeHead(403).end();return;}
+        let body='';for await(const chunk of req){body+=chunk;if(body.length>8192)throw Error('Review request too large.');}
+        const input=JSON.parse(body);let result;const save=queue.then(async()=>{result=await setSpriteRejected(root,input.id,input.rejected);});queue=save.catch(()=>{});await save;
+        res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify(result));return;
+      }
+      if(url.pathname==='/api/sprite-sources'){
+        if(req.method==='GET'){res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({service:'sprite-sources',writable:true,files:await listSpriteSources(root)}));return;}
+        if(req.method!=='POST'){res.writeHead(405).end();return;}
+        if(req.headers.origin&&new URL(req.headers.origin).host!==req.headers.host){res.writeHead(403).end();return;}
+        const chunks=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>128*1024*1024)throw Error('ZIP exceeds 128 MiB.');chunks.push(chunk);}
+        const bytes=Buffer.concat(chunks);let result;
+        const save=queue.then(async()=>{result=await saveSpriteSources(root,url.searchParams.get('name')??'',bytes);});queue=save.catch(()=>{});await save;
+        res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify(result));return;
+      }
       if(url.pathname==='/api/demo-status'){
         if(req.method!=='GET'){res.writeHead(405).end();return;}
         res.writeHead(200,{'Content-Type':'application/json'}).end(JSON.stringify({service:'orionis-writable-demos',writable:true}));return;

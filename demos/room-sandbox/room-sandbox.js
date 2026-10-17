@@ -1,6 +1,8 @@
 import {loadBase,saveBase,validateBase,baseCapacity} from '../shared/js/base-configuration.mjs?v=save-response-1';
 let sharedBase=null;
 import {renderMapSurface} from '../shared/map/renderer.mjs?v=shared-map-1';
+import {roomSpriteSurface,geologySprite,roomDoorSprite,staffCountSprite} from './sprite-presentation.mjs';
+import {resetSpriteVariants,replaceMissingSprite} from '../offworld-sandbox/sprite-renderer.mjs';
 import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-2";
 
 const COLS=12, ROWS=10;
@@ -14,6 +16,7 @@ let selectedId=null, selectedGroupId=null, nextRoomId=1, nextGroupId=1;
 let selectedJoinTarget=null, actionEntries=[];
 let lastGenerationSeed=null;
 let showRooms=true;
+let useSprites=true;
 let interactionMode="interact";
 let excavationProgress=new Map();
 let selectedBaseCell=null;
@@ -39,6 +42,16 @@ const selectionStatus=document.getElementById("selectionStatus");
 const actionLog=document.getElementById("actionLog");
 const toggleBaseButton=document.getElementById("toggleBase");
 const toggleModeButton=document.getElementById("toggleMode");
+const toggleSpritesButton=document.getElementById('toggleSprites');
+grid.addEventListener('error',event=>replaceMissingSprite(event.target),true);
+function spriteSvg(html,viewBox='0 0 100 100'){
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('viewBox',viewBox);svg.setAttribute('width','100%');svg.setAttribute('height','100%');svg.setAttribute('aria-hidden','true');svg.innerHTML=html;return svg;
+}
+function decorateDoor(marker,side,identity){
+ if(!useSprites)return;
+ marker.classList.add('sprite-door');marker.appendChild(spriteSvg(roomDoorSprite(side,identity),'0 0 32 32'));
+}
 
 function syncGridScale(){
   const gridWrap=grid.parentElement;
@@ -646,34 +659,35 @@ function deactivateDependency(group,removedRoomId){
   }
 }
 
-function addEdgeSlots(element,joins,doorSide){
+function addEdgeSlots(element,joins,doorSide,identity){
   for(const side of ["north","east","south","west"]){
     if(joins[side])continue;
     for(let index=1;index<=3;index++){
       const slot=document.createElement("div");slot.className=`edge-slot ${side[0]}${index}`;
-      if(index===2&&side===doorSide)slot.classList.add("door");element.appendChild(slot);
+      if(index===2&&side===doorSide){slot.classList.add("door");decorateDoor(slot,side,`${identity}:door:${side}`)}element.appendChild(slot);
     }
   }
 }
 
-function addDoorSlots(element,joins,doors=[]){
+function addDoorSlots(element,joins,doors=[],identity){
   const grouped=Map.groupBy(doors,door=>door.side);
   for(const side of ["north","east","south","west"]){
     if(joins[side])continue;
     const sideDoors=grouped.get(side)??[];
     for(let index=1;index<=3;index++){
       const slot=document.createElement("div");slot.className=`edge-slot ${side[0]}${index}`;
-      if(sideDoors.some(door=>door.slot===index))slot.classList.add("door");
+      if(sideDoors.some(door=>door.slot===index)){slot.classList.add("door");decorateDoor(slot,side,`${identity}:door:${side}:${index}`)}
       element.appendChild(slot);
     }
   }
 }
 
-function addContinuousDoors(element,doors,width,height){
+function addContinuousDoors(element,doors,width,height,identity){
   const totalWidth=width*CELL,totalHeight=height*CELL;
   for(const door of doors){
     const marker=document.createElement("div");
     marker.className=`continuous-door ${door.side}`;
+    decorateDoor(marker,door.side,`${identity}:door:${door.side}:${door.slot}`);
     if(door.side==="north"||door.side==="south"){
       const segmentWidth=totalWidth/3;
       const left=(door.slot-1)*segmentWidth+(segmentWidth-24)/2;
@@ -689,12 +703,13 @@ function addContinuousDoors(element,doors,width,height){
   }
 }
 
-function appendRoomSurface(element,room,cells,joinedSides,selectedGroupRooms,destinationRooms){
+function appendRoomSurface(element,room,cells,joinedSides,selectedGroupRooms,destinationRooms,showProps=true){
   element.classList.add('shared-surface-room');
   const stroke=destinationRooms.has(room.instanceId)?'#f2c94c':room.instanceId===selectedId?'#ffffff':selectedGroupRooms.has(room.instanceId)?'#7dd3fc':CT_BORDER_COLORS[room.constructionTier];
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.classList.add('room-map-surface');svg.setAttribute('width','100%');svg.setAttribute('height','100%');
-  svg.innerHTML=renderMapSurface(cells,{cellSize:CELL,padding:PAD,joinedSides,fill:roomDef(room.roomId).color,stroke,strokeWidth:3,dashed:!!roomDef(room.roomId).joinGroup});
+  const options={cellSize:CELL,padding:PAD,joinedSides,fill:roomDef(room.roomId).color,stroke,strokeWidth:3,dashed:!!roomDef(room.roomId).joinGroup,showProps};
+  svg.innerHTML=useSprites?roomSpriteSurface(room,cells,options):renderMapSurface(cells,options);
   element.appendChild(svg);
 }
 
@@ -713,7 +728,8 @@ function renderContinuousRoom(room,definition,selectedGroupRooms,destinationRoom
   Object.assign(fill.style,{top:`${PAD}px`,right:`${PAD}px`,bottom:`${PAD}px`,left:`${PAD}px`});
   fill.textContent=`${definition.name}${room.constructionTier>1?` CT${room.constructionTier}`:""}`;
   element.appendChild(fill);
-  addContinuousDoors(element,room.doors??[],room.width,room.height);
+  const doors=room.doors?.length?room.doors:[{side:["north","east","south","west"][room.doorIndex%4],slot:2}];
+  addContinuousDoors(element,doors,room.width,room.height,room.instanceId);
   addStaffDots(element,room);
   addRoomNumber(element,room);
   element.addEventListener("click",event=>{event.stopPropagation();if(interactionMode==="inspect"){setStatus(`Inspecting ${definition.name} ${room.instanceId}.`);return}handleRoomClick(room.instanceId)});
@@ -732,7 +748,7 @@ function addStaffDots(element,room){
     top=roomCenterY<groupCenterY?82:roomCenterY>groupCenterY?18:50;
   }
   dots.style.left=`${left}%`;dots.style.top=`${top}%`;
-  for(let index=0;index<room.staffCount;index++){const dot=document.createElement("span");dot.className="staff-dot";dots.appendChild(dot)}
+  for(let index=0;index<room.staffCount;index++){const dot=document.createElement("span");dot.className="staff-dot";if(useSprites){dot.classList.add('sprite-staff');dot.appendChild(spriteSvg(staffCountSprite(`${room.instanceId}:staff:${index}`)))}dots.appendChild(dot)}
   element.appendChild(dots);
 }
 
@@ -752,6 +768,7 @@ function render(){
   if(sharedBase){const capacity=baseCapacity({...sharedBase,rooms:placed},catalog.map(d=>d.schema));document.getElementById('baseSummary').textContent=`Layout capacity: Holding ${capacity.HOLDING.free}/${capacity.HOLDING.total} free · Receiving ${capacity.RECEIVING.free}/${capacity.RECEIVING.total} free. Save to apply to Offworld.`;}
 
   syncGridScale();
+  grid.classList.toggle('sprites-mode',useSprites);
   grid.replaceChildren();
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){
     const cell=document.createElement("button");cell.type="button";cell.className="cell";cell.setAttribute("aria-label",`Grid column ${col+1}, row ${row+1}`);
@@ -765,6 +782,7 @@ function render(){
       label.textContent=baseTileBadge(baseId);
       label.title=base.title;
       base.appendChild(label);
+      if(useSprites){const html=geologySprite(baseId,`tile:${col}:${row}`);if(html)base.appendChild(spriteSvg(html));}
       cell.setAttribute("aria-label",`Grid column ${col+1}, row ${row+1}, ${definition?.identity?.name ?? baseId}`);
       cell.appendChild(base);
     }
@@ -787,7 +805,7 @@ function render(){
       const joins=joinedSides(room,localCol,localRow),element=document.createElement("div");
       element.className="room-cell"+(room.instanceId===selectedId?" selected":"")+(selectedGroupRooms.has(room.instanceId)?" group-selected":"")+(destinationRooms.has(room.instanceId)?" join-destination":"")+(definition.joinGroup?" joinable":"");
       element.style.left=`${(room.col+localCol)*CELL}px`;element.style.top=`${(room.row+localRow)*CELL}px`;element.style.setProperty("--room-color",definition.color);element.style.setProperty("--ct-border",CT_BORDER_COLORS[room.constructionTier]);
-      appendRoomSurface(element,room,[{x:0,y:0}],()=>joins,selectedGroupRooms,destinationRooms);
+      appendRoomSurface(element,room,[{x:0,y:0}],()=>joins,selectedGroupRooms,destinationRooms,localCol===Math.floor(room.width/2)&&localRow===Math.floor(room.height/2));
       const fill=document.createElement("div");fill.className="room-fill";
       const top=joins.north?0:PAD,right=joins.east?0:PAD,bottom=joins.south?0:PAD,left=joins.west?0:PAD;
       Object.assign(fill.style,{top:`${top}px`,right:`${right}px`,bottom:`${bottom}px`,left:`${left}px`});
@@ -796,8 +814,8 @@ function render(){
       element.appendChild(fill);
       const cellDoors=(room.doors??[]).filter(door=>(door.side==="north"&&localRow===0&&localCol===door.slot-1)||(door.side==="south"&&localRow===room.height-1&&localCol===door.slot-1)||(door.side==="west"&&localCol===0&&localRow===door.slot-1)||(door.side==="east"&&localCol===room.width-1&&localRow===door.slot-1));
       const eligible=(doorSide==="north"&&localRow===0)||(doorSide==="south"&&localRow===room.height-1)||(doorSide==="west"&&localCol===0)||(doorSide==="east"&&localCol===room.width-1);
-      if(room.doors?.length)addDoorSlots(element,joins,cellDoors);
-      else addEdgeSlots(element,joins,eligible?doorSide:null);
+      if(room.doors?.length)addDoorSlots(element,joins,cellDoors,room.instanceId);
+      else addEdgeSlots(element,joins,eligible?doorSide:null,`${room.instanceId}:${localCol}:${localRow}`);
       if(localCol===0&&localRow===0){addStaffDots(element,room);addRoomNumber(element,room)}
       element.addEventListener("click",event=>{event.stopPropagation();if(interactionMode==="inspect"){setStatus(`Inspecting ${definition.name} ${room.instanceId}.`);return}handleRoomClick(room.instanceId)});grid.appendChild(element);
     }
@@ -806,6 +824,7 @@ function render(){
 }
 
 function resetSandbox(){
+  resetSpriteVariants();
   placed=[];groups=[];selectedId=null;selectedGroupId=null;selectedJoinTarget=null;nextRoomId=1;nextGroupId=1;
 }
 
@@ -968,7 +987,13 @@ async function generateLayout(seed=Math.floor(Math.random()*0xFFFFFFFF),attempt=
       placement={...picked,contactSide:null};
     }
     for(const [col,row] of placement.cells)setBaseTile(col,row,buildableTileId);
-    const ct=randomCt(roomId),ids=placement.cells.map(([col,row])=>add(roomId,col,row,ct,randomStaffTier(roomId),placement.contactSide));
+    const definition=roomDef(roomId),ct=randomCt(roomId);
+    // A footprint is one physical room; only 1x1 definitions may form a
+    // multi-room shape. Never instantiate a full footprint at every cell.
+    const origins=definition.width*definition.height>1
+      ? [[Math.min(...placement.cells.map(([col])=>col)),Math.min(...placement.cells.map(([,row])=>row))]]
+      : placement.cells;
+    const ids=origins.map(([col,row])=>add(roomId,col,row,ct,randomStaffTier(roomId),placement.contactSide));
     const ref=ids.length===4?quad(...ids):ids.length===2?pair(...ids):ids[0];
     frontier.push({roomId:isGroupRef(ref)?recursivePriority(groupById(ref))[0]:ref,zone});
     if(anchor)logAction(`Connected ${roomDef(roomId).name} to ${entityLabel(anchor.roomId)} as part of the generated room tree.`);
@@ -1034,6 +1059,7 @@ document.getElementById("resetGrid").addEventListener("click",()=>{
 });
 document.getElementById("generateLayout").addEventListener("click",()=>{generateLayout().catch(error=>setStatus(`Could not generate layout: ${error.message}`))});
 toggleBaseButton.addEventListener("click",()=>{showRooms=!showRooms;toggleBaseButton.textContent=showRooms?"Hide Rooms":"Show Rooms";render();setStatus(showRooms?"Room layer shown.":"Room layer hidden; geology visible.")});
+toggleSpritesButton.addEventListener('click',()=>{useSprites=!useSprites;toggleSpritesButton.textContent=useSprites?'View: Sprites':'View: Schematic';toggleSpritesButton.setAttribute('aria-pressed',String(useSprites));render();});
 toggleModeButton.addEventListener("click",()=>{interactionMode=interactionMode==="interact"?"inspect":"interact";toggleModeButton.textContent=`Mode: ${interactionMode==="interact"?"Interact":"Inspect"}`;toggleModeButton.classList.toggle("active",interactionMode==="inspect");setStatus(interactionMode==="inspect"?"Inspect mode: click rooms or geology to inspect them without changing state.":"Interact mode: click geology to excavate or cleared tiles to place/select rooms.");render()});
 document.getElementById("copyLog").addEventListener("click",copyLog);
 document.getElementById("clearLog").addEventListener("click",()=>{actionEntries=[];actionLog.replaceChildren();setStatus("Action log cleared.")});
@@ -1053,6 +1079,7 @@ document.getElementById("jsonFile").addEventListener("change",async event=>{
 });
 
 function restoreBase(base){
+  resetSpriteVariants();
   validateBase(base,catalog.map(d=>d.schema));sharedBase=base;placed=structuredClone(base.rooms);groups=structuredClone(base.groups);if(base.baseMap?.length)baseMap=structuredClone(base.baseMap);
   nextRoomId=Math.max(0,...placed.map(r=>Number(r.instanceId.slice(1))))+1;nextGroupId=Math.max(0,...groups.map(g=>Number(g.id.slice(1))))+1;selectedId=null;selectedGroupId=null;
   render();const cap=baseCapacity(base,catalog.map(d=>d.schema));setStatus(`Shared base loaded: Holding ${cap.HOLDING.free}/${cap.HOLDING.total} free; Receiving ${cap.RECEIVING.free}/${cap.RECEIVING.total} free.`);

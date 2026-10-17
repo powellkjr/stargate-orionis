@@ -151,6 +151,14 @@ button:disabled,select:disabled{cursor:not-allowed;opacity:.45}
   .preview dd{margin-bottom:6px}
 }
 .shared-surface-room::after{content:none}.room-map-surface{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:visible}.shared-surface-room .room-fill{background:transparent;border:0;outline:none;box-shadow:none}
+.sprites-mode .room-cell::before{background:transparent}
+.sprites-mode .room-fill{color:white;text-shadow:0 1px 3px #000,0 0 3px #000;align-items:flex-start;padding-top:5px;pointer-events:none;font-size:.65rem}
+.sprites-mode .base-tile::before,.sprites-mode .base-tile::after{display:none}
+.sprites-mode .base-tile>svg{position:absolute;inset:0;pointer-events:none}
+.sprites-mode .sprite-door{background:transparent!important;border:0}
+.sprite-door>svg{position:absolute;width:calc(var(--cell) * .4);height:calc(var(--cell) * .4);left:50%;top:50%;transform:translate(-50%,-50%);overflow:visible;pointer-events:none}
+.sprites-mode .staff-dots{width:calc(var(--cell) * .65);gap:1px}
+.sprites-mode .sprite-staff{width:calc(var(--cell) * .18);height:calc(var(--cell) * .18);background:transparent;border:0;box-shadow:none;border-radius:0}
 </style>
 </head>
 <body>
@@ -223,6 +231,7 @@ if (window.location.protocol === "file:") {
 
 <main>
   <div class="toolbar">
+    <button id="toggleSprites" aria-pressed="true">View: Sprites</button>
     <button id="resetGrid" type="button">Reset grid</button>
     <span id="baseSummary" role="status"></span><button id="saveBase" type="button">Save shared base</button><button id="loadBase" type="button">Reload shared base</button>
     <button id="generateLayout" type="button">Generate Layout</button>
