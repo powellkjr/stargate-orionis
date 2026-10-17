@@ -13,7 +13,12 @@ function fixture(){const m=compileMission(raw,catalog),s=createRuntime(m,presets
 const spriteMap=(m,s)=>renderMap(m,s,22,true,[],spritePresentation);
 const controls=html=>[...html.matchAll(/data-(?:stage|npc|recipe|observation|transition|engage|dialogue-start|work-group|gate-action)="[^"]*"/g)].map(m=>m[0]);
 test('manifest assets exist and cover all Professions; unknown/missing resources fall back once',()=>{
- for(const entry of Object.values(manifest.assets)){assert.match(readFileSync(new URL(entry.src,import.meta.url),'utf8'),/<svg[^>]*viewBox=/);assert(entry.size>0);assert.deepEqual(entry.pivot,[.5,.5]);}
+ for(const entry of Object.values(manifest.assets)){
+  const bytes=readFileSync(new URL(entry.src,import.meta.url));
+  if(entry.src.endsWith('.png')){assert.deepEqual([...bytes.subarray(0,8)],[137,80,78,71,13,10,26,10]);assert.deepEqual([bytes.readUInt32BE(16),bytes.readUInt32BE(20)],entry.runtimePixels);assert.equal(bytes[25],6,'production PNG is RGBA');}
+  else assert.match(bytes.toString('utf8'),/<svg[^>]*viewBox=/);
+  assert(entry.size>0);assert.deepEqual(entry.pivot,[.5,.5]);
+ }
  assert.equal(Object.keys(manifest.professions).length,6);assert.match(spriteImage('not-authored',30,20),/data-sprite="unknown"/);
  const image={tagName:'image',dataset:{},setAttribute(key,value){this[key]=value;}};replaceMissingSprite(image);assert.equal(image.href,manifest.assets.unknown.src);image.href='failed-fallback';replaceMissingSprite(image);assert.equal(image.href,'failed-fallback');
  const broken={tagName:'image',dataset:{},href:manifest.assets.rock.src,getAttribute(key){return this[key];},setAttribute(key,value){this[key]=value;}};replaceMissingSprite(broken);assert.match(spriteImage('rock',20,20),/data-sprite="unknown"/);assert(!spriteImage('rock',20,20).includes('rock.svg'),'Redraws do not retry a failed resource');

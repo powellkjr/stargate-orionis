@@ -1,0 +1,84 @@
+{
+  "version": 2,
+  "id": "technician_v01",
+  "sourceCanvas": 1024,
+  "parts": {
+    "torso": {
+      "file": "char_technician_v01__torso__source.png",
+      "pivot": [
+        512,
+        512
+      ]
+    },
+    "head": {
+      "file": "char_technician_v01__head__source.png",
+      "pivot": [
+        512,
+        400
+      ]
+    },
+    "left_upper_arm": {
+      "file": "char_technician_v01__left-upper-arm__source.png",
+      "pivot": [
+        672,
+        384
+      ]
+    },
+    "right_upper_arm": {
+      "file": "char_technician_v01__right-upper-arm__source.png",
+      "pivot": [
+        352,
+        384
+      ]
+    },
+    "left_forearm": {
+      "file": "char_technician_v01__left-forearm__source.png",
+      "pivot": [
+        716,
+        512
+      ]
+    },
+    "right_forearm": {
+      "file": "char_technician_v01__right-forearm__source.png",
+      "pivot": [
+        308,
+        512
+      ]
+    },
+    "left_upper_leg": {
+      "file": "char_technician_v01__left-upper-leg__source.png",
+      "pivot": [
+        560,
+        584
+      ]
+    },
+    "right_upper_leg": {
+      "file": "char_technician_v01__right-upper-leg__source.png",
+      "pivot": [
+        464,
+        584
+      ]
+    },
+    "left_lower_leg": {
+      "file": "char_technician_v01__left-lower-leg__source.png",
+      "pivot": [
+        600,
+        712
+      ]
+    },
+    "right_lower_leg": {
+      "file": "char_technician_v01__right-lower-leg__source.png",
+      "pivot": [
+        424,
+        712
+      ]
+    },
+    "equipment": {
+      "file": "char_technician_v01__equipment__source.png",
+      "pivot": [
+        512,
+        536
+      ]
+    }
+  }
+}

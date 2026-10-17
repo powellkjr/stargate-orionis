@@ -1,0 +1,50 @@
+[
+  {
+    "variant": "v01",
+    "runtimePixels": [
+      256,
+      256
+    ],
+    "alphaBounds": [
+      35,
+      28,
+      221,
+      228
+    ],
+    "framePixelsIdentical": true,
+    "aperturePixels": 1397,
+    "energyCoverage": 1.0
+  },
+  {
+    "variant": "v02",
+    "runtimePixels": [
+      256,
+      256
+    ],
+    "alphaBounds": [
+      32,
+      28,
+      224,
+      228
+    ],
+    "framePixelsIdentical": true,
+    "aperturePixels": 1232,
+    "energyCoverage": 1.0
+  },
+  {
+    "variant": "v03",
+    "runtimePixels": [
+      256,
+      256
+    ],
+    "alphaBounds": [
+      34,
+      28,
+      221,
+      228
+    ],
+    "framePixelsIdentical": true,
+    "aperturePixels": 1311,
+    "energyCoverage": 0.9931350114416476
+  }
+]

@@ -1,0 +1,180 @@
+{
+  "geometry": {
+    "version": "room-kit-v1",
+    "sourceSize": [
+      1024,
+      1024
+    ],
+    "runtimeSize": [
+      128,
+      128
+    ],
+    "cellUnits": 128,
+    "bands": [
+      32,
+      64,
+      32
+    ],
+    "pivot": [
+      64,
+      64
+    ],
+    "sourcePixelsPerUnit": 8,
+    "rectangles": {
+      "center": [
+        32,
+        32,
+        64,
+        64
+      ],
+      "corner": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "shared": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "edge-normal": [
+        32,
+        0,
+        64,
+        32
+      ],
+      "edge-door": [
+        32,
+        0,
+        64,
+        32
+      ],
+      "edge-open": [
+        32,
+        0,
+        64,
+        32
+      ]
+    },
+    "orientations": {
+      "center": "north up",
+      "corner": "northwest; north and west perimeter",
+      "shared": "northwest; north perimeter, west open",
+      "edge-normal": "north edge",
+      "edge-door": "north edge",
+      "edge-open": "north edge"
+    },
+    "wallDepth": 12,
+    "slotInset": 4,
+    "slotThickness": 5,
+    "slotPeriod": 24,
+    "doorOpening": [
+      48,
+      0,
+      32,
+      32
+    ],
+    "seamSockets": {
+      "north": [
+        0,
+        12
+      ],
+      "west": [
+        12,
+        0
+      ]
+    },
+    "ctPatterns": {
+      "CT1": {
+        "color": "amber",
+        "runs": [
+          8,
+          8,
+          8
+        ]
+      },
+      "CT2": {
+        "color": "blue",
+        "runs": [
+          4,
+          6,
+          4,
+          6,
+          4
+        ]
+      },
+      "CT3": {
+        "color": "purple",
+        "runs": [
+          4,
+          16,
+          4
+        ]
+      }
+    }
+  },
+  "kits": [
+    {
+      "kitId": "receiving",
+      "subject": "Sparse decorative built-in furnishings appropriate to receiving: console. These categories are public decorative art, not configured capabilities.",
+      "variants": {
+        "v01": {
+          "center": "receiving-center__v01__source.png",
+          "corner": "receiving-corner__v01__source.png",
+          "shared": "receiving-shared__v01__source.png",
+          "edge-normal": "receiving-edge-normal__v01__source.png",
+          "edge-door": "receiving-edge-door__v01__source.png",
+          "edge-open": "receiving-edge-open__v01__source.png"
+        },
+        "v02": {
+          "center": "receiving-center__v02__source.png",
+          "corner": "receiving-corner__v02__source.png",
+          "shared": "receiving-shared__v02__source.png",
+          "edge-normal": "receiving-edge-normal__v02__source.png",
+          "edge-door": "receiving-edge-door__v02__source.png",
+          "edge-open": "receiving-edge-open__v02__source.png"
+        },
+        "v03": {
+          "center": "receiving-center__v03__source.png",
+          "corner": "receiving-corner__v03__source.png",
+          "shared": "receiving-shared__v03__source.png",
+          "edge-normal": "receiving-edge-normal__v03__source.png",
+          "edge-door": "receiving-edge-door__v03__source.png",
+          "edge-open": "receiving-edge-open__v03__source.png"
+        }
+      }
+    },
+    {
+      "kitId": "material-storage",
+      "subject": "Sparse decorative built-in furnishings appropriate to material storage: storage-rack. These categories are public decorative art, not configured capabilities.",
+      "variants": {
+        "v01": {
+          "center": "material-storage-center__v01__source.png",
+          "corner": "material-storage-corner__v01__source.png",
+          "shared": "material-storage-shared__v01__source.png",
+          "edge-normal": "material-storage-edge-normal__v01__source.png",
+          "edge-door": "material-storage-edge-door__v01__source.png",
+          "edge-open": "material-storage-edge-open__v01__source.png"
+        },
+        "v02": {
+          "center": "material-storage-center__v02__source.png",
+          "corner": "material-storage-corner__v02__source.png",
+          "shared": "material-storage-shared__v02__source.png",
+          "edge-normal": "material-storage-edge-normal__v02__source.png",
+          "edge-door": "material-storage-edge-door__v02__source.png",
+          "edge-open": "material-storage-edge-open__v02__source.png"
+        },
+        "v03": {
+          "center": "material-storage-center__v03__source.png",
+          "corner": "material-storage-corner__v03__source.png",
+          "shared": "material-storage-shared__v03__source.png",
+          "edge-normal": "material-storage-edge-normal__v03__source.png",
+          "edge-door": "material-storage-edge-door__v03__source.png",
+          "edge-open": "material-storage-edge-open__v03__source.png"
+        }
+      }
+    }
+  ]
+}

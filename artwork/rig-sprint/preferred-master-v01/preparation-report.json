@@ -1,0 +1,28 @@
+{
+  "source": "artwork/rig-sprint/candidate-review/originals/Top-Down Tactical Agent Sprite.png",
+  "source_sha256": "d685c230ae33ee437c4b84dc17b9b2f01f14b5aae868fd791ce3660960dbdbcd",
+  "transform": "Whole 1254 canvas to 1024; no crop, independent scale, translation or anatomy edit.",
+  "removed_remote_faint_pixels": 625,
+  "material_pixels": {
+    "shirt": 47259,
+    "trousers": 15179,
+    "harness": 16042,
+    "gear": 52471,
+    "accents": 3800,
+    "display": 0,
+    "skin": 27750,
+    "hair": 0,
+    "outline": 64798
+  },
+  "near_opaque_pixels_promoted_to_alpha255": 215735,
+  "mask_status": "Draft source-specific regions; visually review before acceptance.",
+  "shade_filter": "3px median of shading evidence before selecting a shade within each assigned material.",
+  "source_bounds": [
+    243,
+    189,
+    782,
+    896
+  ],
+  "strict_palette_pass": true,
+  "alpha_unchanged_by_masks_and_quantization": true
+}

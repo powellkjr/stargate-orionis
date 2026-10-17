@@ -1,0 +1,38 @@
+{
+  "input": "C:\\Users\\Powel\\Downloads\\Sci-Fi Bunkroom Interior Tileset.png",
+  "sha256": "627980363b05cbb93a5b216fe8c644c07b061fc97f2679584211570500315db0",
+  "inputSize": [
+    2172,
+    724
+  ],
+  "method": "Exact square cells; no bounding-box crop, recentering, padding or background cleanup. Masters resized to 1024; runtime previews resized from saved masters to 128. Unregistered presentation studies only.",
+  "variants": [
+    {
+      "variant": "v01",
+      "sourceRectangle": [
+        0,
+        0,
+        724,
+        724
+      ]
+    },
+    {
+      "variant": "v02",
+      "sourceRectangle": [
+        724,
+        0,
+        1448,
+        724
+      ]
+    },
+    {
+      "variant": "v03",
+      "sourceRectangle": [
+        1448,
+        0,
+        2172,
+        724
+      ]
+    }
+  ]
+}

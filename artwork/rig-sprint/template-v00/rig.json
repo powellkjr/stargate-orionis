@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "id": "technician_v01",
+  "sourceCanvas": 1024,
+  "parts": {
+    "torso": {
+      "file": "char_technician_v01__torso__source.png",
+      "pivot": [
+        512,
+        512
+      ]
+    },
+    "head": {
+      "file": "char_technician_v01__head__source.png",
+      "pivot": [
+        512,
+        432
+      ]
+    },
+    "left_arm": {
+      "file": "char_technician_v01__left-arm__source.png",
+      "pivot": [
+        624,
+        352
+      ]
+    },
+    "right_arm": {
+      "file": "char_technician_v01__right-arm__source.png",
+      "pivot": [
+        400,
+        352
+      ]
+    },
+    "left_leg": {
+      "file": "char_technician_v01__left-leg__source.png",
+      "pivot": [
+        560,
+        568
+      ]
+    },
+    "right_leg": {
+      "file": "char_technician_v01__right-leg__source.png",
+      "pivot": [
+        464,
+        568
+      ]
+    },
+    "equipment": {
+      "file": "char_technician_v01__equipment__source.png",
+      "pivot": [
+        600,
+        512
+      ]
+    }
+  }
+}

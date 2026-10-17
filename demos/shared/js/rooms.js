@@ -59,6 +59,8 @@ function normalizeRoom(room) {
   const width = footprint.width ?? 1;
   const height = footprint.height ?? 1;
   assert(isPositiveInteger(width) && isPositiveInteger(height), `${id}: form.footprint width and height must be positive integers.`);
+  const renderMode = form.renderMode ?? "tiled";
+  assert(["tiled", "continuous"].includes(renderMode), `${id}: form.renderMode must be tiled or continuous.`);
 
   const construction = rules.construction ?? {};
   const ctProgression = constructionTierProgression(room);
@@ -82,7 +84,7 @@ function normalizeRoom(room) {
     color: form.color,
     width,
     height,
-    renderMode: form.renderMode ?? "tiled",
+    renderMode,
     joinGroup,
     maxConstructionTier,
     supportsConstructionTierProgression: Boolean(construction.supportsProgression),

@@ -1,0 +1,29 @@
+ASSET-SPECIFIC PRODUCTION WORKFLOW: Generate three separate full-canvas opaque seamless floor sources. Do not use a transparent three-column sheet, isolate subjects or add padding. Follow the tiling check below.
+
+BATCH PACKAGING: Produce exactly three visual variants v01, v02, v03.
+ZIP FILENAME: orionis-floor-base-mineral-zone-b001.zip (increment b002, b003 for later batches)
+ZIP ROOT FOLDER: orionis-floor-base-mineral-zone-b001/
+SOURCE FILENAMES: floor-base-mineral-zone__v01__source.png, floor-base-mineral-zone__v02__source.png, floor-base-mineral-zone__v03__source.png
+VARIATION: Change surface details, restrained color accents or public appearance; preserve camera, silhouette scale, pivot, lighting and footprint. State pairs must match within each variant. No gameplay/identity changes.
+ARCHIVE CONTENTS: PNG source files only inside the named root; no previews, contact sheets, nested folders or extra files. Attach an actual ZIP, not an image of filenames.
+If ZIP/file export is unavailable, say so and deliver separate PNG files with these exact names; do not claim an archive exists.
+
+ASSET ID: floor-base-mineral-zone
+OUTPUT FILENAME: floor-base-mineral-zone__vNN__source.png (NN=01,02,03)
+SOURCE ART SIZE: 1024x1024 PNG, single frame
+RUNTIME FILENAME: floor-base-mineral-zone.png
+RUNTIME SIZE: 128x128 pixels; 100x100 SVG world units
+BACKGROUND: Fully opaque seamless tile
+CAMERA: Direct overhead, north up; no isometric or front-facing surfaces
+ORIENTATION: North-facing neutral overhead
+VISIBLE FOOTPRINT: Full canvas, seamless edges
+PIVOT: [0.5, 0.5], canvas center
+PADDING: None; material fills every pixel to all four edges
+SHADOW: None; seamless opaque material only
+LIGHTING: Uniform diffuse illumination across the entire canvas; no bright corner, dark edge, vignette or broad directional gradient
+ROTATION POLICY: No directional variants; fixed orientation
+MATCHING ASSET: None
+ART DIRECTION: Bright clean chunky mature stylized 2D sci-fi, simplified painted materials, low noise, quiet low-contrast ground beneath characters and props
+SPECIAL REQUIREMENTS: No props, walls, labels, baked shadows or identity information
+SUBJECT DETAILS: A seamless direct-overhead opaque terrain material swatch. Natural rock with restrained mineral veins and unusual coloration; no glow. Keep visual noise low. No room shell, tall front face, props, labels, warning markings or baked cast shadows. Match opposite edges in color, pattern and brightness.
+TILING CHECK: Match the pattern, color and brightness at opposite edges. Inspect a 3x3 repeat before delivery; no visible tile boundary, lighting stripe or repeating bright/dark corner. Tiling is a visual check, not established by a square canvas.

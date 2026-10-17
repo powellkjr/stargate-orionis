@@ -1,0 +1,11 @@
+Generate one room-interior tile sheet for workshop.
+
+DELIVERY: ONE PNG image containing exactly THREE square room-interior tiles side by side in one horizontal row, left-to-right v01, v02, v03. Target canvas 3072 x 1024 pixels; each cell 1024 x 1024. If that size is unavailable, use another exact 3:1 canvas with three equal square cells. No separate images, ZIP, contact-sheet border, gutter, margin, labels or captions. Every pixel must be fully opaque. Each tile fills its cell edge to edge; boundaries are exactly one-third and two-thirds of the image width. Do not let any furnishing cross a cell boundary.
+
+CAMERA: strict orthographic plan view, camera directly overhead looking vertically down at 90 degrees, north up. Show horizontal tops of furniture only. No isometric, oblique, front or three-quarter view; no visible vertical front faces or room perspective. This is a flat map tile, not a room illustration or diorama.
+
+CONTENT: neutral muted sci-fi gray facility floor with a few fixed built-in furnishings appropriate to this existing room type: workbench. Treat these as decorative visual categories only. Keep the central walking area open and uncluttered, with furnishings primarily toward the perimeter. Keep the outer floor edges quiet and consistent across variants. Do not draw walls, doors, doorways, people, movable crates, loose tools, active Gate portals, text, UI, scientific findings, readable screens or hidden contents. Those can be placed separately by the simulator. No cast shadows outside furniture footprints. Use chunky readable forms and restrained local shading; avoid tiny busy details.
+
+VARIANTS: v01 clean angular design; v02 softer rounded design; v03 chunky utilitarian design. Maintain identical camera, floor palette, approximate scale and usable open space. Vary fixed furnishing shapes and arrangement; do not merely recolor the same tile. Each square is a complete alternative interior, not a fragment of one larger room. Do not add gameplay equipment or rules to force variety.
+
+Output only the single sheet PNG. Suggested filename: floor-room-workshop__sheet.png. It will be split locally into three variants; do not crop, center or add transparent sprite padding.

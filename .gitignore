@@ -1,0 +1,8 @@
+# Purchased CraftPix source pack and locally generated preview data.
+/artwork/zombie-tds-main-characters/
+# Derived cutouts from the publisher's preview sheets are local studies too.
+/artwork/cc0-character-study/
+
+# Generated Python bytecode.
+__pycache__/
+*.py[cod]

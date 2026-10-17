@@ -1,5 +1,21 @@
 [
   {
+    "id": "cultural_platform",
+    "name": "Cultural Platform",
+    "category": "Operations",
+    "color": "#bd7390",
+    "width": 2,
+    "height": 2,
+    "renderMode": "continuous",
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": false,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "baseCoreLayout": {"focusSlots": 1, "supportSlots": 2},
+    "coreSet": "1 Focus Core slot and 2 Support Core slots at base"
+  },
+  {
     "id": "analysis",
     "name": "Analysis",
     "category": "Science & Technology",
@@ -339,6 +355,23 @@
     "inventoryType": "M1, M2, M3 (materials by tier)",
     "baseFunction": "Stores bulk materials by tier and handles material cargo",
     "cargoHandled": "Material cargo",
+    "coreSlots": 2,
+    "coreSet": "2 Core slots"
+  },
+  {
+    "id": "generator",
+    "name": "Generator",
+    "category": "Operations",
+    "color": "#d4b23c",
+    "width": 1,
+    "height": 1,
+    "joinGroup": "generator",
+    "maxConstructionTier": 3,
+    "staffed": false,
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "baseFunction": "Generator room. Power output, fuel requirements, Services and operating processes remain undefined.",
     "coreSlots": 2,
     "coreSet": "2 Core slots"
   },

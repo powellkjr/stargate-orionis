@@ -20,7 +20,7 @@ import {createRuntime,chooseGate,advanceTime,exits,move,returnRoute,redial,extra
 import {activeWork,executionProfile,movementWork,recipeEligibility,startWork,cancelWork,stationUnit,observationEligibility,targetLocal} from '../shared/offworld/field.mjs?v=dialogue-doors-1';
 import {setupRoster,esc} from './setup.mjs?v=dialogue-doors-1';
 import {renderMap,partyCard,title,colors,icons} from './map.mjs?v=dialogue-doors-1';
-import {spritePresentation,replaceMissingSprite} from './sprite-renderer.mjs';
+import {spritePresentation,replaceMissingSprite,resetSpriteVariants} from './sprite-renderer.mjs';
 const $=id=>document.getElementById(id);
 const savePersonnel=personnelSaver($('personnelSaveStatus'));
 const clock=n=>`${String(Math.floor(n/60)).padStart(2,'0')}:${String(Math.floor(n%60)).padStart(2,'0')}`;
@@ -123,12 +123,12 @@ async function moveAnimated(id){
 function closeDialogs(){for(const d of document.querySelectorAll('dialog'))d.close();selectedRecipe=null;pendingMove=null;}
 $('debrief').onchange=()=>{const cap=baseCapacity(baseConfig,roomSchemas),cost=kind=>[...$('debrief').querySelectorAll(`[data-recovery="${kind}"]:checked`)].reduce((n,input)=>n+Number(input.dataset.cost),0);const holding=cost('holding'),receiving=cost('receiving');$('recoveryCapacity').textContent=`Selected: ${holding}/${cap.HOLDING.free} Holding slots; ${receiving}/${cap.RECEIVING.free} Receiving capacity.`;$('confirmRecovery').disabled=holding>cap.HOLDING.free||receiving>cap.RECEIVING.free;};
 $('debrief').onclick=guard(async event=>{if(event.target.id!=='confirmRecovery')return;const selected=kind=>[...$('debrief').querySelectorAll(`[data-recovery="${kind}"]:checked`)].map(input=>input.value);const draft=structuredClone(state);finalizeDebrief(definition,draft,{holdingIds:selected('holding'),receivingIds:selected('receiving')});baseConfig=await loadBase();const reserved=reserveRecovery(baseConfig,roomSchemas,draft.debrief.requests,state.runId);baseConfig=await saveBase(reserved);state=draft;render();});
-$('deploy').onclick=guard(()=>{deployment=selectedParty();startTime=$('startTime').value+'Z';state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();epoch++;render();focus();});
+$('deploy').onclick=guard(()=>{deployment=selectedParty();startTime=$('startTime').value+'Z';resetSpriteVariants();state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();epoch++;render();focus();});
 $('keepGate').onclick=guard(()=>{chooseGate(definition,state,true);render();});
 $('closeGate').onclick=$('closeLater').onclick=guard(()=>{chooseGate(definition,state,false);render();});
 $('wait').onclick=guard(()=>{if(localCombat(definition,state).length)throw Error('Combat rounds advance automatically every 3 seconds.');advanceTime(definition,state,180);log(state,'Waited 3 simulated minutes.');render();});
 $('redial').onclick=guard(()=>{redial(definition,state);render();});$('extract').onclick=guard(async()=>{baseConfig=await loadBase();extract(definition,state);render();});
-$('resetButton').onclick=guard(async()=>{const current=await loadBase(),released=releaseMissionRecovery(current,definition.mission.missionId,definition.instances.map(i=>i.instanceId));baseConfig=released.reservations.length===current.reservations.length?current:await saveBase(released);epoch++;busy=false;closeDialogs();$('activity').textContent='';if(state){state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();render();focus();}else renderSetup();});
+$('resetButton').onclick=guard(async()=>{const current=await loadBase(),released=releaseMissionRecovery(current,definition.mission.missionId,definition.instances.map(i=>i.instanceId));baseConfig=released.reservations.length===current.reservations.length?current:await saveBase(released);epoch++;busy=false;closeDialogs();$('activity').textContent='';if(state){resetSpriteVariants();state=createRuntime(definition,deployment,startTime);state.runId=crypto.randomUUID();render();focus();}else renderSetup();});
 $('setupButton').onclick=guard(()=>{epoch++;busy=false;state=null;closeDialogs();$('activity').textContent='';renderSetup();render();});
 $('return').onclick=guard(()=>{const route=returnRoute(definition,state);$('routeText').textContent=route===null?'No known traversable route.':`Shortest known route: ${route.length} Stage transitions. Stationed Units remain where assigned.`;$('confirmReturn').disabled=!route?.length;$('routeDialog').showModal();});
 $('cancelReturn').onclick=()=>$('routeDialog').close();

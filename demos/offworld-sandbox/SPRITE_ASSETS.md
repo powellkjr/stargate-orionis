@@ -5,6 +5,9 @@ unchanged Missing Operative benchmark. Its runtime owns movement, visibility,
 work, combat, conversations and recovery. Sprites never own collision or position
 rules. The Schematic option preserves the original renderer for comparison.
 
+Use the [Sprite Viewer](../sprite-viewer/README.md) to browse the current manifest
+and compare imported source variants before installing production art.
+
 ## Renderer and scale
 
 The existing SVG camera contains external image sprites plus the existing HTML
@@ -39,14 +42,21 @@ surface rather than a tall interior face. Props and characters are centered on
 the declared pivot, facing north at rest. Keep silhouettes inside the square
 bounds with small transparent margins. State overlays must remain readable.
 
-For polished raster replacement, supply transparent PNGs at 128×128 for people,
-props and corners; Gate can use 256×256 while keeping its world size. Floors are
-opaque seamless 128×128 tiles; walls are horizontal 128×12 strips. SVG resources
-may also be replaced directly. Paths change only in the manifest, not gameplay
-code. Assets must be same-origin relative URLs, with no embedded labels, scripts,
-external references or UI. Source paths resolve relative to the Offworld page.
-No atlas is required for this proof; atlas cropping needs an explicit later
-extension rather than silently treating a sheet as a single sprite.
+Polished-art ingestion is defined by the authoritative
+[SPRITE_PRODUCTION_CONTRACT.md](SPRITE_PRODUCTION_CONTRACT.md). Generate 1024×1024
+source PNG masters and use the optional deterministic preparation tool to produce
+128×128 runtime images, 256×256 Gate images or 128×12 wall strips. That contract
+supersedes provisional final-art advice here and defines padding, pairs, rotation,
+validation, installation and the first production batch. Source images do not
+need to be generated natively at runtime dimensions. No atlas is required.
+
+Future modular room visuals are documented in the [v2 handoff](../../docs/offworld-modular-room-visual-kit-handoff-v2.md)
+and [reconciliation/plan](../../docs/offworld-modular-room-visual-kit-plan.md).
+Six registered pieces and three coordinated Stage-wide families supersede
+fixed-door overlay authoring for that future workflow. The [provisional art contract](../../docs/offworld-modular-room-visual-kit-contract.md)
+now fixes CT arithmetic and chooses module registration; the dedicated prompt
+exporter is implemented. Current renderer/installed assets remain unchanged;
+registered ingestion and exact Transition-edge binding are still pending.
 
 ## Required library and current placeholders
 

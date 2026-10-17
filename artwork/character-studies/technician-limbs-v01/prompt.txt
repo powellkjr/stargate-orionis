@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: one transparent technician limb sprite atlas for a 2D top-down skeletal character.
+Input image 1 is STYLE AND CAMERA REFERENCE ONLY: use its clothing cut, chunky black outlines, gray sci-fi technician sleeves, dark gloves/boots and small amber accent panels. Create independent limb artwork, not a complete character and not a disassembled copy.
+Primary request: precisely EIGHT separate limb parts on a 2-column by 4-row atlas, preferably 1024x1536. Each cell contains one large centered part, all same anatomical scale. Reading order:
+row 1: left upper arm sleeve; right upper arm sleeve.
+row 2: left forearm with rolled gray cuff and a short exposed wrist; right forearm with rolled gray cuff and a short exposed wrist.
+row 3: left dark padded relaxed glove; right dark padded relaxed glove.
+row 4: left dark armored boot with small amber toe accent; right matching boot.
+Match the reference's steep overhead camera exactly: these parts belong to the character viewed from above, head toward top and toes toward bottom. Visible top surfaces dominate; no front elevation, profile view or isometric camera. The upper sleeves show shoulder cap from above. Relaxed gloves viewed from above, thumbs toward the body. Boots foreshortened to match reference, not long side-view boots. Arms point from shoulder at top to wrist at bottom in their cells. Left means the character's anatomical left; paired pieces mirror coherently.
+Preserve consistent chunky proportions and painted cel shading across all parts. Broad shading regions, clean ink boundaries, practical technician suit rather than military olive gear. Shoulder accent patches amber, sleeve gray, cuffs dark, exposed wrists skin-colored, gloves and boot pads dark gray. No head, torso, backpack, weapons or additional objects.
+Make joint ends fully painted and softly rounded with generous overlap under cuffs/shoulders so they can rotate without gaps. No holes, sharp cut ends, detached armor fragments, or outlines across internal joint seam.
+True RGBA transparent background, no checkerboard drawn in image. Parts do not touch and stay inside their cells. No labels, text, grids, frames, cast shadows or pivots.
+Material base colors: sleeve RGB(146,147,148); protective gear RGB(52,58,64); accent RGB(227,165,46); skin RGB(213,155,112); ink RGB(20,22,24).
+For each matte material use only the five shading tones from adding -32,-16,0,+16,+32 to all three base RGB channels (clamp to 0..255). Keep owning material hue separate. No gradients, color bounce, glow or photographic textures. Preserve alpha at silhouette edges.
+This is one atlas asset for visual review, not a claim of measured anatomical registration.

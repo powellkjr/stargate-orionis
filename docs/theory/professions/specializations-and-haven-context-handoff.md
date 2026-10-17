@@ -68,8 +68,11 @@ These decisions supersede the original handoff's Scout assignment of Operational
 and its unidentified names. Runtime already uses the preferred Medic label Field Medicine;
 aligning that label and any persisted references is separate implementation work.
 
-Most labels do not yet have dedicated specialization curricula defining
-capabilities, boundaries, tools or progression. Do not infer those from names.
+The [mentor Tool catalog](specialization-mentor-tools-and-stories.md) now records
+approved exceptional methods, boundaries, paired mentor concepts and story hooks
+for all 18 specializations. Dedicated certification curricula, Tool Service
+requirements and detailed progression remain unauthored. Do not infer those
+from names or treat the catalog as implemented simulator capability.
 
 ## 3. Specialization Design Context — Not Fully Authored
 
@@ -97,8 +100,10 @@ Known role intent:
 - **Epidemiology:** population-level disease/outbreak investigation and management,
   rather than ordinary single-patient care.
 
-Other capability packages must be authored rather than inferred. Any narrower
-boundary already specified by a detailed curriculum remains authoritative.
+The mentor Tool catalog supplies the approved exceptional methods for the full
+roster. Executable opportunities and remaining curriculum details must still be
+authored rather than inferred. Any narrower boundary already specified by a
+detailed base curriculum remains authoritative.
 
 ## 4. Haven Definition and Relationships — Current Design Context
 

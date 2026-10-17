@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shared Sprite Viewer</title><link rel="stylesheet" href="./style.css"></head>
+<body><header><a href="../">← Demos</a><p class="eyebrow">OFFWORLD + ROOMS / ART REVIEW</p><h1>Sprite viewer</h1>
+<p>Compare current sprites and candidate variants. Newly loaded assets and variants appear first.</p></header>
+<main><p><a href="../character-sheet-preview/">Open character rig animation and parts workbench →</a></p><section class="controls" aria-label="Preview controls">
+<label>Find an asset<input id="search" type="search" placeholder="Floor, guard, console…"></label>
+<label>Background<select id="background"><option value="checker">Transparency checker</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+<label>Preview scale<select id="scale"><option value="runtime">Runtime pixels</option><option value="world">World size · 1 unit = 1 pixel</option></select></label>
+<label class="check"><input id="tile" type="checkbox">Repeat floors 3×3</label>
+<label class="check"><input id="showRejected" type="checkbox">Show rejected variants</label>
+<label class="check"><input id="uninstalledOnly" type="checkbox">Only sprites with no installed variant</label>
+<label class="file">Load ZIP files<input id="zips" type="file" accept=".zip,application/zip" multiple></label>
+<label class="check"><input id="saveSources" type="checkbox" checked disabled>Save ZIP contents to sprite-sources</label>
+<span id="storageAvailability" role="status">Checking source saving…</span>
+<button id="retryStorage" type="button">Check source saving again</button>
+<label class="file">Load variants folder<input id="folder" type="file" webkitdirectory multiple></label>
+<label class="file">Load PNG files<input id="files" type="file" accept="image/png" multiple></label>
+<button id="clear" type="button">Clear imported variants</button></section>
+<p class="hint">Select ZIPs directly, choose an extracted folder, or select named PNGs. Use key__v01__source.png through v03, or key.png for prepared art. ZIPs unpack into this browser session; no terminal command or installation required.</p>
+<p id="storageStatus" class="hint" role="status">Checking local source storage…</p>
+<section id="characterStudy" class="character-study" aria-label="Technician color study">
+<h2>Technician color study · v01</h2>
+<p>Try clothing, accent, hair and skin colors. Head and clothing shapes stay fixed in this first study.</p>
+<div id="characterColors" class="character-colors"></div>
+<label class="check"><input id="characterMasks" type="checkbox">Show masks</label>
+<button id="characterReset" type="button">Reset colors</button>
+<div class="character-previews"><figure><canvas id="characterOriginal" aria-label="Original technician"></canvas><figcaption>Original source</figcaption></figure><figure><canvas id="characterPreview" aria-label="Enlarged recolored technician"></canvas><figcaption>Color preview</figcaption></figure><figure><canvas id="characterMap" aria-label="Technician at map size"></canvas><figcaption>Map size · 22 world units</figcaption></figure></div>
+<p id="characterStatus" role="status">Loading technician source…</p>
+</section>
+<p id="status" role="status" aria-live="polite">Loading current sprites…</p><div id="gallery"></div></main>
+<dialog id="detail"><button id="close" type="button">Close</button><h2 id="detailTitle"></h2><div id="large"></div><p id="detailInfo"></p></dialog>
+<script type="module" src="./app.mjs"></script></body></html>

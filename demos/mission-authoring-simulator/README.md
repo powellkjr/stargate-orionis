@@ -1,5 +1,76 @@
 # Mission Author draft review
 
+## Author a playable mission
+
+The top workspace edits the existing Offworld mission format directly. Select
+**The Last Transmission** or **Missing Operative · new rescue variant**, then
+click **Load selected mission**. Loading validates the mission immediately.
+Choose a distinct Mission ID and title when creating a variant, and edit
+the player briefing. Expand **Edit full mission JSON** to change authored map,
+objectives, dialogue, observations, Recipes and events. Detail fields update the
+JSON on validation; JSON edits update the detail fields. This is currently a JSON
+editor with metadata fields, not a visual map or dialogue editor.
+
+Click **Validate playable mission**, then **Save ready mission JSON**. Save downloads
+a compiler-checked `mission-id.json` containing the direct Offworld definition,
+not a semantic Draft envelope. In Offworld,
+use **Load finalized mission**, select Units and deploy. The export is checked by
+the same compiler as Offworld. Validation checks supported structure/references;
+it does not prove objective solvability or Actor/Tool/access availability. Playtest
+the result. Importing playable JSON validates before replacing the editor contents.
+Edits invalidate export until revalidated. Export before closing; there is no
+autosave. This workspace does not write fixture files or base state.
+
+### The Last Transmission
+
+The complete authored source is
+[`last-transmission-001.finalized.json`](../shared/data/offworld/last-transmission-001.finalized.json).
+It has six Stages, a new physical cast, four primary objectives and two optional
+objectives. Use the current shared archetypes/item pack with this file. The
+downloaded JSON can be passed directly to Offworld's file loader.
+
+Recommended party: Medic I with MET1, Technician I with TET1, Diplomat I and
+Soldier I. The Medic and Technician each need at least one usable Tool charge.
+A Technician II with TET2 can hack the service lock instead of using the code;
+budget two Technician charges for hacking plus log inspection. No mission-issued
+Tools or automatic Profession upgrades are granted.
+
+1. Follow the approach into the courtyard and acknowledge Rhel's arrival dialogue.
+2. Use Talk with the salvage commander. A Diplomat can arrange withdrawal now;
+   otherwise investigate first or explicitly confront the crew. Party movement
+   is allowed past dormant crew, but evacuee departure requires a clear route.
+3. Visit the maintenance shelter. Talk to the caller to learn Taren's identity,
+   the service code and the missing engineer objective. Stabilize Taren with
+   your Medic. Taren waits until Vessa is at the Gate.
+4. In the control room, inspect the transmission log with your Technician to
+   verify the signal. Optional collection secures the same log for extraction.
+   Evidence from inspection also unlocks a neutral response when talking to Rhel;
+   it persuades the whole crew to withdraw without a Diplomat.
+5. Enter the service code or hack the locked door. Talk to Vessa in the generator
+   room, then Send to Gate once the route is clear.
+6. Return to Taren and Send to Gate. Return the team to the Gate, redial if the
+   connection expired, and extract. Both rescue objectives complete at extraction.
+7. Optionally select the log for Receiving at debrief. Recovery needs shared base
+   capacity; confirmation creates an admission request, not completed room work.
+
+The three crew members use the existing explicit combat system. Peaceful
+withdrawal uses its FLED non-participating state; it is not surrender/capture.
+Both civilian departures use the existing Send-to-Gate abstraction, not a physical
+escort simulation. The log is an existing SIM_INTEL_ARCHIVE item with a new stable
+instance ID. These scenario assumptions are recorded inside the mission JSON.
+No new Theory, Pattern, Service, permanent recruit or faction reward is authored.
+The semantic benchmark composer below is unchanged and does not generate this
+scenario. This file is explicitly authored executable content.
+
+The rescue template preserves its existing physical instance identities, Reality,
+Knowledge and execution content. A distinct mission ID identifies a scenario
+variant, not a newly created physical cast. It is not a separate campaign destination.
+Author new physical content explicitly when building a different setting.
+
+The semantic composer below remains separate. Its Draft exports still require
+authored objective bindings and a dependency-validated Finalizer; they cannot be
+imported as playable missions. This workspace does not finalize those Drafts.
+
 Wave A provides validated semantic tables and deterministic filtering/composition.
 Wave B adds a **semantic Mission Draft skeleton** with objectives, Stage purposes,
 environments, routes and original role identities. Wave C adds private Fact truths,
