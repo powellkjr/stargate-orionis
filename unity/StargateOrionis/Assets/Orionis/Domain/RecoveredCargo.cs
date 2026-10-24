@@ -95,6 +95,23 @@ namespace Orionis.Domain
             bool equipment = s.Base.Storage?.Find(target.Definition.Id)?.Tabs.Any(t => t.Classes.Contains("EQ")) == true;
             if (source?.Definition.Id == s.Base.Handling?.OrdinaryStorageDefinitionId && !containment)
                 throw new InvalidOperationException("Warehouse storage may be reassigned only to Containment. Use Analysis for temporary work custody.");
+            // Supply cargo conversion (Wave 1A): cleared supply cargo stored in Supply Storage is
+            // converted to Supply units and removed from physical inventory. Uses the authorized
+            // conversion stat of 1 (handlingCost x quantity) and the item's authored storage class
+            // (S1/S2/S3) as the Supply tier.
+            var supplyItem = d.Items.Single(x => x.Id == id);
+            var supplyClass = supplyItem.StorageClasses.FirstOrDefault(sc => sc == "S1" || sc == "S2" || sc == "S3");
+            if (supplyClass != null && target.Definition.Id == "supply_storage")
+            {
+                if (s.Construction == null) throw new InvalidOperationException("Construction Supply accounting is not configured.");
+                double supplyValue = supplyItem.HandlingCost * supplyItem.Quantity;
+                var supply = s.Construction.Supply.ToDictionary(p => p.Key, p => p.Value);
+                if (!supply.ContainsKey(supplyClass)) throw new InvalidOperationException("Unknown Supply class: " + supplyClass);
+                supply[supplyClass] = supply[supplyClass] + supplyValue;
+                var nextCargo = s.Cargo.Where(x => x.Id != id);
+                var construction = new ConstructionState(supply, s.Construction.Sites, s.Construction.Excavated, s.Construction.Groups, s.Construction.Clearings);
+                return new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers, s.Expedition, s.Teams, nextCargo, s.Personnel, construction);
+            }
             var next = i.At(destination);
             if (equipment) next = next.Keep(true); // Explicit acceptance into SGC Equipment Storage.
             return Replace(s, s.Cargo.Select(x => x == i ? next : x));

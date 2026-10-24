@@ -132,6 +132,23 @@ namespace Orionis.Presentation
                             if (!button.interactable) button.GetComponentInChildren<Text>().color = Color.gray;
                             n++;
                         }
+                        // Supply cargo conversion (Wave 1A): cleared supply cargo can be converted to
+                        // Supply units in Supply Storage using the authored storage class (S1/S2/S3).
+                        var supplyClass = d.StorageClasses.FirstOrDefault(sc => sc == "S1" || sc == "S2" || sc == "S3");
+                        if (supplyClass != null)
+                        {
+                            var supplyRoom = session.State.Base.Rooms.SingleOrDefault(r => r.Definition.Id == "supply_storage");
+                            if (supplyRoom != null && n < 3)
+                            {
+                                var reason = RouteReason(item.Id, supplyRoom.Id);
+                                var caption = "Convert to " + supplyClass + " Supply: " + supplyRoom.Definition.Name + " " + supplyRoom.Id + " / 1 tick";
+                                var button = PrototypeUi.Button("Convert cargo " + supplyRoom.Id, transform, new Vector2(.42f, .31f - n * .105f), new Vector2(.98f, .41f - n * .105f), caption, new Color(.12f, .3f, .36f), () => Run(() => session.MoveCargo(item.Id, supplyRoom.Id)));
+                                button.interactable = reason == null;
+                                button.GetComponentInChildren<Text>().fontSize = 14;
+                                if (!button.interactable) button.GetComponentInChildren<Text>().color = Color.gray;
+                                n++;
+                            }
+                        }
                     }
                     PrototypeUi.Label(PrototypeUi.Rect("Cargo storage limits", transform, new Vector2(.02f, .08f), new Vector2(.38f, .23f)),
                         "Containment is storage only. Send custody to a staffed Analysis lab to reveal remaining properties. Assigned storage stays reserved.\nEquipment Storage requires all properties revealed, established identity and intact condition.", 16);
