@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Provisional room construction work and Supply pricing",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "contentStatus",
+    "hoursPerCoreSlot",
+    "hoursPerStaffSlot",
+    "hoursPerInventoryPlace",
+    "supplyPerWorkHour",
+    "supplyClassByConstructionTier",
+    "upgradeBasis",
+    "inventoryBasis",
+    "executionStatus",
+    "notes",
+    "additionalInventorySources",
+    "hoursPerResourceUnit",
+    "minimumNewRoomHours",
+    "hoursPerOccupantPlace",
+    "execution",
+    "startingSupply",
+    "terrain",
+    "startupStaff"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "format": {
+      "const": "orionis-room-construction-1"
+    },
+    "contentStatus": {
+      "const": "PROVISIONAL_PLAYTEST"
+    },
+    "hoursPerCoreSlot": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "hoursPerStaffSlot": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "hoursPerInventoryPlace": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "supplyPerWorkHour": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "supplyClassByConstructionTier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "1",
+        "2",
+        "3"
+      ],
+      "properties": {
+        "1": {
+          "const": "S1"
+        },
+        "2": {
+          "const": "S2"
+        },
+        "3": {
+          "const": "S3"
+        }
+      }
+    },
+    "upgradeBasis": {
+      "const": "ADDITIONAL_CAPACITY"
+    },
+    "inventoryBasis": {
+      "const": "PHYSICAL_ITEM_AND_OCCUPANT_PLACES"
+    },
+    "executionStatus": {
+      "enum": [
+        "UNAUTHORED",
+        "PROVISIONAL_EXECUTABLE"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "additionalInventorySources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "enum": [
+            "storage",
+            "inventory",
+            "capacity"
+          ]
+        }
+      }
+    },
+    "hoursPerResourceUnit": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "minimumNewRoomHours": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "hoursPerOccupantPlace": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requiredRoomDefinitionId",
+        "actorSelection",
+        "profession",
+        "minimumTier",
+        "toolService",
+        "roomService",
+        "supplyStorageDefinitionId",
+        "security"
+      ],
+      "properties": {
+        "requiredRoomDefinitionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actorSelection": {
+          "const": "MAINTENANCE_PERMANENT_STAFF"
+        },
+        "profession": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minimumTier": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "toolService": {
+          "type": "string",
+          "minLength": 1
+        },
+        "roomService": {
+          "type": "null"
+        },
+        "supplyStorageDefinitionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "security": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "profession",
+            "minimumTier",
+            "durationTicks"
+          ],
+          "properties": {
+            "profession": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minimumTier": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            },
+            "durationTicks": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "startingSupply": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "properties": {
+        "S1": {
+          "type": "number",
+          "minimum": 0
+        },
+        "S2": {
+          "type": "number",
+          "minimum": 0
+        },
+        "S3": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "terrain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clearCol",
+        "clearRow",
+        "clearWidth",
+        "clearHeight",
+        "supplyClass",
+        "supplyPerCell"
+      ],
+      "properties": {
+        "clearCol": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "clearRow": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "clearWidth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "clearHeight": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "supplyClass": {
+          "enum": [
+            "S1",
+            "S2",
+            "S3"
+          ]
+        },
+        "supplyPerCell": {
+          "type": "number",
+          "minimum": 0
+        },
+        "clearingRecipe": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "bubbles"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "bubbles": {
+              "type": "array", "minItems": 8, "maxItems": 8,
+              "items": {
+                "type": "object", "additionalProperties": false,
+                "required": ["id", "durationTicks", "actor", "toolService", "roomService"],
+                "properties": {
+                  "id": { "type": "string", "minLength": 1 },
+                  "durationTicks": { "enum": [1, 20] },
+                  "actor": { "const": "UNTRAINED" }, "toolService": { "type": "null" }, "roomService": { "type": "null" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "startupStaff": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "unitId",
+          "roomId"
+        ],
+        "properties": {
+          "unitId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "roomId": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "uniqueItems": true
+    }
+  }
+}

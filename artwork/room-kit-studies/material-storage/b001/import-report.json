@@ -1,0 +1,143 @@
+{
+  "kitId": "material-storage",
+  "sourceDirectory": "C:\\Users\\Powel\\Downloads",
+  "frame": [
+    1024,
+    1024
+  ],
+  "files": [
+    {
+      "name": "material-storage-center__v01__source.png",
+      "visibleBounds": null
+    },
+    {
+      "name": "material-storage-corner__v01__source.png",
+      "visibleBounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "name": "material-storage-shared__v01__source.png",
+      "visibleBounds": [
+        0,
+        0,
+        256,
+        216
+      ]
+    },
+    {
+      "name": "material-storage-edge-normal__v01__source.png",
+      "visibleBounds": [
+        256,
+        0,
+        768,
+        226
+      ]
+    },
+    {
+      "name": "material-storage-edge-door__v01__source.png",
+      "visibleBounds": [
+        256,
+        0,
+        768,
+        170
+      ]
+    },
+    {
+      "name": "material-storage-edge-open__v01__source.png",
+      "visibleBounds": null
+    },
+    {
+      "name": "material-storage-center__v02__source.png",
+      "visibleBounds": null
+    },
+    {
+      "name": "material-storage-corner__v02__source.png",
+      "visibleBounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "name": "material-storage-shared__v02__source.png",
+      "visibleBounds": [
+        0,
+        0,
+        256,
+        219
+      ]
+    },
+    {
+      "name": "material-storage-edge-normal__v02__source.png",
+      "visibleBounds": [
+        256,
+        0,
+        768,
+        227
+      ]
+    },
+    {
+      "name": "material-storage-edge-door__v02__source.png",
+      "visibleBounds": [
+        256,
+        0,
+        768,
+        170
+      ]
+    },
+    {
+      "name": "material-storage-edge-open__v02__source.png",
+      "visibleBounds": null
+    },
+    {
+      "name": "material-storage-center__v03__source.png",
+      "visibleBounds": null
+    },
+    {
+      "name": "material-storage-corner__v03__source.png",
+      "visibleBounds": [
+        0,
+        0,
+        256,
+        256
+      ]
+    },
+    {
+      "name": "material-storage-shared__v03__source.png",
+      "visibleBounds": [
+        0,
+        0,
+        256,
+        217
+      ]
+    },
+    {
+      "name": "material-storage-edge-normal__v03__source.png",
+      "visibleBounds": [
+        256,
+        0,
+        768,
+        232
+      ]
+    },
+    {
+      "name": "material-storage-edge-door__v03__source.png",
+      "visibleBounds": [
+        256,
+        0,
+        768,
+        176
+      ]
+    },
+    {
+      "name": "material-storage-edge-open__v03__source.png",
+      "visibleBounds": null
+    }
+  ],
+  "warnings": []
+}

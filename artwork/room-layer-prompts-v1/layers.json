@@ -1,0 +1,201 @@
+{
+  "version": "room-layers-study-v1",
+  "geometry": {
+    "version": "room-kit-v1",
+    "sourceSize": [
+      1024,
+      1024
+    ],
+    "runtimeSize": [
+      128,
+      128
+    ],
+    "cellUnits": 128,
+    "bands": [
+      32,
+      64,
+      32
+    ],
+    "pivot": [
+      64,
+      64
+    ],
+    "sourcePixelsPerUnit": 8,
+    "rectangles": {
+      "center": [
+        32,
+        32,
+        64,
+        64
+      ],
+      "corner": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "shared": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "edge-normal": [
+        32,
+        0,
+        64,
+        32
+      ],
+      "edge-door": [
+        32,
+        0,
+        64,
+        32
+      ],
+      "edge-open": [
+        32,
+        0,
+        64,
+        32
+      ]
+    },
+    "orientations": {
+      "center": "north up",
+      "corner": "northwest; north and west perimeter",
+      "shared": "northwest; north perimeter, west open",
+      "edge-normal": "north edge",
+      "edge-door": "north edge",
+      "edge-open": "north edge"
+    },
+    "wallDepth": 12,
+    "slotInset": 4,
+    "slotThickness": 5,
+    "slotPeriod": 24,
+    "doorOpening": [
+      48,
+      0,
+      32,
+      32
+    ],
+    "seamSockets": {
+      "north": [
+        0,
+        12
+      ],
+      "west": [
+        12,
+        0
+      ]
+    },
+    "ctPatterns": {
+      "CT1": {
+        "color": "amber",
+        "runs": [
+          8,
+          8,
+          8
+        ]
+      },
+      "CT2": {
+        "color": "blue",
+        "runs": [
+          4,
+          6,
+          4,
+          6,
+          4
+        ]
+      },
+      "CT3": {
+        "color": "purple",
+        "runs": [
+          4,
+          16,
+          4
+        ]
+      }
+    }
+  },
+  "furnitureRects": {
+    "corner": [
+      [
+        14,
+        14,
+        16,
+        16
+      ]
+    ],
+    "shared": [
+      [
+        14,
+        14,
+        16,
+        16
+      ]
+    ],
+    "edge-normal": [
+      [
+        34,
+        14,
+        60,
+        16
+      ]
+    ],
+    "edge-door": [
+      [
+        34,
+        14,
+        12,
+        16
+      ],
+      [
+        82,
+        14,
+        12,
+        16
+      ]
+    ]
+  },
+  "layers": {
+    "structure": {
+      "v01": {
+        "corner": "shared-wall-corner__v01__source.png",
+        "shared": "shared-wall-shared__v01__source.png",
+        "edge-normal": "shared-wall-edge-normal__v01__source.png",
+        "edge-door": "shared-wall-edge-door__v01__source.png"
+      },
+      "v02": {
+        "corner": "shared-wall-corner__v02__source.png",
+        "shared": "shared-wall-shared__v02__source.png",
+        "edge-normal": "shared-wall-edge-normal__v02__source.png",
+        "edge-door": "shared-wall-edge-door__v02__source.png"
+      },
+      "v03": {
+        "corner": "shared-wall-corner__v03__source.png",
+        "shared": "shared-wall-shared__v03__source.png",
+        "edge-normal": "shared-wall-edge-normal__v03__source.png",
+        "edge-door": "shared-wall-edge-door__v03__source.png"
+      }
+    },
+    "furniture": {
+      "v01": {
+        "corner": "infirmary-furniture-corner__v01__source.png",
+        "shared": "infirmary-furniture-shared__v01__source.png",
+        "edge-normal": "infirmary-furniture-edge-normal__v01__source.png",
+        "edge-door": "infirmary-furniture-edge-door__v01__source.png"
+      },
+      "v02": {
+        "corner": "infirmary-furniture-corner__v02__source.png",
+        "shared": "infirmary-furniture-shared__v02__source.png",
+        "edge-normal": "infirmary-furniture-edge-normal__v02__source.png",
+        "edge-door": "infirmary-furniture-edge-door__v02__source.png"
+      },
+      "v03": {
+        "corner": "infirmary-furniture-corner__v03__source.png",
+        "shared": "infirmary-furniture-shared__v03__source.png",
+        "edge-normal": "infirmary-furniture-edge-normal__v03__source.png",
+        "edge-door": "infirmary-furniture-edge-door__v03__source.png"
+      }
+    }
+  }
+}

@@ -15,15 +15,23 @@ export function setPersonnelPortrait(id,appearance,storage=globalThis.localStora
   storage?.setItem(PERSONNEL_STORAGE_KEY,JSON.stringify(saved));
 }
 // Shared staffing/deployment roster. Tiers here retain staffing's zero-based encoding.
+function shuffledNames(values,key){
+  let state=2166136261;
+  for(const character of `personnel-names-v2:${key}`)state=Math.imul(state^character.charCodeAt(0),16777619)>>>0;
+  const result=[...values];
+  for(let i=result.length-1;i>0;i--){state=(Math.imul(state,1664525)+1013904223)>>>0;const j=state%(i+1);[result[i],result[j]]=[result[j],result[i]];}
+  return result;
+}
 export function buildPersonnelRoster(classCatalog,namePools,classMatrix){
   let serial=1;
   const roster=[];
   for(const base of classCatalog){
     let index=0;
+    const firstNames=shuffledNames(namePools[base.id].first,`${base.id}:first`);
+    const lastNames=shuffledNames(namePools[base.id].last,`${base.id}:last`);
     const add=(kind,branch=null)=>{
-      const pool=namePools[base.id];
-      const first=pool.first[index%pool.first.length],last=pool.last[Math.floor(index/pool.first.length)%pool.last.length];index++;
-      roster.push({id:`unit-${serial++}`,name:`${first} ${last}${kind==='specialization'?' Sr.':kind==='cross'?' V.':''}`,classId:base.id,
+      const first=firstNames[index%firstNames.length],last=lastNames[index%lastNames.length];index++;
+      roster.push({id:`unit-${serial++}`,name:`${first} ${last}`,classId:base.id,
         baseTier:kind==='base'?0:2,specializationId:kind==='specialization'?branch:null,specializationTier:kind==='specialization'?0:-1,
         crossPathId:kind==='cross'?branch:null,crossPathTier:kind==='cross'?0:-1,sortGroup:kind,...personnelPresentation(`unit-${serial-1}`)});
     };

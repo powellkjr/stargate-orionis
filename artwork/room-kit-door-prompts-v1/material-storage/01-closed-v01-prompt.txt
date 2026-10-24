@@ -1,0 +1,31 @@
+MANDATORY DELIVERY: Provide a CLICKABLE DOWNLOAD LINK to the actual PNG file named EXACTLY material-storage-door-leaf-closed__v01__source.png. The download link and exact filename are REQUIRED. An inline image, preview, code block, written filename or statement that the file was saved is NOT sufficient. Attach/export the PNG and include its real clickable download link; do not invent a link or claim delivery without an attached file.
+
+Create ONE closed sliding-door LEAF overlay for the Material Storage modular room kit, family v01 (Clean angular fabricated paneling, precise straight seams and simple hard bevels).
+
+ATTACH THESE REFERENCES:
+1. material-storage-edge-door__v01__source.png from artwork/room-kit-studies/material-storage/b001/.
+2. material-storage-corner__v01__source.png from the same batch.
+3. registration-guide.svg from this prompt folder. Green marks the fixed frame's CLEAR passage; orange marks the CLOSED leaf overlay as a separate layer. Output only neutral finished leaves inside the orange rectangle. Do not copy guide colors, grid, labels or background.
+Use their exact neutral materials, surface detail, overhead shading and scale. The existing EDGE_DOOR supplies the fixed frame. Preserve that frame; output ONLY the moving leaves on transparency. Do not paint the references into the output.
+
+OUTPUT: one lossless 1024×1024 RGBA PNG with true alpha transparency. Full-cell registration, no crop, centering, padding or resized content. Strict orthographic 90-degree overhead, north up; no perspective or visible vertical front faces. No floor, checkerboard, labels, shadows outside the leaf bounds, frame, track surround, controls, lights or glow.
+
+GEOMETRY:
+The full logical cell is 128×128 units at 8 source pixels per unit. Pivot is source (512,512), logical (64,64).
+Canonical doorway is NORTH: clear opening x=48..80, y=0..32 (source x=384..640, y=0..256).
+Closed leaves occupy ONLY the wall-depth cross-section x=48..80, y=0..12, source rectangle [384,0,256,96]. Right/bottom limits are exclusive. Every pixel outside that rectangle MUST have alpha 0. The remainder of the access band y=12..32 stays clear.
+Two mirrored sliding halves: left half x=48..64, right half x=64..80, meeting at x=64. Source halves x=384..512 and x=512..640. The seam must read as closed, with no floor-visible gap. Keep the physical silhouette fully within the rectangle; no overhead bridge beyond it, posts, protruding handles or broad cast shadows.
+
+APPEARANCE:
+Neutral graphite metal with restrained pale steel edge trim matching the attached v01 frame. A readable center meeting seam, modest recessed panel lines and restrained bevels. At a 128-pixel full-cell display the closed barrier must remain readable; avoid tiny dense noise. Clean angular fabricated paneling, precise straight seams and simple hard bevels.
+No Tier color baked into this asset: the same leaves serve CT1/CT2/CT3. No amber/blue/purple lamps. No movable crates, stored goods, logos, hazard text or new machinery.
+Direct overhead local shading must tolerate rotations of 0/90/180/270 degrees around the full-cell pivot. Do not rotate around visible content bounds.
+
+PAIRING:
+This is CLOSED only. OPEN uses the same fixed EDGE_DOOR frame plus an entirely transparent leaf overlay: the moving halves retract behind the existing jambs and are not drawn. Do not generate a second complete doorway or an open door scene.
+Deliver one image, not a comparison sheet or animation. Do not mix v01/v02/v03 families.
+
+EXACT FILENAME:
+material-storage-door-leaf-closed__v01__source.png
+
+MANDATORY DELIVERY: Provide a CLICKABLE DOWNLOAD LINK to the actual PNG file named EXACTLY material-storage-door-leaf-closed__v01__source.png. The download link and exact filename are REQUIRED. An inline image, preview, code block, written filename or statement that the file was saved is NOT sufficient. Attach/export the PNG and include its real clickable download link; do not invent a link or claim delivery without an attached file.

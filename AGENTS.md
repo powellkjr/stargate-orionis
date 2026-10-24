@@ -18,10 +18,22 @@ The simulator is used to prove architecture before production implementation. Pr
 
 ## Working Rules
 
+- Complete two concrete migration steps per implementation batch when feasible.
+- Prefer focused existing walkthroughs over additional overlapping tests. Print
+  test totals and failures; avoid full passing logs and repeat runs without cause.
+- After Unity PlayMode tests, cancel residual pipeline/test-framework state and
+  exit Play mode before restoring the prototype. Confirm no nonpersistent
+  `UnityEngine.TestTools.TestRunner.PlaymodeTestsController` objects remain;
+  completed test status alone does not guarantee cleanup. Reopen Bootstrap in
+  Edit mode and verify ordinary Play/Stop/restart before restoring live state.
 - Do not redesign established systems unless the task explicitly asks for architecture work.
 - Do not invent new canonical Theories, Patterns, Recipes, Services, Cores, Professions, tags, or game rules to make an implementation convenient.
 - If required data or behavior is missing, report the gap instead of silently creating a new rule.
 - Treat JSON fixture content as authored game data, not suggestions to reinterpret.
+- Reuse `demos/shared/data/*.schema.json` and their authored data for Unity as
+  well as the simulators. Unity imports may project validated data, but must not
+  introduce parallel definitions for rules, labels or values already authored
+  there. Inspect the shared schema/data before adding a prototype configuration.
 - Prefer generic reusable systems over item-specific, room-specific, or story-specific code.
 - Keep Reality, Knowledge, physical state, execution requirements, and UI presentation separate.
 - Do not encode prose-specific logic when a tag, state, Recipe, Service, or existing generic mechanism can represent the behavior.
@@ -140,6 +152,20 @@ Asgard Rifle -> Receiving -> Analysis -> Workshop
 The universal room/process systems should determine whether those operations are valid.
 
 ## Custody and Transfer
+
+Validated storage and current custody are separate instance relationships.
+Every physical item must retain a valid fallback storage location, with its
+capacity reserved even while the item is elsewhere. Assigning Warehouse,
+Containment or Equipment Storage changes validated storage as well as custody.
+Sending an item to Analysis or another work room changes custody only; the work
+room does not acquire storage capability. Equipping a Unit likewise changes
+custody while preserving Equipment Storage and its allocation. Validate the new
+storage allocation before releasing the old one; returning custody uses the
+existing reservation. Containment is storage only and never performs scientific
+examination; revealing remaining instance properties requires a staffed Analysis
+lab. Incoming inventory is the logical fallback before admission to room storage,
+including while Receiving holds temporary custody. See the October 19 storage decision in
+`docs/simulator-decisions.md` for implementation status.
 
 Transferring an item changes custody. It does not create a new object.
 

@@ -4,8 +4,37 @@ import {readFileSync} from 'node:fs';
 import {validateRooms,canRoomsJoin} from '../shared/js/rooms.js';
 import {roomSprites} from '../shared/sprites/room-sprite-requirements.mjs';
 import {roomTilePrompts} from '../shared/sprites/room-tile-prompts.mjs';
+import {validateBase} from '../shared/js/base-configuration.mjs';
 
 const read=name=>JSON.parse(readFileSync(new URL(`../shared/data/${name}.json`,import.meta.url),'utf8'));
+
+test('starting base includes separate material, supply, equipment and containment rooms',()=>{
+ const source=read('rooms_schema'),catalog=validateRooms(source),base=validateBase(read('base-configuration'),source);
+ for(const id of ['material_storage','supply_storage','equipment_storage','containment']){
+  const room=base.rooms.find(r=>r.roomId===id),definition=catalog.find(r=>r.id===id);
+  assert(room);assert.equal(room.width,definition.width);assert.equal(room.height,definition.height);assert.equal(room.constructionTier,1);
+ }
+ assert.equal(new Set(base.rooms.map(r=>`${r.col},${r.row}`)).size,base.rooms.length);
+ assert.equal(catalog.find(r=>r.id==='containment').schema.function.subordinateTabs.find(t=>t.id==='cc_storage').slotConfig.item.progressionSource,'inventory');
+});
+
+test('Ready Room progresses from four to six members without cores, joining or stacking',()=>{
+ const source=read('rooms_schema'),catalog=validateRooms(source),room=catalog.find(r=>r.id==='ready_room'),response=catalog.find(r=>r.id==='response_room');
+ assert.equal(room.width,response.width);assert.equal(room.height,response.height);
+ assert.deepEqual(room.staffingProgression,[4,5,6]);assert.equal(room.maxConstructionTier,3);assert.equal(room.supportsConstructionTierProgression,true);
+ assert.equal(room.schema.rules.cores.supportsCores,false);assert.equal(canRoomsJoin(room,room),false);
+ assert.deepEqual(room.schema.function.team,{memberSlots:4,teamsPerPhysicalRoom:1,supportsStacking:false,memberSlotsByConstructionTier:[4,5,6],deploymentLimit:4,experienceSharing:"ALL_ASSIGNED_MEMBERS_EQUAL"});
+ assert.equal(room.schema.rules.storage.supportsStorage,false);assert.equal(room.schema.rules.inventory.supportsInventory,false);
+ assert.equal(room.schema.function.roomServices,undefined);
+ const base=read('base-configuration');assert.equal(validateBase(base,source).rooms.find(r=>r.instanceId==='r6').roomId,'ready_room');
+ const stacked=structuredClone(base);stacked.rooms.find(r=>r.instanceId==='r6').constructionTier=2;
+ assert.equal(validateBase(stacked,source).rooms.find(r=>r.instanceId==="r6").constructionTier,2);
+ const overlap=structuredClone(base);overlap.rooms.find(r=>r.instanceId==='r6').col=7;
+ assert.throws(()=>validateBase(overlap,source),/overlap/i);
+ for(const change of [r=>r.function.team.memberSlots=5,r=>r.rules.cores.supportsCores=true,r=>r.rules.joining.supportsJoining=true,r=>r.function.team.supportsStacking=true]){
+  const invalid=structuredClone(room.schema);change(invalid);assert.throws(()=>validateRooms([invalid]),/team.*(rooms|capacity)/i);
+ }
+});
 
 test('Cultural Platform is a continuous 2x2 physical room with reviewed Tech Platform structure',()=>{
  const catalog=validateRooms(read('rooms_schema')),room=catalog.find(r=>r.id==='cultural_platform'),tech=catalog.find(r=>r.id==='tech_platform');
@@ -58,4 +87,13 @@ test('legacy and active room catalogs retain matching identities and Generator s
  assert.equal(generator.coreSlots,2);assert.equal(generator.joinGroup,'generator');
  assert.equal(generator.staffed,false);assert.equal(generator.maxConstructionTier,3);
  assert.equal(generator.inventoryType,undefined);assert.equal(generator.cargoHandled,undefined);
+});
+
+test('Warehouse provides provisional safe temporary holding without staffing, Cores, joining or stacking',()=>{
+ const source=read('rooms_schema'),room=validateRooms(source).find(r=>r.id==='warehouse');
+ assert.equal(room.name,'Warehouse');assert.equal(room.width,1);assert.equal(room.height,1);
+ assert.equal(room.staffed,false);assert.equal(room.joinGroup,null);assert.equal(room.maxConstructionTier,1);
+ assert.equal(room.schema.rules.cores.supportsCores,false);assert.deepEqual(room.schema.rules.storage.progression,[20]);
+ assert.equal(room.schema.rules.inventory.supportsInventory,false);
+ assert.equal(validateBase(read('base-configuration'),source).rooms.find(r=>r.instanceId==='r11').roomId,'warehouse');
 });

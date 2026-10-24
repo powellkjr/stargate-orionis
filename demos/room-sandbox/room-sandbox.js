@@ -3,7 +3,7 @@ let sharedBase=null;
 import {renderMapSurface} from '../shared/map/renderer.mjs?v=shared-map-1';
 import {roomSpriteSurface,geologySprite,roomDoorSprite,staffCountSprite} from './sprite-presentation.mjs';
 import {resetSpriteVariants,replaceMissingSprite} from '../offworld-sandbox/sprite-renderer.mjs';
-import {canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=continuous-room-2";
+import {ROOM_CATEGORY_ORDER, canRoomsJoin, getRoomById, loadRooms, loadRoomsFromFile} from "../shared/js/rooms.js?v=room-categories-1";
 
 const COLS=12, ROWS=10;
 let CELL=80, PAD=8;
@@ -76,7 +76,7 @@ window.addEventListener("resize",()=>{
 });
 
 const PREVIEW_LABELS={joinGroup:"Join group",maxConstructionTier:"Maximum CT",supportsJoining:"Supports joining",supportsProgression:"Supports progression",supportsStaffing:"Supports staffing",supportsQueues:"Supports queues",supportsStorage:"Supports storage",supportsInventory:"Supports inventory",supportsCores:"Supports cores",supportsCapacity:"Supports capacity",subordinateTabs:"Subordinate tabs"};
-const CATEGORY_ORDER=["Command","Operations","Personnel","Science & Technology","Storage","Other"];
+const CATEGORY_ORDER=ROOM_CATEGORY_ORDER;
 const CT_BORDER_COLORS={1:"#8b949e",2:"#38bdf8",3:"#f59e0b"};
 
 function setStatus(message){status.textContent=message}

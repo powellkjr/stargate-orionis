@@ -1,0 +1,76 @@
+{
+  "$schema": "./room-construction.schema.json",
+  "format": "orionis-room-construction-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "hoursPerCoreSlot": 6,
+  "hoursPerStaffSlot": 6,
+  "hoursPerInventoryPlace": 0.6,
+  "supplyPerWorkHour": 1,
+  "supplyClassByConstructionTier": {
+    "1": "S1",
+    "2": "S2",
+    "3": "S3"
+  },
+  "upgradeBasis": "ADDITIONAL_CAPACITY",
+  "inventoryBasis": "PHYSICAL_ITEM_AND_OCCUPANT_PLACES",
+  "executionStatus": "PROVISIONAL_EXECUTABLE",
+  "notes": "Provisional CT1 pricing: 24-48h, 1 Supply/hour. Staffed Maintenance executes a Soldier1 security bubble (first hour), then Technician1 with equipped TET1; security time is included in the quote. Rock clearance grants 10 S1 once per cell. Starter stock 500 S1 / 200 S2 / 100 S3. No cancellation/refund; paused sites retain their inputs.",
+  "additionalInventorySources": {
+    "warehouse": [
+      "storage"
+    ]
+  },
+  "hoursPerResourceUnit": 0.006,
+  "minimumNewRoomHours": 24,
+  "hoursPerOccupantPlace": 6,
+  "execution": {
+    "requiredRoomDefinitionId": "maintenance",
+    "actorSelection": "MAINTENANCE_PERMANENT_STAFF",
+    "profession": "TECHNICIAN",
+    "minimumTier": 1,
+    "toolService": "TET1",
+    "roomService": null,
+    "supplyStorageDefinitionId": "supply_storage",
+    "security": {
+      "profession": "SOLDIER",
+      "minimumTier": 1,
+      "durationTicks": 20
+    }
+  },
+  "startingSupply": {
+    "S1": 500,
+    "S2": 200,
+    "S3": 100
+  },
+  "terrain": {
+    "clearCol": 0,
+    "clearRow": 2,
+    "clearWidth": 10,
+    "clearHeight": 6,
+    "supplyClass": "S1",
+    "supplyPerCell": 10,
+    "clearingRecipe": {
+      "id": "CLEAR_ROCK",
+      "bubbles": [
+        { "id": "clear-1", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-2", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-3", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-4", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-5", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-6", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-7", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
+        { "id": "clear-8", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null }
+      ]
+    }
+  },
+  "startupStaff": [
+    {
+      "unitId": "unit-22",
+      "roomId": "r12"
+    },
+    {
+      "unitId": "unit-1",
+      "roomId": "r12"
+    }
+  ]
+}

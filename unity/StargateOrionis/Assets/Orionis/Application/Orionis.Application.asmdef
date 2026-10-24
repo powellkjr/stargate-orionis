@@ -1,0 +1,8 @@
+{
+  "name": "Orionis.Application",
+  "rootNamespace": "Orionis",
+  "references": [
+    "Orionis.Domain"
+  ],
+  "noEngineReferences": true
+}

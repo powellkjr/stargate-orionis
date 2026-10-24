@@ -1,0 +1,29 @@
+MANDATORY DELIVERY: Return the actual reference PNG as an attachment with a CLICKABLE DOWNLOAD LINK named EXACTLY infirmary-reference__v01.png. An inline preview, written filename or claim that the file was saved is not sufficient. Never fabricate a link; if PNG attachment/export is unavailable, state that limitation.
+
+Create ONE assembled visual reference for a Stargate-inspired underground-base Infirmary in a top-down strategy game. This is a STYLE/ASSEMBLY REFERENCE ONLY, not an importable tile, furnishing overlay or sprite sheet. Output a landscape 1536 x 1024 PNG with one coherent room centered on a plain dark presentation background. No headings, labels, diagram grid, legend, arrows, UI, watermark or text.
+
+CAMERA: strict orthographic 90-degree overhead. Tops only: no perspective, isometric view, visible vertical front facades, cinematic camera or cutaway diorama. Show all four perimeter walls and the full interior. Restrained material shading; no long directional shadows, bloom haze or dramatic lighting.
+
+ROOM PLAN: one square room assembled from a 2 x 2 arrangement of equal logical cells, with one continuous interior floor. Show no internal dividing walls, central posts or visible lines marking the four logical cells. Architecture appears ONLY at the exterior perimeter. Preserve a large empty, navigable center.
+
+ARCHITECTURE: family v01, clean angular. Pale neutral matte-metal outer armor, dark graphite inset wall panels, precise seams, restrained hard bevels and modular corners. All four outer corners are clear 90-degree L-turns with two wall arms. Straight wall panels and corner arms use the same depth and meet cleanly. No freestanding pillars, oversized corner machines or additional walls. The material language should feel engineered and substantial while remaining readable as game art at small size.
+
+DOOR: one OPEN passage through the south wall, in the WEST half of that wall. Use the center of the southwest logical cell's south edge, not the center of the entire room. Its fixed side jambs match the shared architecture; the moving leaves retract completely out of sight. Floor remains visible through the opening. No threshold, bridge, overhead header, light bar or shadow blocks the passage. No second entrance.
+
+LIGHT TREATMENT: use a restrained CT2-style example, with TWO small blue inset lamps per exterior non-door wall module. Each blue lamp has a bright narrow core, a subtle local halo and a snug dark bezel. Fill unused wall channel with neutral metal; no continuous glowing perimeter strip, oversized black recess or holes around the lamps. Keep corners neutral. No lamp crosses the open doorway. This lighting belongs to the assembled reference only; later wall-source PNGs will have transparent channels and no painted lights.
+
+INFIRMARY FURNISHINGS: show empty medical cots/beds and compact CLOSED medical supply cases along the INSIDE perimeter. On each non-door exterior cell-edge module, place one cot and one separate supply case side-by-side along the wall. The bed's long axis runs PARALLEL to the adjacent wall, not toward the room center. With this 2 x 2 layout and one door module, that gives seven perimeter cot/supply-case groups. Keep each group small enough to stay within its perimeter band, with clear breaks between neighboring groups; do not merge beds into continuous benches.
+
+Use compact closed supply cases at corner/partial-edge furnishing positions, with visible spacing from the architecture. Leave the door approach, all internal joins and center open. No patients, staff, operating theater, central diagnostic machine, scanning arch, hanging arms, loose tools, exposed medicines, story artifacts, clutter or additional medical equipment. No crosses or readable clinical symbols.
+
+FURNITURE STYLE: clean off-white cot surfaces, simple muted graphite frames, pale bedding/pillow shapes and restrained desaturated medical-teal accents. Closed supply cases use neutral pale metal with small muted-teal details. Furniture must be visually separable from the architecture; do not make walls and beds one fused object. No bright furniture emission or giant screens.
+
+FLOOR: quiet neutral gray modular floor with subtle seams and low contrast. No central grate, symbol, carpet, floor lettering or detailed pattern that competes with the beds. The floor is included ONLY because this is an assembled reference; it will be a separate layer in the actual game.
+
+ATTACHMENTS: if approved shared-wall-corner__v01__source.png and shared-wall-edge-normal__v01__source.png are attached, preserve their material language, scale relationships and seam character. If they are not attached, use the description above without claiming to reproduce unseen art. Registration guides, if attached, are measurement diagrams only; never copy their colors, labels or grid.
+
+IMPORTANT FOR SUBSEQUENT GENERATION: this reference illustrates the desired assembled appearance. It does not replace the individual 1024-square transparent source masks. Later architecture assets must contain ONLY architecture; later furniture assets ONLY the specified furniture. Do not use this full-room image as a runtime module.
+
+FINAL CHECK: one strict-overhead square 2 x 2 Infirmary; reusable clean-angular walls; no center post; perimeter-only empty cots and closed cases; an open south doorway in the west half; discrete paired blue lights without surrounding holes; no people, labels or extra equipment.
+
+MANDATORY DELIVERY: Return the actual reference PNG as an attachment with a CLICKABLE DOWNLOAD LINK named EXACTLY infirmary-reference__v01.png. An inline preview, written filename or claim that the file was saved is not sufficient. Never fabricate a link; if PNG attachment/export is unavailable, state that limitation.

@@ -1,0 +1,12 @@
+{
+  "name": "Orionis.Presentation",
+  "rootNamespace": "Orionis",
+  "references": [
+    "Orionis.Domain",
+    "Orionis.Application",
+    "Orionis.Infrastructure",
+    "UnityEngine.UI",
+    "Unity.InputSystem"
+  ],
+  "noEngineReferences": false
+}

@@ -6,3 +6,19 @@
 # Generated Python bytecode.
 __pycache__/
 *.py[cod]
+
+# Unity-generated caches, local settings, builds and IDE projects.
+/unity/StargateOrionis/[Ll]ibrary/
+/unity/StargateOrionis/[Tt]emp/
+/unity/StargateOrionis/[Oo]bj/
+/unity/StargateOrionis/[Ll]ogs/
+/unity/StargateOrionis/[Uu]ser[Ss]ettings/
+/unity/StargateOrionis/[Bb]uild*/
+/unity/StargateOrionis/.vs/
+/unity/StargateOrionis/.vscode/
+/unity/StargateOrionis/*.csproj
+/unity/StargateOrionis/*.sln
+/unity/StargateOrionis/*.slnx
+/unity/StargateOrionis/*.pidb
+/unity/StargateOrionis/*.user
+/unity/.validation-*/

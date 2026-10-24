@@ -1,0 +1,21 @@
+MANDATORY DELIVERY: Provide a CLICKABLE DOWNLOAD LINK to the actual PNG file named EXACTLY infirmary-furniture-corner__v02__source.png. The download link and exact filename are REQUIRED. An inline image, preview, code block, written filename or statement that the file was saved is NOT sufficient. Attach/export the PNG and include its real clickable download link; do not invent a link or claim delivery without an attached file.
+
+Generate ONE registered INFIRMARY FURNITURE ONLY overlay, corner, v02 (soft rounded).
+
+DELIVERY: 1024 x 1024 true RGBA PNG, full-cell registration, 8 source pixels per logical unit. Coordinates below are logical units; multiply ALL coordinates by 8 for source pixels. Origin NW, x east, y south. Full cell 128-square; rotation pivot (64,64), source (512,512). No crop, recenter, enlargement, padding, sheet, background, checkerboard, floor, labels or UI. Empty pixels are alpha 0.
+
+LAYER OWNERSHIP: Generate ONLY the empty medical cot and/or CLOSED medical supply cases specified for this role. No wall, corner armor, door frame, leaf, lights, floor or architectural trim. All wall bands and channels stay transparent. These are decorative silhouettes, not personnel, configured Services, clinical findings or new game rules.
+
+ROLE / EXACT MASK: One compact closed medical supply case in x=14..30,y=14..30. No bed forced into this small slot.
+
+FURNITURE CONTRACT: allowed rectangles are [[14,14,16,16]] in [x,y,width,height] format. Every pixel outside those rectangles is alpha 0, including all cast shadows. Minimum 2-unit clearance from wall-depth boundary and adjacent module seams is already included in these masks. Do not extend a bed across a module boundary. No furniture in CENTER or EDGE_OPEN; those are omitted layers, not new assets.
+
+CAMERA: strict 90-degree orthographic overhead. Tops only, no perspective, vertical front faces, isometric turns or directional cast shadows. Restrained shading, readable at 128-pixel full-cell scale. Soft local bevels and rounded details; preserve every exact structural mask and seam.
+
+REFERENCE ATTACHMENTS: registration-guide.svg and layer-registration-guide.svg are diagrams ONLY. Never paint their background, colors, grid or labels. Attach approved shared-wall-corner__v02__source.png and shared-wall-edge-normal__v02__source.png to match scale/materials, but DO NOT redraw any wall pixels. Generate this furniture as a separately composited transparent overlay. Match the SAME family throughout; never mix v01/v02/v03 within one layer.
+
+FINAL ACCEPTANCE: full 1024-square RGBA; canonical orientation; exact masks only; all other pixels alpha 0; no unwanted layer content. Correct any failed condition before delivering.
+
+Save as infirmary-furniture-corner__v02__source.png.
+
+MANDATORY DELIVERY: Provide a CLICKABLE DOWNLOAD LINK to the actual PNG file named EXACTLY infirmary-furniture-corner__v02__source.png. The download link and exact filename are REQUIRED. An inline image, preview, code block, written filename or statement that the file was saved is NOT sufficient. Attach/export the PNG and include its real clickable download link; do not invent a link or claim delivery without an attached file.

@@ -128,6 +128,48 @@
         "base": {
           "type": "string"
         },
+        "team": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "memberSlots",
+            "teamsPerPhysicalRoom",
+            "supportsStacking"
+          ],
+          "properties": {
+            "memberSlots": {
+              "const": 4
+            },
+            "teamsPerPhysicalRoom": {
+              "const": 1
+            },
+            "supportsStacking": {
+              "const": false
+            },
+            "memberSlotsByConstructionTier": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "const": 4
+                },
+                {
+                  "const": 5
+                },
+                {
+                  "const": 6
+                }
+              ],
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "deploymentLimit": {
+              "const": 4
+            },
+            "experienceSharing": {
+              "const": "ALL_ASSIGNED_MEMBERS_EQUAL"
+            }
+          }
+        },
         "degradableProperty": {
           "type": "string"
         },
@@ -166,6 +208,10 @@
             "$ref": "#/$defs/contractIdentifier"
           },
           "description": "Authored room processing-category capabilities matched by the process matrix against instance Processing Tags. Independent of configured Services, equipped Cores, and power. No room-name inference."
+        },
+        "sharedItemCapacity": {
+          "type": "boolean",
+          "description": "Item storage tabs share the physical room storage capacity instead of independent allocations."
         }
       }
     }
@@ -712,6 +758,12 @@
             "capacity",
             "staffing"
           ]
+        },
+        "perResident": {
+          "type": "boolean"
+        },
+        "residentCapacitySource": {
+          "const": "capacity"
         }
       },
       "allOf": [

@@ -1,0 +1,21 @@
+MANDATORY DELIVERY: Provide a CLICKABLE DOWNLOAD LINK to the actual PNG file named EXACTLY shared-wall-shared__v02__source.png. The download link and exact filename are REQUIRED. An inline image, preview, code block, written filename or statement that the file was saved is NOT sufficient. Attach/export the PNG and include its real clickable download link; do not invent a link or claim delivery without an attached file.
+
+Generate ONE registered SHARED ARCHITECTURE ONLY overlay, shared, v02 (soft rounded).
+
+DELIVERY: 1024 x 1024 true RGBA PNG, full-cell registration, 8 source pixels per logical unit. Coordinates below are logical units; multiply ALL coordinates by 8 for source pixels. Origin NW, x east, y south. Full cell 128-square; rotation pivot (64,64), source (512,512). No crop, recenter, enlargement, padding, sheet, background, checkerboard, floor, labels or UI. Empty pixels are alpha 0.
+
+LAYER OWNERSHIP: This architecture is reusable by EVERY room type. Generate ONLY wall material inside the wall masks, never a room-specific furnishing, bed, conveyor, rack, inspection station or floor. Corner interior x>=12 AND y>=12 is transparent.
+
+ROLE / EXACT MASK: Only a north wall x=0..32,y=0..12. West is an open internal join: no west wall or end post. Same cross-section as the ordinary wall at both ends. It must tolerate diagonal reflection (x,y)->(y,x), then full-cell cardinal rotation.
+
+WALL CONTRACT: 12 units deep, with alpha-0 north channel y=4..9 and (CORNER only) west channel x=4..9. Source depth 96 px; source channel 32..72 px. At a corner subtract the UNION of both channel strips, including their intersection. Never bake light colors or CT identifiers; viewer supplies channel backing and lights. Style differences affect neutral materials and restrained bevels only, never mask, seam, thickness or door clearance. Pale neutral outer armor and graphite panels, matching the reference.
+
+CAMERA: strict 90-degree orthographic overhead. Tops only, no perspective, vertical front faces, isometric turns or directional cast shadows. Restrained shading, readable at 128-pixel full-cell scale. Soft local bevels and rounded details; preserve every exact structural mask and seam.
+
+REFERENCE ATTACHMENTS: registration-guide.svg and layer-registration-guide.svg are diagrams ONLY. Never paint their background, colors, grid or labels. Generate and approve shared-wall-corner__v02__source.png FIRST, then attach it for every other architecture piece in this family. Do not copy furniture from an old combined room tile. Match the SAME family throughout; never mix v01/v02/v03 within one layer.
+
+FINAL ACCEPTANCE: full 1024-square RGBA; canonical orientation; exact masks only; all other pixels alpha 0; no unwanted layer content. Correct any failed condition before delivering.
+
+Save as shared-wall-shared__v02__source.png.
+
+MANDATORY DELIVERY: Provide a CLICKABLE DOWNLOAD LINK to the actual PNG file named EXACTLY shared-wall-shared__v02__source.png. The download link and exact filename are REQUIRED. An inline image, preview, code block, written filename or statement that the file was saved is NOT sufficient. Attach/export the PNG and include its real clickable download link; do not invent a link or claim delivery without an attached file.

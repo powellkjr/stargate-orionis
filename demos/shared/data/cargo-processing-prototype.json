@@ -1,0 +1,26 @@
+{
+  "format": "orionis-cargo-processing-prototype-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "notes": "Containment is storage only. Analysis reveals authored instance properties using a local Scientist I with SCT1, two ticks, no additional technical Room Service or charges. Work custody preserves reserved fallback storage. Provisional playtest tuning; no institutional Theory or Pattern grants.",
+  "receivingFindings": [],
+  "examination": {
+    "roomDefinitionId": "analysis",
+    "requiredCapability": "CAN_ACCEPT_ANALYSIS",
+    "recipe": {
+      "id": "ANALYSIS_EXAMINATION_PROTOTYPE",
+      "name": "Examine unknown properties in Analysis",
+      "profession": "SCIENTIST",
+      "minimumTier": 1,
+      "toolService": "SCT1",
+      "roomService": null,
+      "durationTicks": 2,
+      "exposureCategory": "authoredInstanceProperties"
+    },
+    "concurrentProjects": 1
+  },
+  "equipmentTabTags": {
+    "weapons": "WEAPON",
+    "armor": "ARMOR"
+  },
+  "previousProcessingFingerprint": "1eb5c6d85525fcd34944078ac9a14703eda94fcdc17cce04c1ae331382f6ec7c"
+}

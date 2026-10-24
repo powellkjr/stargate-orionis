@@ -1,0 +1,13 @@
+{
+  "name": "Orionis.Infrastructure",
+  "rootNamespace": "Orionis",
+  "references": [
+    "Orionis.Domain",
+    "Orionis.Application"
+  ],
+  "noEngineReferences": true,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll"
+  ]
+}

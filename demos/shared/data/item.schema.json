@@ -362,6 +362,11 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "previousName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Previous definition name retained for explicit presentation-only save compatibility; does not grant Knowledge."
+        },
         "initialName": {
           "type": "string",
           "minLength": 1

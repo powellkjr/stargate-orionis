@@ -1,0 +1,14 @@
+{
+  "name": "Orionis.Editor",
+  "rootNamespace": "Orionis",
+  "references": [
+    "Orionis.Domain",
+    "Orionis.Application",
+    "Orionis.Infrastructure",
+    "Orionis.Presentation"
+  ],
+  "noEngineReferences": false,
+  "includePlatforms": [
+    "Editor"
+  ]
+}

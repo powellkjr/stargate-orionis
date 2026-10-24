@@ -1,0 +1,33 @@
+{
+  "format": "orionis-receiving-prototype-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "notes": "User authorized provisional Receiving choices on October 17. Ordinary nondestructive inspection, no expendable charges, no additional technical Room Service. Tune after playtesting; no automatic exit routing or institutional Knowledge grants.",
+  "incomingInstanceIds": ["ITEM_ASGARD_RIFLE_0001"],
+  "recipe": {
+    "id": "RECEIVING_BASELINE_PROTOTYPE",
+    "requiredRoomCapability": "CAN_ACCEPT_RECEIVING",
+    "storageClass": "INV",
+    "steps": [
+      {
+        "id": "DETERMINE_HANDLING",
+        "name": "Inspect handling and condition",
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "toolService": "TET1",
+        "roomService": null,
+        "durationTicks": 2,
+        "exposureCategory": "conditionTags"
+      },
+      {
+        "id": "DETERMINE_ITEM_CLASS",
+        "name": "Classify the object",
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "toolService": "SCT1",
+        "roomService": null,
+        "durationTicks": 2,
+        "exposureCategory": "identityTags"
+      }
+    ]
+  }
+}

@@ -4,11 +4,12 @@ import {readFile,mkdtemp,writeFile} from 'node:fs/promises';
 import {resolve,join,sep,extname} from 'node:path';
 import {tmpdir} from 'node:os';import {spawn} from 'node:child_process';import assert from 'node:assert/strict';
 const root=resolve('.'),profile=await mkdtemp(join(tmpdir(),'room-sprites-browser-')),writes=[];
+const kitMode=process.argv.includes('--kit');
 let report,reject;const reported=new Promise((r,j)=>{report=r;reject=j});
 const server=createServer(async(req,res)=>{
  if(req.url==='/__room-result'&&req.method==='POST'){let body='';for await(const chunk of req)body+=chunk;res.end('ok');try{report(JSON.parse(body))}catch(e){reject(e)}return}
  if(req.method!=='GET'){writes.push(req.url);res.writeHead(405).end();return}
- if(req.url==='/__room-test.html'){res.setHeader('Content-Type','text/html');res.end('<!doctype html><html><body><iframe style="width:1440px;height:1000px;border:0" src="/demos/room-sandbox/"></iframe><script type="module" src="/demos/room-sandbox/browser-test.mjs"></script></body></html>');return}
+ if(req.url==='/__room-test.html'){res.setHeader('Content-Type','text/html');res.end(`<!doctype html><html><body><iframe style="width:1440px;height:1000px;border:0" src="/demos/room-sandbox/${kitMode?'room-kit.html':''}"></iframe><script type="module" src="/demos/room-sandbox/${kitMode?'room-kit-browser-test.mjs':'browser-test.mjs'}"></script></body></html>`);return}
  try{
   let url=decodeURIComponent(req.url.split('?')[0]);if(url.endsWith('/'))url+='index.html';const path=resolve(root,'.'+url);if(!path.startsWith(root+sep))throw Error('Outside repository');
   res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type',({'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.svg':'image/svg+xml','.png':'image/png','.json':'application/json'})[extname(path)]??'application/octet-stream');res.end(await readFile(path));

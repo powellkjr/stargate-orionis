@@ -1,0 +1,46 @@
+{
+  "sourceDirectory": "C:\\Users\\Powel\\Downloads",
+  "frame": [
+    1024,
+    1024
+  ],
+  "allowedRectangle": [
+    384,
+    0,
+    256,
+    96
+  ],
+  "files": [
+    {
+      "name": "material-storage-door-leaf-closed__v01__source.png",
+      "visibleBounds": [
+        384,
+        0,
+        640,
+        96
+      ],
+      "sha256": "e49f882d64e7cbc5eb70c93fbdfce24d203e7d0f6a6380b90aa281b0177c7136"
+    },
+    {
+      "name": "material-storage-door-leaf-closed__v02__source.png",
+      "visibleBounds": [
+        384,
+        0,
+        640,
+        96
+      ],
+      "sha256": "b73806e7481a6298aa9b821447335364651c50a476fadb1568306fb7c0fa325c"
+    },
+    {
+      "name": "material-storage-door-leaf-closed__v03__source.png",
+      "visibleBounds": [
+        384,
+        0,
+        640,
+        96
+      ],
+      "sha256": "d1183733cbbb47dcc6d81a941fc94eaebe8f52be4ae115295c0ab82002e8c311"
+    }
+  ],
+  "warnings": []
+}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modular room tile test — Orionis</title>
+<link rel="stylesheet" href="room-kit.css">
+<header><a href="./">← Room Simulator</a><h1>Modular room tile test</h1>
+<p>Compare joined layouts, seams and doorway clearance. Click an outer edge to add or remove a door.</p></header>
+<section class="controls" aria-label="Preview controls">
+<label>Composition <select id="composition"><option value="combined">Combined room tiles · existing</option><option value="layers">Shared walls + Infirmary · trial</option></select></label>
+<label data-layer-control hidden>Wall family <select id="wallFamily"><option value="v01">v01 · angular</option><option value="v02">v02 · rounded</option><option value="v03">v03 · utilitarian</option></select></label>
+<label data-layer-control hidden>Furniture family <select id="furnitureFamily"><option value="v01">v01 · angular</option><option value="v02">v02 · rounded</option><option value="v03">v03 · utilitarian</option></select></label>
+<label data-layer-control hidden class="check"><input id="showFurniture" type="checkbox" checked> Show Infirmary furniture</label>
+<label data-layer-control hidden>Load shared walls <input id="wallFiles" type="file" accept="image/png,.png" multiple></label>
+<label data-layer-control hidden>Load Infirmary furniture <input id="furnitureFiles" type="file" accept="image/png,.png" multiple></label>
+<label>Family <select id="family"><option value="v01">v01 · angular</option><option value="v02">v02 · rounded</option><option value="v03">v03 · utilitarian</option></select></label>
+<label>Construction Tier <select id="tier"><option value="1">CT1 · amber</option><option value="2">CT2 · blue</option><option value="3">CT3 · purple</option></select></label>
+<label>Light treatment <select id="lighting"><option value="inset">Inset · reference study</option><option value="continuous">Continuous · original</option></select></label>
+<label>Cell display size <select id="zoom"><option value="128">128 px</option><option value="256" selected>256 px</option><option value="384">384 px</option></select></label>
+<label>Door preset <select id="doors"><option value="south">South door</option><option value="none">No doors</option><option value="adjacent">Adjacent doors</option><option value="opposite">Opposite doors</option><option value="all">All outer edges</option></select></label>
+<button id="doorState" type="button" aria-pressed="false">Doors: open</button>
+<label class="check"><input id="guides" type="checkbox"> Show module guides</label>
+<button id="rotate" type="button">Rotate layouts clockwise</button>
+<button id="orientation" type="button">Pair: horizontal ↔ vertical</button>
+<label>Load another kit batch <input id="files" type="file" accept="image/png,.png" multiple></label>
+<label>Load door leaf artwork <input id="leafFiles" type="file" accept="image/png,.png" multiple></label>
+</section>
+<p id="status" role="status">Loading Material Storage source frames…</p>
+<p id="doorStatus" role="status">Loading Material Storage door leaves…</p>
+<p id="layerStatus" role="status" hidden></p>
+<main id="previews" aria-label="Layout comparisons"></main>
+<details><summary>Source checks</summary><div id="report"></div></details>
+<script type="module" src="room-kit-preview.mjs"></script>
+</html>

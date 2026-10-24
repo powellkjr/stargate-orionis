@@ -14,7 +14,7 @@ or underlying name databases were copied. There was no button option or random
 seed for this authoring pass. The manifest records the exact authoring prompt,
 per-profession style briefs, URLs, date, and accepted ordered arrays.
 
-| Profession | Reference | Editorial treatment | First runtime name |
+| Profession | Reference | Editorial treatment | Original roster example |
 | --- | --- | --- | --- |
 | Soldier | [American English](https://www.fantasynamegenerators.com/english-names.php) | Concise contemporary names; ordinary surnames; no ranks or callsigns | Brett Holt |
 | Scout | [Nature](https://www.fantasynamegenerators.com/nature-names.php) | Nature given names and landscape surnames | Aspen Woodland |
@@ -48,8 +48,8 @@ as the Scientist reference instead.
    This batch accepted 16 entries in each array; validation found no duplicates
    or old-name overlap. The saved arrays are the complete accepted output.
 5. Run the check below, then serve and open the demo using its README. Confirm
-   that 54 units load and display the intended names. The first nine given names
-   in each pool appear in the current roster, all paired with its first surname.
+   that 54 units load and display names from the accepted pools, with a varied
+   spread of surnames rather than the same surname for every Unit of a class.
 
 The prompt and mapping repeat the **method**, not the exact creative output.
 For exact replay, retain the manifest: runtime selection is deterministic and
@@ -62,33 +62,39 @@ explain how to collect selected results with source links.
 
 ## Runtime behavior
 
-`generatedPersonName(classId, index, variant)` in the staffing demo selects:
+The shared `buildPersonnelRoster()` in `demos/shared/js/personnel-roster.mjs`
+now independently shuffles the given-name and surname pools for each profession,
+then pairs entries without replacement within each pool. The fixed
+`personnel-names-v2:<profession>:first/last` seed labels make this presentation
+selection repeatable. It does not consume Unity campaign RNG or reorder the
+authored arrays. The current nine Units per class use nine distinct surnames.
 
-```js
-first[index % first.length]
-last[Math.floor(index / first.length) % last.length]
-```
+The previous Cartesian indexing held the surname at index zero until sixteen
+Units had been created; with only nine per class this made every surname match.
+The October 17 fix changes selection, not the authored name pools.
 
-It appends ` Sr.` for specialization entries and ` V.` for cross-path entries.
-Base entries have no suffix; unknown classes fall back to Scientist.
-`buildUnitRoster()` uses a separate zero-based counter per class, creating one
-base, three specialization, and five cross-path units (54 total).
-The pools provide 256 combinations per class before repetition. Adding names
-does not add roster units. Changing array lengths or order can rename units;
-unit IDs and staffing capabilities are independent of display names.
+October 18: removed the automatic ` Sr.` and ` V.` suffixes that had been used
+as specialization/cross-path markers. Progression stays in its own fields; names
+are independent of competency. The same 54 Unit IDs and progression records remain.
+Unity explicitly migrates exact known generated names from the archived fixtures
+to remove these decorations, retaining their given names and surnames. Custom
+saved names are preserved. A pinned name-only snapshot migration preserves
+existing staffing/Receiving saves; unrelated fixture changes still reject loading.
+Adding names does not add roster Units. Names are independent of capability.
 
 ## Validation
 
 Run from the repository root (Python standard library only):
 
-```powershell
+```bash
 python demos/shared/data/validate-personnel-names.py
 ```
 
 This checks manifest class coverage, pool lengths, trimmed strings, uniqueness,
 and source coverage. It does not test the browser. To verify no reuse during a
 future replacement, compare against the prior manifest before overwriting it.
-There is no existing project-wide automated test suite or package test command.
+Name-selection regressions run with
+`node --test demos/portrait-simulator/personnel-roster.test.mjs`.
 
 ## Profession nicknames
 

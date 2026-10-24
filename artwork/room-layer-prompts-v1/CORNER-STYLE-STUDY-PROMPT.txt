@@ -1,0 +1,23 @@
+MANDATORY DELIVERY: Attach the actual PNG and provide a CLICKABLE DOWNLOAD LINK named EXACTLY shared-wall-corner__v01__style-study.png. A preview or filename written in text is not sufficient. Never fabricate a link or claim an export that did not happen.
+
+Create ONE high-quality corner STYLE STUDY for modular sci-fi base architecture. This is an art-direction study, NOT a registered runtime module. Do not apply the earlier wall masks, 96-pixel thickness, transparent running channels, tiny top-left placement or seam-coordinate restrictions to this study. We will fit approved artwork to a revised production contract later.
+
+ATTACHMENTS REQUIRED: the original illustrated room/tiles reference with pale armored corners and dark wall panels. If attached, the rejected flat gray L-shaped tile is a failure example only. Match the original reference's material language, not the failure example. Do not claim to have matched an image that was not attached.
+
+SUBJECT: one NORTHWEST exterior corner, with a short wall arm extending to the RIGHT and a short wall arm extending DOWN. The room interior is southeast, toward the lower right. Exactly two perpendicular wall arms and one substantial integrated corner cap. The two arm ends are clean straight continuation cuts, ready to connect to more wall. No end cap at those continuation cuts. No closed room, extra wall legs, floor or furnishings.
+
+VISUAL TARGET: polished hand-painted / pre-rendered strategy-game environment art, with the same richness and physical construction as the attached reference. Broad warm off-white armored corner plates wrap the bend; charcoal/graphite recessed wall housings sit between the armor plates. Thick, carefully shaded bevels, layered plates, compact dark joint collars, inset panel borders, small recessed fasteners and restrained material wear make the structure feel substantial. The corner should read as an engineered armored assembly with real material depth, not as two flat colored strips meeting at a right angle.
+
+Give the corner armor enough area to form a recognizable substantial cap toward the inner bend. Do not reduce it to an outline or remove its mass to satisfy the old thin L-mask. Keep the architecture self-contained. Surface detail supports the big forms; avoid dense random greebles, noisy scratches or excessive tiny grooves.
+
+CAMERA: direct 90-degree orthographic overhead, north up. Material depth comes from top-surface bevel shading, ambient occlusion inside mechanical recesses and subtle surface texture. Do not use isometric perspective, tall visible front facades or long shadows cast onto an imaginary floor. Strict overhead does NOT mean flat vector shading.
+
+LIGHTING: neutral material lighting only. Wall panels have solid backing. Do not cut a continuous transparent stripe through the armor or wall arms. Do not add colored lamps, glowing corners, neon outlines or oversized black holes. Separate runtime lamp overlays will be designed after the architectural form is approved.
+
+COMPOSITION: one 1024 x 1024 RGBA PNG. Enlarge the single corner assembly to occupy roughly 75–85 percent of the canvas, with transparent margins and the open interior toward the lower right. This intentionally enlarged study is for visual approval; it is not the runtime cell registration. No floor, painted checkerboard, backdrop, diagram grid, measurements, text, comparison sheet, labels or watermark. Keep the complete object inside the frame.
+
+SUCCESS CRITERIA: the result visibly shares the original reference's chunky pale armor, deep graphite recesses, substantial bevels and finished game-art shading. It must look like the same architectural design language at a glance. Do not deliver the previous flat gray diagram with extra panel lines.
+
+Generate this ONE study and wait for approval. Do not generate production pieces or change the other families yet.
+
+MANDATORY DELIVERY: Attach the actual PNG and provide a CLICKABLE DOWNLOAD LINK named EXACTLY shared-wall-corner__v01__style-study.png. A preview or filename written in text is not sufficient. Never fabricate a link or claim an export that did not happen.

@@ -45,6 +45,170 @@ including ones not yet implemented. Verify code/tests before claiming support.
 
 ## Simulator entry points
 
+Cargo conversion authoring: [cross-chat handoff](docs/cargo-conversion-authoring-handoff.md)
+indexes exact shared schemas, current resource/storage categories, missing
+quality/size/yield definitions, required examples and Unity migration dependencies.
+Four quality/four size levels and common ranges are proposed, not numeric canon.
+
+Unity personnel continuity: `Domain/PersonnelCondition.cs` stores per-Unit health,
+stamina/endurance and existing Tool IDs/condition/charges between sorties.
+Debrief **Prepare redeployment** starts a fresh attempt using those records and
+current issued equipment. **Reset mission** remains a debug reset. Schema 20
+persists the records and member starting health; versions 1–19 retain their
+current expedition without invented prior sorties. See the migration plan.
+
+Unity [Equipment Storage browser](docs/unity-equipment-storage.md): click the
+Equipment Storage room footprint for tabbed physical inventory and capacity.
+Weapon/armor slots, provisional stats, personal custody and deployment snapshots:
+`Domain/UnitEquipment.cs`, `Infrastructure/UnitEquipmentReader.cs` and
+`demos/shared/data/unit-equipment-prototype.json`. Save schema 19 preserves
+validated Equipment Storage assignments while custody belongs to a Unit.
+
+Current Unity cargo flow: [validated storage, staffed Analysis and Equipment
+Storage](docs/unity-cargo-routing.md), save schema 19. Containment is storage
+only. Analysis holds temporary custody and preserves reserved fallback storage;
+`Domain/CargoExamination.cs` owns the bounded instance-property work.
+`Presentation/CargoPanel.cs` provides Base inventory and physical-room custody
+tabs; select a room -> Open room inventory. Completed Analysis remains in lab
+custody until returned to storage. `MissionMapView.cs` / `MapActionHex.cs` expose
+Stage action hexes using the existing detailed mission controls and commands.
+
+Unity migration: [active critical path](docs/unity-migration-plan.md#active-priority-complete-the-playable-mission-loop).
+The technical rescue/equipment/redeployment loop is implemented. Five remaining
+outcome-based waves cover repeat-sortie resources/preparation, a standalone
+playable build, base expansion, technology progression and the wider campaign.
+The first two complete the playable slice; the active plan supersedes old “next”
+entries in [preserved migration history](docs/unity-migration-history-2026-10-20.md).
+The existing demos remain behavior references; the Wave 0 audit is historical.
+For base work, the [Receiving/item gap audit](docs/unity-receiving-gap-audit.md)
+maps the existing rifle/vest definitions, bindings, process snapshots and Recipe
+requirements to the remaining authoring and Unity integration work.
+
+CT1 balancing: [approved capacities and construction estimates](docs/room-capacity-standardization-checklist.md).
+Shared room data now uses the corrected two-staff/two-Core baseline plus explicit
+exceptions. New-room quotes are 24-48h; existing saves have a capacity migration.
+Ready Room rosters are 4/5/6 by CT; mission checkboxes select at most four, with
+reserves retained. Mission XP awards remain pending. Construction now executes through staffed Maintenance.
+
+Construction pricing: shared `demos/shared/data/room-construction-prototype.json`
+with `room-construction.schema.json`; `demos/shared/js/room-construction.mjs`
+computes per-slot work/Supply and additional-capacity upgrade estimates.
+Focused check: `node --test demos/shared/js/room-construction.test.mjs unity/tools/bootstrap-snapshot.test.mjs`.
+Unity imports pricing and provisional execution. `Domain/RoomConstruction.cs` owns
+Supply, cleared rock cells and persistent sites. `Domain/TerrainClearing.cs`
+executes eight one-tick UNTRAINED bubbles through available Maintenance staff
+in parallel, awarding Supply only on completion. Save schema23 retains bubble
+Actor history and reads schema21/22 construction without repeating old outputs.
+Maintenance resolves eligible permanent staff automatically (no Technician
+chooser), using separate Soldier security and Technician/TET1 bubbles;
+`BasePlanningPanel` shows profession-colored progress and simulator categories.
+
+Unity base expansion: `Domain/RoomPlanning.cs`,
+`Infrastructure/RoomPlanningReader.cs` and `Presentation/BasePlanningPanel.cs`.
+`bootstrap-snapshot.mjs` projects all shared room profiles into a separate
+read-only `roomPlanning` catalog without changing campaign save fingerprints.
+Base map -> **Base planning** shows tier/staff/Core envelopes and validates a
+proposed footprint. Build executes Supply-funded work; previewing alone makes no
+state change. Manage mode upgrades physical rooms and joins/splits ordered Groups.
+`Domain/RoomGroups.cs` keeps child identity and destination-first Group staffing.
+Core installation, Group Tools, Response resolution and salvage remain pending.
+Global resource totals: `Presentation/ResourceHeader.cs`; reusable animated
+construction/clearing cards: `ConstructionProgressView.cs`,
+`TerrainClearingProgressView.cs`, and the single-mesh `RecipeProgressGraphic.cs`;
+base speeds1x/4x/8x/16x.
+
+Windows playtest: **Orionis > Build Windows Slice** (Edit mode) invokes
+`Assets/Orionis/Editor/WindowsSliceBuild.cs`, validates shared snapshot freshness
+and builds Bootstrap explicitly into `unity/StargateOrionis/Builds/Windows/`.
+[Player guide](docs/unity-playtest-guide.md) covers the supported route and saves.
+Standalone debug controls default off; its `campaign-save.json` is separate from
+the Editor's `prototype-save.json`. Both retain explicit Save/Load.
+
+Unity bootstrap: [project instructions](unity/StargateOrionis/README.md), Editor
+`6000.5.2f1`, Universal 2D. Open the project in Hub, then **Orionis > Open
+Bootstrap** and Play. `node unity/tools/bootstrap-snapshot.mjs` exports validated
+room/roster display data; `--check` detects stale output. C# selection/import
+checks use Unity Test Runner (EditMode/PlayMode). The top Save/Load controls
+persist the current room/roster slice, RNG state and selection to a versioned
+local prototype slot. Schema 16 persists SG teams, mission Team ID, manual Unit-to-room assignments,
+Receiving inspection progress/Actor/custody references, planned staffing moves
+and nullable expedition party/Tool/Gate/travel/conversation/field-work/combat state,
+with explicit migrations
+from earlier prototype saves. Staffing controls
+use authored capacities; see `Domain/Staffing.cs` and `Presentation/StaffingPanel.cs`.
+`Domain/StaffTransfers.cs` reserves destination places for after-next-tick or
+finish-step moves; cancellation and invalid replacement checks preserve work.
+Run/Pause, +1 tick and 1x/4x controls
+exercise the three-minute clock and Receiving work. `Domain/ReceivingWork.cs`
+owns the bounded tick transactions; provisional tuning lives in
+`demos/shared/data/receiving-prototype.json`. Full scheduling policy, inventory
+routing and later mission field work/rescue remain pending. **Mission briefing**
+opens team selection; deploying 1–4 available Units shows the Gate-arrival view.
+`Domain/Expedition.cs` owns deployment and Gate choice/redial; `MissionReader.cs`
+imports the bounded mission projection after the JS compiler validates the full
+source mission. `Domain/MissionTravel.cs` and `Presentation/MissionTravelPanel.cs`
+provide the original entry route/conversation. `Domain/MissionField.cs` adds the
+authored Holding door hack, passive identity and first contact/objective state;
+`FieldReader.cs` and `FieldSave.cs` import/persist that bounded four-Stage route.
+`TravelReader.cs` and `TravelSave.cs` validate travel/dialogue. The exporter pins
+the old entry projection in `unity/tools/fixtures/bootstrap-before-holding-route.json`
+for schema-7 migration. Other branches remain unimplemented. First contact cannot repeat
+until its possible guard escalation is supported.
+`Presentation/MissionMapView.cs` draws known authored Stage footprints, the team
+marker and doors on a simple grid. Adjacent open-room clicks use the same
+application move command. `MissionMapReader.cs` validates the separate
+`missionMap` geometry projection, which stays outside simulation/save fingerprints.
+`Domain/MissionCombat.cs` provides bounded Yard/Holding guard encounters using
+authored stats and deterministic round replay. `CombatPanel.cs` presents rounds;
+the entire encounter (including disengagement/defeat) commits one tick through
+the shared base-work/transfer transaction. `CombatReader.cs` imports separately
+fingerprinted `missionCombat` definitions. Map badges show guard clearance, not
+full medical/evacuation readiness. Surrender, automatic escalation and recovery
+remain pending; the supported rescue/extraction path is described below.
+`Domain/MissionCare.cs` derives patient conditions/medical Incident resolution
+from the shared field-work ledger and checks secure evacuation routes. The
+Holding **Patients & evacuation** panel offers the three authored Medic/MET1
+stabilizations and route blockers. Treatment can trigger the authored suspicion
+threshold encounter; other automatic escalation is still pending.
+`Infrastructure/CareReader.cs` imports separately fingerprinted `missionCare`.
+`Domain/MissionRescue.cs` / `Infrastructure/RescueReader.cs` add the supported
+operative departure, AT_GATE/EXTRACTED state and persistent returned-mission
+debrief. The party must physically return and redial to extract. **Reset mission**
+beside Save/Load clears the prototype attempt without writing the saved slot.
+SG team/Ready Room integration: [contract and workflow](docs/unity-ready-room-plan.md).
+`Domain/SGTeams.cs` and `Presentation/ReadyRoomPanel.cs` implement permanent,
+exclusive four-slot teams, physical Ready Room r6, saved designations/member order
+and team-based mission assignment. Membership locks offworld and survives return
+and Reset mission. The room is 1×1/CT1 with no Cores, stacking or joining.
+`unity/tools/fixtures/bootstrap-before-ready-room.json` pins migration from the
+old five-room base without inferring teams or changing its active expedition.
+Starting-base storage: [room definitions, limits and remaining cargo work](docs/unity-storage-rooms.md).
+Material Storage r7, Supply Storage r8, Equipment Storage r9 and Containment r10
+are added below the work rooms; Warehouse r11 provides provisional 20-place
+temporary holding, separate from accepting equipment for SGC use. `Domain/RoomStorage.cs` and
+`Infrastructure/RoomStorageReader.cs` import their read-only configured limits;
+selection shows EQ/CC tabs and bulk capacity. Occupied inventory/admission and
+general offworld-item custody transfers remain pending. The first bounded crate/rifle
+recovery is now implemented; see [cargo playtest and limits](docs/unity-cargo-recovery.md),
+`Domain/RecoveredCargo.cs`, `Infrastructure/CargoReader.cs` and `Presentation/CargoPanel.cs`.
+The same source IDs move through debrief, incoming inventory, Receiving and compatible
+Containment, with a separately fingerprinted cargo ledger.
+[Handling review and Warehouse](docs/unity-warehouse-clearance.md) now add
+`Domain/CargoHandling.cs` / `Infrastructure/HandlingReader.cs`: authored safe/intact
+findings, temporary Receiving custody with primary CC reservation, Warehouse
+capacity and separate retention intent. Equipment clearance/issuing remains pending. The exact previous six-room
+fixture is pinned in `unity/tools/fixtures/bootstrap-before-storage-rooms.json`;
+schema-12 migration retains SG teams and active mission identity.
+`bootstrap-before-warehouse.json` pins the ten-room schema-13 migration.
+`previousProgressionSnapshot` retains original-roster save compatibility while
+fresh Unity playtests use the separate all-tier-III override.
+Clock/save/session boundaries are in `Assets/Orionis/{Domain,Application,Infrastructure}`.
+Roster name selection is shared in `demos/shared/js/personnel-roster.mjs`; its
+deterministic shuffle uses the existing pools without repeating the first surname
+for a whole Profession. Automatic `Sr.`/`V.` progression suffixes are removed;
+name-only save compatibility is pinned to `unity/tools/fixtures/bootstrap-before-suffix-cleanup.json`.
+Checks: `node --test demos/portrait-simulator/personnel-roster.test.mjs`.
+
 Separate character cutout study: [Character sheet preview](demos/character-sheet-preview/README.md),
 now authored SCML rigs and original transparent parts workbench at `/demos/character-sheet-preview/`.
 Local purchased pack is Git-ignored; import with `python demos/character-sheet-preview/import-pack.py`.
@@ -161,8 +325,31 @@ coordinated families and exact provisional geometry (128-unit cell, 32/64/32 ban
 Export via `prepare-sprite.mjs room-kit-prompts --kit receiving --out <fresh-directory>`;
 omit --kit for all 19 base-room types. Initial Receiving/Material Storage example:
 `artwork/room-kit-prompts-v1/`. Test: `node --test demos/offworld-sandbox/room-kit-prompts.test.mjs`.
+Fresh Receiving queue (October 18): `artwork/room-kit-prompts-v2-receiving/`.
+Strengthened NW corner geometry gates and role-specific perimeter conveyors /
+inspection stations come from `room-kit-prompts.mjs`; original v1 prompts remain historical.
+Shared-architecture trial: `artwork/room-layer-prompts-v1/` has three four-piece
+wall families plus separately registered Infirmary furnishings. Export with
+`node demos/room-sandbox/export-room-layers.mjs --out <fresh-directory>`.
+`room-layer-contract.mjs` owns masks/prompts; `room-layer-study.mjs` supplies
+independent imports and labeled schematic fallbacks in Room Sandbox's modular
+preview (Composition → Shared walls + Infirmary). All prompt deliveries require
+the exact PNG filename and clickable download link at both beginning and end.
 Legacy room-tile/outstanding overlay queues remain compatible with installed keys;
 modular preparation/ingestion, Offworld archetype mappings and renderer adoption are pending.
+
+Modular assembly preview (October 17): `/demos/room-sandbox/room-kit.html`, linked
+from Room Sandbox, loads `artwork/room-kit-studies/material-storage/b001/` (18
+unchanged Downloads sources). `room-kit-layout.mjs` resolves cell boundaries,
+open joins and reflected SHARED pieces; `room-kit-preview.mjs` compares 1×1,
+1×2/2×1 and 2×2 with family/CT/door controls and source-frame validation.
+`import-room-kit.py` validates and copies complete kits to fresh study batches.
+Checks: `node --test demos/room-sandbox/*.test.mjs` and
+`node demos/room-sandbox/browser-smoke.mjs --kit`. This preview does not activate
+art in saved bases or Offworld; production preparation/installation remains pending.
+The same preview has an open/closed door toggle and separate registered-leaf
+file picker (`room-kit-doors.mjs`); unprovided closed art uses a labeled schematic
+placeholder. Material Storage prompts are in `artwork/room-kit-door-prompts-v1/material-storage/`.
 
 Room art coverage: `demos/shared/sprites/room-sprite-requirements.mjs` maps the
 authored room/geology IDs to this same manifest. See

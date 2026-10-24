@@ -1,4 +1,21 @@
-# Current Task: Modular room-kit prompt generation — October 13, 2026
+# Current Task: Shared wall families + Infirmary furniture trial — October 18, 2026
+
+- User authorized separating reusable architecture from room-specific furnishings.
+  Three four-piece wall families (angular/rounded/utilitarian) and three matching
+  four-piece Infirmary furnishing sets are in `artwork/room-layer-prompts-v1/`.
+- Generate the wall corners first and coordinate the rest of each family; then
+  generate Infirmary furniture with matching walls as references. Every prompt
+  starts and ends with a mandatory clickable download link/exact filename instruction.
+- Modular preview offers independent wall/furniture imports, masks and visibility.
+  Missing artwork is labeled schematic. Existing combined art stays available;
+  no new generated assets or canonical medical capability are implied by the trial.
+- Reuse existing door leaves only as a labeled visual comparison. Structure masks
+  use the established 12-unit depth/channel; furniture has separate inset masks.
+  Furnishing dimensions and circulation are illustrative presentation, not rules.
+
+---
+
+# Historical checkpoint: Modular room-kit prompt generation — October 13, 2026
 
 - User authorized correcting CT arithmetic and choosing provisional dimensions/registration. CT1 remains 8/8/8 amber; CT2 is now 4/6/4/6/4 blue; CT3 is 4/16/4 purple. All total 24, with colored coverage 8/12/16. Original handoff is preserved verbatim; [working art contract](docs/offworld-modular-room-visual-kit-contract.md) supersedes its arithmetic.
 - Chosen registration: 128-unit logical cell; 32/64/32 grid bands; full 1024×1024 RGBA source for every piece; planned 128×128 registered runtime frame; rotation at cell center (64,64), source (512,512). Walls are 12 units deep with a 5-unit transparent channel at offset 4; the underlay repeats every 24 units. Centered doorway is 32 units wide. SHARED permits diagonal reflection plus rotation. Separate base floor supplies all coverage; CENTER/EDGE_OPEN are empty v1 members. These are provisional art choices, not gameplay dimensions.

@@ -1,0 +1,10 @@
+{
+  "format": "orionis-unit-equipment-prototype-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "notes": "User authorized one weapon and one armor slot per Unit, separate from profession Tools, and sensible provisional stats. Ordinary weapons deal 24 damage per visual round; the recovered Asgard rifle deals 30, compared with the existing unequipped baseline of 18. Armor absorbs 2 damage per incoming hit, with at least 1 damage getting through. No new physical armor is granted. Gear and stats are snapshotted on deployment so later base changes do not rewrite combat history.",
+  "slots": [
+    { "id": "weapon", "requiredTag": "WEAPON", "damage": 24, "protection": 0 },
+    { "id": "armor", "requiredTag": "ARMOR", "damage": 0, "protection": 2 }
+  ],
+  "itemDamageOverrides": { "ASGARD_EM_RIFLE": 30 }
+}

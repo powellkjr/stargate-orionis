@@ -8,7 +8,20 @@ Attach the user's CT tier illustration as a material/form reference: pale corner
 
 For each family generate CORNER first, review its wall/channel registration, then attach that source and guide for SHARED and EDGE pieces. CENTER and EDGE_OPEN are deliberately fully transparent in v1: create their empty 1024-square RGBA sources deterministically with Pillow, not image generation. All 18 named source files, including these empty members, belong in each kit ZIP. Metadata describes expected source paths, not generated files. Review seams/alpha and assemble sample 1×1, 1×2 and 2×2 layouts before accepting a family.
 
-No final art was generated or installed. Registered kit resizing, complete-family ZIP ingestion, Stage-wide deterministic selection, exact Transition edge binding and renderer composition are still pending. Ordinary crop/recenter, sheet split and independent per-key installation are unsuitable. SHARED permits diagonal reflection plus rotation to cover both handed arrangements. EDGE_DOOR owns static frame sides; runtime leaf art will be separate.
+Registered kit resizing, complete-family ZIP ingestion, Stage-wide deterministic selection and Offworld renderer adoption are still pending. The Room Sandbox modular test now previews Material Storage sources, CT treatments and open/closed leaves without installing active art. Ordinary crop/recenter, sheet split and independent per-key installation are unsuitable. SHARED permits diagonal reflection plus rotation to cover both handed arrangements.
+
+## Door frames and moving leaves
+
+Attach registration-guide.svg plus the approved same-family EDGE_DOOR and CORNER sources when generating leaves. The guide is a measurement reference: its colors, grid, labels and background must never be painted into an asset.
+
+- Fixed EDGE_DOOR frame: preserve the full clear north passage x=48..80, y=0..32 (source x=384..640, y=0..256), alpha 0 throughout. Do not bake moving leaves into this module.
+- Separate CLOSED leaf overlay: full 1024-square RGBA frame; visible pixels only in x=48..80, y=0..12 (source x=384..640, y=0..96). Two sliding halves meet at x=64 (source x=512). The guide's orange rectangle marks this separate layer; it does not authorize filling the opening in EDGE_DOOR.
+- OPEN leaf overlay: entirely transparent. Leaves retract behind the existing frame and are not drawn. No image generation is needed for an empty open asset.
+- Use the same cell pivot (512,512) and matching family for frame and leaf. Do not add a second frame, overhead bridge, floor, CT lights or shadows outside the closed-leaf rectangle. The 12-unit depth is a provisional visual fit to the existing wall.
+
+Leaf names: <kit-id>-door-leaf-closed__vNN__source.png; optional empty open file <kit-id>-door-leaf-open__vNN__source.png. Leaf files are additional overlays, not members of the original six-piece/18-file kit ZIP. Keep them separate until production packaging is defined.
+
+Material Storage's three closed-leaf generation prompts and attachment instructions are in artwork/room-kit-door-prompts-v1/material-storage/. To review, open /demos/room-sandbox/room-kit.html, choose Load door leaf artwork, then toggle Doors: open / closed. Unprovided closed art uses a labeled schematic placeholder. File selections last for the page session; no door gameplay is implied.
 
 - [ ] receiving-center-v01-prompt.txt
 - [ ] receiving-corner-v01-prompt.txt

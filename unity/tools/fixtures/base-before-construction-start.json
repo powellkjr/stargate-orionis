@@ -1,0 +1,142 @@
+{
+  "format": "simulator-base-1",
+  "revision": 11,
+  "name": "Default test base",
+  "rooms": [
+    {
+      "instanceId": "r1",
+      "roomId": "gate_room",
+      "col": 1,
+      "row": 3,
+      "width": 3,
+      "height": 3,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r2",
+      "roomId": "receiving",
+      "col": 4,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r3",
+      "roomId": "holding",
+      "col": 5,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r4",
+      "roomId": "analysis",
+      "col": 6,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r5",
+      "roomId": "workshop",
+      "col": 7,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r6",
+      "roomId": "ready_room",
+      "col": 8,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r7",
+      "roomId": "material_storage",
+      "col": 4,
+      "row": 4,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r8",
+      "roomId": "supply_storage",
+      "col": 5,
+      "row": 4,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r9",
+      "roomId": "equipment_storage",
+      "col": 6,
+      "row": 4,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r10",
+      "roomId": "containment",
+      "col": 7,
+      "row": 4,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    },
+    {
+      "instanceId": "r11",
+      "roomId": "warehouse",
+      "col": 8,
+      "row": 4,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1,
+      "doorIndex": 0,
+      "staffTierIndex": 0,
+      "staffCount": 0
+    }
+  ],
+  "groups": [],
+  "baseMap": [],
+  "reservations": []
+}

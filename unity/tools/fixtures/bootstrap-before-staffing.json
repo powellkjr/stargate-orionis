@@ -1,0 +1,844 @@
+{
+  "format": "orionis-bootstrap-1",
+  "baseName": "Default test base",
+  "sources": [
+    {
+      "path": "demos/shared/data/rooms_schema.json",
+      "sha256": "1922535ba71604903a6c3e77627124f3c07c9950a4556ac963237a441d59943f"
+    },
+    {
+      "path": "demos/shared/data/base-configuration.json",
+      "sha256": "7bcaff9a69f7c4ba1b689805dba3ba9e3d5659e2c195ce167fd11680b019e3af"
+    },
+    {
+      "path": "demos/shared/data/base-classes.json",
+      "sha256": "cb839bd9e9bd07e980b33370ce30431407292f04b821d4a3dd06a35e89565cb8"
+    },
+    {
+      "path": "demos/shared/data/personnel-names.json",
+      "sha256": "434e330d21ac56deb500250089fd2a25cce10770729b928d5168a542bbaae5d3"
+    },
+    {
+      "path": "demos/shared/data/personnel-loadouts.json",
+      "sha256": "68566f4d0cf1c9d407d60ef38a9e289ffe6e3a27cfac15e0d8053d08cfdcde7e"
+    },
+    {
+      "path": "demos/shared/data/personnel-presentation.json",
+      "sha256": "fc6925c508463cf2f17de7019001a900be82c6d558ab64be3b9277b604abd338"
+    },
+    {
+      "path": "demos/shared/data/offworld/party-presets.json",
+      "sha256": "0e2a831f217bb01ba96e9dc5deb74074480124de970c5706b8406c19b066b0da"
+    },
+    {
+      "path": "unity/tools/bootstrap-snapshot.mjs",
+      "sha256": "f4ed0460b2ade64bc49b152872354bea80786c7d97145feb7d83fd0b485520d1"
+    },
+    {
+      "path": "demos/shared/js/rooms.js",
+      "sha256": "c12b8dfd37a237d624d0c91328496525f5dca01ef1d1189c12ce9845194aba30"
+    },
+    {
+      "path": "demos/shared/js/base-configuration.mjs",
+      "sha256": "5be81cb4105c4c2eecc082a23361f7f91a22213227d7012bdb0c1a794997c924"
+    },
+    {
+      "path": "demos/shared/js/personnel-roster.mjs",
+      "sha256": "72332651f38f95760b8e495489f6c253dbaf17df039e6bcbc0512bdad8db07cd"
+    },
+    {
+      "path": "demos/shared/offworld/roster.mjs",
+      "sha256": "7dfbfe535bd9f38c427be6f116b96faaf34e1da151915f8ffc134b0380ec8d15"
+    },
+    {
+      "path": "demos/shared/offworld/personnel-save.mjs",
+      "sha256": "d5d8573afeb49bc4f5d056e83e397f2a08e9c4f02f9c71fb2d08af55375d9485"
+    },
+    {
+      "path": "demos/shared/offworld/equipment.mjs",
+      "sha256": "b6408fea371ba557e9347275a6ac92b61e699a323dd593a947d2c9752cf18123"
+    },
+    {
+      "path": "demos/shared/portraits/portrait-bust.mjs",
+      "sha256": "ad1ae071ac5e59d2ec38e65f2d4f3e569fc550c0c3f95653eb72038b61e4064b"
+    }
+  ],
+  "roomDefinitions": [
+    {
+      "id": "cultural_platform",
+      "name": "Cultural Platform",
+      "color": "#bd7390",
+      "width": 2,
+      "height": 2
+    },
+    {
+      "id": "analysis",
+      "name": "Analysis",
+      "color": "#4ea8de",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "containment",
+      "name": "Containment",
+      "color": "#52796f",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "data_storage",
+      "name": "Data Storage",
+      "color": "#355070",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "equipment_storage",
+      "name": "Equipment Storage",
+      "color": "#607d8b",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "gate_room",
+      "name": "Gate Room",
+      "color": "#d4a72c",
+      "width": 3,
+      "height": 3
+    },
+    {
+      "id": "holding",
+      "name": "Holding",
+      "color": "#4f8f6f",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "infirmary",
+      "name": "Infirmary",
+      "color": "#65b87a",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "living_quarters",
+      "name": "Living Quarters",
+      "color": "#91c788",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "maintenance",
+      "name": "Maintenance",
+      "color": "#e07a3f",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "material_storage",
+      "name": "Material Storage",
+      "color": "#8d6e63",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "generator",
+      "name": "Generator",
+      "color": "#d4b23c",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "ration_storage",
+      "name": "Ration Storage",
+      "color": "#c9a66b",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "receiving",
+      "name": "Receiving",
+      "color": "#f2a65a",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "research",
+      "name": "Research",
+      "color": "#4361ee",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "response_room",
+      "name": "Response Room",
+      "color": "#c94c4c",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "supply_storage",
+      "name": "Supply Storage",
+      "color": "#b07d62",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "tech_platform",
+      "name": "Tech Platform",
+      "color": "#9b5de5",
+      "width": 1,
+      "height": 1
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "color": "#6c757d",
+      "width": 1,
+      "height": 1
+    }
+  ],
+  "rooms": [
+    {
+      "id": "r1",
+      "definitionId": "gate_room",
+      "col": 1,
+      "row": 3,
+      "width": 3,
+      "height": 3,
+      "constructionTier": 1
+    },
+    {
+      "id": "r2",
+      "definitionId": "receiving",
+      "col": 4,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1
+    },
+    {
+      "id": "r3",
+      "definitionId": "holding",
+      "col": 5,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1
+    },
+    {
+      "id": "r4",
+      "definitionId": "analysis",
+      "col": 6,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1
+    },
+    {
+      "id": "r5",
+      "definitionId": "workshop",
+      "col": 7,
+      "row": 3,
+      "width": 1,
+      "height": 1,
+      "constructionTier": 1
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-1",
+      "name": "Brett Holt",
+      "profession": "SOLDIER",
+      "tier": 1,
+      "branch": "",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-2",
+      "name": "Connor Holt Sr.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "Marksman 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-3",
+      "name": "Logan Holt Sr.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "Guardian 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-4",
+      "name": "Shane Holt Sr.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "Tactician 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-5",
+      "name": "Trent Holt V.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "SCOUT 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-6",
+      "name": "Wade Holt V.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "TECHNICIAN 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-7",
+      "name": "Gavin Holt V.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "SCIENTIST 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-8",
+      "name": "Blake Holt V.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "MEDIC 1",
+      "color": "#d1495b",
+      "perception": 6,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-9",
+      "name": "Paige Holt V.",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": "DIPLOMAT 3",
+      "color": "#d1495b",
+      "perception": 9,
+      "stamina": 92,
+      "endurance": 8
+    },
+    {
+      "id": "unit-10",
+      "name": "Aspen Woodland",
+      "profession": "SCOUT",
+      "tier": 1,
+      "branch": "",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-11",
+      "name": "Briar Woodland Sr.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "Pathfinder 1",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-12",
+      "name": "Cedar Woodland Sr.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "Tracker 1",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-13",
+      "name": "Laurel Woodland Sr.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "Observer 1",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-14",
+      "name": "Meadow Woodland V.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "SOLDIER 1",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-15",
+      "name": "Willow Woodland V.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "TECHNICIAN 1",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-16",
+      "name": "Hazel Woodland V.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "SCIENTIST 1",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-17",
+      "name": "Heather Woodland V.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "MEDIC 3",
+      "color": "#2a9d8f",
+      "perception": 9,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-18",
+      "name": "Jasper Woodland V.",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": "DIPLOMAT 3",
+      "color": "#2a9d8f",
+      "perception": 7,
+      "stamina": 90,
+      "endurance": 8
+    },
+    {
+      "id": "unit-19",
+      "name": "Alfred Arkwright",
+      "profession": "TECHNICIAN",
+      "tier": 1,
+      "branch": "",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-20",
+      "name": "Beatrice Arkwright Sr.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "Demolitions 3",
+      "color": "#f4a261",
+      "perception": 9,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-21",
+      "name": "Chester Arkwright Sr.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "Integrations 1",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-22",
+      "name": "Dorothy Arkwright Sr.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "Overdrive 3",
+      "color": "#f4a261",
+      "perception": 9,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-23",
+      "name": "Ernest Arkwright V.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "SOLDIER 1",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-24",
+      "name": "Florence Arkwright V.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "SCOUT 1",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-25",
+      "name": "Gilbert Arkwright V.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "SCIENTIST 1",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-26",
+      "name": "Harriet Arkwright V.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "MEDIC 1",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-27",
+      "name": "Herbert Arkwright V.",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": "DIPLOMAT 1",
+      "color": "#f4a261",
+      "perception": 6,
+      "stamina": 84,
+      "endurance": 7
+    },
+    {
+      "id": "unit-28",
+      "name": "Ambrose Ainsworth",
+      "profession": "SCIENTIST",
+      "tier": 1,
+      "branch": "",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-29",
+      "name": "Cecily Ainsworth Sr.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "Applied 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-30",
+      "name": "Edgar Ainsworth Sr.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "Operational 3",
+      "color": "#7b6ef6",
+      "perception": 9,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-31",
+      "name": "Eleanor Ainsworth Sr.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "Strategic 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-32",
+      "name": "Frederick Ainsworth V.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "SOLDIER 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-33",
+      "name": "Frances Ainsworth V.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "SCOUT 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-34",
+      "name": "Harold Ainsworth V.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "TECHNICIAN 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-35",
+      "name": "Henrietta Ainsworth V.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "MEDIC 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-36",
+      "name": "Lionel Ainsworth V.",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": "DIPLOMAT 1",
+      "color": "#7b6ef6",
+      "perception": 8,
+      "stamina": 78,
+      "endurance": 6
+    },
+    {
+      "id": "unit-37",
+      "name": "Abigail Anderson",
+      "profession": "MEDIC",
+      "tier": 1,
+      "branch": "",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-38",
+      "name": "Benjamin Anderson Sr.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "Trauma 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-39",
+      "name": "Chloe Anderson Sr.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "Field Medicine 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-40",
+      "name": "Daniel Anderson Sr.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "Epidemiology 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-41",
+      "name": "Emma Anderson V.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "SOLDIER 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-42",
+      "name": "Gabriel Anderson V.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "SCOUT 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-43",
+      "name": "Hannah Anderson V.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "TECHNICIAN 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-44",
+      "name": "Jacob Anderson V.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "SCIENTIST 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-45",
+      "name": "Leah Anderson V.",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": "DIPLOMAT 1",
+      "color": "#4cc9f0",
+      "perception": 7,
+      "stamina": 86,
+      "endurance": 7
+    },
+    {
+      "id": "unit-46",
+      "name": "Anastasia Ashford",
+      "profession": "DIPLOMAT",
+      "tier": 1,
+      "branch": "",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-47",
+      "name": "Benedict Ashford Sr.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "Negotiator 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-48",
+      "name": "Cordelia Ashford Sr.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "Ambassador 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-49",
+      "name": "Desmond Ashford Sr.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "Arbiter 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-50",
+      "name": "Evangeline Ashford V.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "SOLDIER 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-51",
+      "name": "Fabian Ashford V.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "SCOUT 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-52",
+      "name": "Genevieve Ashford V.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "TECHNICIAN 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-53",
+      "name": "Maximilian Ashford V.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "SCIENTIST 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    },
+    {
+      "id": "unit-54",
+      "name": "Isadora Ashford V.",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": "MEDIC 1",
+      "color": "#b8a14f",
+      "perception": 5,
+      "stamina": 80,
+      "endurance": 6
+    }
+  ]
+}

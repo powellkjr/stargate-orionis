@@ -1,9 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<title>Full-cell registration and separate open/closed door leaves</title>
+<desc>1024-square source frame. Green is the clear door passage, orange is the separate closed-leaf layer. Guide colors, labels and background must never appear in generated assets.</desc>
 <rect width="1024" height="1024" fill="#f0f0f0"/>
-<path d="M256 0V1024M768 0V1024M0 256H1024M0 768H1024" fill="none" stroke="#555" stroke-width="3"/>
 <path d="M0 48H384M640 48H1024M48 0V1024" stroke="#8f8f8f" stroke-width="96" fill="none"/>
 <path d="M0 52H384M640 52H1024M52 0V1024" stroke="#cf65c5" stroke-width="40" fill="none"/>
-<rect x="384" y="0" width="256" height="256" fill="#9de0c1" fill-opacity=".65"/>
+<rect id="door-clearance" x="384" y="0" width="256" height="256" fill="#9de0c1" fill-opacity=".65" stroke="#25734f" stroke-width="2"/>
+<g id="closed-leaf-overlay" fill="#e9ab58" stroke="#805120" stroke-width="2"><rect x="384" y="0" width="128" height="96"/><rect x="512" y="0" width="128" height="96"/></g>
+<path d="M512 0V96" stroke="#40270e" stroke-width="4"/>
+<path d="M256 0V1024M768 0V1024M0 256H1024M0 768H1024" fill="none" stroke="#555" stroke-width="2" stroke-dasharray="8 5"/>
 <circle cx="512" cy="512" r="8" fill="#c33"/>
-<g font-family="sans-serif" font-size="22" fill="#222"><text x="110" y="210">CORNER / SHARED</text><text x="395" y="225">NORTH EDGE</text><text x="430" y="500">CENTER</text><text x="350" y="560">pivot 512,512</text><text x="320" y="930">Guide only; never bake into source art</text></g>
+<g font-family="sans-serif" font-size="20" fill="#222">
+<text x="18" y="160">CORNER / SHARED</text><text x="410" y="156">CLEAR PASSAGE</text><text x="405" y="192">x384..640 y0..256</text>
+<text x="800" y="160">NORTH EDGE</text><text x="430" y="475">CENTER</text><text x="357" y="550">full-cell pivot (512,512)</text>
+<text x="280" y="610">1024 x 1024 RGBA; 8 px / logical unit</text><text x="300" y="648">Bands: 256 / 512 / 256 source pixels</text>
+</g>
+<rect x="24" y="790" width="976" height="210" rx="8" fill="#fff" stroke="#aaa"/>
+<g font-family="sans-serif" font-size="19" fill="#222">
+<text x="42" y="820">GREEN: opening in fixed EDGE_DOOR; keep all of it transparent.</text>
+<text x="42" y="852">ORANGE: CLOSED leaves ONLY, x384..640 y0..96; center seam x512.</text>
+<text x="42" y="884">OPEN leaf layer: entirely transparent; halves retract behind fixed jambs.</text>
+<text x="42" y="916">Frame + leaf are separate files. Leaf outside orange rectangle: alpha 0.</text>
+<text x="42" y="948">Rotate around (512,512). No new frame, floor, header, lights or shadows.</text>
+<text x="42" y="980" font-weight="bold">GUIDE ONLY: never copy these colors, lines, labels or background.</text>
+</g>
 </svg>

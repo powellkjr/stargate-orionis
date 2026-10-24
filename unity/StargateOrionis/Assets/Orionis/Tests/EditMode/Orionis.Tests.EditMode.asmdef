@@ -1,0 +1,22 @@
+{
+  "name": "Orionis.Tests.EditMode",
+  "rootNamespace": "Orionis",
+  "references": [
+    "Orionis.Domain",
+    "Orionis.Application",
+    "Orionis.Infrastructure"
+  ],
+  "noEngineReferences": false,
+  "includePlatforms": [
+    "Editor"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll",
+    "nunit.framework.dll"
+  ]
+}

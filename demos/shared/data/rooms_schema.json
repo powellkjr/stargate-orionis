@@ -1,36 +1,78 @@
 [
   {
-    "identity": {"id": "cultural_platform", "name": "Cultural Platform", "category": "Operations"},
+    "identity": {
+      "id": "cultural_platform",
+      "name": "Cultural Platform",
+      "category": "Operations"
+    },
     "form": {
       "color": "#bd7390",
-      "footprint": {"width": 2, "height": 2},
+      "footprint": {
+        "width": 2,
+        "height": 2
+      },
       "renderMode": "continuous"
     },
     "rules": {
-      "joining": {"supportsJoining": false},
+      "joining": {
+        "supportsJoining": false
+      },
       "construction": {
         "supportsConstruction": true,
         "constructionLimit": "limited",
         "supportsProgression": true,
-        "progression": [1, 2, 3],
+        "progression": [
+          1,
+          2,
+          3
+        ],
         "notes": "Recorded Tech Platform-based structure; one persistent 2x2 physical room."
       },
-      "staffing": {"supportsStaffing": false},
-      "queues": {"supportsQueues": false},
-      "storage": {"supportsStorage": false},
-      "specialization": {"supportsSpecialization": false},
-      "inventory": {"supportsInventory": false},
+      "staffing": {
+        "supportsStaffing": false
+      },
+      "queues": {
+        "supportsQueues": false
+      },
+      "storage": {
+        "supportsStorage": false
+      },
+      "specialization": {
+        "supportsSpecialization": false
+      },
+      "inventory": {
+        "supportsInventory": false
+      },
       "cores": {
         "supportsCores": true,
-        "coreTypes": ["focus", "support"],
+        "coreTypes": [
+          "focus",
+          "support"
+        ],
         "supportsProgression": true,
-        "fixedLayout": {"focusSlots": 1},
-        "progressionLayout": [{"supportSlots": 2}, {"supportSlots": 4}, {"supportSlots": 6}],
-        "notes": "Retains the recorded Tech Platform starting structure; no cultural Core capability or bonuses are defined."
+        "fixedLayout": {
+          "focusSlots": 1
+        },
+        "progressionLayout": [
+          {
+            "supportSlots": 1
+          },
+          {
+            "supportSlots": 4
+          },
+          {
+            "supportSlots": 6
+          }
+        ],
+        "notes": "CT1 has one Focus + one Support Core; upper-tier support counts remain unchanged."
       },
-      "capacity": {"supportsCapacity": false}
+      "capacity": {
+        "supportsCapacity": false
+      }
     },
-    "function": {"base": "Cultural Platform structural baseline. Cultural capabilities and bonuses remain undefined."}
+    "function": {
+      "base": "Cultural Platform structural baseline. Cultural capabilities and bonuses remain undefined."
+    }
   },
   {
     "identity": {
@@ -247,11 +289,11 @@
         ],
         "supportsProgression": true,
         "progression": [
-          20,
+          40,
           40,
           80
         ],
-        "notes": "Containment exposes 20/40/80 CC item-storage capacity by construction tier."
+        "notes": "40/40/80 CC item places by CT; CT1 retuned October 20."
       },
       "cores": {
         "supportsCores": true,
@@ -630,7 +672,8 @@
       },
       "processingCapabilities": [
         "CAN_ACCEPT_EQUIPMENT_STORAGE"
-      ]
+      ],
+      "sharedItemCapacity": true
     }
   },
   {
@@ -665,9 +708,9 @@
         "supportsStaffing": true,
         "supportsProgression": false,
         "progression": [
-          6
+          4
         ],
-        "notes": "Gate Room staffing is fixed at 6."
+        "notes": "Gate Room starts with four permanent staff places."
       },
       "queues": {
         "supportsQueues": false,
@@ -687,7 +730,7 @@
       },
       "cores": {
         "supportsCores": true,
-        "notes": "yes"
+        "notes": "Two Core slots."
       },
       "capacity": {
         "supportsCapacity": false,
@@ -695,7 +738,13 @@
       }
     },
     "function": {
-      "base": "Central Stargate operations room and primary emergency ingress/egress point."
+      "base": "Central Stargate operations room and primary emergency ingress/egress point.",
+      "slotConfig": {
+        "core": {
+          "fixed": 2,
+          "notes": "Two authored Core slots per physical room."
+        }
+      }
     }
   },
   {
@@ -996,7 +1045,7 @@
           4,
           6
         ],
-        "notes": "Living Quarters provide personal storage/locker capacity for tools and equipment; CT increases storage capacity."
+        "notes": "Each resident has 2/4/6 personal Tool locker places by CT; resident capacity remains separate."
       },
       "cores": {
         "supportsCores": true,
@@ -1038,7 +1087,9 @@
           "slotConfig": {
             "item": {
               "progressionSource": "inventory",
-              "scaleWithLayout": false
+              "scaleWithLayout": false,
+              "perResident": true,
+              "residentCapacitySource": "capacity"
             }
           }
         }
@@ -1060,7 +1111,9 @@
             6
           ],
           "scaleWithLayout": false,
-          "notes": "Living Quarters locker slots follow CT progression."
+          "notes": "Living Quarters locker slots follow CT progression.",
+          "perResident": true,
+          "residentCapacitySource": "capacity"
         }
       }
     }
@@ -1242,7 +1295,7 @@
         ],
         "supportsProgression": true,
         "progression": [
-          4000,
+          2000,
           6000,
           8000
         ]
@@ -1378,20 +1431,31 @@
     },
     "form": {
       "color": "#d4b23c",
-      "footprint": {"width": 1, "height": 1}
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
     },
     "rules": {
       "joining": {
         "supportsJoining": true,
         "group": "generator",
-        "supportedLayouts": ["1x1", "1x2", "2x2"],
+        "supportedLayouts": [
+          "1x1",
+          "1x2",
+          "2x2"
+        ],
         "notes": "Uses the standard joined-room patterns; physical rooms and their Core slots remain separate."
       },
       "construction": {
         "supportsConstruction": true,
         "constructionLimit": "limited",
         "supportsProgression": true,
-        "progression": [1, 2, 3],
+        "progression": [
+          1,
+          2,
+          3
+        ],
         "notes": "Generator structure follows Ration Storage: CT 1-3 and two fixed Core slots per physical room. Power output is not yet defined."
       },
       "staffing": {
@@ -1418,7 +1482,9 @@
         "supportsCores": true,
         "notes": "2 fixed Core slots per physical room; Core capabilities are not defined by this room entry.",
         "supportsProgression": false,
-        "slotProgression": [2]
+        "slotProgression": [
+          2
+        ]
       },
       "capacity": {
         "supportsCapacity": false,
@@ -1484,7 +1550,7 @@
         ],
         "supportsProgression": true,
         "progression": [
-          4000,
+          2000,
           6000,
           8000
         ]
@@ -1874,7 +1940,7 @@
       },
       "cores": {
         "supportsCores": true,
-        "notes": "TBD"
+        "notes": "Two Core slots."
       },
       "capacity": {
         "supportsCapacity": false,
@@ -1882,7 +1948,13 @@
       }
     },
     "function": {
-      "base": "Assigns deliberate local response staffing and Base Response doctrine support."
+      "base": "Assigns deliberate local response staffing and Base Response doctrine support.",
+      "slotConfig": {
+        "core": {
+          "fixed": 2,
+          "notes": "Two authored Core slots per physical room."
+        }
+      }
     }
   },
   {
@@ -1939,7 +2011,7 @@
         ],
         "supportsProgression": true,
         "progression": [
-          4000,
+          2000,
           6000,
           8000
         ]
@@ -2128,7 +2200,7 @@
         },
         "progressionLayout": [
           {
-            "supportSlots": 2
+            "supportSlots": 1
           },
           {
             "supportSlots": 4
@@ -2137,7 +2209,7 @@
             "supportSlots": 6
           }
         ],
-        "notes": "Tech Platform always has 1 Focus slot; CT progression expands Support slots from 2 to 4 to 6."
+        "notes": "CT1 has one Focus + one Support Core; upper-tier support counts remain unchanged."
       },
       "capacity": {
         "supportsCapacity": false,
@@ -2332,6 +2404,146 @@
           "notes": "Workshop uses Theory references for implementation and reverse engineering work."
         }
       }
+    }
+  },
+  {
+    "identity": {
+      "id": "ready_room",
+      "name": "SG Team Ready Room",
+      "category": "Command"
+    },
+    "form": {
+      "color": "#477e94",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": false,
+        "notes": "Ready Rooms never join or merge their teams."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Ready Room supports CT1/2/3 membership capacity."
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": true,
+        "progression": [
+          4,
+          5,
+          6
+        ],
+        "notes": "One SG team per room with 4/5/6 permanent members by CT; at most four deploy."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "No storage rule is currently defined in this baseline."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": false,
+        "notes": "Ready Rooms have no Core slots."
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Homes one SG team with 4/5/6 members by CT. At most four deploy; mission experience is shared equally among all assigned team members, including reserves.",
+      "team": {
+        "memberSlots": 4,
+        "teamsPerPhysicalRoom": 1,
+        "supportsStacking": false,
+        "memberSlotsByConstructionTier": [
+          4,
+          5,
+          6
+        ],
+        "deploymentLimit": 4,
+        "experienceSharing": "ALL_ASSIGNED_MEMBERS_EQUAL"
+      }
+    }
+  },
+  {
+    "identity": {
+      "id": "warehouse",
+      "name": "Warehouse",
+      "category": "Storage"
+    },
+    "form": {
+      "color": "#8c9781",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": false
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": false,
+        "progression": [
+          1
+        ]
+      },
+      "staffing": {
+        "supportsStaffing": false
+      },
+      "queues": {
+        "supportsQueues": false
+      },
+      "storage": {
+        "supportsStorage": true,
+        "storageTypes": [
+          "Temporary item holding"
+        ],
+        "supportsProgression": false,
+        "progression": [
+          20
+        ],
+        "notes": "Provisional user-approved capacity: 20 item places. Safe temporary holding does not accept equipment for SGC use."
+      },
+      "specialization": {
+        "supportsSpecialization": false
+      },
+      "inventory": {
+        "supportsInventory": false
+      },
+      "cores": {
+        "supportsCores": false
+      },
+      "capacity": {
+        "supportsCapacity": false
+      }
+    },
+    "function": {
+      "base": "Temporary holding after Receiving safe handling, before retention or disposition. Unsafe items require Containment. No joining, stacking, staff or Cores.",
+      "subordinateTabs": []
     }
   }
 ]

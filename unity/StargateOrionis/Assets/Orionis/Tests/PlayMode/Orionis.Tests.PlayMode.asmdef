@@ -1,0 +1,20 @@
+{
+  "name": "Orionis.Tests.PlayMode",
+  "rootNamespace": "Orionis",
+  "references": [
+    "Orionis.Presentation",
+    "Orionis.Domain",
+    "Orionis.Application",
+    "Orionis.Infrastructure",
+    "UnityEngine.UI"
+  ],
+  "noEngineReferences": false,
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "autoReferenced": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll"
+  ]
+}

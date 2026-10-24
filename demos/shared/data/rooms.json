@@ -602,5 +602,39 @@
         "notes": "Workshop uses Theory references for implementation and reverse engineering work."
       }
     }
+  },
+  {
+    "id": "ready_room",
+    "name": "SG Team Ready Room",
+    "category": "Command",
+    "color": "#477e94",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 1,
+    "supportsConstructionTierProgression": false,
+    "supportsStacking": false,
+    "staffed": true,
+    "staffingPerPhysicalRoom": 4,
+    "coreSlots": 0,
+    "team": {
+      "memberSlots": 4,
+      "teamsPerPhysicalRoom": 1
+    },
+    "baseFunction": "Homes one permanently assigned SG team; no processing Services or item custody."
   }
+,
+{
+  "id": "warehouse",
+  "name": "Warehouse",
+  "category": "Storage",
+  "color": "#8c9781",
+  "width": 1,
+  "height": 1,
+  "joinGroup": null,
+  "maxConstructionTier": 1,
+  "staffed": false,
+  "supportsConstructionTierProgression": false,
+  "baseFunction": "Temporary holding after Receiving safe handling, before retention or disposition. Unsafe items require Containment. No joining, stacking, staff or Cores."
+}
 ]

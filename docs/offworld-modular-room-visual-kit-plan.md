@@ -37,6 +37,25 @@ The v2 handoff supersedes the fixed-door whole-room overlay approach for future 
 
 ## Implementation sequence and resume checkpoint
 
+October 17 assembly checkpoint: the [Room Sandbox modular tile test](../demos/room-sandbox/room-kit.html)
+now previews the complete Material Storage b001 sources in 1×1, 1×2/2×1 and 2×2.
+It includes complete-family/source-frame validation, topology resolution with
+SHARED reflection, exact clickable exterior doors, CT underlays, guides and
+rotation. `import-room-kit.py` copies unchanged registered masters and records
+provenance. Production resizing, family-aware ZIP installation, automatic base
+adoption and Offworld transition/fog/seed integration below remain pending.
+The preview uses the provisional northwest closing seam for CT phase and clear
+static door frames without runtime leaves. It does not alter physical base data.
+
+Reference-light comparison: the preview additionally offers **Inset · reference
+study** (default), with one centered CT run per exterior non-door wall module,
+dark recesses, bright cores and restrained glow. CT1/2/3 retain 8 / 6+6 / 16
+colored units within the 24-unit span. Corners/channels remain neutral; no
+door header is added across the authored clear passage. **Continuous · original**
+preserves the prior implementation. This is an optional response to the user's
+reference-image comparison, not a revision to canonical source geometry or
+generation prompts. Full reference materials/bevels still require an art pass.
+
 1. **Complete now: documentation and conflict review.** Preserve the handoff in-repo, link this reconciliation from current contracts/navigation, and prepend the current task checkpoint. Keep existing unrelated edits intact.
 2. **Provisional registration complete.** Corrected CT2/CT3 runs, exact source/runtime frames, rectangles, orientations, door width, sockets, slot offsets and pivots now live in the working contract and metadata, with a measured SVG guide. Validate with actual assembled art before tuning. SHARED is reflection-safe; separate base floors cover empty modules; EDGE_DOOR owns static frame sides. The CT repeat interpretation and loop seam are provisional presentation choices.
 3. **Registered source contract complete; preparation pending.** Exact source schema/runtime frame dimensions now live in room-kit-prompts.mjs and exported room-kits.json. Each kit lists all six source paths in each of three families. Implement frame-preserving preparation and validate complete families before eligibility.

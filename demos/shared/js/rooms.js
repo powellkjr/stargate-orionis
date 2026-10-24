@@ -1,3 +1,5 @@
+export const ROOM_CATEGORY_ORDER=Object.freeze(["Command","Operations","Personnel","Science & Technology","Storage","Other"]);
+
 function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -75,6 +77,17 @@ function normalizeRoom(room) {
   }
 
   const staffingState = runtimeStaffing(room);
+  const team = room.function?.team;
+  if (team !== undefined) {
+    assert(team && team.memberSlots === 4 && team.teamsPerPhysicalRoom === 1 && team.supportsStacking === false,
+      `${id}: team rooms require four member slots, one team and no stacking.`);
+    const seats=team.memberSlotsByConstructionTier??[team.memberSlots];
+    assert(!supportsJoining && !rules.cores?.supportsCores &&
+      seats.length===ctProgression.length && seats.every((n,i)=>n===(staffingState.staffingProgression??[staffingState.staffingPerPhysicalRoom])[i]) &&
+      (seats.length===1&&seats[0]===4||JSON.stringify(seats)==='[4,5,6]'&&team.deploymentLimit===4&&team.experienceSharing==='ALL_ASSIGNED_MEMBERS_EQUAL') &&
+      !rules.storage?.supportsStorage && !rules.inventory?.supportsInventory && !room.function.roomServices?.length,
+      `${id}: invalid team capacity/progression or room capability.`);
+  }
   const unique = construction.constructionLimit === "unique";
 
   return {

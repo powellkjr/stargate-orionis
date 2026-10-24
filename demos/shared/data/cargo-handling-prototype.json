@@ -1,0 +1,24 @@
+{
+  "format": "orionis-cargo-handling-prototype-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "notes": "User chose the recovered rifle's actual condition: intact and safe for ordinary storage, technology still unfamiliar. These authored facts exist before inspection; work reveals them without changing the original physical snapshot or granting equipment-use clearance. Technician I/TET1, two ticks and no additional Room Service are provisional routine Receiving handling-review tuning.",
+  "ordinaryStorageDefinitionId": "warehouse",
+  "recipe": {
+    "id": "RECEIVING_HANDLING_REVIEW_PROTOTYPE",
+    "name": "Establish condition and safe shelf handling",
+    "profession": "TECHNICIAN",
+    "minimumTier": 1,
+    "toolService": "TET1",
+    "roomService": null,
+    "durationTicks": 2,
+    "exposureCategory": "conditionTags"
+  },
+  "findings": [
+    {
+      "instanceId": "missing-operative-rifle-01",
+      "condition": "INTACT",
+      "ordinaryStorageSafe": true,
+      "observation": "Intact and safe for ordinary shelf storage. The technology remains unfamiliar; use as equipment has not been cleared."
+    }
+  ]
+}

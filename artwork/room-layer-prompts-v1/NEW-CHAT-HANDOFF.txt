@@ -1,0 +1,122 @@
+MANDATORY DELIVERY FOR EVERY IMAGE REQUEST: Return the actual PNG as an attachment with a CLICKABLE DOWNLOAD LINK whose filename EXACTLY matches the current asset prompt. An inline preview, filename written in text, code block or claim that a file was saved is not delivery. Never fabricate a link. If the current interface cannot attach/export a PNG, say so instead of claiming success.
+
+PROJECT HANDOFF — STARGATE ORIONIS MODULAR ART
+
+We are producing registered, directly overhead PNG overlays for a strategy-game room simulator. This is a new chat: do not assume access to prior images or local project files. I will attach the relevant guides, reference images and individual asset prompt. Read this handoff once, then follow each individual prompt exactly. Do not begin generating a batch, invent missing references or redesign the kit.
+
+CURRENT DESIGN: REUSABLE WALLS + SEPARATE ROOM FURNITURE
+
+Older art combined walls and room furnishings. That approach has been superseded for this trial. We now need three reusable architectural families, followed by separate Infirmary furniture overlays. Architecture must work with any room type. Furniture identifies the room; it never includes architecture.
+
+The renderer assembles these independent layers:
+1. Continuous floor supplied by the viewer.
+2. Metal backing in transparent wall channels supplied by the viewer.
+3. Shared architectural wall/corner/frame PNGs.
+4. Separate room-furniture PNGs.
+5. Moving door leaves and CT lamp overlays supplied separately.
+
+Do not bake any other layer into the requested image. A combined room reference is for materials/style ONLY, not an instruction to draw a whole room in a module.
+
+THREE FAMILIES
+
+v01: clean angular — precise straight seams, restrained hard bevels.
+v02: soft rounded — softened local details within IDENTICAL structural masks.
+v03: chunky utilitarian — robust panel details within IDENTICAL structural masks.
+
+Family changes never change coordinates, wall depth, doorway width, seams or camera. The family is not a room type, Construction Tier, room size or different technology. Keep each family coherent using its approved corner as a reference. Do not mix families inside one layer.
+
+SOURCE CANVAS — NON-NEGOTIABLE
+
+Every runtime asset is a FULL 1024 x 1024 true RGBA lossless PNG. Transparent means actual alpha 0, not a painted checkerboard or black/white background.
+Origin (0,0) is the TOP LEFT. x increases right; y increases down.
+Logical cell: 128 x 128 units. Scale: EXACTLY 8 source pixels per logical unit.
+Full-cell rotation pivot: logical (64,64), source (512,512).
+Grid bands: logical 32/64/32; source 256/512/256.
+Right/bottom coordinate limits below are EXCLUSIVE.
+
+Do not crop, recenter, enlarge the visible art, add padding, scale to fill the canvas, rotate/mirror the canonical source or deliver a sheet. Most of each source image is intentionally transparent. Small visible art on a large transparent canvas is correct.
+
+SHARED ARCHITECTURE — EXACT SOURCE-PIXEL MASKS
+
+Wall depth is 96 SOURCE PIXELS (12 logical units). Architecture may have visible pixels ONLY in the following regions, after subtracting the channels:
+
+CORNER:
+- North arm: x=0..256, y=0..96.
+- West arm: x=0..96, y=0..256.
+- Their union forms ONE northwest 90-degree L with its outer vertex at (0,0) and its interior toward the LOWER RIGHT.
+- Subtract BOTH alpha-0 channel strips: x=0..256,y=32..72 AND x=32..72,y=0..256, including the intersection.
+- No architecture in the inner corner x>=96 AND y>=96.
+- The complete corner lies inside the TOP-LEFT 256 x 256 area: ONE SIXTEENTH of the canvas, not a 512-square quadrant.
+- The north arm exits flush at x=256; the west arm exits flush at y=256. Keep identical wall cross-sections and channel sockets at both seams.
+- Exactly TWO perpendicular arms. No third/fourth wall, U-shaped frame, enclosed miniature room, diagonal corner, freestanding pillar or capped seam exits. A rounded style must not remove either seam socket.
+- (512,512) is the rotation pivot, NOT the location of the corner artwork.
+
+SHARED:
+- One north wall: x=0..256,y=0..96, subtract y=32..72.
+- West side is an OPEN internal join: no west wall, end cap or corner post.
+- This piece must tolerate diagonal reflection (x,y)->(y,x), then cardinal rotation.
+
+EDGE_NORMAL:
+- One north wall: x=256..768,y=0..96, subtract y=32..72.
+- Both ends keep the same complete wall cross-section and channel socket.
+
+EDGE_DOOR:
+- Left fixed side: x=256..384,y=0..96.
+- Right fixed side: x=640..768,y=0..96.
+- Subtract y=32..72 from the surviving wall regions.
+- ENTIRE passage x=384..640,y=0..256 stays alpha 0.
+- No leaf, threshold, overhead bridge/header or shadow crosses that opening.
+
+EVERY architecture pixel outside these masks, including shadows, is alpha 0. No beds, furniture, supplies, consoles, conveyors, racks, room interior, floor, CT colors or baked light glow. Pale neutral metal armor and graphite panel surfaces are appropriate; do not invent a new silhouette to make the object look more dramatic.
+
+INFIRMARY FURNITURE — SEPARATE SOURCE-PIXEL MASKS
+
+Use recognizable empty medical cots/beds and compact CLOSED medical supply cases. They are decorative public furnishings, not patients, clinical findings or new medical machinery.
+
+CORNER: one compact closed supply case inside x=112..240,y=112..240.
+SHARED: one compact closed supply case inside x=112..240,y=112..240; reflection-safe.
+EDGE_NORMAL: one empty cot/bed plus one separate closed supply case, side-by-side along the wall, entirely inside x=272..752,y=112..240. Bed length follows the wall. Do not put it lengthwise into the center of the room.
+EDGE_DOOR: compact closed supply cases inside x=272..368,y=112..240 and x=656..752,y=112..240. Leave the entire central passage clear.
+
+Everything outside the specified furniture rectangles is alpha 0. No architecture, frame, wall armor, leaf, floor, light fixtures, labels, medical symbols, people or shadows outside the rectangles. Do not enlarge a bed beyond its mask to make it look more realistic. The available footprint is a fixed presentation constraint.
+
+No CENTER or EDGE_OPEN images are required in the new split-layer trial; the renderer draws nothing from these layers there. Do not add furniture or wall posts to open/open corners at the center of a 2 x 2 arrangement.
+
+DOORS AND LIGHTS
+
+Fixed EDGE_DOOR sides and moving leaves are different files. Open leaves retract out of sight; the open leaf layer is transparent. Closed leaves, when separately requested, fit source x=384..640,y=0..96 and meet at x=512. Do not add a second frame or fill the whole 256-pixel-deep approach.
+
+The viewer supplies neutral metal channel backing and close-fitting inset lamps: CT1 one short amber light, CT2 two blue lights, CT3 one longer purple light. Do not paint these colors, lamps, glow, dark oversized holes or backing into wall PNGs. Keep the registered channels transparent even if the assembled style reference shows finished lights.
+
+CAMERA AND MATERIALS
+
+Strict 90-degree orthographic overhead, tops only. No perspective, isometric view, visible vertical facades, diorama, cinematic angle, directional cast shadow or ground plane. Restrained local shading, clean readable forms at 128-pixel full-cell display. Bevels and panel lines remain inside the exact masks. Source seam geometry outranks visual embellishment.
+
+GENERATE IN THIS ORDER
+
+Wait for the individual prompt and attachments. Generate ONE asset at a time.
+Start with shared-wall-corner__v01__source.png. After I approve its geometry, use that SAME image as a reference for the family's EDGE_NORMAL, SHARED and EDGE_DOOR.
+Repeat architecture for v02 and v03.
+Then produce the four separately masked Infirmary furnishing pieces for each matching family, using approved walls only as scale/material references, never as pixels to copy into the furniture image.
+Do not silently move to the next asset or replace an approved family design.
+
+EXACT NAMING
+
+Architecture: shared-wall-<piece>__vNN__source.png
+Furniture: infirmary-furniture-<piece>__vNN__source.png
+Pieces: corner, shared, edge-normal, edge-door. Families: v01, v02, v03.
+Example: shared-wall-corner__v01__source.png
+Example: infirmary-furniture-edge-normal__v01__source.png
+No invented suffixes, renamed variants or combined sprite sheets.
+
+REFERENCE AUTHORITY
+
+Individual asset prompt and exact masks govern output. Registration guides explain measurements; never paint their colors, labels, grid or background. Approved same-family PNGs govern matching material/detail. An assembled Infirmary reference governs visual character ONLY; it cannot override registration, layer separation, openings, family identity or masks. If an attachment is missing, say which one; do not pretend to have seen it.
+
+BEFORE DELIVERY
+
+Check actual image dimensions and alpha if tools are available. Do not claim a pixel-perfect validation you did not perform. Check canonical placement, correct number of wall arms, seam exits, channels, allowed mask, absence of other layers and exact filename. Fix failures in the requested asset; do not hide them by cropping, changing dimensions or filling transparency. If the tool cannot meet a requirement, report that specific limitation rather than claiming the asset is compliant.
+
+For this handoff message alone, acknowledge the split-layer workflow and wait for the first asset prompt. Do not generate an image yet.
+
+MANDATORY DELIVERY FOR EVERY IMAGE REQUEST: Return the actual PNG as an attachment with a CLICKABLE DOWNLOAD LINK whose filename EXACTLY matches the current asset prompt. An inline preview, filename written in text, code block or claim that a file was saved is not delivery. Never fabricate a link. If the current interface cannot attach/export a PNG, say so instead of claiming success.
