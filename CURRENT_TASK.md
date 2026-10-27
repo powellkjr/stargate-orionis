@@ -21,7 +21,12 @@ been completed or discarded.
   preserved Unity-generated empty-field spaces and Markdown hard breaks. Worked
   around directory-listing restrictions for36 authored sprite files using exact
   temporary copies without changing original files/permissions. No unstaged or
-  untracked source work remains. Commit and push are the remaining steps.
+  untracked source work remains. Checkpoint commit7966de9 created successfully
+  with all725 files. Push remains unfinished: automatic approval review rejected
+  `git push origin unity-migration-wave-0`, requiring the user's explicit approval
+  of the external destination https://github.com/powellkjr/stargate-orionis.git.
+  No network push completed. Next: obtain destination approval, push this branch
+  (including its two earlier local commits) and verify local/remote HEAD equality.
 
 - [x] Party-panel room-action mockup (Complete; October27). User requests a
   picture of the mission UI with party panels at the bottom and available room
