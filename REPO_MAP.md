@@ -1,5 +1,50 @@
 # Repository Map — start here
 
+Unity shared art: `node unity/tools/presentation-art.mjs` copies active registered
+simulator PNGs into `Assets/Orionis/Resources/OrionisArt`; `--check` verifies source
+hashes and catalog freshness. `PresentationArt.cs` is visual-only, with an
+Art/Schematic preference and existing-card fallbacks. Regenerate while Play is
+stopped, then restart Play after changing the shared art catalog.
+
+Original 3D Technician proof: `artwork/technician-proof/README.md` indexes the
+Blender source/rebuild script and validation evidence. Unity assets live in
+`Assets/Orionis/Art/TechnicianProof/`; **Orionis > Art > Build and verify Technician
+proof** regenerates the isolated overhead scene and import/animation checks.
+**Open Technician proof** opens the scene for Idle/Walk Play preview. It does not
+replace Bootstrap or add a build scene. Reference-only BTD6 assets are separate.
+
+Independent character/animation work: `unity/OrionisArtLab/README.md`. This small
+Unity project runs in its own Editor alongside the game, with separate Play mode,
+compilation, URP forward renderer and automation descriptor. Use its own
+`Library/Pipeline/.unity-pipeline-port`; verify projectPath before commands.
+Toon Soldiers Demo evaluation and captures: `artwork/toon-soldiers-proof/`.
+Do not drive the main-game Editor for further animation work.
+`node unity/tools/art-lab.mjs status|verify|open|play|stop` explicitly targets
+Art Lab and rejects a mismatched project descriptor; `job <id>` reads results.
+The default `GameActions` scene has one modular full-pack infantry character,
+view/playback sliders, six profession and three NPC (Worker/Guard/Captain)
+body/head/backpack/palette presets and 150
+movement/combat/work/social studies. Profession-specific candidate actions and
+missing-motion/prop notes are explicit; see `profession-picks.json` and the lab
+README for the current choices. Equipment
+switches via per-profession `equipmentSlotMap` between None and 17 weapon types (Rifle, Hammer, Pickaxe, Fishing pole, Assault Rifle B, Grenade Launcher, Heavy Machine Gun, Mini Gun, Rocket Launcher, Shot Gun, Sub Machine Gun, Flamethrower, Welder, Wrench, Medigun, Needle Gun, Crossbow, Knife, Sniper Rifle, Handgun, Revolver). See `profession-picks.json`.
+Idle/transition variants, sheathe/draw pose studies, fishing and deaths are
+included; one-shot studies default to no repeat. Deaths/Interacts filters expose
+all 51 death and 14 interaction clips on any preset; coverage is recorded in
+`death-interact-coverage.json`. Weapon-family fit limitations are shown per clip.
+`verify-viewer`
+checks exact clips, motion, single body/head rendering and equipment cleanup;
+`capture` checks the live render. Full-library browsing is explicitly unreviewed.
+The separate **Try character parts / colors** panel explores all modular bodies,
+heads, backpacks, hand props and supplied body/head palettes. `verify-parts`
+checks those choices and reset/cleanup; `parts-catalog.json` records the assets.
+Its **Other props** tab also exposes prior crafting/melee/soldier/archer/throwing
+props and Toon loose items as reviewed hand tools or staged reference displays.
+Combat and Dialogue vol.1 adds a **Dialogue** shortlist filter and full-library
+source variants. `cad-use-review.json` records choices/gaps; `verify-dialogue`
+checks all182 new clips. Source filename labels disambiguate `Unreal Take` clips.
+The older broad study uses `build-library|open-library|verify-library` instead.
+
 Compact navigation for chats, Codex and other coding agents. Paths below are
 relative to the repository root; resolve them against your checkout. This is an
 index, not new game-design authority. Update pointers when moving systems.
@@ -43,12 +88,46 @@ including ones not yet implemented. Verify code/tests before claiming support.
 - Save/browser tests should use temporary files or intercepted endpoints, not
   silently change authored JSON in the real checkout.
 
+Unity base operations: shared `base-execution.json`/schema projects Actor ordering,
+Response identity and the existing Human II Workshop Group Tool mapping.
+`Domain/BaseWork.cs` owns eligibility/source and configured Tool resolution;
+`Domain/BaseOperations.cs` queries work and archives immutable completion snapshots
+without executing Recipes. Schema31 retains completed history after routing/reset/
+redeployment, with ongoing/newest-first ordering. `BaseOperationsPanel`
+provides filters/navigation/pause controls; `BaseServicesView` displays configured
+room/group capability. Schema30 persists Response posture. Construction Tier
+never implies Technology Tier; unavailable tooling is not silently granted.
+
 ## Simulator entry points
+
+Receiving Core first-pass authoring: [values and runtime boundary](docs/unity-receiving-cores-first-pass.md).
+Core definitions/install Recipe stay in the shared theory fixture; physical
+items use `item.json`; `receiving-core-prototype.json`/schema holds T0, power,
+slots, starter IDs and capability preferences. Unity projects `roomCoreSetup`;
+Receiving runtime ownership, installation and power now use `Domain/RoomCores.cs`,
+`Infrastructure/RoomCoreReader.cs` and `Presentation/RoomCorePanel.cs`. Schema29
+persists Core identities/reservations; cache recovery captures allocation at open.
+Group Tools/Response/technical consumers remain Wave3. The reference cache is now
+Medium (10 bubbles); started old saves retain the pinned historical graph.
 
 Cargo conversion authoring: [cross-chat handoff](docs/cargo-conversion-authoring-handoff.md)
 indexes exact shared schemas, current resource/storage categories, missing
 quality/size/yield definitions, required examples and Unity migration dependencies.
 Four quality/four size levels and common ranges are proposed, not numeric canon.
+The newer [supplied cargo handoff](docs/orionis-cargo-shared-schema-handoff-unity-migration-wave-0.md)
+locks the ranges and formulas; [implementation/reconciliation](docs/shared-cargo-reconciliation.md)
+supersedes those older proposals. Shared authority is `resource-cargo-economy.json`
+and its schema; pure calculations/tests are `demos/shared/js/resource-cargo.mjs`
+and `resource-cargo.test.mjs`. Unity imports the same catalog. This is the
+economic/schema foundation. The Processing Room route additionally uses shared
+`resource-cargo-playtest.json`/schema for the provisional recovery graph, and
+Unity `Domain/ResourceCargo.cs` with the shared `BubbleExecution` transaction
+kernel for field findings, progressive Supply deposits and pending-output retry.
+Save25 additionally persists progressive rock-clearing credits and explicit Tool
+refill history; older saves migrate without duplicate payouts. Shared personnel
+loadouts provide nine charges per configured Tool slot. See the
+playtest guide for the cache branch; critical/special and fixed-rock scenarios
+remain unfinished.
 
 Unity personnel continuity: `Domain/PersonnelCondition.cs` stores per-Unit health,
 stamina/endurance and existing Tool IDs/condition/charges between sorties.
@@ -112,14 +191,24 @@ proposed footprint. Build executes Supply-funded work; previewing alone makes no
 state change. Manage mode upgrades physical rooms and joins/splits ordered Groups.
 `Domain/RoomGroups.cs` keeps child identity and destination-first Group staffing.
 Core installation, Group Tools, Response resolution and salvage remain pending.
+New construction/upgrade orders use the shared `execution.generalWorkShare`
+policy:80% general work,20% specialists including security. `RoomConstruction`
+uses `BubbleExecution`; save28 persists sticky Actors and parallel bubble work.
+Older serial orders retain their original schedule. Manage shows valid per-target
+Join/Split actions only while enabled.
 Global resource totals: `Presentation/ResourceHeader.cs`; reusable animated
 construction/clearing cards: `ConstructionProgressView.cs`,
 `TerrainClearingProgressView.cs`, and the single-mesh `RecipeProgressGraphic.cs`;
 base speeds1x/4x/8x/16x.
 
 Windows playtest: **Orionis > Build Windows Slice** (Edit mode) invokes
-`Assets/Orionis/Editor/WindowsSliceBuild.cs`, validates shared snapshot freshness
-and builds Bootstrap explicitly into `unity/StargateOrionis/Builds/Windows/`.
+`Assets/Orionis/Editor/WindowsSliceBuild.cs`, which validates snapshot freshness
+and builds Bootstrap into `unity/StargateOrionis/Builds/Windows/`.
+`Presentation/PlayerSaveVerification.cs` is an opt-in player
+check: `--verify-session` selects a temporary save, and `--verify-phase save`
+then `load` verifies two separate launches without using the normal slot.
+The existing `DeploymentSceneTests.FullRescueReturnsToSgcAndResetAllowsReplayThroughActualControls`
+is the supported rescue/cache/rifle/equipment/redeployment control walkthrough.
 [Player guide](docs/unity-playtest-guide.md) covers the supported route and saves.
 Standalone debug controls default off; its `campaign-save.json` is separate from
 the Editor's `prototype-save.json`. Both retain explicit Save/Load.
@@ -236,6 +325,26 @@ Checks: `node --test demos/character-sheet-preview/*.test.mjs` and
 | World map | [README](demos/world-map-simulator/README.md) | `app.mjs` UI; `model.mjs` geometry/network; `havens.mjs` population/economy; `address-codec.mjs` glyph addresses; `worker.mjs`/`batch.mjs` generation |
 
 Each demo's HTML/CSS live beside its entry point. Tests are adjacent `*.test.mjs`.
+
+## Unity offworld characters and expanded mission
+
+- Shared mission projection: `unity/tools/bootstrap-snapshot.mjs`; pinned previous
+  mission/combat in `unity/tools/fixtures/mission-before-offworld-expansion.json`
+  supports migration. Main mission now includes ten authored stages/doors,
+  four encounters and two gated worker clues; second-mission adapters remain pending.
+- Art Lab idle/walk staging: `node unity/tools/offworld-characters.mjs`, or
+  `--check` for the 63-file dependency manifest. Original vendor assets and
+  generated Resources are excluded from Git. Rebuild main-project prefabs in
+  Edit mode with **Orionis > Art > Rebuild offworld characters and motions**.
+- Runtime: `OffworldCharacterPool`, `OffworldMapUnit`, `OffworldRigBindings` and
+  `MissionMapView` under `unity/StargateOrionis/Assets/Orionis/Presentation/`.
+  Editor importer: `Editor/OffworldCharacterImporter.cs`. Six professions plus
+  Worker/Guard/Captain; seven idle/walk/social/work/fire/down states. Fixed 60-degree
+  orthographic character renders preserve the 2D renderer. Map navigation:
+  `MissionMapNavigation` and `MissionMiniMap`; subjects: `OffworldSceneActors` and
+  `MissionMapSubjectHint`. Full sidebar actions remain visible beside door hexes.
+- Setup/source presets/validation: [integration notes](artwork/toon-soldiers-proof/OFFWORLD-INTEGRATION.md).
+  Focused domain coverage: `Tests/EditMode/OffworldExpansionTests.cs`.
 
 ## Offworld: where to change what
 
@@ -450,3 +559,30 @@ Update this map when moving/adding major modules or changing launch/test command
 Put progress in the task log, rules in AGENTS, design in docs, and implementation
 in the relevant subsystem. Avoid duplicating large design passages or transient
 test counts here. Read targeted sections and tests after using the map to navigate.
+
+Unity base presentation/recovery (October24): `Presentation/RoomInteriorView.cs`
+shows physical-room staff/Core/bed slots below `RoomMapView`'s scrollable floor
+grid. `Domain/PersonnelRecovery.cs` uses shared `personnel-recovery.json`/schema;
+bed capacity projects the Infirmary patient tab in `rooms_schema.json`. Save26
+persists separate bed assignments and passive recovery rule provenance. No
+medical/replenishment work queues or new resource costs are implied.
+
+UI-wave completion: `InspectionProgressView` projects existing work into the
+shared bubble graphic for Receiving, Analysis and resource recovery. CargoPanel
+uses independent item/action/detail scroll regions scoped to the selected room;
+routing keeps the source queue and offers explicit Follow. `PersonnelCardView`
+is shared by searchable roster, briefing/debrief and Ready Room
+permanent slots. These are presentation adapters, not new execution systems.
+
+Personnel profiles: `unity/tools/personnel-profiles.mjs` renders the existing
+shared portrait busts and profession/specialization icons into the Unity atlas;
+run with `--check` to verify freshness without rendering. `PresentationArt`
+uses that atlas and existing nickname pools for display-only names.
+`PersonnelCardView` shows health colors and two Tool-charge rows. Bootstrap
+projection supplies the existing tierIII playtest override to configured Tools;
+save27 migrates older loadouts without changing Tool instance identity.
+
+Inspection animation: `Presentation/InspectionProgressAnimation.cs` retains a
+per-session timeline across rebuilt trackers. It interpolates committed fractions
+using observed tick intervals without predicting or changing simulation. Receiving
+start/completion times distinguish repeated journal runs.

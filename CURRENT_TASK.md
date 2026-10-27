@@ -1,4 +1,1228 @@
-# Current Task: Shared wall families + Infirmary furniture trial — October 18, 2026
+# Current Task: Unity vertical slice and shared cargo reconciliation — October 25, 2026
+
+**Status: In Progress.** Updated to include the user's active Unity migration
+work and cargo handoff. The existing art workstream remains below; it has not
+been completed or discarded.
+
+## Active scope and acceptance criteria
+
+- [ ] Offworld spatial actions / extraction and contextual base planning
+  (In Progress; October26). Continue the existing mission. User requests all
+  ordinary mission actions as symbol hexes at their subjects, with full details
+  below; tile-by-tile cosmetic movement through connected rooms and combat aiming;
+  Gate-open/expiry extraction gating and reliable loot arrival in Receiving;
+  clarify extraction-screen roadmap. Move Data Storage to Storage; locate the
+  authored Communications / mission-Core contract and add the requested Command
+  room without inventing mission acquisition rules. Base planning becomes cell
+  context driven: built room -> right-side info/actions, rock -> details/Clear,
+  empty cell -> details/construction carousel -> placement -> explicit Build.
+  Acceptance: representative actual hex/subject interactions, cardinal motion,
+  combat facing, expired/closed/redial Gate and recovered-cargo route work; room,
+  rock and empty-cell planning controls match selected context and preserve state.
+  Preserve latest live campaign, authoring boundaries and independent Art Lab;
+  focused checks only. Earlier Office/lab gameplay adapter work remains pending.
+  Progress: backed up actual returned campaign at tick20137 (three physical cargo
+  instances; cache already fully converted, crate/rifle in existing storage).
+  Added a shared extraction blocker, explicit manifest and automatic eligible
+  cargo arrival on extraction. Main map now spans the lower workspace with a
+  description area; all current stage/dialogue/work/combat/Gate sources project
+  to nearby symbol hexes using authored target/position bindings. Visual paths
+  use cardinal room cells and retain unfinished waypoint tails; combat facing
+  resolves the same living targets as combat replay. Planning is now room/rock/
+  free-cell context based with a horizontal grouped carousel, placement then
+  Build, and only relevant room join/split/upgrade actions. Communications uses
+  the Response-room envelope (1x1, two staff/two Cores at CT1); no acquisition
+  Cores or mission effects were invented. Data Storage is in Storage in shared
+  schema/catalog. Added exact prior room-definition fingerprint support for old
+  saves. Five snapshot tests pass; compilation/live/regression checks underway.
+
+
+- [ ] Finish the current offworld mission presentation and interaction coverage
+  (In Progress; October26). User pauses second-mission work. Add a minimap and
+  readable zoom/pan, halve unit-to-tile size, restore accessible stage interactions,
+  NPC presence and loot from the authored Missing Operative mission. Integrate
+  appropriate existing Art Lab action animations without inventing gameplay or
+  claiming unsupported motion studies as finished treatment/carrying. Preserve
+  saves, hidden Knowledge and live campaign. Validate representative navigation,
+  interaction/loot, zoom/minimap and action-animation paths together. Next mission
+  remains the authored last-transmission-001.finalized.json, deferred by request.
+  Progress: backed up current campaign at tick26556 (returned at Gate). Replaced
+  auto-fit-only map with persistent per-session zoom/pan, center/fit controls and
+  a known-area minimap; units now use 0.2 instead of 0.4 tile markers. Removed
+  action-list hiding, retaining readable full actions beside spatial door hexes.
+  Added authored-position NPC/cargo markers with hidden-subject checks. Extended
+  local Art Lab staging to 63 hashed asset/meta files and nine outfits; importing
+  Talk, gathering/low-reach work studies, rifle fire and down animations. No
+  second mission or Art Lab scene/playback changes. Added the three authored
+  non-variant Holding worker/guard and Processing worker conversations, including
+  their actual node/response effects. Pinned the first expanded mission projection
+  so saves retain progress while only newly authored NPC definitions initialize.
+  Five snapshot tests pass; nine prefabs/seven clips compile and build. Live
+  Gate-to-Yard confirms four NPCs, 0.2 tile units and conversation. Visual review
+  found default label padding hid short map labels and a custom minimap needed an
+  explicit CanvasRenderer; fixed both before final route checks. Full Office /
+  supervisor dialogue variants, checkpoint semantics and lab parallel-search /
+  additional loot adapters remain current-mission work; next mission stays paused.
+  Root-cause discovery: Holding panel used Npcs.Single for the detected operative,
+  whose identity belongs to Field.Subjects. That exception aborted patient/loot
+  controls. Fixed a shared speaker-label fallback with detection gating; added
+  one direct panel regression. Three traversal/conversation/migration regressions
+  and the actual tick26556 backup roundtrip pass. Live fire/weapon props and
+  post-arrival work motion pass. Repaired live Holding panel exposes all five
+  expected conversation/patient/loot controls, eight NPCs and a 56-vertex minimap.
+  Equipment discovery starts through actual buttons. A separate full route clears
+  guards and stabilizes patients, returns to Gate and recovers crate/rifle with
+  original IDs; save roundtrip passes. Unresolved medical work correctly blocks
+  cargo recovery until cleared. User changed the live session to Office; captured
+  a separate latest backup at tick21870 and must preserve that session instead of
+  restoring the earlier returned tick26556. User requests 60-degree downward
+  character cameras; changed both orbit position and pitch to retain the same
+  framing target and distance. Map remains flat/orthographic. Final verification /
+  latest Office restoration complete: exact tick21870 state, selection and view,
+  original paused 1x clock, persistent save untouched.
+  Delivered this batch: zoom/pan/Team/Fit, known-area minimap and viewport frame;
+  half-size units; NPC/object markers using authored positions and visibility;
+  nine profession/NPC outfits and seven motion states; readable action sidebar;
+  operative speaker/detection fix; three authored worker/guard conversations and
+  expanded-save compatibility. Removed overlapping map subject captions in favor
+  of hover/click details, fixed hex label padding, and shortened the clipped
+  explored-room list. All five live character cameras verified orthographic at
+  60 degrees with unchanged aim target; actual wheel/drag/minimap handlers change
+  only view state. Five snapshot tests, four domain/backup checks, the specific
+  Holding panel regression and a full medically-cleared loot-return/save route
+  pass. Final compile zero errors/warnings; 63 vendor hashes and shared snapshot
+  freshness pass. Ordinary Bootstrap Stop/restart passes with zero test controllers.
+  Remaining acceptance scope is still In Progress: Office/supervisor dialogue
+  variants, checkpoint effects, lab parallel searches and additional authored
+  loot/work transitions. Next actionable step is the Office dialogue/interaction
+  adapter, followed by lab search/loot; do not start the second mission yet.
+
+
+- [x] Offworld-priority batch: authored exploration and idle/walk integration
+  (Complete; October26). User prioritizes offworld waves ahead of Workshop /
+  Research and authorizes importing Art Lab idle/walk only. First playable package:
+  expand the reference mission's remaining authored Stage/door and clue-discovery coverage;
+  show the SG team's approved profession outfits with idle and walking, movement
+  continuity and existing hex actions/fog. Keep animations cosmetic, reuse shared
+  mission data, preserve campaign/saves and retain Art Lab independence/vendor
+  exclusions. Validate normal rescue/cache routes, new travel/knowledge behavior,
+  animation loop/render/transition, and source/save integrity in a consolidated
+  route. Second-mission/campaign selection remains the next Wave5 adapter package;
+  do not pretend missing care/rescue/effect contracts work or grant hidden state.
+  Progress: live campaign backed up at tick23653. Copied/hashed 44 selected local
+  vendor asset/meta dependencies (only two animation clip files); six outfit
+  prefabs and idle/walk controller built in the main project. Vendor/generated
+  resources are ignored, and Art Lab was queried read-only without scene changes.
+  Main 2D renderer retained; portrait cameras use an additional Forward renderer.
+  Animated map markers share pooled models and cosmetic stage-motion state across
+  UI rebuilds. Shared mission import now projects all ten stages/ten doors/four
+  encounters, two authored gated clue actions and concealed-route predicates.
+  Pinned mission/combat projections support old saves and initialize only new NPC
+  definitions. Broader lab search/cargo recipes and second-mission adapters remain
+  explicit future coverage. Complete: 14 focused Node checks pass; two traversal /
+  old-expedition migration cases, three existing resource-processing cases and
+  the actual user-backup migration/roundtrip pass (six checks). An initial backup
+  failure exposed a shared action-array alias; cloning before expansion preserves
+  the resource fingerprint, and the real backup now passes. Four rendered team
+  members switch to Walk through the actual map hex, deform their rigs, then
+  return to Idle; exactly one travel tick elapses. Each controller has only two
+  looping clips, with root motion disabled. Final compile: zero errors/warnings;
+  44 original dependency hashes verified. Rebuilt six final outfit prefabs after
+  removing unused renderer/mesh references. Ordinary Bootstrap restart passes,
+  zero test controllers remain. Restored latest backup tick23653 exactly and
+  resumed its original running 8x clock; no persistent save overwritten.
+  Next: another authored mission and selection/world-map adapter package, with
+  unsupported care/search/effect contracts reported rather than guessed.
+
+
+- [x] Receiving animation and Operations journal (Complete; October26; started October25).
+  Interpolate committed bubble fill across ticks even when room/queue UI rebuilds.
+  Keep completed work as persistent history after routing/reset/redeployment;
+  ongoing first, newest completions next, with an explicit Completed filter.
+  Preserve actual tick/Recipe state, knowledge boundaries and live campaign.
+  Validate history ordering/save migration and visual interpolation; report the
+  next migration package without silently inventing missing technology rules.
+  Implemented: per-session interpolation retained across rebuilt Receiving/cargo/
+  Core views; immutable completed-work journal in schema31; stable repeat-run IDs;
+  Receiving start/completion timestamps; ongoing/newest-first ordering and a
+  Completed filter (All default). Older saves import extant completion records
+  and explicitly retain unknown times. Ten focused domain/save checks pass;
+  half-tick interpolation and rebuilt-view continuity checks pass; compile/diff
+  checks pass. October25 automatic review hit its usage limit before the final
+  restoration/docs command; that command did not run. Continued October26:
+  verified backup schema30/tick20768, found main Unity closed, reopened only the
+  main project (PID7732), but its Pipeline connection has not initialized. Asked
+  the user to finish any startup/recovery/license dialog; no Art Lab processes
+  were changed. Persistent save is older (tick19870) than the preserved interrupted
+  session backup (tick20768), so restoration must use operations-journal-backup.json.
+  October26 user opened Bootstrap and Pipeline connected. Final restoration
+  exposed a real legacy Receiving edge: unknown startedTick serialized as null
+  collided with the strict integer validator. Fixed by omitting unknown nullable
+  timestamps; added regression for timestamp-free schema30 Receiving and retained
+  explicit unknown journal dates. Compile passes with zero errors/warnings.
+  Complete: three journal regressions (including unknown legacy timestamps) and
+  the real user-backup roundtrip pass; 11 unique focused domain cases pass across
+  the batch, plus interpolation/rebuild checks. Final compile: zero errors/warnings.
+  Restored tick20768 exactly with 19 archived entries. Verified Completed/All
+  filters, first-row visibility, newest-first dates and an actual Receiving widget
+  destroyed/rebuilt mid-fill without snapping. Visually reviewed the journal.
+  Original 8x running clock resumed; zero test controllers; no persistent save
+  file overwritten. Task acceptance criteria are satisfied. Next migration work:
+  Wave4 Workshop/reverse engineering and evidence handoff, then Discovery/
+  Thesis/Research. Human Technology-II Workshop installation remains an explicit
+  authoring dependency; construction upgrades do not grant that technology.
+
+
+- [x] Larger Wave3 base-operations batch (Complete; October25). User requests
+  substantially more implementation per manual test. Complete shared local / Group /
+  deliberate Response Actor resolution across base jobs, Base Response availability
+  controls and persistence, configured Group Tool / Core Room Service resolution,
+  and an operations view that exposes active/blocked queues with room navigation.
+  One consolidated acceptance route covers the set. Preserve live campaign and
+  independent Art Lab. No implicit Technology Tier from construction upgrades:
+  the authored Human II Workshop Tool rule may resolve configured capability,
+  but its missing installation/acquisition path must not be invented.
+  Acceptance: permanent local/Group staff precede eligible Local Response; Base
+  Response/away/busy staff do not work; sticky Actors resume without substitution;
+  no stored-tool/global-idle borrowing; Services stay within the destination Group;
+  readiness/UI match execution; posture/save migration and existing cargo/Core
+  routes pass focused checks. Current task and migration notes reflect real scope.
+  Progress: backed up the live schema29 campaign at tick17396. Shared execution
+  rules now import from base-execution.json and canonical Human Manufacturing II
+  capability references. Unified base Actor/Tool resolution and Core Room Services
+  compile; Base Response posture persists in schema30. Operations view lists all
+  base job types with filters, readiness, progress, pause/resume and room navigation.
+  Response posture controls and room Services inspection are implemented. Thirteen
+  focused Node checks pass. Final integrated domain/UI checks are in progress;
+  no additional scope is being added after the user's request to finish.
+  Validation: 11 focused domain/save checks pass (eight initial passes plus only
+  the three corrected cases rerun); 13 Node checks and shared-rule/schema checks
+  pass. Test fixtures now use actual crosspath qualifications and joinable room
+  types; the construction continuity check waits for authored security duration.
+  Fixed the Operations route and filter scroll reset found during UI verification.
+  Compile has zero errors/warnings. Latest campaign restored exactly at tick17396;
+  Final visible verification passed: Operations/All renders 13 saved work records
+  with its first row visible; Open work reaches real Core controls; Services
+  inspection opens; no unauthored TET2 capability is granted. Complete migrated
+  campaign compares exactly with the latest backup at tick17396. Restored original
+  selection/view and running4x clock; zero test controllers. Real save files were
+  not overwritten. No broad suite or player rebuild was needed. All acceptance
+  criteria for this larger implementation batch are satisfied; the separate Art
+  Lab workstream remains untouched.
+  Remaining authored gaps: installation/acquisition for Human Technology-II
+  Workshop tooling and the numeric interruption-reset window. Existing sticky
+  work freezes/resumes; no unauthored reset discards progress. Broader technical
+  consumers/manufacturing remain future migration work. Next user check is the
+  single consolidated route in docs/unity-playtest-guide.md.
+
+
+
+- [ ] Art Lab view controls and additional animation retargeting (In Progress;
+  October26; reopened for new dialogue/animation assets). Inspect the newly
+  acquired Combat and Dialogue vol1 pack, retain vendor sources, and integrate
+  useful dialogue/social/movement variants into the focused Art Lab. Review
+  actual clip content and compatibility, select sensible role uses, clearly
+  label target/prop/rig gaps and verify playback/preset cleanup and renders.
+  Scope addition from user: include supplied props from the new pack and expose
+  missing props from previously installed packs in the main parts panel; use
+  authored attachments where known and clearly separate staged reference props
+  from fitted hand tools. Do not guess grip fit or alter vendor files.
+  Progress: audited771 package entries, all under Assets/CaD_vol1, no scripts /
+  DLLs / project settings. Only101 dialogue clips were initially imported; full
+  art import requested after stopping Art Lab (first request hit a Play-mode
+  import restriction and made no import). New source clips share the name
+  Unreal Take, so library labels now use source filenames and explicit auxiliary
+  binding flags. Implemented26 useful social/reaction/pickup gestures plus five
+  unarmed defensive reactions, a Dialogue filter, and source-use review notes.
+  Other-props panel now discovers prior crafting/melee/soldier/archer/throwing
+  prefabs and Toon loose items. Three reviewed tools use hand attachments;
+  others are scaled staged references with vendor demo behaviours disabled.
+  New CaD art supplies a demo character, not the chairs/canes/phones implied by
+  some clip names. Compile/build passed; all150 focused actions, nine preset
+  resets,182 new clips (all moving), and42 added props passed mechanical checks.
+  Visually reviewed question/direction/salute/pickup/defense and staged bucket,
+  bow and throwing axe. Found an animated ammo crate omitted by the initial
+  generic-Animator exclusion; adding its rest-pose reference without an Animator,
+  plus a staged-prop rotation control for thin/edge-on meshes. Final verification
+  and UI/docs remain.
+  Previous scope: full death/interaction catalog and NPC presets.
+  Add all installed compatible death and interaction clips, preserving source
+  variants and marking weapon-fit limits; add Worker, Guard and Captain as NPC
+  visual presets alongside the six selected professions. Verify unique clip
+  discovery, playback, equipment cleanup, preset restoration and representative
+  renders in isolated Art Lab. No new NPC gameplay rules or main-game changes.
+  Progress: asset audit found65 compatible death/interaction clips across all
+  installed sources, including female Humanoid and skeleton-retarget variants.
+  Catalog now adds every source clip once, exposes Deaths/Interacts filters and
+  preserves one-shot playback. Non-infantry weapon families are explicitly
+  body-motion studies; skeleton extra bindings remain unmapped. Added provisional
+  NPC visuals: Worker plain body/hardhat/grey, Guard infantry/helmet/grey,
+  Captain general/peaked cap/blue, all without backpacks. Guard idle added;
+  Worker shares work clips and Guard/Captain share rifle studies. Build/compile,
+  complete coverage, playback/preset regression and visual checks passed:
+  119 unique action clips, all51 deaths/all14 interacts included; nine preset
+  resets and full parts checks pass. Captured/visually reviewed all three NPCs,
+  infantry/heavy interacts, prone death, female death and skeleton-retarget death.
+  Usage/navigation docs updated. Final UI capture remains. Resumed October26:
+  previous session's UI command was stopped by approval-review usage limits;
+  all implementation/regression evidence is present. Art Lab had since closed;
+  reopened only that project and confirmed normal Play with119 saved clips and
+  nine saved presets, without rebuilding. Final npc-interactions-ui.png captured
+  and visually reviewed; all nine preset buttons and Deaths/Interacts controls
+  are visible and the Guard renders correctly. Helper syntax and focused diff
+  checks pass. Existing full119-motion/nine-preset/parts/coverage checks remain
+  passed; no code changes or redundant test reruns were needed on resume.
+  Updated usage/navigation/evidence docs. Art Lab remains in Play on Guard /
+  Interacts. Main game and vendor sources untouched; no test runner started.
+  All requested work for this batch is complete. Remaining visual-study limits:
+  non-infantry weapon fitting, skeleton extra bindings and interact target props;
+  Worker/Guard/Captain appearance choices remain provisional NPC art presets.
+  Previous scope: selected profession outfits and extra actions.
+  Apply the user's exact body/head/backpack selections for all six professions,
+  choose closest supplied palettes to established profession colors, and add
+  idle, sheathe, fishing and death clips to the focused preview. Verify reset
+  preserves these new defaults, switching clears hand props, and fishing uses
+  its supplied prop/bindings. Keep game Editor and vendor sources unchanged.
+  Progress: exact six body/head choices and four backpacks configured, with
+  reset restoring palette/backpack defaults. Color reference is the established
+  Offworld presentation palette in demos/offworld-sandbox/map.mjs: closest
+  supplied red/yellow/blue/green approximations (purple/cyan/teal absent).
+  Added all supplied13 idle clips (one already present), ten sheathe/draw pose
+  studies, nine fishing clips with supplied pole, four unarmed and five rifle
+  deaths:62 total unique actions. One-shot motions default to no repeat.
+  Compile/build passed, all62 action checks passed, six exact preset resets and
+  full parts regression passed. Visually reviewed all six updated idle outfits,
+  pole grip from front/side, casting, sheathe and unarmed death. Native rifle
+  death moves hips beyond standing framing; adding death-camera bounds tracking
+  before final capture. Sheathe remains explicitly pose-only without a fitted
+  holster; supplied fishing pole has no line/lure/effects.
+  Completed: final death-camera tracking keeps the displaced native rifle death
+  fully framed. Normal playback check passed: death holds its final pose with
+  Repeat off. Updated builder/runtime/parts restoration checks, generated scene,
+  profession/action catalogs, six outfit captures, fishing/sheathe/death captures,
+  preview UI and usage/navigation docs. Compile, helper syntax and focused diff
+  checks pass. Main game and source assets untouched; no Unity test suite started.
+  Art Lab remains in Play on Scout fishing with the shortlist filtered to Fishing;
+  clear the search to see the rest. User-selected parts and palette defaults
+  persist in the generated scene. Optional next work remains fitted holstering,
+  richer fishing prop/effects and exact profession-color atlas variants.
+  Prior scope: add a separate parts browser for the
+  full Toon Soldiers pack, with interchangeable character parts and available
+  color variants. Inspect materials before recommending recoloring; preserve
+  source assets, profession presets and the isolated game-action preview.
+  Acceptance: parts can be combined without stacking bodies/heads, original
+  profession appearance can be restored, color swaps affect preview instances
+  only, and material/recoloring limitations are documented and verified.
+  Progress: implemented a separate right-side parts panel, body/head selection,
+  exclusive pack backpack/hand-prop selection and independent body/head palette
+  swaps. Catalog comes from installed pack assets; source materials stay shared
+  and unchanged. Profession restore clears experiments. Pack audit found nine
+  supplied atlas color variants, so no duplicate colored meshes are needed.
+  Compile/build passed. Focused parts checks passed for all9 bodies,15 heads,
+  5 backpacks,19 hand props and9 palettes, including exclusive visibility,
+  body mesh validity, unchanged source materials, retained animation and
+  profession restore. Existing22-action/six-profession regression also passed.
+  Live render passed; reviewed red body / blue helmet with backpack and rifle,
+  and captured the two-panel UI. Updated runtime/builder, generated scene,
+  catalog/validation/captures, helper command and usage/navigation docs.
+  Art Lab remains in Play with the parts/color panel open. Main game and vendor
+  source assets untouched. Syntax/compile/focused diff checks passed; no Unity
+  test-runner suite started. Remaining optional work is custom region-based
+  recoloring and per-weapon animation fit; session choices are not saved presets.
+  User accepted the focused
+  preview as the general animation workspace. Extend the same single-character
+  lab with selectable visual parts and action shortlists for Scientist, Medical,
+  Scout and Diplomat alongside Technician and Soldier. Inspect installed assets,
+  retain explicit gaps where suitable motion/props are absent, verify profession
+  switching and representative renders. Choices are provisional presentation,
+  not new canonical equipment or rules.
+  Progress: six profession presets implemented on the existing modular rig,
+  with body/head selections, role-filtered actions, shared travel/conversation,
+  and a staged medical-kit reference (no guessed hand grip). Added six source
+  clips, for 22 unique actions. Scientist sample pickup and Medical low reach
+  are explicitly candidate studies; treatment/scanning/console and carrying
+  remain missing. Build/compile and 22-action/six-profession checks passed;
+  rendered all six and visually checked role parts/props. UI capture exposed
+  stale sidebar pixels outside the camera viewport; added explicit GUI and
+  background-camera clearing. Final controls capture is clean after a normal
+  player-frame repaint. Final 22-action/six-profession regression passed; helper
+  syntax and focused diff checks passed. Updated builder/runtime, generated lab
+  scene, profession picks/validation/captures, README and repository map.
+  Art Lab remains in Play on Scientist. Main game and vendor sources untouched;
+  no test-runner suite launched. Next animation batch should source or author
+  actual treatment/carrying, analysis/console and tracking/scanner/binocular
+  interactions; candidate gathering motions do not satisfy those missing roles.
+  Earlier scope: add interactive camera-elevation and character-yaw sliders in the
+  independent Art Lab, with animation selection/playback. Locate the user's new
+  animation downloads, validate compatible Humanoid clips on the existing
+  soldier avatar, and report unsupported/missing files explicitly. Keep the
+  game Editor and original vendor content untouched. Acceptance: controls work
+  in the lab preview, available new clips are selectable and verified on the
+  soldier, or any unavailable package is documented with its next action.
+  Progress: runtime sliders and single-character/searchable animation viewer
+  added in Art Lab. User identified Human Basic Motions FREE and Human Soldier
+  Animations FREE; both packages are now downloaded. Audited their contents:
+  vendor-scoped art and demo scripts only, no project settings/startup actions.
+  Added the vendor demo's UGUI dependency in Art Lab; Basic Motions import
+  requested. Vendor content stays unmodified and ignored. Main Editor untouched.
+  Both packs imported and compile cleanly. Catalog discovers 182 Humanoid clips
+  (four original +178 added). Added searchable clip selection via an Animator
+  Override Controller on the existing Toon Soldier avatar, with per-clip notices
+  for unmatched custom prop/spine bindings. Standard body retargeting and view
+  controls implemented. All-clip runtime sampling passed: 182 clips sampled on
+  the Toon Soldier avatar, 174 produced animated poses, all preserved the target
+  Humanoid avatar and stationary root. View controls verified: elevation
+  (25/90°), yaw (137°), solo toggle, zoom, playback speed, pause/restart,
+  one-shot repeat. Live render capture passed (no magenta shader failure,
+  visible blue soldier texture).
+  Weapon dropdown added: CharacterPreviewControls exposes a per-subject
+  weapon array (placeholder capsule weapons: None/Rifle/Assault Rifle/Gun/
+  Bazooka) with a SelectionGrid dropdown in OnGUI. Selecting an animation clip
+  auto-matches the weapon by clip-name keyword (rifle→Rifle,
+  assaultrifle→Assault Rifle, gun→Gun, bazooka→Bazooka). Manual override via
+  dropdown persists across clip changes. Build script creates one weapon set
+  per Toon Soldier instance, positioned near the right hand, colored by type.
+  IK Helper Tool integration: each soldier has an IKHelperTool component on its
+  Animator with an iKSwitch transform and per-weapon grip transforms. When a
+  weapon is selected, the IK system drives the right hand to grip the weapon's
+  grip transform; selecting "None" disables IK. Fixed IndexOutOfRangeException
+  in ApplyIk() guard check. Real weapon prefabs from the Human Soldier Animations
+  pack are now loaded instead of placeholder capsules: Human_Rifle, Human_AssaultRifle,
+  Human_Gun, Human_Bazooka (prefabs at .../Human Soldier Animations/Prefabs/Weapons/).
+  Grip transforms are positioned at each weapon's bounds center. The pack also
+  contains additional model categories: Archer (Bow, Arrow, Quiver), Crafting tools
+  (Axe, Hammer, Knife, Pickaxe, Plow, WateringCan, FishingPole, Bucket, Basket),
+  Melee (Dagger, Greatsword, Polearm, Shield, Sword, Warhammer), plus human character
+  models (HumanF_Model, HumanM_Model). Weapon models match the animation clip categories
+  for auto-selection by keyword.
+  - Continued October25 after the updated goals: inspect/validate the recorded
+    weapon and IK implementation; import the newly downloaded Archer, Crafting,
+    Melee, Spellcasting, Throwing, Skeleton and human-dummy packs into Art Lab.
+    Refresh compatible animation/prop catalogs and verify selection, saved-scene
+    persistence, retargeting and live rendering. Preserve vendor sources and
+    main-game isolation. Acceptance includes explicit reports for incompatible
+    rigs, missing authored grip data and any remaining visual-fit limitations.
+    Progress: all new packs were already imported; AssetDatabase reports 423
+    compatible Humanoid clips. Replaced nonserialized jagged prop arrays with
+    serializable per-subject prop records and expanded discovery to vendor
+    weapon/tool/archer prefabs. Manual prop choice now persists until automatic
+    matching is re-enabled. Props attach to a chosen hand; support-hand IK has
+    valid references and an enabled Animator IK pass, gated on explicit grip
+    calibration. Removed guessed bounds-center grips and capsule fallbacks.
+    Toon Soldier has one mesh containing its original rifle; None can hide only
+    added props. This limitation is shown in the viewer. Compile and focused
+    verification of persistence, catalog, prop choices and actual IK are next.
+    Build/compile passed. Scene reload retains prop sets; temporary calibration
+    test passed for saved position, rotation, calibrated flag and holding-hand
+    flag across regeneration, then restored original authoring. Actual IK moved
+    the support hand to its reachable test goal. Combined test initially failed
+    because cleanup re-enabled automatic matching before asserting None; fixed
+    that test order and removed stale success reports before reruns. Final
+    combined catalog/prop test and live visual review remain.
+    Combined test passed 423 clips (398 moving), 23 prop choices, manual/automatic
+    matching, serialization, hand switching and actual support-hand IK. Visual
+    review of HammeringGround with Hammer confirmed UI/selection and the known
+    embedded-rifle/uncalibrated-fit limitation. A later behaviour audit found the
+    vendor arrow's launch/destroy script; disabling vendor demo behaviours on
+    preview prop instances only, then rechecking persistence after playback.
+    Final verification passed after that fix: all 423 clips and 23 prop choices,
+    calibrated IK movement, saved-grip regeneration and 92 surviving prop
+    instances after normal playback. Compile flag is clear; helper syntax and
+    focused diff checks pass. The two generic FBX rigs are archer Bow/Hat assets,
+    excluded from Humanoid clip discovery. 399 clips retain extra custom-transform
+    compatibility notices; finger-only detail is unsupported on the Toon rig.
+    Source/scene files changed only in Art Lab, plus tracking/navigation and
+    evidence docs. No broad test suite or main-game Editor commands were needed.
+    Art Lab remains in Play; remaining work is per-prop calibration and any
+    desired mesh/rig adaptation for clean unarmed poses, fingers or spine curves.
+  - Latest user correction: the preview still carries its original rifle, some
+    comparable motions/prop orientations are wrong, and characters appear stacked.
+    Focus on game-relevant movement, rifle combat and base-work actions rather
+    than correcting every library clip/tool. Inspect the newly acquired full
+    Toon Soldiers pack, use its supported model/weapon setup, remove unintended
+    duplicate geometry, and provide a small reviewed game-actions shortlist with
+    explicit unsupported-action gaps. Verify clean equipment switching and
+    representative animation/prop fit in isolated Art Lab. Keep full-library
+    browsing available separately; main game and vendor sources stay untouched.
+    Full Toon Soldiers imported after auditing669 art-only entries (no scripts /
+    project settings). Its infantry prefab has modular body/head renderers and a
+    separate rifle on an authored WeaponContainer, unlike the demo's combined
+    mesh. Implemented a separate one-character GameActions scene and16 explicit
+    movement/rifle/work studies, with exact clip playback through Playables,
+    exclusive equipment, and only one body/head variant visible. Hammer/Pickaxe
+    reuse supplied hand-prop curves through transform-only auxiliary bindings;
+    no source human mesh or rig replacement is instantiated. Compilation/build,
+    focused equipment/motion checks and visual fit review pending.
+    Focused mechanical checks passed all16 actions and clean equipment clearing.
+    Visual inspection then found skin matrices lagging the procedurally updated
+    hand/spine transforms (floating tools despite correct bone positions). Normal
+    animation-update playback plus per-render matrix refresh corrected the
+    reviewed Hammer pose: the visible hand now grasps the tool and no rifle or
+    duplicate body remains. Persisting that fix and rechecking Rifle/Pickaxe.
+    Final normal-update/per-render-refresh code passed the16-action regression
+    again. Rendered native rifle-fire now uses both hands; reviewed Hammer and
+    Pickaxe move with the actual visible hand, with the rifle absent. Widening
+    the stable default camera framing to include raised tool heads.
+    Completed: final 16-action verification passed after the framing adjustment,
+    with one Animator, exactly one body/head pair, exact clip selection, finite
+    moving poses, exclusive equipment and Rifle→Hammer→None cleanup. Final live
+    captures passed; visually reviewed rifle ready/fire, hammer work and pickaxe
+    wall with full raised tool visible. Controls/UI capture and navigation/docs
+    updated. Helper syntax check passed. Art Lab remains in normal Play on the
+    focused scene; main game untouched. No Unity test-runner suite was started.
+    Medical treatment, casualty carrying and detailed console/analysis actions
+    remain unreviewed gaps for a later animation batch; other library tools and
+    clips are explicitly unreviewed. No production promotion or game-rule change.
+    Equipment display mapping fixed: GameActionPreviewBuilder now exposes the full
+    20-prop class-level equipment array (None + Rifle/Hammer/Pickaxe/Fishing pole
+    + 14 weapon types) and each PreviewProfession carries an equipmentSlotMap array
+    translating grid position to class-level index. SetEquipment bounds check
+    (index > equipment.Length) is correct for the 1-based selectedEquipment scheme.
+    Catalog regenerated: profession-picks.json has equipmentSlotMap entries,
+    game-actions-catalog.json has correct equipment indices, and both validation
+    files passed (passed:true, 9 presets, 3 NPC). All 8 profession equipment grids
+    verified correct in Unity.
+
+- [x] Wave3 Core lifecycle and power batch (Complete; October25).
+  Step1: persistent physical starter Cores, reversible authored installation /
+  removal with Warehouse/physical-slot reservations, queued work and save/load.
+  Step2: power reservations and selected Receiving capability enforcement using
+  shared authoring, with visible blocked reasons (including missing cache staff).
+  Acceptance: Receiving Core controls execute the four-tick Recipe; no duplicate
+  instances/capacity overflow; maximum-active reservations gate installation;
+  starter/legacy saves remain usable; focused existing cargo checks plus targeted
+  Core transaction checks pass. Preserve the user's live campaign and art work.
+  Progress: live campaign backed up at tick16978. Shared Core authoring now reads
+  into typed runtime data; starter identities persist through all immutable
+  campaign transitions and schema29 saves. Core install/remove requests reserve
+  Warehouse places, physical slots and maximum-active PWR, wait on active items,
+  and execute the shared four-bubble Recipe with local staff/equipped Tool costs.
+  Receiving Core controls/progress and explicit cache blockers are implemented.
+  Selected recovery allocation persists once unpacking begins; legacy started
+  graphs remain supported. Compile currently passes with zero errors/warnings.
+  Validation complete: all five focused Core/cargo/save assertion cases pass
+  directly in Editor; 12 Node checks, data schemas, import/art freshness and
+  focused diff checks pass. The NUnit runner stalled (combined filter also
+  matched zero tests); cancelled it and its residual framework jobs rather than
+  repeat a broad suite. Final compile: zero errors/warnings. Verified ordinary
+  Play/Stop/restart and zero test controllers. Exact backed-up campaign restored
+  at tick16978; no real save overwritten. Actual Receiving Cores control opens
+  the panel and both starter removal buttons fit its viewport (compact layout).
+  Automatic review rejected the first indirect restore script as potentially
+  using an older backup; no action ran. Verified the latest backup tick/path and
+  restored with explicit Wave3 paths successfully. No approval remains blocked.
+  All criteria for this two-step batch are satisfied; the wider migration stays
+  In Progress. Next: Group Tools/eligible Response staffing and technical Service
+  consumers; Core manufacturing/degradation/higher-tier recovery remain deferred.
+
+
+
+- [x] Toon Soldiers asset evaluation and independent Art Lab (Complete; October 25). User reports
+  the package is now in My Assets. Locate the available local package/import,
+  inspect its actual rig and clips, and validate one character in a separate
+  overhead Unity preview. Preserve Bootstrap, existing original Technician proof,
+  campaign saves and build scenes. Report any download/import availability gap;
+  account ownership alone does not establish that package files are local.
+  Progress: repository search and connected Unity AssetDatabase both find no
+  Soldier assets; default local Asset Store package cache has no package to
+  import. Bootstrap is currently in user-started Play mode; preserved it. Opened
+  Package Manager for the user's My Assets download/import. No art files,
+  campaign state or package settings changed. Rig/clip/render checks remain
+  pending until the package is local. Next: user downloads/imports their acquired
+  Toon Soldiers or Demo package, then inspect actual imported assets.
+  - Download recheck: Toon Soldiers Demo.unitypackage is now present in the
+    default Unity Asset Store cache; not yet imported (AssetDatabase search has
+    zero Soldier matches). Evaluation remains In Progress. Inspecting package
+    paths before scoped import; user Bootstrap remains live and untouched.
+  - Import complete after Unity rejected package import during Play. Preserved
+    the live campaign, selection, view, clock and normal-save hash in ignored
+    `unity/.validation-toon-soldiers/` before stopping Play. Package contains no
+    scripts or project settings. Actual imports: valid Humanoid model and four
+    Humanoid clips: Idle 2s / Run .833s (looping), Shoot 1s / Burst 1.3s (one-shot).
+    Vendor demo files remain local and are excluded from Git. Building a separate
+    preview; normal save untouched. Live-session restoration is required next.
+  - User steering: isolate animation work from the main-game Editor. Same-Editor
+    scenes share Play/compilation, so moving the evaluation to a minimal separate
+    `unity/OrionisArtLab/` project and Editor process. Restoring the backed-up
+    main campaign first; do not run further art checks in the game Editor.
+  - Main session restored and validated at tick16978 against the backup's
+    codec round-trip, with original selection/view/clock and unchanged normal
+    save hash (`artwork/toon-soldiers-proof/session-restoration.json`). A shared
+    script reload had cleared the first restored runtime; removed the new art
+    editor code from the game project, refreshed, restarted and restored again.
+    Art Lab now has its own project/package manifest, local vendor content,
+    preview script/controllers/scene and explicit automation isolation rules.
+    Launched a separate Unity Editor; initial import/preview verification pending.
+  - Independent Editor verified: `unity/OrionisArtLab/` imports and compiles
+    cleanly with no campaign code. Uses its own URP forward renderer and local
+    demo files, copied with original GUIDs and excluded from Git. Four Humanoid
+    clips pass normalized-weight, valid-avatar, Animator deformation and
+    stationary-root checks (20 skin bones / 1,174 triangles). Live Play preview
+    renders correctly with 3D lighting. Replaced blank synchronous static-pose
+    captures with actual Play-frame capture; evidence is in
+    `artwork/toon-soldiers-proof/validation.json` and `live-preview.png`.
+    `unity/tools/art-lab.mjs` verifies the descriptor's project path and targets
+    only Art Lab. Separate chat/work instructions live in its README/AGENTS.md.
+    Main session restored at tick16978 with original view/clock/selection and
+    unchanged normal-save hash; no further art commands use the game Editor.
+    No broad test suite or build needed for this isolated art batch. Remaining
+    product choice: demo covers armed movement/combat only; unarmed/work actions
+    and retargeting our custom Technician remain unevaluated, not assumed.
+
+- [x] Medium cache and Receiving Core first-pass authoring (Complete; October 25).
+  User authorizes provisional Recipes and PWR costs. Acceptance: reference cache
+  uses a Medium graph; existing started recovery retains its authored work/output;
+  shared data defines T0, removable handling/recovery Cores, reversible install
+  Recipes, room/Core power and starter identities. Validate focused cargo/import
+  checks, document tuneable values and distinguish authoring from Wave3 runtime.
+  Existing Wave2 and Blender workstreams remain intact.
+  Progress: cache graph reduced to ten bubbles (two inspections/eight recovery);
+  pinned historical graph and save selection preserve started legacy work. Shared
+  theory fixture now has six provisional Receiving Cores and reversible four-tick
+  installation/removal Recipe, with physical item definitions and a shared power
+  policy. Unity projection includes authoring for Wave3; not runtime enforcement.
+  Validation: 12 focused Node checks pass; cache/Core/item JSON schemas pass;
+  generated bootstrap and presentation-art freshness pass; focused diff check
+  passes. Unity compiled the updated DTO/save code. Two existing cargo tests
+  pass; the new legacy-save assertion case passes directly in the Editor (data
+  only), after Pipeline timeout/shared-runner cancellation interrupted NUnit's
+  run. No broad suite or Windows build repeated. Initial strict-DTO failure was
+  fixed; a namespace qualification fixed the concurrent Technician preview's
+  compile blocker. Editor remains outside Play with zero residual test
+  controllers; no live campaign or real save was changed. All acceptance
+  criteria for this authoring batch are satisfied. See
+  `docs/unity-receiving-cores-first-pass.md` for sources, numbers and boundaries.
+  Next: Wave3 physical Core ownership/installation and Warehouse/slot/PWR
+  transactions, then selected-Service resolution using the shared package.
+  Higher-tier recovery distributions and Core manufacturing remain deferred.
+
+
+- [x] Original 3D Technician pipeline proof (Complete; October 25):
+  incremental reference inspection, original model, rig, idle/walk and isolated
+  Unity overhead preview. Existing visual/gameplay systems are not replaced;
+  other active work below remains intact.
+  - Continued October 25: native Blender tools now connected; current live file
+    contains only the default Cube/Light/Camera. Building a separate original
+    Technician proof with skeletal idle/walk, followed by isolated Unity import
+    and overhead preview verification. Reference assets remain reference-only.
+  - Original mesh/rig/animation batch complete: authored geometry and eight solid
+    materials, 18 bones, 1,484 vertices / 2,804 triangles; zero invalid vertex
+    weight totals. Idle (2s) and Walk (1s) are skeletal clips, with stationary
+    root. Source/rebuild script and Blender validation live in
+    `artwork/technician-proof/`; original FBX in `Assets/Orionis/Art/TechnicianProof/`.
+    Blender front/three-quarter/overhead inspection passed for this provisional
+    low-poly proof. Costume/colors/topology are presentation studies, not canon.
+    Next: Unity import/deformation/loop/render verification and isolated preview.
+  - Unity continuation: both animation takes import. Cross-import checks exposed
+    hard-normal vertex splitting and 32 degenerate source triangles; cleaned the
+    source explicitly and re-exported (now 1,468 vertices / 2,772 triangles,
+    zero degenerate triangles and invalid weight totals). Unity checks compare
+    source triangle metrics rather than raw vertex counts. Cancelled shared
+    test-runner state that restarted across compilation; another workstream
+    subsequently recorded its interrupted cargo check separately. Bootstrap was
+    clean and stopped before art verification. No broad suite requested here.
+  - Pipeline proof verified in Unity 6000.5.2f1: 18-bone Generic avatar,
+    2,772 triangles / 6,018 imported vertices (normal splits), normalized skin
+    weights and human scale. Both skeletal clips loop continuously and deform
+    through direct sampling AND Animator controllers. Four distinct overhead
+    phase captures plus direct overhead passed render checks and visual review.
+    Synchronous captures bake sampled poses to avoid Unity's same-frame skinning
+    cache; the saved scene retains real skin/Animator playback. Actual Play mode
+    confirmed Idle (2s) / Walk (1s), multiple loops and stationary roots (1.36m
+    separation). Isolated scene has zero reference-model-folder dependencies;
+    no Bootstrap/build-scene/gameplay replacement. Source, evidence and repeatable
+    menu commands: `artwork/technician-proof/README.md`. Costume/colors, final
+    topology, locomotion/foot locking and lighting remain provisional art work;
+    the current 2D renderer produces flat shading. No semantic ambiguity or
+    canonical game-data changes in this art batch. Bootstrap ordinary Play/Stop/
+    restart passed; restored clean Bootstrap in Edit mode, compile flag clear,
+    zero nonpersistent PlaymodeTestsController objects. Final state evidence:
+    `artwork/technician-proof/unity-cleanup-validation.json`. Python syntax and
+    focused whitespace/diff checks pass. Original campaign saves were not written.
+  - Connection check complete: installed Blender MCP add-on 1.8 responds on
+    127.0.0.1:9876. Direct add-on protocol ping, get_scene_info and read-only
+    execute_code all succeeded; Blender reports 5.2.3 LTS, an unsaved Scene,
+    Cube/Light/Camera, Object mode and frame 1. No scene edits/imports/saves.
+  - Native Blender MCP tools are not exposed in this agent session. Existing
+    C:\Users\Powel\.codex\config.toml has no mcp_servers.blender entry;
+    uvx is not on this shell's PATH and was absent at .local/bin/uvx.exe.
+    No configuration changes or installations made. Direct add-on transport
+    success does not establish the Codex-to-MCP stdio connection.
+  - Connection recheck: user added the correct blender MCP configuration.
+    Located uvx.exe at C:\Users\Powel\AppData\Local\Microsoft\WinGet\Links;
+    this session's inherited PATH does not resolve it, although User PATH includes
+    that directory. Launched the cached server offline via its absolute path:
+    MCP initialize succeeded (MCP for Blender 1.30.0), tools/list exposed 9 tools,
+    and tools/call get_scene_info succeeded with Cube/Light/Camera, Object mode.
+    No scene modifications, downloads or configuration edits. Native host tool
+    attachment still requires a refreshed/restarted host environment.
+  - Reference files located under the user-supplied Downloads folder:
+    PC _ Computer - Bloons TD 6 - Towers - Elite Defender\Elite Defender.
+    Read-only XML inspection found one geometry/scene node, 1,046 triangles,
+    UV/color/normal inputs, one material referencing the supplied 2048x2048 PNG,
+    identity node transform, meter units and Z-up. No controller, animation or
+    animation-clip libraries. These are source-file findings, not a completed
+    Blender visual/deformation inspection; connected components remain unchecked.
+  - Import blocker: Blender 5.2.3 LTS has no registered WM_OT_collada_import
+    (get_rna_type lookup raises KeyError). hasattr on bpy.ops was misleading.
+    No import, scene modification, installation or source-file changes made.
+  - Next: choose a supported conversion route or a narrowly scoped, validated
+    reference-only DAE reader; then inspect topology/materials visually in a
+    separate reference workspace before modeling. Reference geometry/textures
+    must remain separate from production assets.
+  - Reference inspection completed October 25, superseding the import blocker:
+    installed official-listing Collada Support 1.2.2 via Blender extension
+    manager after checking package hash and declared bundled wheels (pycollada,
+    python-dateutil, six); import_scene.collada registered and import finished.
+    Isolated reference scene/collection preserves the original Cube/Light/Camera
+    scene. Imported 888 vertices/1,046 triangles, UVMap, one material, 44
+    vertex-connected components, 650 boundary edges, zero loose vertices;
+    seams can inflate component counts. No rig/weights/shape keys/animation.
+    Fixed imported //textures/ path by linking and packing the supplied PNG.
+    Inspection roughness .85 is provisional shading, not source material truth.
+    Reviewed front/side/three-quarter/direct-overhead renders: useful chunky
+    shape/color guidance, but helmet occludes torso overhead and rifle dominates
+    silhouette; original human Technician needs free hands, moderate head size,
+    readable shoulders/backpack and riggable topology. No Technician work begun.
+    Saved outside repository: C:\Users\Powel\Documents\Orionis-Reference-Inspections\Elite-Defender\Elite-Defender-REFERENCE-ONLY.blend,
+    alongside four renders, inspection.json and inspection-notes.txt. Readback
+    through a temporary copy passed (Blender rejects library-loading the active
+    file itself); temporary copy removed. Both source SHA-256 hashes unchanged.
+    Next: user review of inspection, then original Technician proof; never ship
+    reference geometry/textures with Unity production assets.
+  - Helmet-focused reference cleanup complete:
+    Saved Helmet-Study-REFERENCE-ONLY.blend plus front/three-quarter/overhead
+    renders. Verified removal: tail, between-leg bullet, rifle gone; helmet,
+    mask, goggles and body retained. Source DAE/PNG SHA-256 unchanged.
+    Original 888 verts/1046 tris reduced to 696 verts/832 tris.
+    No Technician modeling or rigging has begun.
+   - Unity reference export complete (mockup for pipeline check, not production):
+    Exported Helmet-Study-Animated-REFERENCE-ONLY.blend (60-frame idle bob + sway
+    animation on root empty) as Technician_Reference.fbx and the source PNG into
+    unity/StargateOrionis/Assets/Orionis/Resources/OrionisArt/Models/. Saved the
+    animated Blender file alongside the reference inspection. No armature/rig yet;
+    animation is root-object transform only. Reference-only: do not ship BTD6
+    geometry/texture in Unity production assets.
+
+- [x] Wave2 implementation/release checks complete: preserve/audit the supplied
+  Receiving Core handoff without treating proposals/open values as canonical;
+  finish remaining supported-slice usability and release documentation; update
+  the existing control-driven walkthrough for current UI; build Windows and
+  verify launch/save/resume where supported. Preserve live campaign and real
+  saves, clean test state, and distinguish automated completion from user
+  standalone acceptance. Core runtime belongs to Wave3 and needs missing
+  installation/power/identity authoring before an end-to-end claim.
+  Handoff preserved verbatim in `docs/unity-receiving-cores-approved-handoff.md`;
+  source-backed audit records missing data and the starter Medium vs Large cache
+  conflict. Updated existing walkthrough for cards, spatial actions, explicit
+  room following and storage reservations; refreshed the playtest guide.
+  Added opt-in two-launch player Save/Load verification with a temporary path;
+  normal launches retain their existing save locations. Gated debug intake in
+  the standalone base view and restored stable roster control IDs. Compile clean.
+  First test launch was invalid because UTF tried saving scenes while leaving
+  existing Play mode; cancelled it, preserved the dirty scene as
+  `Assets/__Recovery/Wave2BeforeTests.unity`, reopened Bootstrap in Edit mode and
+  started the single walkthrough correctly. Build and player checks remain.
+  Walkthrough updates also account for additional eligible tierIII crosspath
+  Actors and room-local navigation after Load; legacy prose/location-tab
+  expectations were removed. The test reached Analysis Save/Load before finding
+  its stale generic-inventory navigation. Replaced that with physical-room clicks
+  and removed irrelevant item actions from non-storage/non-processing rooms.
+  Final supported-route walkthrough passed1/1 in20.01s: rescue/cache recovery,
+  room processing, reserved storage, equipment issue, Save/Load and redeployment.
+  An exact Editor AI Account API timeout warning is expected only if emitted;
+  gameplay warnings/errors remain strict. Documentation now matches the current
+  room-local flow. Test pipeline cancelled; exiting Play before Windows build.
+  Windows build succeeded (145,143,078 bytes;39.3s), with packaged PLAYTEST.md
+  matching the current guide. The synchronous pipeline reply timed out after5s
+  while Unity continued building; actual Build Successful/Success output and
+  guide hash confirm completion, so no duplicate build was launched.
+  Both separate headless Windows player launches passed Save/Load, complete
+  state/selection equality at tick3 and debug-off checks using temporary saves.
+  Ordinary Play/Stop/restart succeeded with0 test controllers; original campaign
+  matched tick15724 backup, and its view/running clock were restored. Release
+  proof is `docs/unity-wave2-release-checks.md` and build RELEASE-CHECKS.json.
+- [ ] User standalone acceptance remains: complete/repeat the supported route
+  and relaunch/resume using the packaged guide. This requires the user's own
+  playthrough and is not marked satisfied by automated checks.
+
+- [x] Mission/room usability batch complete: shared personnel cards in
+  briefing/debrief with mission/team split; target-positioned map actions without
+  duplicate text buttons; Gate-only redial; readable status layouts; Tool use/
+  save validation diagnosis; Holding cell places parallel to patient beds;
+  conflict-only staffing controls; room-scoped queues and routing/follow UI.
+  Preserve live state and authorized return-to-base refill semantics. Debrief
+  usability is Wave2; broader campaign history remains Wave5.
+  Implementation compiled cleanly. Focused isolated check passed briefing and
+  debrief cards, all7 recorded mission Tool charges shown at extraction, new
+  hack charge preserved through Save/Load, four authored Holding cells,
+  idle transfer controls hidden, two distinct doorway hack targets and Gate-only
+  Redial. Live and real save both deserialize successfully; original Tool error
+  not reproduced, validation remains strict with Unit/Tool diagnostics added.
+  Preserve automatic refill on return; debrief derives extraction charges from
+  existing committed work history rather than changing physical current stock.
+  Room-follow check passed using the older cargo-bearing backup: source queue
+  stays open until explicit Follow opens actual custody. Visual review confirmed
+  extraction values (60HP Soldier,5/9 Technician,6/9 Medic) and two-column briefing;
+  final fit adjustments enlarge the known map and avoid cramped hex labels.
+  Final compile0 errors/warnings. Ordinary Stop/Play completed; exact user
+  campaign restored at tick15696. No real save-slot writes or Windows rebuild.
+  Holding displays its four authored captive places and existing cargo/storage
+  reservations; a complete prisoner intake/assignment workflow remains unauthored
+  and was not replaced with roster Units or an automatic captive transfer rule.
+  Earlier save error remains unreproduced; current, existing and spent-charge
+  Save/Load checks pass. Validation is strict with clearer per-Tool diagnostics.
+
+- [x] Manage/construction/Offworld batch complete: show per-target valid
+  join/split actions only in Manage mode; author 80% general construction work
+  runnable by local Maintenance staff with persistent sticky bubble Actors;
+  begin Offworld presentation using existing art and preserve action hexes.
+  Keep shared data authoritative, old saves/progress intact, and coordinate
+  around the separate Core configuration workstream.
+  Implementation: Manage-only per-target actions with horizontal scrolling;
+  shared generalWorkShare=0.8, parallel persistent construction bubbles and
+  save28 (legacy orders remain serial); Offworld floors from shared stage
+  archetypes/overrides and team sprites from the existing unit catalog. Node
+  construction/bootstrap tests passed5/5; Unity compile0 errors/warnings.
+  Focused verification passed: 480 work ticks completed by two Actors in256
+  elapsed ticks; exactly80% general work, partial and completed Save/Load valid.
+  Isolated UI buttons actually joined/split adjacent rooms and hid outside
+  Manage. Offworld check rendered3 known floor cells and4 team sprites without
+  drawing hidden Stages. User campaign restored exactly at tick7577.
+  Final compile0 errors/warnings; Manage-to-Clear transition now also verified
+  to hide all group actions. Shared bootstrap/art freshness checks passed.
+  No full mission replay or standalone rebuild; no real save slots written.
+  Provisional detail: the remaining20% includes the existing20-tick Soldier
+  security bubble plus Technician/TET1 work. Existing orders retain their old
+  serial schedule; new builds/upgrades use the shared0.8 policy. The Offworld
+  wave is started, not full room/prop/wall or campaign parity; next work is
+  source-backed room framing/props and readable unit/action states.
+
+- [x] Personnel/planning polish complete: smooth HP with a reliable heart
+  graphic and current/max; both Tools on one row; interpolate visual fills;
+  separate planning status from the progress viewport; mark joinable physical
+  rooms with simulator-style dashed outlines and valid join targets clearly.
+  Verify live UI after clean reload and preserve campaign state. Core work stays
+  with the parallel chat; identify the next executable visual migration step.
+  Replaced glyph heart with an explicit mesh; removed HP segments; placed both
+  icon/tier/charge tracks side by side. Personnel and Recipe rails ease toward
+  committed values using unscaled frame time, without predicting work. Planning
+  status and progress viewport no longer overlap. Dashed physical-room borders
+  follow shared JoinGroup authoring; gold identifies selection, green uses the
+  existing JoinBlocker predicate for valid destinations.
+  Verification: clean Unity compile (0 errors/warnings), ordinary Stop/Play,
+  exact campaign restore at tick571, live screenshot review; 56 cards present,
+  heart mesh11 vertices, smooth HP4 vertices, Tool rows side by side; all12
+  authored joinable rooms outlined, layout separation and interpolation passed.
+  No mission replay, new canonical rules, save-slot writes or Windows rebuild.
+  Next executable visual batch: use existing room/unit art in MissionMapView
+  while preserving current Stage action hexes, knowledge and click behavior.
+
+- [x] Personnel follow-up complete: segment HP by maximum health, keep
+  current/max visible at the right end, move Roman Tool tier next to its icon,
+  and diagnose/fix the reported redeployment regression. Verify live resources
+  and focused behavior; avoid broad mission replays.
+  User clarified redeployment meant reloading the app, not mission redeployment.
+  Fixed list filtering to resize each card rather than its content parent;
+  removed excessive label padding, placed Roman Tool tiers beside icons and
+  charge counts at row ends. HP segments use one mesh, one segment per max HP;
+  current/max scales to narrow cards. Sprite caches reload destroyed references.
+  Final compile: zero errors/warnings. Ordinary Stop/Play refreshed stale UI;
+  live visual review confirmed portraits/icons/nicknames/HP/Tool rows. Campaign
+  restored exactly to the tick58 backup; original clock settings retained.
+  Real save slots untouched; no mission walkthrough or Windows rebuild needed.
+
+- [x] Personnel reference-layout implementation complete: large left portrait,
+  prominent nickname above actual name/profession/assignment, health and two
+  icon-led charge tracks below the details. Preserve selection and assignment
+  behavior; verify compilation and the live layout without mission replays.
+  Added separate prominent quoted nickname, canonical name/details, right-side
+  health with numeric HP, and two icon/pip rows. Fixed roster button creation
+  while retaining selection. Final Unity compile: zero errors/warnings.
+  Live visual acceptance remains pending: after script reload the prototype
+  retained Session but its private clockController was null. Refresh was skipped
+  to preserve campaign data; next action is ordinary Stop/Play and review cards.
+  No mission tests, save-slot writes or standalone build were performed.
+
+- Core configuration handoff complete: documented current Wave3 gaps, shared
+  authorities and implementation entry points for the user's parallel chat.
+  This hands off Core authoring/configuration only; the visual workstream remains.
+  See `docs/unity-core-configuration-handoff.md`. Verified the two authored
+  technical Core definitions and current migration gates; documentation only,
+  no runtime changes or tests required.
+
+- [x] Current personnel correction batch complete: all configured base/
+  branch Tools are tierIII with9 charges, including save migration preserving
+  Tool instance IDs and work history. Do not invent branches for base-only Units.
+- [x] Replace overhead sprites on personnel cards with shared profile portraits;
+  display existing-pool nicknames without "Name:"; add red/yellow/green HP and
+  two icon-led charge rows below it. Use shared profession/specialization icons.
+- UI HP thresholds: red<=25%, yellow<=50%, green above50%; presentation only.
+  Next visual-wave priority remains construction/offworld appearance parity;
+  wider Core mechanics still require authored ownership/install rules.
+- Verification: Unity compiled with zero errors/warnings; existing bootstrap
+  tests passed 2/2; profile atlas freshness passed (54 profiles, 24 icons).
+  Actual save26 migrated to27 at tick6121 with all102 configured Tools tierIII
+  and9 charges; IDs/history preserved. Save27 preserves spent charges on reload.
+  Live HP checks passed at20/40/80HP (red/yellow/green); visual review confirmed
+  profile busts, nicknames, two icon/pip rows and readable staff cards. Six
+  base-only Units retain an empty second row rather than invented branches.
+  No full mission replay or standalone rebuild was needed for this correction.
+  Live campaign restored and matched the migrated backup at tick6121; original
+  running4x clock resumed, zero test controllers remained. Real save slots were
+  untouched; use Save to retain the migrated live state.
+  Next: construction-view art, then Offworld room/unit presentation using
+  available authored assets; wider wave3 Core installation remains gated.
+
+- [x] Current visual migration batch complete: import existing validated
+  room art into the base presentation and existing personnel imagery into roster/
+  Ready Room cards, with readable schematic fallbacks. Follow shared catalogs,
+  preserve live campaign state and use focused visual/compile verification.
+- Scope follows the user's standing visual priority. Wider wave3 Core ownership/
+  installation and Response doctrine authoring remain separate gates; do not
+  invent those rules to unblock this presentation batch. Inspect asset readiness
+  before claiming either visual step is available.
+
+- [x] Current UI-wave completion batch complete: scrollable cargo intake
+  and action layouts for3+ items, shared inspection bubble trackers using actual
+  authored work steps/Actors, reversed yellow hazard stripes, and final roster/
+  Ready Room presentation pass. Verify the supported standalone slice, restore
+  live state and record wave completion gates accurately.
+
+- [x] Current batch complete, revised by user: passive recovery at2HP/tick
+  in an assigned Infirmary bed,1HP/tick elsewhere in base; Tools refill on return
+  to base. No treatment/replenishment Recipes, staff requirements or Supply costs.
+- [x] Main presentation batch: make the Unity base resemble the room/layout
+  and staffing simulators, with a visible floor grid and room staff/bed slot cards.
+  Preserve existing assignment, inventory, Ready Room and construction controls.
+- Scope audit complete: Infirmary has four patient places per physical room
+  separate from its two staff, with passive recovery described but no rate or
+  executable treatment Recipe. Workshop exists, but no Tool replenishment cost,
+  duration or Recipe is authored. Current personnel condition and refill history
+  provide persistence foundations, not those missing rules. No gameplay/source
+  changes or tests were made in that planning checkpoint. User subsequently
+  replaced the proposed Recipes with automatic recovery/refill and explicitly
+  prioritized simulator-like presentation. Unity was closed at work start; there
+  is no live session to back up. Preserve real save files and verify migration.
+
+- [x] Current follow-up complete: give both configured Tools nine charges
+  for every Unit, including the live campaign; deposit rock-clearing Supply per
+  completed bubble with save-safe accounting; show active construction ahead of
+  completed clearing history. Verify focused regressions and restore live work.
+
+- [x] Current batch: open the reference mission's existing Processing Room,
+  recover its Supply cache as a persistent physical instance, and finish the
+  executable cargo-wave route through inspection, recovery, storage-limited
+  progressive outputs and Save/Load. Preserve the weapon route and current saves.
+- Status confirmed **In Progress** for this batch. The Processing Room/cache
+  already exist in the authored mission; inspect and project that content rather
+  than adding another mission or silently replacing authored cache behavior.
+- [x] Add the user's mandatory task-tracking requirement near the top of AGENTS.md.
+- [x] Preserve the supplied cargo handoff verbatim in docs and reconcile it with
+  current shared schemas, fixtures, Recipe/custody contracts and Unity saves.
+- [x] Implement the source-backed cargo foundation needed by the two handoff
+  scenarios, preserving legacy rifle/crate behavior. Distinguish locked design
+  from proposed implementation; record any missing authoring explicitly.
+- [x] Rock clearing schedules eight one-tick UNTRAINED bubbles; available
+  permanent Maintenance staff work independent bubbles in parallel. No idle
+  roster search or automatic Tool requirement; committed work records Actors.
+- [x] Save/Load retains partial clearing work and credited Supply. Rock remains
+  blocked until final completion; each bubble deposits its share once within
+  valid storage capacity.
+- [x] Finish visual verification of the single-mesh progress rail and rebuild
+  the Windows player; restore the backed-up user campaign and clock settings.
+- [x] Record focused verification results, remaining cargo gaps and a concrete
+  next implementation step before this session ends.
+- [ ] Complete the handoff's Offworld Supply Cache scenario: same-instance field
+  inspection/extraction, authored recovery graph, single open container, Core
+  policy, progressive deposits, special work and capacity-blocked exact-once retry.
+- [ ] Complete the handoff's shared fixed Rock Formation scenario: physical
+  obstruction Instance, authored mixed-duration graph, progressive outputs and
+  transactional final removal. Keep the user's existing eight-bubble prototype
+  and saved work intact until its explicit migration is implemented.
+
+## Progress, decisions and current blockers
+
+- Personnel correction: tierIII branch labels previously coexisted with tierI
+  secondary kits. The Unity loadout projection now creates every configured Tool
+  from its authored tierIII definition at9 charges; receiving capability metadata
+  follows the actual services. Save27 accepts pinned prior definitions, upgrades
+  existing Tool slots/charges and preserves IDs, damage and paid-work history.
+- Profile cards now use an atlas rendered directly from the shared profile-bust
+  SVG renderer and each Unit's appearance, plus24 existing profession/specialty
+  icons. No overhead character sprite is used as a card portrait. Nicknames come
+  from the existing profession pools; canonical saved names remain unchanged.
+- Removed Name: from shared card labels; added HP colors at25/50% cutoffs and
+  two icon-led nine-charge rows below HP. Card heights grew to keep the rows
+  separate. Six authored base-only Units have no branch/second Tool; their empty
+  slot remains explicit rather than inventing a specialization.
+- Two existing projection checks and atlas freshness checks pass. Compilation
+  has zero errors/warnings. Live backup is Logs/before-personnel-cards.json,
+  tick6121; next verification is actual-save migration and visual/HP-color checks.
+
+- Current visual batch: imported39 existing active PNGs from the simulator
+  catalog, covering19 registered room overlays and54 personnel entries. New
+  unity/tools/presentation-art.mjs projects shared mappings/variant selection,
+  records source hashes and copies PNGs unchanged; --check verifies reproducibility.
+- Added room art to the floor plan and selected-room preview, plus a persistent
+  Art/Schematic preference. Shared personnel-card styling now displays the
+  existing profession sprites in roster, team slots and room staff/bed slots.
+  Labels, class colors, CT outlines, health bars and fallback schematics remain.
+- Compilation passes with zero errors/warnings. The existing room adapter suite
+  now passes7/7; its first test assumed every room had a prop mapping, unlike
+  the renderer's existing floor-indoor/no-props fallback. Updated that assertion
+  to verify the actual fallback instead of failing on newer room definitions.
+  Import freshness/hash checks pass; no full mission walkthrough or Windows
+  rebuild was run for these reversible presentation changes.
+- Live backup: Logs/before-room-art-wave.json, tick1888, running4x construction
+  view. Restored and matched its normalized data exactly, then paused only for
+  visual review. Final step: restore original selection, resume4x, document and
+  show the art overview for user review. No game/save schema changes.
+- Visual batch finished: room overlays, thumbnails and personnel sprites were
+  inspected in Unity. Art/Schematic switching and four Ready Room member images
+  passed a direct UI smoke check with the same campaign-state reference. Restored
+  original Unit selection and matched the full normalized backup at tick1888,
+  then resumed running4x. Left the base art overview open for review instead of
+  the construction screen. Real save slots untouched. Preview: Logs/room-art-base.png.
+- Next actionable visual work: carry the shared art presentation into the
+  construction and offworld views after feedback. Wider Core/configuration wave3
+  remains gated on missing ownership/install/doctrine authoring; this visual
+  batch does not mark those mechanics complete.
+
+- Current UI wave: cargo rows were positioned by decreasing anchors without a
+  viewport, so the third item crossed retention controls. Item and action lists
+  now have independent masked scroll areas; item/action/detail scroll positions
+  survive tick refreshes. Detail, tracker, policy and status regions do not share
+  space. The compact Receiving work text is scrollable too.
+- Added shared InspectionProgressView, projecting legacy step counters into
+  existing one/20-tick work chunks: baseline Receiving4, Analysis2, resource
+  recovery20. Actual saved Actor work drives progress/colors; no timers, Recipes,
+  knowledge reveals or transactions were changed. Reversed only yellow backing
+  stripe direction; bubble seams and completed fill are unchanged.
+- Completed planned roster/Ready Room presentation: searchable roster, reusable
+  profession/health cards and4/5/6 permanent member slots, keeping existing
+  membership/assignment commands and four-person deployment cap.
+- Compilation passes with zero errors/warnings. Extended the existing full UI
+  walkthrough with three-item scrolling, receiving/Analysis/resource counts and
+  all six Ready Room slots; that focused walkthrough is running. Current user
+  backup is Logs/before-inspection-ui-wave.json (tick914, three cargo objects,
+  two Receiving records), with running4x base view settings in the matching file.
+- The focused walkthrough passed after fixing work-room following: all3 items
+  scroll, receiving bubbles advance1/4 through4/4, Analysis uses2, resource uses20,
+  all6 permanent team slots exist, and the rescue/rifle/redeployment route works.
+  Ten shared/export tests and snapshot freshness pass. No simulation rules or
+  save-schema changes were needed in this UI wave.
+- Visual review caught clipped small captions; removed their excessive padding
+  and added visible cargo/action scrollbars. Final screenshot confirms the count,
+  selected-item details,1/4 tracker and reversed yellow stripes are readable and
+  separated from controls: Logs/inspection-ui-three-items-final.png. Also reviewed
+  class-colored Ready Room member slots in Logs/inspection-ui-ready-room.png.
+  Base roster search successfully narrowed54 rows to one matching name.
+- Ordinary Play/Stop/restart verified with zero residual test controllers.
+  Windows build is running; remaining session work is startup smoke, exact live
+  campaign restore and final wave/status updates. The supported wave1 loop is
+  implemented; wave2 is implementation-complete pending user standalone acceptance.
+- Final Windows build succeeded; hidden player startup logged campaign UI ready
+  with debug controls hidden, and its owned process was stopped. Restored the
+  exact normalized campaign backup at tick914 with3 cargo objects, original
+  Unit selection, running4x and base view. Zero residual test controllers; no
+  real save slot writes. Temporary visual-preview items/team were discarded.
+- Completion evidence: one extended full UI walkthrough plus ten shared/export
+  tests passed, snapshot/scoped diff checks passed, final compilation has zero
+  errors/warnings, and cargo/Ready Room visuals and roster search were checked.
+  Current UI-wave implementation is finished. Next action: user standalone
+  Save/relaunch/Load acceptance using docs/unity-playtest-guide.md. Continue UI
+  appearance feedback before expanding wider waves3–5; do not silently mark the
+  separate critical/special cargo or fixed physical rock scenarios complete.
+
+- Simulator presentation batch: imported the user's passive1/2HP rules and
+  automatic Tool refill as shared personnel-recovery data/schema. Save26 stores
+  separate patient bed assignments and rule provenance. Beds reserve patient
+  capacity rather than staff slots; bed occupants cannot deploy or work as staff.
+  Returned condition lives separately from historical combat wounds; Tool refill
+  preserves IDs, damage and committed work history.
+- Implemented a scrollable floor grid and room borders matching simulator CT
+  colors, plus a selected-room panel with colored staff cards, Core-slot and
+  patient-bed tabs. Existing roster assignment and inventory commands remain.
+- Initial recovery checks passed the return/refill/redeployment route. The bed
+  test used a prohibited offworld debug tick; corrected it to advance through
+  an actual Gate redial action. Compilation and ten shared/export checks pass;
+  recovery schema validates. Next: rerun focused recovery checks and the existing
+  full mission/control walkthrough, visually inspect the new base screen and build.
+- Recovery checks now pass2/2, including capacity, Save/Load, offworld exclusion,
+  return refill without repair, and healed-health redeployment. The full existing
+  rescue/cache/rifle/deployment UI walkthrough passes1/1. Its initial base clock
+  is now explicitly paused during setup, preventing machine-speed-dependent
+  extra ticks. Ten shared/export checks and the new recovery schema pass.
+- Visual review confirms visible simulator CT borders, scrollable floor cells
+  and profession-colored staff cards. Reduced room-label padding/font after the
+  screenshot exposed broken word wrapping. Final compilation has zero errors/
+  warnings. Existing save25 migrated at tick411 with its construction site intact.
+  Windows rebuild is running; remaining work is bed-button smoke/visual check,
+  clean player startup, task completion and leaving ordinary Play ready.
+- Final UI bed-button smoke passed: selected a Unit, assigned an actual Infirmary
+  bed, advanced one real base tick for2HP, round-tripped save26, then released it.
+  Temporary in-memory patient state was restored; no real save slot was written.
+  Final screenshot: Logs/base-room-overview-final.png. Ordinary Play/Stop/restart
+  and zero nonpersistent test controllers verified. Windows final build succeeded;
+  hidden player startup logged campaign UI ready with debug controls hidden,
+  then its owned process was stopped. Unity is left in ordinary Play with
+  Maintenance selected and its staff cards visible. Final verification totals:
+  ten shared/export tests, two recovery domain tests and one full UI walkthrough
+  passed, plus the bed-control smoke, schema and visual checks.
+- Next actionable priority is simulator-style roster cards and Ready Room slot
+  presentation using existing shared data/art. Do not resume the rejected paid
+  medical/replenishment Recipe work. Wider Core/cargo/technology gates stay open.
+
+- Charges/bar follow-up: live snapshot captured at tick411 with Generator r17
+  at82/480 ticks, Supply cache already consumed and its outputs recorded across
+  ticks131–139. User confirmed the lump payout concerned rock clearing.
+- Root cause of missing construction bar: completed clearing history preceded
+  construction cards, and the viewport was shorter than one card. Active work
+  now sorts first across both types; the viewport fits a full progress card.
+- Rock clearing now deposits cumulative integer shares (ten total across eight
+  bubbles) immediately. Save25 records credited Supply; old completed orders
+  migrate as already paid, old partial orders as unpaid. Remaining capacity
+  reservations shrink by the amount credited. Cell removal still waits for all
+  eight bubbles. The display shows deposited Supply alongside bubble progress.
+- Shared personnel loadouts now give both configured slots nine charges.
+  Historical mission projections retain their pinned charge values for save
+  compatibility. The live refill remains to be applied during campaign restore.
+  Compilation and ten shared/export checks pass; focused construction verification
+  is running. Current backup: Logs/before-charges-bars.json and matching UI file
+  (running4x, planning view).
+- Final clearing/construction checks pass8/8; ten shared/export checks pass.
+  Tool cancel/spend checks pass2/2. Refilling the actual expedition additionally
+  exposed its completed-work charge audit; an explicit per-work refill marker
+  now preserves that history instead of bypassing charge validation. Its focused
+  round-trip verification is running before the live refill/build.
+- Follow-up complete: refill/save round-trip checks pass2/2 with completed-work
+  charge history intact; final compilation has zero errors/warnings. Windows
+  build and hidden player startup succeeded. Scoped diff/freshness checks pass.
+  Restored the exact campaign at tick411 with Generator82/480 and all102 equipped
+  Tools at9 charges; verified its progress rail is fully inside the visible
+  viewport. Restored running4x and planning view. Only charges/refill audit and
+  save-format migration changed; assignments, cargo and work progress matched
+  the prepared backup. Real save slots were not written; Save retains the refill.
+
+- Processing Room batch: projected the existing locked door, radiation-source
+  isolation and cache collection actions. Added a distinct shared Supply cache
+  Item/Reality and a provisional twenty-bubble recovery graph; the weapon crate
+  remains unchanged. Field inspection, recovery, Receiving work, progressive
+  output commits and capacity-pending retries now have implementation and UI.
+- User approved Balanced Supply and Material recovery defaults in lieu of Core
+  configuration. This batch uses those defaults; it does not install Cores.
+- New cargo and eight-bubble clearing share a bubble-execution kernel. Save24
+  retains Actor work/outcomes and accepts the previous mission fingerprint for
+  existing saves. Focused integration tests are in progress: the first run found
+  a missing Receiving adapter initialization, corrected before the next run.
+- Current user state is backed up in Logs/before-processing-wave.json and
+  before-processing-ui.json (tick2463, speed1); do not restore the older backup.
+- Focused resource transaction tests pass2/2; construction/clearing regression
+  passes8/8; shared economy/export tests pass10/10 and the two new shared schemas
+  validate. The extended rescue UI walkthrough has reached rifle acceptance;
+  remaining corrections so far are its expected extra seven mission ticks and
+  navigation/Actor choices for the new branch, not weakened game requirements.
+- The full handoff requests critical/special-property examples without authored
+  probabilities or magnitudes, and a larger fixed rock graph separate from the
+  user's eight-bubble clearing. Those criteria remain open; do not mark the
+  entire migration wave complete on the strength of the ordinary cache route.
+- Final resource tests pass2/2, including migration from save23, field inspection
+  persistence, same-instance recovery, Balanced deposits, full-capacity pending
+  outcomes, zero-time retry and tamper rejection. Construction/clearing passes8/8.
+  The existing full rescue UI walkthrough, extended through the Processing Room,
+  cache collection/debrief/recovery, progressive deposits, rifle issue and repeat
+  deployment, passes1/1. Final capacity/provenance validation compiles with zero
+  errors/warnings. Shared/export checks pass10/10; four shared schema/table checks
+  pass and bootstrap freshness/scoped diff checks pass.
+- Windows rebuild is running. Remaining session work: verify build/smoke result,
+  clear test framework state, confirm ordinary Play/Stop/restart, migrate/compare
+  the current campaign backup and restore its paused/speed settings. Only then
+  mark this bounded Processing Room/cache batch complete.
+- Processing Room/cache batch complete. Windows build succeeded; hidden player
+  smoke logged campaign UI ready with debug controls hidden, and its owned
+  process was stopped. Ordinary Bootstrap Play/Stop/restart was verified with
+  zero residual nonpersistent test controllers. The real campaign migrated and
+  matched its normalized backup exactly: tick2463, eight assignments, two cargo
+  objects, existing offworld Holding Area expedition; paused/speed1 preserved.
+  Real save slots were not written. Unity is left in ordinary Play, Base planning.
+- Next actionable migration work: author/implement personnel recovery and Tool
+  replenishment costs/work for a repeatable sortie, plus the remaining fixed-rock
+  and optional critical/special cargo definitions. The ordinary cache path and
+  standalone build are ready for user playtest; wider wave gates remain open.
+
+- Handoff copied verbatim to docs/orionis-cargo-shared-schema-handoff-unity-migration-wave-0.md.
+  Reconciliation found no existing cargo economics/manifest/placement/pending-output
+  fields. Existing schemas are strict Item/Instance tables with reusable $defs;
+  their physical and Knowledge models remain authoritative. Existing processes
+  can be extended; no new cargo Recipe runner or resource ledger will be added.
+- Locked handoff rules supersede the earlier provisional conversion stat1 and
+  Pristine-as-richness terminology for new resource cargo: Poor/Standard/Rich/
+  Exceptional, INV-count Small/Medium/Large/Huge, 100x conversion units and
+  within-family tier weights1:4:16. Existing weapon crate stays non-resource.
+- This eight-bubble clearing request remains Medium by the new size ranges.
+  The handoff's larger inspected/demolition rock scenario is a separate authored
+  Recipe; do not rename eight bubbles Huge or silently replace saved clearing.
+- Scope for the cargo implementation step: shared validated economics and
+  instance-schema extensions, projection into Unity and cross-runtime numeric
+  examples. Progressive Recipe transactions, fixed physical obstruction instances
+  and Core configuration must then integrate into existing execution contracts.
+- Shared economics/query implementation and strict schema extensions are now
+  written. Twelve focused Node checks and nine schema/legacy-fixture checks pass.
+  Unity imports the same catalog; C# parity checks also pass.
+- Unity cargo parity checks now pass (2/2), using the same authored examples and
+  progressive-share totals as JS. Compilation has zero errors/warnings. A stale
+  test-framework Play-mode restore state initially prevented execution; cleared
+  it through normal cancellation/Stop/reopening Bootstrap, then verified the run.
+  The existing full rescue/equipment UI walkthrough passed as the legacy
+  regression check. No source/fixture edits were made during test execution.
+- Found an unfinished RecoveredCargo storage-routing path that credited
+  handlingCost*quantity as Supply, consumed the object, and referenced undefined
+  variable d. Removed that conflicting conversion; routing cannot generate value.
+  No existing physical weapon crate is made into resource cargo.
+- User clarified eight bubbles per rock cell, one tick (three minutes) each.
+  UNTRAINED still means a real Unit assigned to Maintenance; each available Unit
+  works at most one bubble per tick. Unworked requirements are white, completed
+  work uses the actual Actor's profession color. Bubble duration classes are
+  one tick or twenty ticks; construction display now uses those work chunks.
+- Implemented shared CLEAR_ROCK authoring, parallel Maintenance work, output
+  reservation, schema23 migration from schema21/22, and clearing cards/cell state.
+- Replaced overlapping hazard/track/fill layers with RecipeProgressGraphic;
+  corrected endpoint coverage after a 0/50/100% visual review. Final renderer
+  compilation passed with zero errors/warnings; final review/build still pending.
+- Verification so far: 5 shared/export checks, 8 construction/clearing domain
+  tests and 1 integrated UI/save-load walkthrough passed. The walkthrough first
+  exposed a missing CanvasRenderer requirement; fixed and rerun successfully.
+- User campaign backup: unity/StargateOrionis/Logs/before-clearing-wave.json,
+  with clock/UI settings in before-clearing-ui.json (tick1797, running at4x).
+  Ordinary Play/Stop/restart and test-controller cleanup were verified before
+  visual review. Editor was subsequently stopped for final compilation.
+- The earlier approval-review usage limit is resolved on the resumed turn.
+  The final Windows build succeeded through the normal approval mechanism and
+  its hidden smoke-test player logged campaign UI ready with debug off.
+- Final verification: 12 Node tests, 9 schema/legacy-fixture checks, 8 Unity
+  construction/clearing domain tests, 1 construction UI/save-load walkthrough,
+  2 Unity cargo parity checks and 1 full rescue/equipment UI walkthrough passed.
+  Shared snapshot freshness and scoped diff checks pass; compilation has zero
+  errors/warnings. The handoff copy is byte-for-byte identical to the supplied file.
+- Final bar visual check on the restored Cultural Platform confirms a solid
+  100% fill with slanted seams and no hazard leaking at its endpoints; preview:
+  unity/StargateOrionis/Logs/clearing-final-bar.png. The completed campaign was
+  normalized/compared against its backup and is unchanged (tick1797 at restore).
+  Original running4x clock restored; UI left in Base planning. Ordinary
+  Play/Stop/restart verified, zero residual nonpersistent test controllers,
+  and the owned player smoke process was stopped. Real save slots were not written.
+- Next actionable implementation: author one resource Item/Instance and explicit
+  recovery Recipe/output distribution, then wire generic pending-outcome commit
+  and retry into the existing process/storage transaction authority. See
+  docs/shared-cargo-reconciliation.md. No critical probabilities, special-property
+  outcomes, owned Receiving Cores or final fixed-instance placement rules were
+  invented; the two new integrated scenarios remain unfinished.
+- The new handoff adds progressive resource recovery and atomic pending outputs,
+  beyond the bounded eight-bubble/one-final-award clearing prototype. Reconcile
+  before expanding that implementation; do not present the new scenarios as done.
+
+## Existing art workstream: Shared wall families + Infirmary furniture trial — October 18, 2026
 
 - User authorized separating reusable architecture from room-specific furnishings.
   Three four-piece wall families (angular/rounded/utilitarian) and three matching
