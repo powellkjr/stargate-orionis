@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "id": "technician_v01",
+  "sourceCanvas": 1024,
+  "canvas": 128,
+  "parts": {
+    "torso": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__torso.png",
+      "pivot": [
+        64.0,
+        64.0
+      ],
+      "parent": "root",
+      "z": 30
+    },
+    "head": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__head.png",
+      "pivot": [
+        64.0,
+        50.0
+      ],
+      "parent": "torso",
+      "z": 25
+    },
+    "left_arm": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__left-arm.png",
+      "pivot": [
+        84.0,
+        48.0
+      ],
+      "parent": "torso",
+      "z": 20
+    },
+    "right_arm": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__right-arm.png",
+      "pivot": [
+        44.0,
+        48.0
+      ],
+      "parent": "torso",
+      "z": 21
+    },
+    "left_leg": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__left-leg.png",
+      "pivot": [
+        70.0,
+        73.0
+      ],
+      "parent": "root",
+      "z": 10
+    },
+    "right_leg": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__right-leg.png",
+      "pivot": [
+        58.0,
+        73.0
+      ],
+      "parent": "root",
+      "z": 11
+    },
+    "equipment": {
+      "src": "../shared/sprites/offworld/rigs/technician-v01-preferred-proof-v02/char_technician_v01__equipment.png",
+      "pivot": [
+        64.0,
+        67.0
+      ],
+      "parent": "torso",
+      "z": 60
+    }
+  }
+}

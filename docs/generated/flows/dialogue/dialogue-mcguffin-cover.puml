@@ -1,0 +1,114 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-mcguffin-cover"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-mcguffin-cover\nparticipants:\n  right: mcguffin-01\n  left: ACTIVE_SGC_SPEAKER\nstartNodeId: mcguffin-opening\nstartWhen:\n  stageVisitCount:\n    stageId: stage-overseer-office\n    minimum: 1\nonStartEffects:\n  []" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "mcguffin-opening\nspeaker: mcguffin-01\nside: RIGHT\ntext: Good. You're finally here. Did they get the contamination\nunder control?" as n54a1f1a7150a14e18e82 #EAF1F8
+rectangle "mcguffin-containment-routine\ntext: Yes. It appears contained.\nsource: NEUTRAL\nrequirements:\n  knowledge: contamination-contained\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -10\nnextNodeId: mcguffin-processing-question" as n2f9b92b4dec1c3938518 #E5DAF5
+rectangle "mcguffin-doctor-missing\ntext: Contained, but the doctor isn't there anymore.\nsource: MEDIC\nrequirements:\n  knowledgeAll:\n    - contamination-contained\n    - doctor-missing\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 25\nnextNodeId: mcguffin-processing-question" as nb6749d610351e1453905 #E5DAF5
+rectangle "mcguffin-containment-deflect\ntext: That's what I was told.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -5\nnextNodeId: mcguffin-processing-question" as n45a4ab85c52dd35aca0b #E5DAF5
+rectangle "mcguffin-containment-play-dumb\ntext: Medical wasn't part of my briefing.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 0\nnextNodeId: mcguffin-processing-question" as n19a5b6692e7088484ce9 #E5DAF5
+rectangle "mcguffin-containment-unbriefed\ntext: We have not assessed the medical situation yet.\nsource: NEUTRAL\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 40\nnextNodeId: mcguffin-processing-question" as n04d6284cc2b6633a204f #E5DAF5
+rectangle "mcguffin-processing-question\nspeaker: mcguffin-01\nside: RIGHT\ntext: And Processing? Reynolds said the line was still unstable." as n1e49c01990ca9536a378 #EAF1F8
+rectangle "mcguffin-processing-correct\ntext: The secondary fault is isolated. The line is stable for now.\nsource: TECHNICIAN\nrequirements:\n  knowledge: processing-fault-known\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -10\nnextNodeId: mcguffin-lab-question" as n4ac2685b04b9fb8dec83 #E5DAF5
+rectangle "mcguffin-processing-vague\ntext: They're still working it.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 0\nnextNodeId: mcguffin-lab-question" as nc3fef63598abd75ef613 #E5DAF5
+rectangle "mcguffin-processing-unbriefed\ntext: We still need to inspect Processing.\nsource: NEUTRAL\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: facility-room-codes-known\nnextNodeId: mcguffin-room-codes" as nfe32f5a871ee876a5ba9 #E5DAF5
+rectangle "mcguffin-lab-question\nspeaker: mcguffin-01\nside: RIGHT\ntext: What did the lab make of the last test?" as n5cb8a6d3229eee73c13f #EAF1F8
+rectangle "mcguffin-hand-report\ntext: Here is the report from the analysis lab.\nsource: NEUTRAL\nconditions:\n  - \n    type: ASSET_CUSTODY\n    assetInstanceId: lab-report-01\n    equals: PARTY_STORAGE\neffects:\n  - \n    type: HAND_OVER_PARTY_ITEM\n    instanceId: lab-report-01\n    recipientId: mcguffin-01\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 45\nnextNodeId: mcguffin-report-suspicious" as nd79d0edc30a5b2a4f0c4 #E5DAF5
+rectangle "mcguffin-lab-correct\ntext: The readings diverged during the extraction cycle.\nsource: SCIENTIST\nrequirements:\n  knowledge: mcguffin-answer-lab-status\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -10\nnextNodeId: mcguffin-hidden-equipment-test" as nac728d42302e2aa69503 #E5DAF5
+rectangle "mcguffin-lab-deflect\ntext: I didn't get the full report.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 5\nnextNodeId: mcguffin-hidden-equipment-test" as n90646a19d6922bcc8f45 #E5DAF5
+rectangle "mcguffin-lab-unbriefed\ntext: We have not reviewed the lab evidence yet.\nsource: NEUTRAL\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: facility-room-codes-known\nnextNodeId: mcguffin-room-codes" as ne951aad81799b3dd1fe4 #E5DAF5
+rectangle "mcguffin-hidden-equipment-test\nspeaker: mcguffin-01\nside: RIGHT\ntext: Anything else I need to know?" as n71d586bcf23e457ea1dc #EAF1F8
+rectangle "mcguffin-sensitive-hidden-weapon\ntext: The hidden weapon in storage is still secure.\nsource: KNOWLEDGE\nrequirements:\n  knowledge: hidden-store-item-identified\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 60\nnextNodeId: mcguffin-suspicion-check" as nfec8bc5b40a1fe267da5 #E5DAF5
+rectangle "mcguffin-play-dumb-hidden\ntext: Nothing outside my assignment.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -10\nnextNodeId: mcguffin-suspicion-check" as n50116d4ba0ea3d90f8b8 #E5DAF5
+rectangle "mcguffin-neutral-no\ntext: No.\nsource: NEUTRAL\neffects:\n  []\nnextNodeId: mcguffin-suspicion-check" as n10453eeda9e1ac0064b0 #E5DAF5
+rectangle "mcguffin-suspicion-check\nspeaker: SYSTEM\nside: NONE\nbranchByNpcState:\n  instanceId: mcguffin-01\n  cases:\n    - \n      when:\n        suspicionBelow: 100\n      nextNodeId: mcguffin-cover-maintained\n    - \n      when:\n        suspicionAtLeast: 100\n        hostilityBelow: 100\n      nextNodeId: mcguffin-confrontation\n    - \n      when:\n        hostilityAtLeast: 100\n      nextNodeId: mcguffin-hostile" as n7c5ae540214a4232b39a #EAF1F8
+rectangle "mcguffin-cover-maintained\nspeaker: mcguffin-01\nside: RIGHT\ntext: Fine. Get the report to me when it's ready.\neffects:\n  - \n    type: EMIT_EVENT\n    event: event_mcguffin_cover_maintained\nendConversation: true" as ne8f6afe1ceb2a6142add #EAF1F8
+rectangle "mcguffin-confrontation\nspeaker: mcguffin-01\nside: RIGHT\ntext: Who exactly sent you?" as nc4519c4e3f5914f34131 #EAF1F8
+rectangle "mcguffin-confront-diplomat\ntext: The same people who are going to be very unhappy if this\noperation stops producing.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 2\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -30\nnextNodeId: mcguffin-suspicion-check" as n391eb7bdd05fec3e2853 #E5DAF5
+rectangle "mcguffin-confront-soldier\ntext: You don't need to know.\nsource: SOLDIER\nrequirements:\n  profession: SOLDIER\n  minimumTier: 2\neffects:\n  - \n    type: CHANGE_NPC_HOSTILITY\n    instanceId: mcguffin-01\n    delta: 45\nnextNodeId: mcguffin-suspicion-check" as n55f32b9f7ec9faa4e24b #E5DAF5
+rectangle "mcguffin-confront-engage\ntext: Enough.\nsource: NEUTRAL\neffects:\n  - \n    type: START_HOSTILE_INCIDENT\n    incidentId: incident-office-guards\nendConversation: true" as n8a8b6c3084fd98825728 #E5DAF5
+rectangle "mcguffin-hostile\nspeaker: mcguffin-01\nside: RIGHT\ntext: You're not supposed to be here.\neffects:\n  - \n    type: SET_NPC_DISPOSITION\n    instanceId: mcguffin-01\n    value: HOSTILE\n  - \n    type: EMIT_EVENT\n    event: event_mcguffin_cover_blown\n  - \n    type: EMIT_EVENT\n    event: event_evidence_purge_started\n  - \n    type: START_HOSTILE_INCIDENT\n    incidentId: incident-office-guards\nendConversation: true" as n0b49624fffcc9b0d1f5d #EAF1F8
+rectangle "mcguffin-security-entry\nspeaker: mcguffin-01\nside: RIGHT\ntext: Are you the mercenary crew I sent for? I need you to check\nHolding, Processing, and the analysis lab." as n239039dfc0ff98b31cc0 #EAF1F8
+rectangle "mcguffin-mercenary-yes\ntext: That is us. We have not reached those rooms yet.\nsource: NEUTRAL\nnextNodeId: mcguffin-room-codes" as ne5961956479c5554dad7 #E5DAF5
+rectangle "mcguffin-mercenary-report\ntext: We have started checking. What do you need reported?\nsource: NEUTRAL\nnextNodeId: mcguffin-opening" as n7881c41b238a20b9aa87 #E5DAF5
+rectangle "mcguffin-room-codes\nspeaker: mcguffin-01\nside: RIGHT\ntext: Use these access codes for Holding, Processing, and the lab.\nCheck the equipment and bring me the lab report. Do not waste my\ntime.\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: facility-room-codes-known\nendConversation: true" as nd019f99ccff3f9f4db85 #EAF1F8
+rectangle "mcguffin-processing-entry\nspeaker: mcguffin-01\nside: RIGHT\ntext: Who are you, and how did you get access to Processing? I did\nnot authorize visitors through that door.\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 30" as n590c15d6adc9cc93d30e #EAF1F8
+rectangle "mcguffin-entry-diplomat\ntext: Your staff directed us through Processing to check the\nequipment. We are the contractors you requested.\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -10\nnextNodeId: mcguffin-opening" as nce8f969fc972676ce1dd #E5DAF5
+rectangle "mcguffin-entry-soldier\ntext: We secured the approach and checked the machinery on the way.\nWe are your mercenary crew.\nsource: SOLDIER\nrequirements:\n  profession: SOLDIER\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: -5\nnextNodeId: mcguffin-opening" as n76d931f47394bbbf01f9 #E5DAF5
+rectangle "mcguffin-entry-neutral\ntext: The door was accessible. We came to report.\nsource: NEUTRAL\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: mcguffin-01\n    delta: 15\nnextNodeId: mcguffin-opening" as nbe86cf638193823316d4 #E5DAF5
+rectangle "mcguffin-report-suspicious\nspeaker: mcguffin-01\nside: RIGHT\ntext: This is far too detailed for a mercenary squad. These\npulse-cycle conclusions would require specialist testing—or taking\nthe device apart. Who are you really working for?\nnextNodeId: mcguffin-suspicion-check" as neae15b0499f142a0dbd4 #EAF1F8
+rectangle "processing-entry\nwhen:\n  enteredFromStage: stage-processing\nstartNodeId: mcguffin-processing-entry" as n175a098b2d986293b7e0 #FFF1CC
+rectangle "security-entry\nwhen:\n  enteredFromStage: stage-security-hall\nstartNodeId: mcguffin-security-entry" as ncf819e9d982081b85f9d #FFF1CC
+ncced28c6dc3f99c2396a --> n54a1f1a7150a14e18e82 : "default start"
+ncced28c6dc3f99c2396a --> n175a098b2d986293b7e0 : "authored variant order"
+n175a098b2d986293b7e0 --> n590c15d6adc9cc93d30e : "when matched"
+ncced28c6dc3f99c2396a --> ncf819e9d982081b85f9d : "authored variant order"
+ncf819e9d982081b85f9d --> n239039dfc0ff98b31cc0 : "when matched"
+n54a1f1a7150a14e18e82 --> n2f9b92b4dec1c3938518 : "choose response, then qualified Actor"
+n2f9b92b4dec1c3938518 --> n1e49c01990ca9536a378
+n54a1f1a7150a14e18e82 --> nb6749d610351e1453905 : "choose response, then qualified Actor"
+nb6749d610351e1453905 --> n1e49c01990ca9536a378
+n54a1f1a7150a14e18e82 --> n45a4ab85c52dd35aca0b : "choose response, then qualified Actor"
+n45a4ab85c52dd35aca0b --> n1e49c01990ca9536a378
+n54a1f1a7150a14e18e82 --> n19a5b6692e7088484ce9 : "choose response, then qualified Actor"
+n19a5b6692e7088484ce9 --> n1e49c01990ca9536a378
+n54a1f1a7150a14e18e82 --> n04d6284cc2b6633a204f : "choose response, then qualified Actor"
+n04d6284cc2b6633a204f --> n1e49c01990ca9536a378
+n1e49c01990ca9536a378 --> n4ac2685b04b9fb8dec83 : "choose response, then qualified Actor"
+n4ac2685b04b9fb8dec83 --> n5cb8a6d3229eee73c13f
+n1e49c01990ca9536a378 --> nc3fef63598abd75ef613 : "choose response, then qualified Actor"
+nc3fef63598abd75ef613 --> n5cb8a6d3229eee73c13f
+n1e49c01990ca9536a378 --> nfe32f5a871ee876a5ba9 : "choose response, then qualified Actor"
+nfe32f5a871ee876a5ba9 --> nd019f99ccff3f9f4db85
+n5cb8a6d3229eee73c13f --> nd79d0edc30a5b2a4f0c4 : "choose response, then qualified Actor"
+nd79d0edc30a5b2a4f0c4 --> neae15b0499f142a0dbd4
+n5cb8a6d3229eee73c13f --> nac728d42302e2aa69503 : "choose response, then qualified Actor"
+nac728d42302e2aa69503 --> n71d586bcf23e457ea1dc
+n5cb8a6d3229eee73c13f --> n90646a19d6922bcc8f45 : "choose response, then qualified Actor"
+n90646a19d6922bcc8f45 --> n71d586bcf23e457ea1dc
+n5cb8a6d3229eee73c13f --> ne951aad81799b3dd1fe4 : "choose response, then qualified Actor"
+ne951aad81799b3dd1fe4 --> nd019f99ccff3f9f4db85
+n71d586bcf23e457ea1dc --> nfec8bc5b40a1fe267da5 : "choose response, then qualified Actor"
+nfec8bc5b40a1fe267da5 --> n7c5ae540214a4232b39a
+n71d586bcf23e457ea1dc --> n50116d4ba0ea3d90f8b8 : "choose response, then qualified Actor"
+n50116d4ba0ea3d90f8b8 --> n7c5ae540214a4232b39a
+n71d586bcf23e457ea1dc --> n10453eeda9e1ac0064b0 : "choose response, then qualified Actor"
+n10453eeda9e1ac0064b0 --> n7c5ae540214a4232b39a
+n7c5ae540214a4232b39a --> ne8f6afe1ceb2a6142add : "case 1 / {<U+0022>suspicionBelow<U+0022>:100}"
+n7c5ae540214a4232b39a --> nc4519c4e3f5914f34131 : "case 2 / {<U+0022>suspicionAtLeast<U+0022>:100,<U+0022>hostilityBelow<U+0022>:100}"
+n7c5ae540214a4232b39a --> n0b49624fffcc9b0d1f5d : "case 3 / {<U+0022>hostilityAtLeast<U+0022>:100}"
+ne8f6afe1ceb2a6142add --> n361e48d0308f20e32dba : "Continue after reading"
+nc4519c4e3f5914f34131 --> n391eb7bdd05fec3e2853 : "choose response, then qualified Actor"
+n391eb7bdd05fec3e2853 --> n7c5ae540214a4232b39a
+nc4519c4e3f5914f34131 --> n55f32b9f7ec9faa4e24b : "choose response, then qualified Actor"
+n55f32b9f7ec9faa4e24b --> n7c5ae540214a4232b39a
+nc4519c4e3f5914f34131 --> n8a8b6c3084fd98825728 : "choose response, then qualified Actor"
+n8a8b6c3084fd98825728 --> n361e48d0308f20e32dba
+n0b49624fffcc9b0d1f5d --> n361e48d0308f20e32dba : "Continue after reading"
+n239039dfc0ff98b31cc0 --> ne5961956479c5554dad7 : "choose response, then qualified Actor"
+ne5961956479c5554dad7 --> nd019f99ccff3f9f4db85
+n239039dfc0ff98b31cc0 --> n7881c41b238a20b9aa87 : "choose response, then qualified Actor"
+n7881c41b238a20b9aa87 --> n54a1f1a7150a14e18e82
+nd019f99ccff3f9f4db85 --> n361e48d0308f20e32dba : "Continue after reading"
+n590c15d6adc9cc93d30e --> nce8f969fc972676ce1dd : "choose response, then qualified Actor"
+nce8f969fc972676ce1dd --> n54a1f1a7150a14e18e82
+n590c15d6adc9cc93d30e --> n76d931f47394bbbf01f9 : "choose response, then qualified Actor"
+n76d931f47394bbbf01f9 --> n54a1f1a7150a14e18e82
+n590c15d6adc9cc93d30e --> nbe86cf638193823316d4 : "choose response, then qualified Actor"
+nbe86cf638193823316d4 --> n54a1f1a7150a14e18e82
+neae15b0499f142a0dbd4 --> n7c5ae540214a4232b39a : "Continue"
+@enduml

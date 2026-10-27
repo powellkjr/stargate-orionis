@@ -58,6 +58,6 @@ namespace Orionis.Domain
             return Replace(s, s.Teams.Select(x => x == t ? new SGTeam(t.Id, t.Designation, t.RoomId, members) : x));
         }
         private static CampaignState Replace(CampaignState s, IEnumerable<SGTeam> teams) =>
-            new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers, s.Expedition, teams, s.Cargo, s.Personnel, construction: s.Construction);
+            new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers, s.Expedition, teams, s.Cargo, s.Personnel, construction: s.Construction, cores: s.Cores, workforce: s.Workforce, completedWork: s.CompletedWork);
     }
 }

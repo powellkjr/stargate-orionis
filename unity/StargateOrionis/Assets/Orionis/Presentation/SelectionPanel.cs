@@ -34,7 +34,7 @@ namespace Orionis.Presentation
                 inventory.gameObject.SetActive(false);
             }
             selection.Changed += Render;
-            session.StaffingChanged += Refresh;
+            session.StaffingChanged += Refresh; session.TickCommitted += Tick;
             if (selection.Current != null) Render(selection.Current);
         }
         private void Render(SelectionDetails details)
@@ -75,16 +75,17 @@ namespace Orionis.Presentation
                 if (session.State.Expedition?.Returned == true && session.State.Expedition.Party.Any(u => u.UnitId == details.Id))
                 {
                     var member = session.State.Expedition.Party.Single(u => u.UnitId == details.Id);
-                    description.text += "\nReturned health: " + Orionis.Domain.MissionCombat.Inspect(session.State).PartyHealth[details.Id] +
+                    description.text += "\nReturned health: " + PersonnelCondition.Health(session.State,details.Id) +
                         "\n" + string.Join(" / ", member.Tools.Select(t => t.Label + ": " + t.Charges + " charges"));
                 }
             }
         }
+        private void Tick(long _) => Refresh();
         private void Refresh() { if (selection.Current != null) Render(selection.Current); }
         private void OnDestroy()
         {
             if (selection != null) selection.Changed -= Render;
-            if (session != null) session.StaffingChanged -= Refresh;
+            if (session != null) { session.StaffingChanged -= Refresh; session.TickCommitted -= Tick; }
         }
     }
 }

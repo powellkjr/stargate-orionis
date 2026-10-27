@@ -218,6 +218,17 @@ cleans exact generated names and preserves custom names and work state.
 
 ## Communications and strategic map — deferred implementation
 
+October26 Unity follow-through: the user requests a Command room named
+**Communications**, whose Core places will receive missions. Shared room schema
+and catalog now contain a provisional Response-derived 1x1 envelope: CT1 two
+staff and two Core places (24 hours / 24 S1 under current construction rules),
+no joining or storage. Staffing progression reuses 2/3/4; Core places remain two.
+This authors the room envelope only. No mission-acquisition Core definitions,
+input/output Recipes, selection policy or generation timing were found; these
+remain an explicit authoring gap. Do not invent mission drops, frequencies or
+political permission. Data Storage is categorized under Storage at user request.
+
+
 - Knowing an address permits dialing subject to physical connection rules;
   unfamiliarity is not political permission to dial. The destination might not
   open its Iris.

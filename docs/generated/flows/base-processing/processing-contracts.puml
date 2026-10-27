@@ -1,0 +1,107 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "Processing admission and tag transitions"
+caption "demos/shared/data/processing-contracts.json + process-matrix.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "id: RECEIVING_ADMISSION\nrequiredProcessingTags:\n  - RECEIVING_REQUIRED\nrequiredRoomCapabilities:\n  - CAN_ACCEPT_RECEIVING" as n47e3247ff5703ed94b28 #DAEDEB
+rectangle "Processing tag\nRECEIVING_REQUIRED" as ncc9e897efdb420e42fbb #FFF1CC
+rectangle "id: ANALYSIS_ADMISSION\nrequiredProcessingTags:\n  - ANALYSIS_REQUIRED\nrequiredRoomCapabilities:\n  - CAN_ACCEPT_ANALYSIS\nforbiddenProcessingTags:\n  - CONTAINMENT_REQUIRED" as n9b680f5773837d57acca #DAEDEB
+rectangle "Processing tag\nANALYSIS_REQUIRED" as naae6194c5906ed7147d5 #FFF1CC
+rectangle "Processing tag\nCONTAINMENT_REQUIRED" as n2497b6cd69e9ab3e8f5d #FFF1CC
+rectangle "id: REVERSE_ENGINEERING_ADMISSION\nrequiredProcessingTags:\n  - ANALYSIS_COMPLETE\n  - REVERSE_ENGINEERING_AVAILABLE\nrequiredRoomCapabilities:\n  - CAN_ACCEPT_WORKSHOP\n  - CAN_REVERSE_ENGINEER" as n9922ccf447ff4cff221d #DAEDEB
+rectangle "Processing tag\nANALYSIS_COMPLETE" as nd583457449f002a72ee2 #FFF1CC
+rectangle "Processing tag\nREVERSE_ENGINEERING_AVAILABLE" as n57dbfd338efb59147a4f #FFF1CC
+rectangle "id: EQUIPMENT_STORAGE_ADMISSION\nrequiredProcessingTags:\n  - RECEIVING_COMPLETE\n  - IDENTITY_ESTABLISHED\n  - RECEIVING_TO_EQUIPMENT_STORAGE\nforbiddenProcessingTags:\n  - ANALYSIS_REQUIRED\n  - WORKSHOP_REQUIRED\n  - CONTAINMENT_REQUIRED\nrequiredRoomCapabilities:\n  - CAN_ACCEPT_EQUIPMENT_STORAGE" as n9ccf3809f508f2522588 #DAEDEB
+rectangle "Processing tag\nRECEIVING_COMPLETE" as n96e28d7e08c2a67f5d95 #FFF1CC
+rectangle "Processing tag\nIDENTITY_ESTABLISHED" as n367df04744ac95d59c98 #FFF1CC
+rectangle "Processing tag\nRECEIVING_TO_EQUIPMENT_STORAGE" as n48241639676a2f34aabd #FFF1CC
+rectangle "Processing tag\nWORKSHOP_REQUIRED" as n59cb917a19a99d40d676 #FFF1CC
+rectangle "id: CONTAINMENT_ADMISSION\nrequiredProcessingTags:\n  - CONTAINMENT_REQUIRED\nrequiredRoomCapabilities:\n  - CAN_ACCEPT_CONTAINMENT" as n9d388fee5bdf453d18ed #DAEDEB
+rectangle "RECEIVING_PROCESS\nid: RECEIVING_AUTHORIZE\nrequiredProcessingTags:\n  - RECEIVING_REQUIRED\naddProcessingTags:\n  - RECEIVING_AUTHORIZED" as n078e823f956f82791abe #EAF1F8
+rectangle "Processing tag\nRECEIVING_AUTHORIZED" as ndf29ddb5fc747b9e09e8 #FFF1CC
+rectangle "RECEIVING_PROCESS\nid: RECEIVING_COMPLETE\nrequiredProcessingTags:\n  - RECEIVING_REQUIRED\n  - RECEIVING_AUTHORIZED\nremoveProcessingTags:\n  - RECEIVING_REQUIRED\n  - RECEIVING_AUTHORIZED\n  - IDENTITY_UNKNOWN\naddProcessingTags:\n  - RECEIVING_COMPLETE\n  - IDENTITY_ESTABLISHED" as n3e72442e5dd8258db132 #EAF1F8
+rectangle "Processing tag\nIDENTITY_UNKNOWN" as n73eab3bdcadf9e09f2eb #FFF1CC
+rectangle "ANALYSIS_PROCESS\nid: ANALYSIS_AUTHORIZE\nrequiredProcessingTags:\n  - ANALYSIS_REQUIRED\naddProcessingTags:\n  - ANALYSIS_AUTHORIZED" as n6569adb5c30fdc2112c2 #EAF1F8
+rectangle "Processing tag\nANALYSIS_AUTHORIZED" as n591ebbd3a36d7f6cae3b #FFF1CC
+rectangle "ANALYSIS_PROCESS\nid: ANALYSIS_COMPLETE\nrequiredProcessingTags:\n  - ANALYSIS_REQUIRED\n  - ANALYSIS_AUTHORIZED\nremoveProcessingTags:\n  - ANALYSIS_REQUIRED\n  - ANALYSIS_AUTHORIZED\n  - CONTAINMENT_REQUIRED\naddProcessingTags:\n  - ANALYSIS_COMPLETE\n  - NONDESTRUCTIVE_ANALYSIS_EXHAUSTED\n  - REVERSE_ENGINEERING_AVAILABLE" as n499ccceb9d727a6ffc3c #EAF1F8
+rectangle "Processing tag\nNONDESTRUCTIVE_ANALYSIS_EXHAUSTED" as n6f987d54fbe0dc38d978 #FFF1CC
+rectangle "REVERSE_ENGINEERING_PROCESS\nid: WORKSHOP_AUTHORIZE\nrequiredProcessingTags:\n  - ANALYSIS_COMPLETE\n  - REVERSE_ENGINEERING_AVAILABLE\naddProcessingTags:\n  - WORKSHOP_AUTHORIZED\n  - REVERSE_ENGINEERING_AUTHORIZED" as nf76dfec04f626f9954ad #EAF1F8
+rectangle "Processing tag\nWORKSHOP_AUTHORIZED" as n2f0613832abdb434447b #FFF1CC
+rectangle "Processing tag\nREVERSE_ENGINEERING_AUTHORIZED" as na2a81aeef7666e624ef2 #FFF1CC
+rectangle "REVERSE_ENGINEERING_PROCESS\nid: REVERSE_ENGINEERING_SELECT\nrequiredProcessingTags:\n  - WORKSHOP_AUTHORIZED\n  - REVERSE_ENGINEERING_AUTHORIZED\naddProcessingTags:\n  - REVERSE_ENGINEERING_SELECTED" as n6e9aca138d219a9705a4 #EAF1F8
+rectangle "Processing tag\nREVERSE_ENGINEERING_SELECTED" as nb47524c33fd032aced05 #FFF1CC
+rectangle "REVERSE_ENGINEERING_PROCESS\nid: REVERSE_ENGINEERING_START\nrequiredProcessingTags:\n  - REVERSE_ENGINEERING_SELECTED\naddProcessingTags:\n  - REVERSE_ENGINEERING_IN_PROGRESS" as n1737a9ab414ad39a2ec5 #EAF1F8
+rectangle "Processing tag\nREVERSE_ENGINEERING_IN_PROGRESS" as n8f5cb79e34e4739db29b #FFF1CC
+rectangle "REVERSE_ENGINEERING_PROCESS\nid: REVERSE_ENGINEERING_COMPLETE\nrequiredProcessingTags:\n  - WORKSHOP_REQUIRED\n  - WORKSHOP_AUTHORIZED\n  - REVERSE_ENGINEERING_AUTHORIZED\n  - REVERSE_ENGINEERING_SELECTED\n  - REVERSE_ENGINEERING_IN_PROGRESS\nremoveProcessingTags:\n  - WORKSHOP_REQUIRED\n  - WORKSHOP_AUTHORIZED\n  - REVERSE_ENGINEERING_AUTHORIZED\n  - REVERSE_ENGINEERING_SELECTED\n  - REVERSE_ENGINEERING_IN_PROGRESS\naddProcessingTags:\n  - REVERSE_ENGINEERING_COMPLETE" as n136fd683da4dded583c1 #EAF1F8
+rectangle "Processing tag\nREVERSE_ENGINEERING_COMPLETE" as n38fc28241b4f736baf2e #FFF1CC
+ncc9e897efdb420e42fbb ..> n47e3247ff5703ed94b28 : "required"
+naae6194c5906ed7147d5 ..> n9b680f5773837d57acca : "required"
+n2497b6cd69e9ab3e8f5d ..> n9b680f5773837d57acca : "must be absent"
+nd583457449f002a72ee2 ..> n9922ccf447ff4cff221d : "required"
+n57dbfd338efb59147a4f ..> n9922ccf447ff4cff221d : "required"
+n96e28d7e08c2a67f5d95 ..> n9ccf3809f508f2522588 : "required"
+n367df04744ac95d59c98 ..> n9ccf3809f508f2522588 : "required"
+n48241639676a2f34aabd ..> n9ccf3809f508f2522588 : "required"
+naae6194c5906ed7147d5 ..> n9ccf3809f508f2522588 : "must be absent"
+n59cb917a19a99d40d676 ..> n9ccf3809f508f2522588 : "must be absent"
+n2497b6cd69e9ab3e8f5d ..> n9ccf3809f508f2522588 : "must be absent"
+n2497b6cd69e9ab3e8f5d ..> n9d388fee5bdf453d18ed : "required"
+n47e3247ff5703ed94b28 ..> n078e823f956f82791abe : "admission contract"
+ncc9e897efdb420e42fbb ..> n078e823f956f82791abe : "required"
+n078e823f956f82791abe --> ndf29ddb5fc747b9e09e8 : "adds"
+n47e3247ff5703ed94b28 ..> n3e72442e5dd8258db132 : "admission contract"
+ncc9e897efdb420e42fbb ..> n3e72442e5dd8258db132 : "required"
+ndf29ddb5fc747b9e09e8 ..> n3e72442e5dd8258db132 : "required"
+n3e72442e5dd8258db132 --> n96e28d7e08c2a67f5d95 : "adds"
+n3e72442e5dd8258db132 --> n367df04744ac95d59c98 : "adds"
+n3e72442e5dd8258db132 --> ncc9e897efdb420e42fbb : "removes"
+n3e72442e5dd8258db132 --> ndf29ddb5fc747b9e09e8 : "removes"
+n3e72442e5dd8258db132 --> n73eab3bdcadf9e09f2eb : "removes"
+n9b680f5773837d57acca ..> n6569adb5c30fdc2112c2 : "admission contract"
+naae6194c5906ed7147d5 ..> n6569adb5c30fdc2112c2 : "required"
+n6569adb5c30fdc2112c2 --> n591ebbd3a36d7f6cae3b : "adds"
+n9b680f5773837d57acca ..> n499ccceb9d727a6ffc3c : "admission contract"
+naae6194c5906ed7147d5 ..> n499ccceb9d727a6ffc3c : "required"
+n591ebbd3a36d7f6cae3b ..> n499ccceb9d727a6ffc3c : "required"
+n499ccceb9d727a6ffc3c --> nd583457449f002a72ee2 : "adds"
+n499ccceb9d727a6ffc3c --> n6f987d54fbe0dc38d978 : "adds"
+n499ccceb9d727a6ffc3c --> n57dbfd338efb59147a4f : "adds"
+n499ccceb9d727a6ffc3c --> naae6194c5906ed7147d5 : "removes"
+n499ccceb9d727a6ffc3c --> n591ebbd3a36d7f6cae3b : "removes"
+n499ccceb9d727a6ffc3c --> n2497b6cd69e9ab3e8f5d : "removes"
+n9922ccf447ff4cff221d ..> nf76dfec04f626f9954ad : "admission contract"
+nd583457449f002a72ee2 ..> nf76dfec04f626f9954ad : "required"
+n57dbfd338efb59147a4f ..> nf76dfec04f626f9954ad : "required"
+nf76dfec04f626f9954ad --> n2f0613832abdb434447b : "adds"
+nf76dfec04f626f9954ad --> na2a81aeef7666e624ef2 : "adds"
+n9922ccf447ff4cff221d ..> n6e9aca138d219a9705a4 : "admission contract"
+n2f0613832abdb434447b ..> n6e9aca138d219a9705a4 : "required"
+na2a81aeef7666e624ef2 ..> n6e9aca138d219a9705a4 : "required"
+n6e9aca138d219a9705a4 --> nb47524c33fd032aced05 : "adds"
+n9922ccf447ff4cff221d ..> n1737a9ab414ad39a2ec5 : "admission contract"
+nb47524c33fd032aced05 ..> n1737a9ab414ad39a2ec5 : "required"
+n1737a9ab414ad39a2ec5 --> n8f5cb79e34e4739db29b : "adds"
+n9922ccf447ff4cff221d ..> n136fd683da4dded583c1 : "admission contract"
+n59cb917a19a99d40d676 ..> n136fd683da4dded583c1 : "required"
+n2f0613832abdb434447b ..> n136fd683da4dded583c1 : "required"
+na2a81aeef7666e624ef2 ..> n136fd683da4dded583c1 : "required"
+nb47524c33fd032aced05 ..> n136fd683da4dded583c1 : "required"
+n8f5cb79e34e4739db29b ..> n136fd683da4dded583c1 : "required"
+n136fd683da4dded583c1 --> n38fc28241b4f736baf2e : "adds"
+n136fd683da4dded583c1 --> n59cb917a19a99d40d676 : "removes"
+n136fd683da4dded583c1 --> n2f0613832abdb434447b : "removes"
+n136fd683da4dded583c1 --> na2a81aeef7666e624ef2 : "removes"
+n136fd683da4dded583c1 --> nb47524c33fd032aced05 : "removes"
+n136fd683da4dded583c1 --> n8f5cb79e34e4739db29b : "removes"
+@enduml

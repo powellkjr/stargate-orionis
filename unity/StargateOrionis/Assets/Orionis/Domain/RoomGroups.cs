@@ -37,19 +37,18 @@ namespace Orionis.Domain
             if(home==room)return 0;
             var rooms=Members(s,room).Where(id=>id!=room).ToList();int index=rooms.IndexOf(home);return index<0?int.MaxValue:index+1;
         }
-        public static bool HasService(CampaignState s,string room,string service) => service==null || Members(s,room).Any(id=>s.Base.Receiving?.Rooms.SingleOrDefault(p=>p.DefinitionId==s.Base.Rooms.Single(r=>r.Id==id).Definition.Id)?.Services.Contains(service)==true);
+        public static bool HasService(CampaignState s,string room,string service) => service==null || Members(s,room).Any(id=>s.Base.Receiving?.Rooms.SingleOrDefault(p=>p.DefinitionId==s.Base.Rooms.Single(r=>r.Id==id).Definition.Id)?.Services.Contains(service)==true || s.Cores?.Instances.Any(c=>c.RoomId==id&&RoomCores.Definition(s,c).Services.Contains(service))==true);
         public static string Reference(CampaignState s,string room) => ForRoom(s,room)?.Id ?? room;
         private static string ShapeBlocker(CampaignState s,string first,string second)
         {
-            var a=Flatten(s,first);var b=Flatten(s,second);var ids=a.Concat(b).ToList();
-            if(a.Count!=b.Count || a.Count!=1 && a.Count!=2 || ids.Distinct().Count()!=ids.Count)return "Join two physical rooms, or two straight pairs.";
-            var rooms=ids.Select(id=>s.Base.Rooms.Single(r=>r.Id==id)).ToList();
-            var plans=rooms.Select(r=>s.Base.Planning.Rooms.Single(p=>p.Room.Id==r.Definition.Id)).ToList();
-            int width=rooms.Max(r=>r.Col+r.Definition.Width)-rooms.Min(r=>r.Col),height=rooms.Max(r=>r.Row+r.Definition.Height)-rooms.Min(r=>r.Row);
-            string layout=ids.Count==2?"1x2":"2x2";
-            if(rooms.Any(r=>r.Definition.Width!=1||r.Definition.Height!=1)||plans.Any(p=>p.JoinGroup==null||p.JoinGroup!=plans[0].JoinGroup||!p.JoinLayouts.Contains(layout))||rooms.Any(r=>r.ConstructionTier!=rooms[0].ConstructionTier))return "Room types, joining rules and construction tiers must match.";
-            if(ids.Count==2?width*height!=2:width!=2||height!=2)return "Join adjacent rooms into 1x2 or two pairs into 2x2.";
-            return null;
+            RoomJoinFootprint Project(string id)
+            {
+                var room=s.Base.Rooms.Single(r=>r.Id==id);
+                var plan=s.Base.Planning.Rooms.Single(p=>p.Room.Id==room.Definition.Id);
+                return new RoomJoinFootprint { Id=id, X=room.Col, Y=room.Row, Width=room.Definition.Width,
+                    Height=room.Definition.Height, Tier=room.ConstructionTier, JoinGroup=plan.JoinGroup, Layouts=plan.JoinLayouts };
+            }
+            return RoomJoinGeometry.Blocker(Flatten(s,first).Select(Project).ToList(), Flatten(s,second).Select(Project).ToList());
         }
         public static string JoinBlocker(CampaignState s,string firstRoom,string secondRoom)
         {
@@ -72,7 +71,7 @@ namespace Orionis.Domain
             var group=ForRoom(s,room)??throw new InvalidOperationException("This room is not grouped.");
             return Replace(s,Groups(s).Select(g=>g.Id==group.Id?g.WithActive(false):g.Id==group.Primary||g.Id==group.Secondary?g.WithActive(true):g));
         }
-        private static CampaignState Replace(CampaignState s,IEnumerable<RoomGroup> groups)=>new CampaignState(s.Base,s.Random,s.Clock,s.Assignments,s.Receiving,s.Transfers,s.Expedition,s.Teams,s.Cargo,s.Personnel,new ConstructionState(s.Construction.Supply.ToDictionary(p=>p.Key,p=>p.Value),s.Construction.Sites,s.Construction.Excavated,groups,s.Construction.Clearings));
+        private static CampaignState Replace(CampaignState s,IEnumerable<RoomGroup> groups)=>new CampaignState(s.Base,s.Random,s.Clock,s.Assignments,s.Receiving,s.Transfers,s.Expedition,s.Teams,s.Cargo,s.Personnel,new ConstructionState(s.Construction.Supply.ToDictionary(p=>p.Key,p=>p.Value),s.Construction.Sites,s.Construction.Excavated,groups,s.Construction.Clearings,s.Construction.ArchivedCargoSupply.ToDictionary(p=>p.Key,p=>p.Value)), cores: s.Cores, workforce: s.Workforce, completedWork: s.CompletedWork);
         public static void Validate(CampaignState s)
         {
             var groups=Groups(s).ToList();var ids=new HashSet<string>();

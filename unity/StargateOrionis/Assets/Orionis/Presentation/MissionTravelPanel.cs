@@ -10,6 +10,14 @@ namespace Orionis.Presentation
     public sealed class MissionTravelPanel : MonoBehaviour
     {
         private Text status;
+        public string PendingCombatId {get;private set;}
+        public static string ActionLabel(CampaignState state,FieldActionRecipe action)
+        {
+            var cache=state.Base.Cargo?.Caches.FirstOrDefault(c=>c.Recipe.Id==action.Id);
+            if(cache!=null)return "Mark for extraction: "+cache.Label;
+            if(state.Base.ResourceProcessing!=null&&action.Effects.Any(e=>e.Type=="CARRY_TARGET"&&e.InstanceId==state.Base.ResourceProcessing.InstanceId))return "Mark for extraction: Supply cache";
+            return action.Label;
+        }
         private static string ActionReason(string blocker) => blocker switch
         {
             "NO_VALID_ACTOR" => "No Unit meets Profession / tier / perception requirements",
@@ -19,6 +27,8 @@ namespace Orionis.Presentation
             "TOOL_CHARGES_DEPLETED" => "Required Tool has insufficient charges",
             "HOSTILES_PRESENT" => "Clear hostile guards first",
             "COMPLETED" => "Completed",
+            "KNOWLEDGE_REQUIRED" => "Required subject knowledge is missing",
+            "PREPARATION_REQUIRED" => "Complete the required preparation first",
             null => "Ready",
             _ => "Mission action unavailable"
         };
@@ -40,7 +50,7 @@ namespace Orionis.Presentation
             var stage = definition.Stages.Single(s => s.Id == expedition.StageId);
             PrototypeUi.Label(PrototypeUi.Rect("Current Stage", transform, new Vector2(0, .85f), Vector2.one), stage.Name, 20);
             PrototypeUi.Label(PrototypeUi.Rect("Known Stages", transform, new Vector2(0, .73f), new Vector2(1, .85f)),
-                "Known: " + string.Join(" / ", definition.Stages.Where(s => s.Known || travel.Visits.ContainsKey(s.Id)).Select(s => s.Name)), 15);
+                "Explored: " + travel.Visits.Count + " rooms / minimap shows the known layout", 15);
             status = PrototypeUi.Label(PrototypeUi.Rect("Travel status", transform, Vector2.zero, new Vector2(1, .1f)), "", 15);
             status.rectTransform.offsetMin = new Vector2(12, 0); status.rectTransform.offsetMax = new Vector2(-12, 0);
             if (MissionCombat.Active(session.State) != null)
@@ -93,78 +103,58 @@ namespace Orionis.Presentation
                 var actor = session.State.Base.Units.Single(u => u.Id == w.ActorId);
                 var tool = expedition.Party.Single(u => u.UnitId == w.ActorId).Tools.SingleOrDefault(t => t.InstanceId == w.ToolId);
                 PrototypeUi.Label(PrototypeUi.Rect("Field work details", transform, new Vector2(0, .4f), new Vector2(1, .74f)),
-                    (rescue ? "Send operative to Gate" : session.State.Base.Cargo?.Reveal.Id == w.RecipeId ? "Ask medical worker about equipment" : care == null ? "Door hack ready" : "Stabilize: " + care.SubjectId) + "\n" + actor.Name + "\n" +
+                    (w.GroupId!=null?definition.Field.Workflows.Groups.Single(g=>g.Id==w.GroupId).Label:recipe is FieldActionRecipe action ? ActionLabel(session.State,action) : rescue ? "Send operative to Gate" : session.State.Base.Cargo?.Reveal.Id == w.RecipeId ? "Ask medical worker about equipment" : care == null ? "Door hack ready" : "Stabilize: " + care.SubjectId) + "\n" + (w.Assignments.Count>0?string.Join(" / ",w.Assignments.Select(a=>session.State.Base.Units.Single(u=>u.Id==a.ActorId).Name)):actor.Name) + "\n" +
                     (tool == null ? "No Tool required" : tool.Label + " / " + recipe.ChargeCost + " charge on completion") + "\nSave/Load preserves this work.", 17);
                 PrototypeUi.Button("Complete field work", transform, new Vector2(0, .25f), new Vector2(1, .4f), "Complete work / " + recipe.Ticks + " tick", new Color(.12f, .35f, .4f), () => Run(session.AdvanceFieldWork));
                 PrototypeUi.Button("Cancel field work", transform, new Vector2(0, .08f), new Vector2(1, .23f), "Cancel / no charge spent", new Color(.18f, .2f, .23f), () => Run(session.CancelFieldWork));
                 return;
             }
-            int index = 0;
-            foreach (var door in definition.Transitions.Where(t => t.Destination(stage.Id) != null))
+            ShowStageActions(session);
+        }
+        private void ShowStageActions(CampaignSession session)
+        {
+            var s=session.State;var travel=s.Expedition.Travel;var stage=s.Expedition.StageId;var definition=s.Base.Mission.Travel;
+            var actions=definition.Field.Actions.Concat(s.Base.Cargo?.Caches.Select(c=>c.Recipe).OfType<FieldActionRecipe>()??Enumerable.Empty<FieldActionRecipe>()).Where(a=>a.StageId==stage&&!travel.Field.Completed.Any(w=>w.RecipeId==a.Id)).ToList();
+            var viewport=PrototypeUi.Rect("Stage action viewport",transform,new Vector2(0,.12f),new Vector2(1,.72f));viewport.gameObject.AddComponent<RectMask2D>();var content=PrototypeUi.Rect("Stage action choices",viewport,new Vector2(0,1),Vector2.one);content.pivot=new Vector2(.5f,1);var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=content;scroll.horizontal=false;scroll.scrollSensitivity=35;int index=0;
+            Button Row(string name,string text,UnityEngine.Events.UnityAction click)
+            {var button=PrototypeUi.Button(name,content,new Vector2(0,1),Vector2.one,text,new Color(.12f,.3f,.36f),click);var rect=button.GetComponent<RectTransform>();rect.offsetMin=new Vector2(2,-(++index)*76+2);rect.offsetMax=new Vector2(-2,-(index-1)*76-2);button.GetComponentInChildren<Text>().fontSize=14;return button;}
+            foreach(var door in definition.Transitions.Where(d=>d.Destination(stage)!=null&&MissionTravel.DoorVisible(s,d)))
             {
-                var destination = definition.Stages.Single(s => s.Id == door.Destination(stage.Id));
-                var known = destination.Known || travel.Visits.ContainsKey(destination.Id);
-                var locked = door.InitialState == "LOCKED" && !travel.OpenDoors.Contains(door.Id);
-                if (locked)
+                var destination=definition.Stages.Single(x=>x.Id==door.Destination(stage));bool locked=door.InitialState=="LOCKED"&&!travel.OpenDoors.Contains(door.Id);
+                if(locked){var recipe=definition.Field.DoorRecipes.SingleOrDefault(r=>r.DoorId==door.Id);if(recipe==null){Row("blocked-"+door.Id,"Locked route / no supported interaction",()=>{}).interactable=false;continue;}var candidates=MissionField.Candidates(s,recipe).ToList();var button=Row("hack-"+recipe.Id,"Locked door: Hack / "+recipe.Profession+recipe.MinimumTier+" / "+recipe.Service+" / "+recipe.ChargeCost+" charge",()=>ChooseActor(session,candidates.Select(c=>c.ActorId).Distinct().ToList(),id=>session.StartFieldWork(recipe.Id,id,candidates.First(c=>c.ActorId==id).ToolId)));ShowReadiness(button,MissionField.CapabilityBlocker(s,recipe));}
+                else Row("move-"+door.Id,"Move: "+(destination.Known||travel.Visits.ContainsKey(destination.Id)?destination.Name:"Unexplored area")+" / 1 tick",()=>Run(()=>session.MoveParty(door.Id)));
+            }
+            foreach(var scene in definition.Conversations.Where(c=>c.StageId==stage&&c.FirstVisit==0&&!travel.StartedConversations.Contains(c.Id)&&(definition.Npcs.Any(n=>n.Id==c.NpcId)||travel.Field.Subjects.Any(x=>x.Id==c.NpcId&&x.Detection=="LOCATED"))))Row("talk-"+scene.Id,"Talk: "+(definition.Npcs.FirstOrDefault(n=>n.Id==scene.NpcId)?.Label??definition.Field.Subjects.Single(x=>x.Id==scene.NpcId).Label),()=>Run(()=>session.Talk(scene.Id))).interactable=!MissionCombat.HostilesPresent(s);
+            foreach(var encounter in s.Base.Combat?.Encounters.Where(i=>i.StageId==stage)??Enumerable.Empty<GuardEncounter>())if(!MissionCombat.GuardsClear(s,stage))Row("engage-"+encounter.Id,"Engage guards / encounter: 1 tick",()=>ConfirmCombat(session,encounter.Id));
+            if(s.Base.Care?.StageId==stage)
+            {
+                foreach(var recipe in s.Base.Care.Recipes)
                 {
-                    var recipe = definition.Field.DoorRecipes.Single(r => r.DoorId == door.Id);
-                    var candidates = MissionField.Candidates(session.State, recipe).ToList();
-                    var button = PrototypeUi.Button("hack-" + recipe.Id, transform, new Vector2(0, .55f - index * .14f), new Vector2(1, .71f - index * .14f),
-                        "Locked door: Hack / " + recipe.Profession + recipe.MinimumTier + " / " + recipe.Service + " / " + recipe.ChargeCost + " charge", new Color(.12f, .3f, .36f), () =>
-                        {
-                            var actors = candidates.Select(c => c.ActorId).Distinct().ToList();
-                            Action<string> start = id => session.StartFieldWork(recipe.Id, id, candidates.First(c => c.ActorId == id).ToolId);
-                            if (actors.Count == 1) Run(() => start(actors[0])); else ChooseActor(session, actors, start);
-                        });
-                    button.GetComponentInChildren<Text>().fontSize = 16; button.interactable = candidates.Count > 0;
-                    ShowReadiness(button, MissionCombat.HostilesPresent(session.State) ? "HOSTILES_PRESENT" : MissionField.CapabilityBlocker(session.State, recipe));
+                    var candidates=MissionField.Candidates(s,recipe.Requirements).ToList();bool done=MissionCare.Completed(s,recipe.Id);
+                    var button=Row("care-"+recipe.Id,recipe.SubjectId+" / "+MissionCare.Condition(s,recipe)+"\nStabilize / MEDIC"+recipe.Requirements.MinimumTier+" / "+recipe.Requirements.Service+" / 1 tick",()=>{var actors=candidates.Select(c=>c.ActorId).Distinct().ToList();Action<string> start=id=>session.StartFieldWork(recipe.Id,id,candidates.First(c=>c.ActorId==id).ToolId);if(actors.Count==1)Run(()=>start(actors[0]));else ChooseActor(session,actors,start);});
+                    ShowReadiness(button,done?"COMPLETED":MissionCombat.HostilesPresent(s)?"HOSTILES_PRESENT":MissionField.CapabilityBlocker(s,recipe.Requirements));
                 }
-                else PrototypeUi.Button("move-" + door.Id, transform, new Vector2(0, .55f - index * .14f), new Vector2(1, .71f - index * .14f),
-                    "Move: " + (known ? destination.Name : "Unexplored Stage") + " / 1 tick", new Color(.12f, .35f, .4f), () => Run(() => session.MoveParty(door.Id)));
-                index++;
+                if(s.Base.Rescue!=null){var r=s.Base.Rescue.Requirements;Row("Send operative to Gate","Send operative to Gate / "+r.Ticks+" tick / no Tool",()=>ChooseActor(session,MissionField.Candidates(s,r).Select(c=>c.ActorId).Distinct().ToList(),id=>session.StartFieldWork(r.Id,id,null))).interactable=MissionRescue.CanDepart(s)&&!MissionCombat.HostilesPresent(s);}
             }
-            foreach (var scene in definition.Conversations.Where(c => c.FirstVisit == 0 && c.StageId == stage.Id && !travel.StartedConversations.Contains(c.Id)))
+            var cargo=s.Base.Cargo;if(cargo!=null&&cargo.StageId==stage){bool revealed=RecoveredCargo.Revealed(s);var candidates=MissionField.Candidates(s,cargo.Reveal).ToList();Row("Reveal equipment cache",revealed?cargo.Label+" / marked for extraction":"Ask medical worker about equipment / DIPLOMAT1 / 1 tick",()=>ChooseActor(session,candidates.Select(c=>c.ActorId).Distinct().ToList(),id=>session.StartFieldWork(cargo.Reveal.Id,id,null))).interactable=!revealed&&candidates.Count>0&&!MissionCombat.HostilesPresent(s);}
+            foreach(var group in definition.Field.Workflows.Groups.Where(g=>g.StageId==stage&&!MissionField.GroupCompleted(s,g.Id)))Row("group-"+group.Id,group.Label+" / one Actor per station / the available party searches in parallel",()=>Run(()=>session.StartFieldGroup(group.Id))).interactable=!MissionCombat.HostilesPresent(s)&&s.Expedition.Party.Any(p=>MissionCombat.CanAct(s,p.UnitId));
+            foreach(var action in actions)
             {
-                PrototypeUi.Button("talk-" + scene.Id, transform, new Vector2(0, .55f - index * .14f), new Vector2(1, .71f - index * .14f),
-                    "Talk: " + definition.Field.Subjects.Single(s => s.Id == scene.NpcId).Label, new Color(.12f, .35f, .4f), () => Run(() => session.Talk(scene.Id))).interactable = !MissionCombat.HostilesPresent(session.State); index++;
+                if(action.WorkGroupId!=null||!MissionField.ActionVisible(s,action))continue;
+                var candidates=MissionField.Candidates(s,action).ToList();var button=Row("action-"+action.Id,ActionLabel(s,action)+"\n"+action.Profession+action.MinimumTier+" / "+(action.Service??"no Tool")+" / "+action.ChargeCost+" charge / "+action.Ticks+" tick",()=>{var actors=candidates.Select(c=>c.ActorId).Distinct().ToList();Action<string> start=id=>session.StartFieldWork(action.Id,id,candidates.First(c=>c.ActorId==id).ToolId);if(actors.Count==1)Run(()=>start(actors[0]));else ChooseActor(session,actors,start);});ShowReadiness(button,MissionField.ActionBlocker(s,action)??MissionField.CapabilityBlocker(s,action));
             }
-            foreach (var encounter in session.State.Base.Combat?.Encounters.Where(i => i.StageId == stage.Id) ?? Enumerable.Empty<GuardEncounter>())
-                if (!MissionCombat.GuardsClear(session.State, stage.Id))
-                {
-                    PrototypeUi.Button("engage-" + encounter.Id, transform, new Vector2(0, .55f - index * .14f), new Vector2(1, .71f - index * .14f),
-                        "Engage guards / encounter: 1 tick", new Color(.4f, .18f, .16f), () => Run(() => session.Engage(encounter.Id))); index++;
-                }
-                else status.text = "Guards cleared. Other evacuation conditions still apply.";
-            if (session.State.Base.Care?.StageId == stage.Id)
-            {
-                var careButton = PrototypeUi.Button("Patients and evacuation", transform, new Vector2(0, .55f - index * .14f), new Vector2(1, .71f - index * .14f),
-                    "Patients & evacuation / " + session.State.Base.Care.Recipes.Count(r => MissionCare.Completed(session.State, r.Id)) + "/" + session.State.Base.Care.Recipes.Count + " stabilized",
-                    new Color(.12f, .35f, .32f), () => ShowCare(session)); index++;
-                var pending = session.State.Base.Care.Recipes.Where(r => !MissionCare.Completed(session.State, r.Id)).ToList();
-                var careBlocker = pending.Select(r => MissionField.CapabilityBlocker(session.State, r.Requirements)).ToList();
-                if (pending.Count > 0 && careBlocker.All(b => b != null))
-                {
-                    ShowReadiness(careButton, careBlocker[0]);
-                    careButton.interactable = true; // Inspection/navigation remains available.
-                }
-            }
-            var cargo = session.State.Base.Cargo;
-            if (cargo != null && cargo.StageId == stage.Id)
-            {
-                var revealed = RecoveredCargo.Revealed(session.State);
-                var candidates = MissionField.Candidates(session.State, cargo.Reveal).ToList();
-                var button = PrototypeUi.Button("Reveal equipment cache", transform, new Vector2(0, .55f - index * .14f), new Vector2(1, .71f - index * .14f),
-                    revealed ? cargo.Label + " / recovery available at debrief" : "Ask medical worker about equipment / DIPLOMAT1 / 1 tick", new Color(.16f, .3f, .3f),
-                    () => ChooseActor(session, candidates.Select(c => c.ActorId).ToList(), id => session.StartFieldWork(cargo.Reveal.Id, id, null)));
-                button.interactable = !revealed && candidates.Count > 0 && !MissionCombat.HostilesPresent(session.State); index++;
-            }
-            if (travel.Field?.Observed.Any(id => definition.Field.Observations.Any(o => o.Id == id && o.StageId == stage.Id)) == true)
-            {
-                var label = PrototypeUi.Label(PrototypeUi.Rect("Mission progress limit", transform, new Vector2(0, index >= 3 ? 0 : .1f), new Vector2(1, index >= 3 ? .11f : .35f)),
-                    string.Join("\n", definition.Field.Observations.Where(o => o.StageId == stage.Id && travel.Field.Observed.Contains(o.Id)).Select(o => o.Text)) +
-                    (index >= 3 ? "" : "\nSend the operative to the Gate, then return there to extract."), 15);
-                label.rectTransform.offsetMin = new Vector2(12, 0); label.rectTransform.offsetMax = new Vector2(-12, 0);
-            }
+            if(s.Base.ResourceProcessing?.StageId==stage){var item=s.Cargo.SingleOrDefault(i=>ResourceCargo.IsResource(s,i));var inspect=Row("inspect-resource-cache",item==null?"Inspect cache / first assessment / 1 tick":ResourceCargo.Name(s,item)+"\nInspect next property / 1 tick",()=>Run(session.InspectResourceCache));if(item!=null&&ResourceCargo.Known(s,item,"CONVERSION")){inspect.interactable=false;inspect.GetComponentInChildren<Text>().text=ResourceCargo.Name(s,item)+"\nField inspection complete; mark the cache for extraction.";}status.text=ResourceCargo.StageSafe(s,stage)?"Processing incident resolved. Mark the cache for extraction.":"Isolate the mining power before ordinary field work.";}
+            var finding=travel.Field.Completed.Select(w=>definition.Field.Actions.SingleOrDefault(a=>a.Id==w.RecipeId&&a.StageId==stage)).LastOrDefault(a=>!string.IsNullOrEmpty(a?.OutcomeText));if(finding!=null)status.text=finding.OutcomeText;
+            var observations=definition.Field.Observations.Where(o=>o.StageId==stage&&travel.Field.Observed.Contains(o.Id)).Select(o=>o.Text);var records=MissionField.Records(s).Select(r=>"Party inventory: "+r).Concat(MissionField.Records(s,true).Select(r=>"Research question: "+r));status.text=string.Join("\n\n",new[]{status.text}.Concat(observations).Concat(records).Where(t=>!string.IsNullOrEmpty(t)));
+            content.sizeDelta=new Vector2(0,Mathf.Max(76,index*76));Canvas.ForceUpdateCanvases();scroll.verticalNormalizedPosition=1;
+        }
+        private void ConfirmCombat(CampaignSession session,string id)
+        {
+            PendingCombatId=id;var choices=transform.Find("Stage action viewport");if(choices!=null)choices.gameObject.SetActive(false);
+            var panel=PrototypeUi.Rect("Combat confirmation",transform,new Vector2(0,.12f),new Vector2(1,.72f));
+            PrototypeUi.Label(PrototypeUi.Rect("Combat confirmation text",panel,new Vector2(0,.4f),Vector2.one),"Start combat? The encounter plays automatically after confirmation.",18);
+            PrototypeUi.Button("Start combat",panel,new Vector2(0,0),new Vector2(.48f,.35f),"Start combat / automatic playback",new Color(.35f,.18f,.15f),()=>Run(()=>session.Engage(id)));
+            PrototypeUi.Button("Cancel combat",panel,new Vector2(.52f,0),new Vector2(1,.35f),"Cancel / no time spent",new Color(.15f,.25f,.3f),()=>{PendingCombatId=null;Destroy(panel.gameObject);if(choices!=null)choices.gameObject.SetActive(true);});
         }
         private void ShowCare(CampaignSession session)
         {
@@ -201,8 +191,8 @@ namespace Orionis.Presentation
         }
         private void ChooseActor(CampaignSession session, System.Collections.Generic.IReadOnlyList<string> candidates, Action<string> choose)
         {
-            var existing = transform.Find("Choose responder"); if (existing != null) { existing.gameObject.SetActive(false); Destroy(existing.gameObject); }
-            var panel = PrototypeUi.Rect("Choose responder", transform, Vector2.zero, new Vector2(1, 1.42f));
+            var root=transform.parent;var existing = root.Find("Choose responder"); if (existing != null) { existing.gameObject.SetActive(false); Destroy(existing.gameObject); }
+            var panel = PrototypeUi.Rect("Choose responder", root, new Vector2(.12f,.10f), new Vector2(.88f,.86f));
             panel.gameObject.AddComponent<Image>().color = new Color(.07f, .12f, .16f);
             PrototypeUi.Label(PrototypeUi.Rect("Responder heading", panel, new Vector2(0, .83f), Vector2.one), "Who responds?", 18);
             for (int i = 0; i < candidates.Count; i++)

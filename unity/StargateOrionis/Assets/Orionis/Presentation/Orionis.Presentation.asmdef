@@ -6,7 +6,9 @@
     "Orionis.Application",
     "Orionis.Infrastructure",
     "UnityEngine.UI",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Core.Runtime"
   ],
   "noEngineReferences": false
 }

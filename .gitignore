@@ -22,3 +22,54 @@ __pycache__/
 /unity/StargateOrionis/*.pidb
 /unity/StargateOrionis/*.user
 /unity/.validation-*/
+
+# Independent Room Art Lab caches; source and authored project settings are retained.
+/unity/OrionisRoomArtLab/[Ll]ibrary/
+/unity/OrionisRoomArtLab/[Tt]emp/
+/unity/OrionisRoomArtLab/[Oo]bj/
+/unity/OrionisRoomArtLab/[Ll]ogs/
+/unity/OrionisRoomArtLab/[Uu]ser[Ss]ettings/
+/unity/OrionisRoomArtLab/[Bb]uild*/
+/unity/OrionisRoomArtLab/*.csproj
+/unity/OrionisRoomArtLab/*.sln*
+/unity/OrionisRoomArtLab/Assets/Synty/
+/unity/OrionisRoomArtLab/Assets/Synty.meta
+
+# Locally acquired Asset Store content; retain original vendor files on disk.
+/unity/StargateOrionis/Assets/ToonSoldiers_demo/
+/unity/StargateOrionis/Assets/ToonSoldiers_demo.meta
+/unity/StargateOrionis/Assets/Synty/
+/unity/StargateOrionis/Assets/Synty.meta
+
+# Local Unity recovery scenes are backups, not authored project scenes.
+/unity/StargateOrionis/Assets/_Recovery/
+/unity/StargateOrionis/Assets/_Recovery.meta
+/unity/StargateOrionis/Assets/__Recovery/
+/unity/StargateOrionis/Assets/__Recovery.meta
+
+# Independent animation sandbox caches and locally acquired vendor content.
+/unity/OrionisArtLab/[Ll]ibrary/
+/unity/OrionisArtLab/[Tt]emp/
+/unity/OrionisArtLab/[Oo]bj/
+/unity/OrionisArtLab/[Ll]ogs/
+/unity/OrionisArtLab/[Uu]ser[Ss]ettings/
+/unity/OrionisArtLab/[Bb]uild*/
+/unity/OrionisArtLab/*.csproj
+/unity/OrionisArtLab/*.sln*
+/unity/OrionisArtLab/Assets/ToonSoldiers_demo/
+/unity/OrionisArtLab/Assets/ToonSoldiers_demo.meta
+/unity/OrionisArtLab/Assets/Toon_Soldiers/
+/unity/OrionisArtLab/Assets/Toon_Soldiers.meta
+/unity/OrionisArtLab/Assets/Kevin Iglesias/
+/unity/OrionisArtLab/Assets/Kevin Iglesias.meta
+/unity/OrionisArtLab/Assets/CaD_vol1/
+/unity/OrionisArtLab/Assets/CaD_vol1.meta
+/artwork/toon-soldiers-proof/*.log
+
+# Main-game integration of locally acquired Art Lab character assets.
+/unity/StargateOrionis/Assets/Toon_Soldiers/
+/unity/StargateOrionis/Assets/Toon_Soldiers.meta
+/unity/StargateOrionis/Assets/Kevin Iglesias/
+/unity/StargateOrionis/Assets/Kevin Iglesias.meta
+/unity/StargateOrionis/Assets/Orionis/Resources/OffworldCharacters/
+/unity/StargateOrionis/Assets/Orionis/Resources/OffworldCharacters.meta

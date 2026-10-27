@@ -13,7 +13,6 @@ namespace Orionis.Editor
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode)
                 throw new InvalidOperationException("Exit Play mode before building.");
-            BootstrapSceneBuilder.ValidateSnapshot();
             var output = Path.GetFullPath("Builds/Windows/StargateOrionis.exe");
             Directory.CreateDirectory(Path.GetDirectoryName(output));
             var width = PlayerSettings.defaultScreenWidth;

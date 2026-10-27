@@ -1,0 +1,29 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-processing-worker"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-processing-worker\nparticipants:\n  right: worker-processing-01\n  left: ACTIVE_SGC_SPEAKER\nstartNodeId: processing-worker-start" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "processing-worker-start\nspeaker: worker-processing-01\nside: RIGHT\ntext: They've been pushing this equipment harder every week." as nd6cd4f55668cad679641 #EAF1F8
+rectangle "processing-worker-diplomat\ntext: Who told them to keep running it?\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: mcguffin-pushed-processing\nnextNodeId: processing-worker-finish" as n2de203c8266d4c270db5 #E5DAF5
+rectangle "processing-worker-leave\ntext: We will take a look. Stay clear of the unstable equipment.\nsource: NEUTRAL\nnextNodeId: processing-worker-finish" as nbe6817aae59f0feda097 #E5DAF5
+rectangle "processing-worker-finish\nspeaker: worker-processing-01\nside: RIGHT\ntext: The overseer. He wants more output, whatever the cost. If you\nare checking the equipment, look at the lab readings too. Just do\nnot tell him I sent you.\nendConversation: true" as n8940e0c1b615cc3b38ce #EAF1F8
+ncced28c6dc3f99c2396a --> nd6cd4f55668cad679641 : "default start"
+nd6cd4f55668cad679641 --> n2de203c8266d4c270db5 : "choose response, then qualified Actor"
+n2de203c8266d4c270db5 --> n8940e0c1b615cc3b38ce
+nd6cd4f55668cad679641 --> nbe6817aae59f0feda097 : "choose response, then qualified Actor"
+nbe6817aae59f0feda097 --> n8940e0c1b615cc3b38ce
+n8940e0c1b615cc3b38ce --> n361e48d0308f20e32dba : "Continue after reading"
+@enduml

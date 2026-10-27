@@ -11,7 +11,6 @@ namespace Orionis.Presentation
     {
         private CampaignSession session;
         private Text summary, status;
-        private Button play;
         private bool playing;
         private float elapsed;
         private CombatSnapshot previous;
@@ -20,9 +19,7 @@ namespace Orionis.Presentation
             session = value;
             gameObject.AddComponent<Image>().color = new Color(.07f, .12f, .16f);
             summary = PrototypeUi.Label(PrototypeUi.Rect("Combat health", transform, new Vector2(0, .35f), Vector2.one), "", 18);
-            play = PrototypeUi.Button("Play combat", transform, new Vector2(0, .2f), new Vector2(.48f, .34f), "Play rounds", new Color(.4f, .18f, .16f), () =>
-            { playing = !playing; elapsed = 0; play.GetComponentInChildren<Text>().text = playing ? "Pause rounds" : "Play rounds"; });
-            PrototypeUi.Button("Next combat round", transform, new Vector2(.5f, .2f), new Vector2(1, .34f), "Next round", new Color(.3f, .2f, .18f), () => Run(session.AdvanceCombatRound));
+            playing=true;elapsed=0;
             PrototypeUi.Button("Disengage combat", transform, new Vector2(0, .04f), new Vector2(1, .18f), "Disengage / ends encounter (1 tick)", new Color(.16f, .24f, .3f), () => Run(session.DisengageCombat));
             status = PrototypeUi.Label(PrototypeUi.Rect("Combat status", transform, Vector2.zero, new Vector2(1, .05f)), "", 12);
             status.rectTransform.offsetMin = new Vector2(4, 0); status.rectTransform.offsetMax = new Vector2(-4, 0);

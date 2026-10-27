@@ -115,7 +115,7 @@ namespace Orionis.Tests
         {
             var s = Create(); s.AssignUnit("unit-19", "r2"); s.AdvanceOneTick();
             var codec = new CampaignSaveCodec(json); var value = JObject.Parse(codec.Serialize(new SavedSession(s.State, null)));
-            value["schemaVersion"] = 5; value.Property("teams").Remove(); value.Property("expedition").Remove(); value.Property("missionFingerprint").Remove(); value.Property("combatFingerprint").Remove(); value.Property("careFingerprint").Remove(); value.Property("rescueFingerprint").Remove();
+            value["schemaVersion"] = 5;value.Property("archivedCargoSupply")?.Remove(); value.Property("teams").Remove(); value.Property("expedition").Remove(); value.Property("missionFingerprint").Remove(); value.Property("combatFingerprint").Remove(); value.Property("careFingerprint").Remove(); value.Property("rescueFingerprint").Remove();
             var restored = codec.Deserialize(value.ToString()).Campaign;
             Assert.That(restored.Expedition, Is.Null); Assert.That(restored.Clock.ElapsedTicks, Is.EqualTo(1));
             Assert.That(restored.Assignments.Single().UnitId, Is.EqualTo("unit-19"));

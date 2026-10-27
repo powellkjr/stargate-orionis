@@ -1,0 +1,1054 @@
+{
+    "actions": [
+        {
+            "label": "Idle · unarmed",
+            "clip": "HumanM@Idle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Walk · unarmed",
+            "clip": "HumanM@Walk01_Forward",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Walk/HumanM@Walk01_Forward.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Run · unarmed",
+            "clip": "HumanM@Run01_Forward",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Run/HumanM@Run01_Forward.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Rifle ready",
+            "clip": "infantry_combat_idle",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_combat_idle.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Walk with rifle",
+            "clip": "infantry_guard_walk",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/guard/infantry_guard_walk.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Run with rifle",
+            "clip": "infantry_guard_run",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/guard/infantry_guard_run.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Fire · single",
+            "clip": "infantry_combat_shoot",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_combat_shoot.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Fire · burst",
+            "clip": "infantry_combat_shoot_burst",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_combat_shoot_burst.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Reload",
+            "clip": "infantry_combat_reload",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_combat_reload.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Crouch · ready",
+            "clip": "infantry_crouch_idle",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/crouch/infantry_crouch_idle.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Crouch · fire",
+            "clip": "infantry_crouch_shoot",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/crouch/infantry_crouch_shoot.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Hammer · begin",
+            "clip": "HumanM@HammeringGround01_R - Begin",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Hammering/HumanM@HammeringGround01_R - Begin.fbx",
+            "equipment": 2,
+            "motion": 0.0
+        },
+        {
+            "label": "Hammer · work",
+            "clip": "HumanM@HammeringGround01_R - Loop",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Hammering/HumanM@HammeringGround01_R - Loop.fbx",
+            "equipment": 2,
+            "motion": 0.0
+        },
+        {
+            "label": "Hammer · finish",
+            "clip": "HumanM@HammeringGround01_R - Stop",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Hammering/HumanM@HammeringGround01_R - Stop.fbx",
+            "equipment": 2,
+            "motion": 0.0
+        },
+        {
+            "label": "Pickaxe · ground",
+            "clip": "HumanM@MiningOneHand01_R - Ground",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Mining/HumanM@MiningOneHand01_R - Ground.fbx",
+            "equipment": 3,
+            "motion": 0.0
+        },
+        {
+            "label": "Pickaxe · wall",
+            "clip": "HumanM@MiningOneHand01_R - Wall",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Mining/HumanM@MiningOneHand01_R - Wall.fbx",
+            "equipment": 3,
+            "motion": 0.0
+        },
+        {
+            "label": "Sample pickup · candidate",
+            "clip": "HumanM@Gathering02",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering/HumanM@Gathering02.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Low reach · candidate, no treatment",
+            "clip": "HumanM@Gathering01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering/HumanM@Gathering01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Conversation",
+            "clip": "HumanM@Talk01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Social/Conversation/HumanM@Talk01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Sprint",
+            "clip": "HumanM@Sprint01_Forward",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Sprint/HumanM@Sprint01_Forward.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Turn · left",
+            "clip": "HumanM@Turn01_Left",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Turn/HumanM@Turn01_Left.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Turn · right",
+            "clip": "HumanM@Turn01_Right",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Turn/HumanM@Turn01_Right.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle01-Idle02",
+            "clip": "HumanM@Idle01-Idle02",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01-Idle02.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle01-Idle03",
+            "clip": "HumanM@Idle01-Idle03",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01-Idle03.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle01-Idle04",
+            "clip": "HumanM@Idle01-Idle04",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01-Idle04.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle01-MilitaryIdle01",
+            "clip": "HumanM@Idle01-MilitaryIdle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01-MilitaryIdle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle02",
+            "clip": "HumanM@Idle02",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle02.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle02-Idle01",
+            "clip": "HumanM@Idle02-Idle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle02-Idle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle03",
+            "clip": "HumanM@Idle03",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle03.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle03-Idle01",
+            "clip": "HumanM@Idle03-Idle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle03-Idle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle04",
+            "clip": "HumanM@Idle04",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle04.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Idle04-Idle01",
+            "clip": "HumanM@Idle04-Idle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle04-Idle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "MilitaryIdle01",
+            "clip": "HumanM@MilitaryIdle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@MilitaryIdle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "MilitaryIdle01-Idle01",
+            "clip": "HumanM@MilitaryIdle01-Idle01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@MilitaryIdle01-Idle01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "SheatheBack01_L · pose only",
+            "clip": "HumanM@SheatheBack01_L",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@SheatheBack01_L.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "SheatheBack01_R · pose only",
+            "clip": "HumanM@SheatheBack01_R",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@SheatheBack01_R.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "SheatheBack02_L · pose only",
+            "clip": "HumanM@SheatheBack02_L",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@SheatheBack02_L.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "SheatheBack02_R · pose only",
+            "clip": "HumanM@SheatheBack02_R",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@SheatheBack02_R.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "SheatheHips01_R · pose only",
+            "clip": "HumanM@SheatheHips01_R",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@SheatheHips01_R.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "UnsheatheBack01_L · pose only",
+            "clip": "HumanM@UnsheatheBack01_L",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@UnsheatheBack01_L.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "UnsheatheBack01_R · pose only",
+            "clip": "HumanM@UnsheatheBack01_R",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@UnsheatheBack01_R.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "UnsheatheBack02_L · pose only",
+            "clip": "HumanM@UnsheatheBack02_L",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@UnsheatheBack02_L.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "UnsheatheBack02_R · pose only",
+            "clip": "HumanM@UnsheatheBack02_R",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@UnsheatheBack02_R.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "UnsheatheHips01_R · pose only",
+            "clip": "HumanM@UnsheatheHips01_R",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Misc/Unsheathe/HumanM@UnsheatheHips01_R.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Fishing01 - Begin",
+            "clip": "HumanM@Fishing01 - Begin",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@Fishing01 - Begin.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "Fishing01 - Loop",
+            "clip": "HumanM@Fishing01 - Loop",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@Fishing01 - Loop.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "Fishing01 - Stop",
+            "clip": "HumanM@Fishing01 - Stop",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@Fishing01 - Stop.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "FishingFighting01",
+            "clip": "HumanM@FishingFighting01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@FishingFighting01.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "FishingPullOut01",
+            "clip": "HumanM@FishingPullOut01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@FishingPullOut01.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "FishingPullOut02 - Begin",
+            "clip": "HumanM@FishingPullOut02 - Begin",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@FishingPullOut02 - Begin.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "FishingPullOut02 - Loop",
+            "clip": "HumanM@FishingPullOut02 - Loop",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@FishingPullOut02 - Loop.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "FishingPullOut02 - Stop",
+            "clip": "HumanM@FishingPullOut02 - Stop",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@FishingPullOut02 - Stop.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "FishingThrow01",
+            "clip": "HumanM@FishingThrow01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Fishing/HumanM@FishingThrow01.fbx",
+            "equipment": 4,
+            "motion": 0.0
+        },
+        {
+            "label": "Death01",
+            "clip": "HumanM@Death01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat/HumanM@Death01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Death02",
+            "clip": "HumanM@Death02",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat/HumanM@Death02.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Death03",
+            "clip": "HumanM@Death03",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat/HumanM@Death03.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CombatDeath01",
+            "clip": "HumanM@CombatDeath01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat/HumanM@CombatDeath01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Rifle death · A",
+            "clip": "infantry_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_death_A.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Rifle death · B",
+            "clip": "infantry_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_death_B.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Rifle death · C",
+            "clip": "infantry_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_death_C.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Rifle death · D",
+            "clip": "infantry_death_D",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_death_D.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Rifle death · E",
+            "clip": "infantry_death_E",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_death_E.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "Guard · rifle idle",
+            "clip": "infantry_guard_idle",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/guard/infantry_guard_idle.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "HumanF@CombatDeath01",
+            "clip": "HumanF@CombatDeath01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Female/Combat/HumanF@CombatDeath01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "HumanF@Death01",
+            "clip": "HumanF@Death01",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Female/Combat/HumanF@Death01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "HumanF@Death02",
+            "clip": "HumanF@Death02",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Female/Combat/HumanF@Death02.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "HumanF@Death03",
+            "clip": "HumanF@Death03",
+            "path": "Assets/Kevin Iglesias/Human Animations/Animations/Female/Combat/HumanF@Death03.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Skeleton@Death01_A",
+            "clip": "Skeleton@Death01_A",
+            "path": "Assets/Kevin Iglesias/Skeleton Animations/Animations/Combat/Skeleton@Death01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Skeleton@Death01_B",
+            "clip": "Skeleton@Death01_B",
+            "path": "Assets/Kevin Iglesias/Skeleton Animations/Animations/Combat/Skeleton@Death01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "Skeleton@Death01_C",
+            "clip": "Skeleton@Death01_C",
+            "path": "Assets/Kevin Iglesias/Skeleton Animations/Animations/Combat/Skeleton@Death01.fbx",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_death_A",
+            "clip": "akimbo_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_death_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_death_B",
+            "clip": "akimbo_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_death_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_death_C",
+            "clip": "akimbo_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_death_C.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_death_D",
+            "clip": "akimbo_death_D",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_death_D.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_death_E",
+            "clip": "akimbo_death_E",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_death_E.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_interact_A",
+            "clip": "akimbo_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_interact_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_interact_B",
+            "clip": "akimbo_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/akimbo_interact_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "akimbo_prone_death",
+            "clip": "akimbo_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Akimbo/prone/akimbo_prone_death.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_death_A",
+            "clip": "handgun_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_death_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_death_B",
+            "clip": "handgun_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_death_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_death_C",
+            "clip": "handgun_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_death_C.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_death_D",
+            "clip": "handgun_death_D",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_death_D.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_death_E",
+            "clip": "handgun_death_E",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_death_E.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_interact_A",
+            "clip": "handgun_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_interact_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_interact_B",
+            "clip": "handgun_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/handgun_interact_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "handgun_prone_death",
+            "clip": "handgun_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Handgun/prone/handgun_prone_death.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_death_A",
+            "clip": "heavy_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_death_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_death_B",
+            "clip": "heavy_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_death_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_death_C",
+            "clip": "heavy_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_death_C.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_death_D",
+            "clip": "heavy_death_D",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_death_D.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_death_E",
+            "clip": "heavy_death_E",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_death_E.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_interact_A",
+            "clip": "heavy_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_interact_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_interact_B",
+            "clip": "heavy_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/heavy_interact_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "heavy_prone_death",
+            "clip": "heavy_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Heavy/prone/heavy_prone_death.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "infantry_interact_A",
+            "clip": "infantry_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_interact_A.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "infantry_interact_B",
+            "clip": "infantry_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_interact_B.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "infantry_prone_death",
+            "clip": "infantry_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/prone/infantry_prone_death.FBX",
+            "equipment": 1,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_death_A",
+            "clip": "knife_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_death_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_death_B",
+            "clip": "knife_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_death_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_death_C",
+            "clip": "knife_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_death_C.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_death_D",
+            "clip": "knife_death_D",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_death_D.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_death_E",
+            "clip": "knife_death_E",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_death_E.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_interact_A",
+            "clip": "knife_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_interact_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_interact_B",
+            "clip": "knife_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/knife_interact_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "knife_prone_death",
+            "clip": "knife_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Knife/prone/knife_prone_death.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_death_A",
+            "clip": "machinegun_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_death_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_death_B",
+            "clip": "machinegun_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_death_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_death_C",
+            "clip": "machinegun_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_death_C.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_death_D",
+            "clip": "machinegun_death_D",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_death_D.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_death_E",
+            "clip": "machinegun_death_E",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_death_E.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_interact_A",
+            "clip": "machinegun_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_interact_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_interact_B",
+            "clip": "machinegun_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/machinegun_interact_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "machinegun_prone_death",
+            "clip": "machinegun_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Machinegun/prone/machinegun_prone_death.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "rocketlauncher_prone_death",
+            "clip": "rocketlauncher_prone_death",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/RocketLauncher/prone/rocketlauncher_prone_death.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "rocketlauncher_death_A",
+            "clip": "rocketlauncher_death_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/RocketLauncher/rocketlauncher_death_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "rocketlauncher_death_B",
+            "clip": "rocketlauncher_death_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/RocketLauncher/rocketlauncher_death_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "rocketlauncher_death_C",
+            "clip": "rocketlauncher_death_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/RocketLauncher/rocketlauncher_death_C.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "rocketlauncher_interact_A",
+            "clip": "rocketlauncher_interact_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/RocketLauncher/rocketlauncher_interact_A.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "rocketlauncher_interact_B",
+            "clip": "rocketlauncher_interact_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/RocketLauncher/rocketlauncher_interact_B.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Hi1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Hi2",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi2.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Nod1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Nod1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Nod2",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Nod2.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_ShakeHead",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_ShakeHead.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Why1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Why1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Why2",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Why2.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_GuideWithRightHand01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithRightHand01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_GuideWithLeftHand01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithLeftHand01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_GuideWithBothHands01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithBothHands01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Warning",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Warning.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Stop",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Stop.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_CallSomeoneByRightHand",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_CallSomeoneByRightHand.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Salut1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Salut1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Salut2",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Salut2.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_LookingAround",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LookingAround.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Waiting1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Waiting1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Waiting2",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Waiting2.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_PickUp01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_PickUp01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_PickUp02",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_PickUp02.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Applaud",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Applaud.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_Bow1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Bow1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_ScratchHead",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_ScratchHead.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_OMG1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_OMG1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_BackPain1",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_BackPain1.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "CA_TouchTheBelly",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_TouchTheBelly.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "BA_DodgeDown01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeDown01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "BA_DodgeRight01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeRight01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "BA_DualHandHeadGuard01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandHeadGuard01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "BA_LightHit01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LightHit01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        },
+        {
+            "label": "BA_KnockDown01",
+            "clip": "Unreal Take",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_KnockDown01.FBX",
+            "equipment": 0,
+            "motion": 0.0
+        }
+    ]
+}

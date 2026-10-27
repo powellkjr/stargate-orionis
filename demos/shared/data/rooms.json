@@ -12,7 +12,10 @@
     "staffed": false,
     "joinStatus": "known",
     "constructionTierStatus": "known",
-    "baseCoreLayout": {"focusSlots": 1, "supportSlots": 2},
+    "baseCoreLayout": {
+      "focusSlots": 1,
+      "supportSlots": 2
+    },
     "coreSet": "1 Focus Core slot and 2 Support Core slots at base"
   },
   {
@@ -112,7 +115,7 @@
   {
     "id": "data_storage",
     "name": "Data Storage",
-    "category": "Science & Technology",
+    "category": "Storage",
     "color": "#355070",
     "width": 1,
     "height": 1,
@@ -622,19 +625,39 @@
       "teamsPerPhysicalRoom": 1
     },
     "baseFunction": "Homes one permanently assigned SG team; no processing Services or item custody."
+  },
+  {
+    "id": "warehouse",
+    "name": "Warehouse",
+    "category": "Storage",
+    "color": "#8c9781",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 1,
+    "staffed": false,
+    "supportsConstructionTierProgression": false,
+    "baseFunction": "Temporary holding after Receiving safe handling, before retention or disposition. Unsafe items require Containment. No joining, stacking, staff or Cores."
+  },
+  {
+    "id": "communications",
+    "name": "Communications",
+    "category": "Command",
+    "color": "#4d82a5",
+    "width": 1,
+    "height": 1,
+    "joinGroup": null,
+    "maxConstructionTier": 3,
+    "staffed": true,
+    "staffingProgression": [
+      2,
+      3,
+      4
+    ],
+    "joinStatus": "known",
+    "constructionTierStatus": "known",
+    "supportsConstructionTierProgression": true,
+    "coreSet": "TBD",
+    "baseFunction": "Receives mission opportunities through configured mission Cores; mission-Core execution pending."
   }
-,
-{
-  "id": "warehouse",
-  "name": "Warehouse",
-  "category": "Storage",
-  "color": "#8c9781",
-  "width": 1,
-  "height": 1,
-  "joinGroup": null,
-  "maxConstructionTier": 1,
-  "staffed": false,
-  "supportsConstructionTierProgression": false,
-  "baseFunction": "Temporary holding after Receiving safe handling, before retention or disposition. Unsafe items require Containment. No joining, stacking, staff or Cores."
-}
 ]

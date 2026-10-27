@@ -67,6 +67,9 @@ namespace Orionis.Application
             }
             finally { advancingTick = false; }
         }
+        public void SetBaseResponse(string room,bool active){State=BaseWork.SetBaseResponse(State,room,active);StaffingChanged?.Invoke();ReceivingChanged?.Invoke();ConstructionChanged?.Invoke();}
+        public void ReconfigureCore(string id,string room=null)
+        {State=RoomCores.Request(State,id,room);StaffingChanged?.Invoke();ReceivingChanged?.Invoke();ConstructionChanged?.Invoke();}
         public void BuildRoom(string definition, int tier, int col, int row, string actor = null)
         {
             State = RoomConstruction.Start(State, definition, tier, col, row, actor);
@@ -80,6 +83,11 @@ namespace Orionis.Application
         { State = RoomGroups.Split(State, room); ConstructionChanged?.Invoke(); StaffingChanged?.Invoke(); }
         public void ExcavateCell(int col, int row)
         { State = RoomConstruction.Excavate(State, col, row); ConstructionChanged?.Invoke(); }
+        public void InspectResourceCache(){State=ResourceCargo.InspectField(State);MissionChanged?.Invoke();}
+        public void StartFieldGroup(string id){State=MissionField.StartGroup(State,id);MissionChanged?.Invoke();}
+        public void RecoverResourceCache(){State=ResourceCargo.Recover(State);ReceivingChanged?.Invoke();MissionChanged?.Invoke();}
+        public void AdmitResourceCache(string id,string room){State=ResourceCargo.Admit(State,id,room);ReceivingChanged?.Invoke();}
+        public void RetryResourceOutputs(){State=ResourceCargo.Retry(State);ReceivingChanged?.Invoke();ConstructionChanged?.Invoke();}
         public void PauseConstruction(string roomId, bool paused)
         {
             State = RoomConstruction.SetPaused(State, roomId, paused); ConstructionChanged?.Invoke();
@@ -139,12 +147,23 @@ namespace Orionis.Application
         public void ResetMission()
         {
             if (advancingTick) throw new InvalidOperationException("Finish the current command first.");
-            State = new CampaignState(State.Base, State.Random, State.Clock, State.Assignments, State.Receiving, State.Transfers, teams: State.Teams, cargo: State.Cargo, construction: State.Construction);
+            var resetIds=State.Cargo.Where(i=>i.SourceMissionId==State.Base.Mission.Id).Select(i=>i.Id).ToHashSet();
+            var construction=State.Construction;
+            if(construction!=null){var archived=construction.ArchivedCargoSupply.ToDictionary(p=>p.Key,p=>p.Value);foreach(var resource in construction.Supply.Keys){archived.TryGetValue(resource,out var old);archived[resource]=old+ResourceCargo.CommittedSupply(State,resource,resetIds);}construction=new ConstructionState(construction.Supply.ToDictionary(p=>p.Key,p=>p.Value),construction.Sites,construction.Excavated,construction.Groups,construction.Clearings,archived);}
+            State = new CampaignState(State.Base, State.Random, State.Clock, State.Assignments, State.Receiving.Where(o=>!resetIds.Contains(o.InstanceId)), State.Transfers.Where(t=>t.WorkInstanceId==null||!resetIds.Contains(t.WorkInstanceId)), teams: State.Teams, cargo: State.Cargo.Where(i=>!resetIds.Contains(i.Id)), construction: construction, cores: State.Cores, workforce: State.Workforce, completedWork: State.CompletedWork);
             MissionChanged?.Invoke();
         }
+        public void AssignInfirmaryBed(string unitId,string roomId)
+        { State=PersonnelRecovery.AssignBed(State,unitId,roomId); StaffingChanged?.Invoke(); }
         public void PrepareRedeployment()
         { State = PersonnelCondition.PrepareRedeployment(State); MissionChanged?.Invoke(); }
-        public void ExtractMission() { CommitMissionAction(MissionRescue.Extract); }
+        public void ExtractMission() { CommitMissionAction(s=>{
+            var next=PersonnelRecovery.OnReturn(MissionRescue.Extract(s));
+            if(RecoveredCargo.CanRecover(next))next=RecoveredCargo.Recover(next);
+            var cache=next.Cargo.SingleOrDefault(i=>ResourceCargo.IsResource(next,i));
+            if(cache!=null&&cache.FieldStageId!=null&&ResourceCargo.Collected(next))next=ResourceCargo.Recover(next);
+            return next;
+        }); }
         public void Engage(string incidentId) { CommitMissionAction(s => MissionCombat.Engage(s, incidentId)); }
         public void AdvanceCombatRound() { CommitMissionAction(MissionCombat.Round, false); }
         public void DisengageCombat() { CommitMissionAction(MissionCombat.Disengage); }

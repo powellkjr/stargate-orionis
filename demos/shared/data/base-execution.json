@@ -1,0 +1,26 @@
+{
+  "format": "orionis-base-execution-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "responseRoomDefinitionId": "response_room",
+  "actorOrder": [
+    "DESTINATION_STAFF",
+    "GROUP_STAFF",
+    "LOCAL_RESPONSE"
+  ],
+  "baseResponse": "UNAVAILABLE_FOR_ORDINARY_WORK",
+  "continuity": "SAME_ACTOR_RESUMES_NO_SUBSTITUTION",
+  "toolOrder": [
+    "EQUIPPED_PERSONAL",
+    "CONFIGURED_GROUP"
+  ],
+  "roomServiceScope": "DESTINATION_GROUP_ONLY",
+  "groupToolProviders": [
+    {
+      "sourceTheoryId": "HUMAN_MANUFACTURING_II",
+      "roomService": "HUMAN_WORKSHOP_II",
+      "toolService": "TET2_MODIFY",
+      "unlimited": true
+    }
+  ],
+  "notes": "Rules already established in recipe-bubble-contract.md and the authored Human Manufacturing II capability envelope. A construction tier does not grant Technology Tier or these Services. No global idle search, automatic locker retrieval, or implicit room technology configuration."
+}

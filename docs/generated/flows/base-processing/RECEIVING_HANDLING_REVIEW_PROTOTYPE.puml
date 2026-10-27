@@ -1,0 +1,20 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "RECEIVING_HANDLING_REVIEW_PROTOTYPE"
+caption "demos/shared/data/cargo-handling-prototype.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "format: orionis-cargo-handling-prototype-1\ncontentStatus: PROVISIONAL_PLAYTEST\nnotes: User chose the recovered rifle's actual condition: intact and\nsafe for ordinary storage, technology still unfamiliar. These\nauthored facts exist before inspection; work reveals them without\nchanging the original physical snapshot or granting equipment-use\nclearance. Technician I/TET1, two ticks and no additional Room\nService are provisional routine Receiving handling-review tuning.\nordinaryStorageDefinitionId: warehouse\nfindings:\n  - \n    instanceId: missing-operative-rifle-01\n    condition: INTACT\n    ordinaryStorageSafe: true\n    observation: Intact and safe for ordinary shelf storage. The\ntechnology remains unfamiliar; use as equipment has not been\ncleared.\nid: RECEIVING_HANDLING_REVIEW_PROTOTYPE\nname: Establish condition and safe shelf handling\nprofession: TECHNICIAN\nminimumTier: 1\ntoolService: TET1\nroomService: null\ndurationTicks: 2\nexposureCategory: conditionTags" as nea7792a26f405e2ae9c6 #FFF1CC
+rectangle "id: RECEIVING_HANDLING_REVIEW_PROTOTYPE\nname: Establish condition and safe shelf handling\nprofession: TECHNICIAN\nminimumTier: 1\ntoolService: TET1\nroomService: null\ndurationTicks: 2\nexposureCategory: conditionTags" as nfef0cc964329dd0707c5 #EAF1F8
+nea7792a26f405e2ae9c6 ..> nfef0cc964329dd0707c5 : "execution requirements"
+@enduml

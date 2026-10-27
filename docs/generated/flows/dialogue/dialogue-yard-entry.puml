@@ -1,0 +1,44 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-yard-entry"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-yard-entry\nparticipants:\n  right: guard-yard-01\n  left: ACTIVE_SGC_SPEAKER\nstartWhen:\n  all:\n    - \n      stageVisitCount:\n        stageId: stage-outer-yard\n        equals: 1\n    - \n      npcDispositionIn:\n        instanceId: guard-yard-01\n        values:\n          - ROUTINE\n          - WATCHING\nstartNodeId: yard-entry-guard-line" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "yard-entry-guard-line\nspeaker: guard-yard-01\nside: RIGHT\ntext: Visitors check in with Reynolds inside." as nca184ae979ad12d488fe #EAF1F8
+rectangle "yard-ignore\ntext: Continue on.\nsource: NEUTRAL\neffects:\n  []\nendConversation: true" as n0c01c9c8fb70aee45a86 #E5DAF5
+rectangle "yard-diplomat-smalltalk\ntext: Busy shift?\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: reynolds-is-security-supervisor\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-yard-01\n    delta: 0\nnextNodeId: yard-smalltalk-answer" as n1a07b166c99b905c32cb #E5DAF5
+rectangle "yard-diplomat-personal\ntext: Anything unusual happen here lately?\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-yard-01\n    delta: 20\nnextNodeId: yard-personal-answer" as ne0c4b6adf2b55e63b352 #E5DAF5
+rectangle "yard-soldier-security\ntext: Who is responsible for Gate security?\nsource: SOLDIER\nrequirements:\n  profession: SOLDIER\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-yard-01\n    delta: 25\nnextNodeId: yard-security-answer" as ne7aa6f8431f981663642 #E5DAF5
+rectangle "yard-soldier-press-policy\ntext: Your checkpoint procedure is sloppy. Who authorized this?\nsource: SOLDIER\nrequirements:\n  profession: SOLDIER\n  minimumTier: 2\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-yard-01\n    delta: 45\nnextNodeId: yard-policy-answer" as n53d9938aaa8b76602b1a #E5DAF5
+rectangle "yard-smalltalk-answer\nspeaker: guard-yard-01\nside: RIGHT\ntext: Same as usual. Reynolds handles anyone who needs more than\ndirections.\nendConversation: true" as n8fdf04ffe7a6c67c0673 #EAF1F8
+rectangle "yard-personal-answer\nspeaker: guard-yard-01\nside: RIGHT\ntext: Nothing you need to worry about. Reynolds can answer\nquestions.\nendConversation: true" as n48542e98539126f4e13a #EAF1F8
+rectangle "yard-security-answer\nspeaker: guard-yard-01\nside: RIGHT\ntext: Reynolds. Why?\nendConversation: true" as ne754092eee987840bddf #EAF1F8
+rectangle "yard-policy-answer\nspeaker: guard-yard-01\nside: RIGHT\ntext: You can take that up with Reynolds.\neffects:\n  - \n    type: SET_NPC_DISPOSITION\n    instanceId: guard-yard-01\n    value: SUSPICIOUS\nendConversation: true" as nc06a80bf5677ae610cff #EAF1F8
+ncced28c6dc3f99c2396a --> nca184ae979ad12d488fe : "default start"
+nca184ae979ad12d488fe --> n0c01c9c8fb70aee45a86 : "choose response, then qualified Actor"
+n0c01c9c8fb70aee45a86 --> n361e48d0308f20e32dba
+nca184ae979ad12d488fe --> n1a07b166c99b905c32cb : "choose response, then qualified Actor"
+n1a07b166c99b905c32cb --> n8fdf04ffe7a6c67c0673
+nca184ae979ad12d488fe --> ne0c4b6adf2b55e63b352 : "choose response, then qualified Actor"
+ne0c4b6adf2b55e63b352 --> n48542e98539126f4e13a
+nca184ae979ad12d488fe --> ne7aa6f8431f981663642 : "choose response, then qualified Actor"
+ne7aa6f8431f981663642 --> ne754092eee987840bddf
+nca184ae979ad12d488fe --> n53d9938aaa8b76602b1a : "choose response, then qualified Actor"
+n53d9938aaa8b76602b1a --> nc06a80bf5677ae610cff
+n8fdf04ffe7a6c67c0673 --> n361e48d0308f20e32dba : "Continue after reading"
+n48542e98539126f4e13a --> n361e48d0308f20e32dba : "Continue after reading"
+ne754092eee987840bddf --> n361e48d0308f20e32dba : "Continue after reading"
+nc06a80bf5677ae610cff --> n361e48d0308f20e32dba : "Continue after reading"
+@enduml

@@ -98,7 +98,7 @@ namespace Orionis.Tests
             var value = JObject.Parse(File.ReadAllText(path));
             switch (corruption)
             {
-                case "version": value["schemaVersion"] = 23; break;
+                case "version": value["schemaVersion"] = 23;value.Property("archivedCargoSupply")?.Remove(); break;
                 case "fingerprint": value["fixtureFingerprint"] = "different"; break;
                 case "algorithm": value["randomAlgorithm"] = "different"; break;
                 case "missing-unit": value["units"][0].Remove(); break;
@@ -116,7 +116,7 @@ namespace Orionis.Tests
                 case "overflow-ticks": value["elapsedTicks"] = long.MaxValue; break;
                 case "missing-ticks": value.Property("elapsedTicks").Remove(); break;
                 case "fractional-ticks": value["elapsedTicks"] = 1.5; break;
-                case "v1-with-clock": value["schemaVersion"] = 1; value.Property("teams").Remove(); break;
+                case "v1-with-clock": value["schemaVersion"] = 1;value.Property("archivedCargoSupply")?.Remove(); value.Property("teams").Remove(); break;
             }
             var invalid = corruption == "truncated" ? "{\"schemaVersion\":" : value.ToString();
             File.WriteAllText(path, invalid);
@@ -180,7 +180,7 @@ namespace Orionis.Tests
         {
             session.Selection.SelectRoom("r5"); session.Save();
             var value = JObject.Parse(File.ReadAllText(path));
-            value["schemaVersion"] = 1; value.Property("teams").Remove(); value.Property("elapsedTicks").Remove(); value.Property("assignments").Remove();
+            value["schemaVersion"] = 1;value.Property("archivedCargoSupply")?.Remove(); value.Property("teams").Remove(); value.Property("elapsedTicks").Remove(); value.Property("assignments").Remove();
             value.Property("receiving").Remove(); value.Property("receivingFingerprint").Remove();
             value.Property("transfers").Remove();
             value.Property("expedition").Remove(); value.Property("missionFingerprint").Remove(); value.Property("combatFingerprint").Remove(); value.Property("careFingerprint").Remove(); value.Property("rescueFingerprint").Remove();

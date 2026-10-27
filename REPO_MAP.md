@@ -1,10 +1,64 @@
 # Repository Map — start here
 
+Authored-flow review: [generated diagram index](docs/generated/flows/README.md).
+`node tools/export-flows.mjs` exports all authored dialogue/mission processing
+and shared base processing graphs; `--render` uses local Java/PlantUML, `--check`
+verifies freshness, `--mission`/`--out` select another source/output directory.
+`node --test tools/export-flows.test.mjs` checks coverage, references and escaping.
+Snapshot generation/check includes these diagrams. `Editor/AuthoredFlowBuild.cs`
+regenerates them before every Unity player build and renders PNGs when the local
+PlantUML jar exists (`PLANTUML_JAR` or ~/Downloads/plantuml-1.2024.6.jar). Missing
+Java/render failures with an available jar fail the build with diagnostics;
+without a jar the required .puml export still runs. Authored source diagrams
+include unported Unity content and never imply automatic physical item routing.
+
+Independent room presentation work: `unity/OrionisRoomArtLab/README.md`.
+Separate Unity6000.5.2f1 project and Editor; **Orionis > Art > Room Art Lab**
+opens an isolated Edit-mode preview. WavesA/B use primitive floor/junction/
+three-segment-wall/centered-door modules and data-derived physical/joined sizes.
+Joinable rooms default to `A A B / A A B / C C D` comparison; individual sizes
+remain selectable. Doors have two sideways sliding leaves.
+Exterior non-door wall caps show simulator-style inset CT1 amber singles,
+CT2 cyan pairs and CT3 long purple lamps; visibility is independently toggleable.
+Right-side Room assets browser indexes the audited art with All/Used/Assigned,
+search/category filters and saved art assignments for22 base rooms/16 mission
+locations (`ProjectSettings/RoomArtAssignments.json`), seeded with231 provisional
+choices. Drag props/images into the preview; select/drag/rotate/scale/remove them.
+`ProjectSettings/RoomArtPlacements.json` persists room/layout-specific placements.
+Mission targets display authored Stage footprints. `stage-assets` copies local
+Synty art unchanged into this lab only; source materials remain untouched.
+Vertical orbit dragging increases pitch when dragging down.
+`node unity/tools/room-art-lab.mjs stage|--check` projects the validated room
+catalog and game's pure `Domain/RoomJoinGeometry.cs`; `status|refresh|open|test|cancel-tests`
+targets only this lab's verified descriptor. Node projection check:
+`node --test unity/tools/room-art-lab.test.mjs`; Unity tests are in this project's
+`Assets/RoomArtLab/Tests/Editor/`. Structural mapping and detailed tuning follow later.
+Do not operate the game or character Editor for room-art preview work.
+Structure-only game handoff: `docs/room-structure-game-handoff.md` contains the
+copyable game-chat request, exact wall/door/CT lamp geometry, source paths,
+base/mission authority boundaries and integration acceptance checks.
+Available art audit: `docs/room-asset-audit.md` maps installed/cached art to all
+22 base rooms and16 mission locations, with exact candidates and missing3D
+pieces. `docs/room-asset-inventory.json` records source paths and sprite status.
+
 Unity shared art: `node unity/tools/presentation-art.mjs` copies active registered
 simulator PNGs into `Assets/Orionis/Resources/OrionisArt`; `--check` verifies source
 hashes and catalog freshness. `PresentationArt.cs` is visual-only, with an
 Art/Schematic preference and existing-card fallbacks. Regenerate while Play is
 stopped, then restart Play after changing the shared art catalog.
+
+Unity Offworld follow-up: safe packages project into mission cargo from the shared
+authored physical instances. `CargoProcessingReader.cs` imports all caches for
+Analysis; `CargoPanel` has a cross-room cargo locator. Save33 persists new battle
+target seeds while historical battles keep roster-order outcomes. Main focused
+routes remain `SpatialPlanningTests.SharedHexesSelectActorsStoreLootIsReachableAndDefeatedGuardsStayDown`
+and `DeploymentSceneTests.FullRescueReturnsToSgcAndResetAllowsReplayThroughActualControls`.
+Mission lab work-group/device/report projection is in `MissionFieldWorkflows.cs`
+and the snapshot exporter; schema34 adds sticky parallel assignments and bounded
+schema33 compatibility. `MissionDialogueView.cs` provides readable response and
+speaker controls. `Presentation/Structure/` projects the isolated lab's pure
+wall/door/CT geometry onto existing canvas maps, with no vendor assets. Base
+door cell anchors and mission CT are missing; see the structural handoff.
 
 Original 3D Technician proof: `artwork/technician-proof/README.md` indexes the
 Blender source/rebuild script and validation evidence. Unity assets live in
@@ -202,8 +256,10 @@ construction/clearing cards: `ConstructionProgressView.cs`,
 base speeds1x/4x/8x/16x.
 
 Windows playtest: **Orionis > Build Windows Slice** (Edit mode) invokes
-`Assets/Orionis/Editor/WindowsSliceBuild.cs`, which validates snapshot freshness
-and builds Bootstrap into `unity/StargateOrionis/Builds/Windows/`.
+`Assets/Orionis/Editor/WindowsSliceBuild.cs`, which builds Bootstrap into
+`unity/StargateOrionis/Builds/Windows/`. Its shared pre-build callback generates
+flow diagrams, then validates snapshot freshness; stale game data still blocks
+the player build while leaving newly generated diagrams available for review.
 `Presentation/PlayerSaveVerification.cs` is an opt-in player
 check: `--verify-session` selects a temporary save, and `--verify-phase save`
 then `load` verifies two separate launches without using the normal slot.
@@ -327,6 +383,28 @@ Checks: `node --test demos/character-sheet-preview/*.test.mjs` and
 Each demo's HTML/CSS live beside its entry point. Tests are adjacent `*.test.mjs`.
 
 ## Unity offworld characters and expanded mission
+
+Save schema32: `ConstructionState.ArchivedCargoSupply` preserves deposited
+resource credits when mission Reset clears cargo. `RoomConstruction.Validate`
+continues balancing stock against sites, clearing outputs and live/archived
+cargo credits. Focused regression: `ResourceProcessingTests.LoadThenResetKeepsDepositsAndArchivesCreditsAcrossFurtherWork`.
+
+Mission controls now use touching, profession-colored Actor hexes and a vector
+`TravelArrowGraphic`; no second Actor picker is needed for those hexes. Combat
+uses start/cancel confirmation and automatic rounds (`CombatPanel`). Inactive
+character rigs retain Animator state so downed NPCs stay down. Explicit Reset
+mission clears that mission's physical cargo/Receiving state, preserving base
+assignments; Prepare redeployment remains the normal persistent progression path.
+
+Hidden Store's second crate/Human coil rifle use the generic `CargoCache` groups
+in `RecoveredCargo` and `CargoReader`, projected from shared mission instances.
+Rock variability is authored in `room-construction-prototype.json` / its schema;
+`TerrainClearing.Plan` deterministically selects 8–12 mixed 1/20-tick bubbles per
+seed/cell with a Technician-I requirement. Legacy CLEAR_ROCK jobs keep their
+fixed graph. Preview, progress and Operations read the same graph. Carousel
+category jumps live in `BasePlanningPanel`. Focused regression:
+`Tests/EditMode/MissionPolishTests.cs`.
+
 
 - Shared mission projection: `unity/tools/bootstrap-snapshot.mjs`; pinned previous
   mission/combat in `unity/tools/fixtures/mission-before-offworld-expansion.json`

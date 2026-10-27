@@ -917,21 +917,30 @@
       "overrides": {
         "quantity": 1
       },
-      "itemId": "SIM_SUPPLY_CRATE",
+      "itemId": "SIM_SUPPLY_CACHE",
       "recovery": {
         "category": "RECEIVING"
       },
       "physicalItem": {
         "state": {
           "quantity": 1,
-          "condition": "UNKNOWN",
+          "condition": "INTACT",
           "constructionState": "COMPLETE",
           "percentOfWhole": 1000
         },
         "reality": {
           "authoredTags": [
             "PHYSICAL_OBJECT"
-          ]
+          ],
+          "resourceCargo": {
+            "mode": "WILD",
+            "family": "SUPPLY",
+            "tiers": [
+              1,
+              2
+            ],
+            "conversionStat": 1230
+          }
         },
         "knowledge": {
           "revealedTags": [

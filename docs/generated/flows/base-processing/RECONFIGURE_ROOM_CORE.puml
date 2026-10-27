@@ -1,0 +1,26 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "RECONFIGURE_ROOM_CORE"
+caption "demos/shared/data/theory/stargate_theory_simulator_import.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "schemaVersion: theory-0.1\ncontentStatus: PROVISIONAL_PLAYTEST\nid: RECONFIGURE_ROOM_CORE\nname: Install / remove room equipment Core\ntype: RECIPE\nknowledgeRequirements:\n  []\ntargetKind: PHYSICAL_CORE\nreversible: true\ninputs:\n  []\noutputs:\n  []\ndirections:\n  INSTALL:\n    from: WAREHOUSE\n    to: PHYSICAL_ROOM_CORE_SLOT\n    releaseWarehousePlaceOnCommit: true\n    reserveCoreSlotAndActivePowerBeforeStart: true\n  REMOVE:\n    from: PHYSICAL_ROOM_CORE_SLOT\n    to: WAREHOUSE\n    reserveWarehousePlaceBeforeStart: true\n    releaseCoreSlotAndPowerOnCommit: true\nboundary: NO_MANUFACTURING_NO_SALVAGE\ncommit: AT_RECIPE_COMPLETION\nnotes: Same four-bubble graph in either direction. No\nconsumables/refunds. Equipped Tool charges are spent on each\ncompleted technical bubble, including removal. Partial work\npreserves its sticky Actor and reservations; retry or pause, never\nclone/swap equipment." as nea7792a26f405e2ae9c6 #FFF1CC
+rectangle "id: POSITION_EQUIPMENT\ndurationTicks: 1\nactorRequirement: UNTRAINED\ntoolRequirement: null\nroomServiceRequirement: null\ntoolCharges: 0" as na45fd513d66a670a7b63 #EAF1F8
+rectangle "id: CONNECT_EQUIPMENT\ndurationTicks: 1\nactorRequirement: TE1\ntoolRequirement: TET1\nroomServiceRequirement: null\ntoolCharges: 1" as n098d19cef90f6f400b33 #EAF1F8
+rectangle "id: VALIDATE_CONNECTIONS\ndurationTicks: 1\nactorRequirement: TE1\ntoolRequirement: TET1\nroomServiceRequirement: null\ntoolCharges: 1" as n7d13a2be3f4c35e1bb6a #EAF1F8
+rectangle "id: SECURE_EQUIPMENT\ndurationTicks: 1\nactorRequirement: UNTRAINED\ntoolRequirement: null\nroomServiceRequirement: null\ntoolCharges: 0" as ne1ea1a239657ef571e8a #EAF1F8
+na45fd513d66a670a7b63 --> n098d19cef90f6f400b33 : "authored order"
+n098d19cef90f6f400b33 --> n7d13a2be3f4c35e1bb6a : "authored order"
+n7d13a2be3f4c35e1bb6a --> ne1ea1a239657ef571e8a : "authored order"
+nea7792a26f405e2ae9c6 ..> na45fd513d66a670a7b63 : "execution requirements"
+@enduml

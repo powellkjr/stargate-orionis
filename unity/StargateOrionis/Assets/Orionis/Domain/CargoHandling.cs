@@ -49,14 +49,8 @@ namespace Orionis.Domain
             return order == null ? c.Incoming.Single(d => d.Id == i.Id).Condition : ReceivingWork.Condition(c, order);
         }
         public static bool Cleared(CampaignState s, RecoveredItem i) => Finding(s, i)?.OrdinaryStorageSafe == true && Condition(s, i) != "UNKNOWN";
-        private static IEnumerable<InspectionWorker> Candidates(CampaignState s, HandlingOrder order)
-        {
-            var step = s.Base.Handling.Step;
-            return RecoveredCargo.Catalog(s).Workers.Where(w => (order.ActorId == null || w.UnitId == order.ActorId) &&
-                s.Assignments.Any(a => a.UnitId == w.UnitId && RoomGroups.Contains(s, order.RoomId, a.RoomInstanceId)) && !Expeditions.IsIncapacitated(s, w.UnitId) && !RoomConstruction.ReservesActor(s, w.UnitId) &&
-                w.Qualifications.TryGetValue(step.Profession, out var tier) && tier >= step.MinimumTier &&
-                (step.ToolService == null || PersonnelCondition.HasToolService(s, w.UnitId, step.ToolService))).OrderBy(w => RoomGroups.ActorPriority(s, order.RoomId, w.UnitId)).ThenBy(w => w.UnitId, StringComparer.Ordinal);
-        }
+        private static IEnumerable<InspectionWorker> Candidates(CampaignState s,HandlingOrder order)
+        {var step=s.Base.Handling.Step;return BaseWork.Workers(s,order.RoomId,step.Profession,step.MinimumTier,order.ActorId).Where(w=>!RoomConstruction.ReservesActor(s,w.UnitId)&&BaseWork.HasTool(s,order.RoomId,w.UnitId,step.ToolService));}
         private static bool Ready(CampaignState s, RecoveredItem item)
         {
             var o = item.Handling; if (o == null || Completed(item) || o.Paused) return false;

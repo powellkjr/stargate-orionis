@@ -34,6 +34,15 @@ namespace Orionis.Presentation
             site=work;var setup=session.State.Base.Construction;
             var name=session.State.Base.Planning.Rooms.Single(p=>p.Room.Id==work.DefinitionId).Room.Name;
             title.text=work.RoomId+"  "+name+(work.FromTier.HasValue?"  CT"+work.FromTier+" > "+work.Tier:"")+"   "+(100d*work.WorkedTicks/work.DurationTicks).ToString("0")+"%";
+            if(work.Bubbles.Count>0)
+            {
+                var nodes=RoomConstruction.WorkBubbles(session.State,work);
+                var bubbleFractions=work.Bubbles.Select((b,i)=>(float)b.Ticks/nodes[i].DurationTicks).ToArray();
+                var bubbleColors=work.Bubbles.Select((b,i)=>b.ActorId!=null?PrototypeUi.ParseColor(session.State.Base.Units.Single(u=>u.Id==b.ActorId).Color):nodes[i].Profession=="UNTRAINED"?Color.white:PrototypeUi.ParseColor(session.State.Base.Units.First(u=>u.Profession==nodes[i].Profession).Color)).ToArray();
+                phase.text=work.Completed?"COMPLETE":(work.Paused?"PAUSED / ":"")+"80% general / 20% specialists / "+((work.DurationTicks-work.WorkedTicks)*CampaignTiming.MinutesPerTick/60d).ToString("0.#")+" work hours left";
+                var reason=work.Completed?null:RoomConstruction.RuntimeBlocker(session.State,work);if(reason!=null)phase.text+=" / "+reason;
+                rail.SetSegments(bubbleFractions,bubbleColors,immediate||work.Completed);return;
+            }
             var blocker=work.Completed?null:RoomConstruction.RuntimeBlocker(session.State,work);
             string profession=work.WorkedTicks<setup.SecurityTicks?setup.SecurityProfession:setup.Profession;
             phase.text=work.Completed?"COMPLETE":profession+" / "+(work.WorkedTicks<setup.SecurityTicks?"site security":"construction")+"   /   "+((work.DurationTicks-work.WorkedTicks)*CampaignTiming.MinutesPerTick/60d).ToString("0.#")+"h remaining"+(work.Paused?" / PAUSED":blocker==null?"":" / "+blocker);

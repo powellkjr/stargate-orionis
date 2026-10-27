@@ -12,47 +12,75 @@ namespace Orionis.Presentation
         private CampaignSession session;
         private Action close;
         private bool showDebug;
-        private string selected, roomFilter, message = "Inventory spans all locations. Choose a room tab to see its current custody.";
+        private float itemPosition=1,actionPosition=1,detailPosition=1;
+        private string renderedItem;
+        private string previousRoomFilter;
+        private string Reference(RecoveredItem item)=>"Cargo #"+(session.State.Cargo.ToList().IndexOf(item)+1);
+        private string selected, roomFilter, followItem, followRoom, message = "Select an item in this room queue to work or route it.";
         public void Bind(CampaignSession value, Action back, bool debugControls = true, string roomId = null)
-        { session = value; close = back; showDebug = debugControls; roomFilter = roomId; session.ReceivingChanged += Render; session.TickCommitted += Tick; session.StaffingChanged += Render; Render(); }
+        { session = value; close = back; showDebug = debugControls; roomFilter = roomId??value.State.Base.Rooms.FirstOrDefault(r=>r.Definition.Id=="receiving")?.Id??"incoming"; session.ReceivingChanged += Render; session.TickCommitted += Tick; session.StaffingChanged += Render; Render(); }
+        public void FocusItem(string id){selected=id;Render();}
         private void Tick(long _) => Render();
         private void Run(Action action, string success = "Item state updated. Save preserves it.")
-        { try { action(); message = success; } catch (Exception e) { message = e.Message; } Render(); }
+        {
+            var target=selected;
+            try
+            {
+                action();message=success;
+                var moved=session.State.Cargo.SingleOrDefault(i=>i.Id==target);
+                if(moved!=null&&roomFilter!=null&&moved.EquippedUnitId==null&&!ResourceCargo.Consumed(session.State,moved))
+                { if(moved.CustodyRoomId!=roomFilter){followItem=target;followRoom=moved.CustodyRoomId??"incoming";} }
+            }
+            catch(Exception e){message=e.Message;}
+            Render();
+        }
         private void Render()
         {
+            var previousList=Active("Cargo item viewport")?.GetComponent<ScrollRect>();
+            if(previousList!=null)itemPosition=previousList.verticalNormalizedPosition;
+            var previousActions=Active("Cargo action viewport")?.GetComponent<ScrollRect>();
+            if(previousActions!=null)actionPosition=previousActions.verticalNormalizedPosition;
+            var previousDetails=Active("Cargo physical details")?.GetComponent<ScrollRect>();
+            if(previousDetails!=null)detailPosition=previousDetails.verticalNormalizedPosition;
             foreach (Transform c in transform) { c.gameObject.SetActive(false); Destroy(c.gameObject); }
-            var rooms = session.State.Base.Rooms.Where(r => session.State.Base.Storage?.Find(r.Definition.Id) != null || r.Definition.Id == session.State.Base.Processing?.RoomDefinitionId || RecoveredCargo.Catalog(session.State).Rooms.Any(p => p.DefinitionId == r.Definition.Id && p.Capabilities.Contains(RecoveredCargo.Catalog(session.State).RequiredCapability))).ToList();
-            // Tabs are physical custody views, never a second inventory or a storage transfer.
-            var tabs = new[] { (Id: (string)null, Label: "All locations"), (Id: "incoming", Label: "Incoming") }
-                .Concat(rooms.Where(r => session.State.Cargo.Any(i => i.RoomId == r.Id || i.CustodyRoomId == r.Id) || r.Definition.Id == session.State.Base.Processing?.RoomDefinitionId || r.Definition.Id == session.State.Base.Handling?.OrdinaryStorageDefinitionId || session.State.Base.Storage?.Find(r.Definition.Id)?.Tabs.Any(t => t.Classes.Contains("CC") || t.Classes.Contains("EQ")) == true || RecoveredCargo.Catalog(session.State).Rooms.Any(p => p.DefinitionId == r.Definition.Id && p.Capabilities.Contains(RecoveredCargo.Catalog(session.State).RequiredCapability)))
-                .Select(r => (Id: r.Id, Label: r.Definition.Name))).ToList();
             string locationTitle = roomFilter == null ? "All locations" : roomFilter == "incoming" ? "Incoming inventory" : session.State.Base.Rooms.Single(r => r.Id == roomFilter).Definition.Name + " " + roomFilter;
-            PrototypeUi.Label(PrototypeUi.Rect("Cargo heading", transform, new Vector2(.02f, .88f), new Vector2(.78f, 1)), "Base inventory / " + locationTitle, 24);
+            PrototypeUi.Label(PrototypeUi.Rect("Cargo heading", transform, new Vector2(.02f, .88f), new Vector2(.78f, 1)), locationTitle + " / item queue", 24);
             PrototypeUi.Button("Close recovered cargo", transform, new Vector2(.8f, .9f), new Vector2(.98f, .98f), "Back to base", new Color(.12f, .3f, .36f), () => close());
-            bool Visible(RecoveredItem i) => roomFilter == null || roomFilter == "incoming" && i.CustodyRoomId == null && i.EquippedUnitId == null || i.CustodyRoomId == roomFilter;
-            for (int t = 0; t < tabs.Count; t++)
+            bool InBase(RecoveredItem i)=>!ResourceCargo.IsResource(session.State,i)||i.FieldStageId==null&&!ResourceCargo.Consumed(session.State,i);
+            bool intake=roomFilter!=null&&roomFilter!="incoming"&&session.State.Base.Rooms.Single(r=>r.Id==roomFilter).Definition.Id=="receiving";
+            bool Visible(RecoveredItem i) => InBase(i)&&(roomFilter==null||(intake||roomFilter=="incoming")&&i.CustodyRoomId==null&&i.EquippedUnitId==null||i.CustodyRoomId==roomFilter&&i.EquippedUnitId==null);
+            var departed=session.State.Cargo.SingleOrDefault(i=>i.Id==selected);
+            if(departed!=null&&!Visible(departed)&&departed.EquippedUnitId==null&&!ResourceCargo.Consumed(session.State,departed)){followItem=departed.Id;followRoom=departed.CustodyRoomId??"incoming";}
+            var staff=roomFilter==null||roomFilter=="incoming"?Array.Empty<string>():session.State.Assignments.Where(a=>a.RoomInstanceId==roomFilter).Select(a=>session.State.Base.Units.Single(u=>u.Id==a.UnitId).Name).ToArray();
+            PrototypeUi.Button("Locate all cargo",transform,new Vector2(.02f,.80f),new Vector2(.38f,.87f),roomFilter==null?"Return to room queue":"Locate all cargo",new Color(.12f,.3f,.36f),()=>{if(roomFilter==null)roomFilter=previousRoomFilter??"incoming";else{previousRoomFilter=roomFilter;roomFilter=null;}followItem=followRoom=null;Render();});
+            var summary=PrototypeUi.Label(PrototypeUi.Rect("Room queue summary",transform,new Vector2(.42f,.78f),new Vector2(.68f,.87f)),roomFilter==null?"All base cargo / current custody":(intake?"Receiving / incoming and admitted queue":"Current room custody")+"\n"+(staff.Length==0?"No staff assigned":string.Join(", ",staff)),14);summary.rectTransform.offsetMin=new Vector2(2,0);summary.rectTransform.offsetMax=new Vector2(-2,0);
+            if(followItem!=null&&followRoom!=roomFilter)
             {
-                var tab = tabs[t];
-                int count = session.State.Cargo.Count(i => tab.Id == null || tab.Id == "incoming" && i.CustodyRoomId == null && i.EquippedUnitId == null || i.CustodyRoomId == tab.Id);
-                int reserved = tab.Id == null ? 0 : session.State.Cargo.Count(i => i.RoomId == tab.Id);
-                var button = PrototypeUi.Button("cargo-room-" + (tab.Id ?? "all"), transform, new Vector2(.02f + t * .96f / tabs.Count, .78f), new Vector2(.02f + (t+1) * .96f / tabs.Count - .004f, .87f), tab.Label + "\n" + count + " here" + (reserved > count ? " / " + reserved + " reserved" : ""), roomFilter == tab.Id ? new Color(.23f,.4f,.42f) : new Color(.12f,.25f,.3f), () => { roomFilter = tab.Id; selected = null; Render(); });
-                button.GetComponentInChildren<Text>().fontSize = 13;
+                string destination=followRoom=="incoming"?"Incoming":session.State.Base.Rooms.Single(r=>r.Id==followRoom).Definition.Name;
+                PrototypeUi.Button("Follow routed item",transform,new Vector2(.70f,.78f),new Vector2(.98f,.87f),"Follow to "+destination,new Color(.12f,.35f,.4f),()=>{roomFilter=followRoom;selected=followItem;followRoom=followItem=null;if(roomFilter!="incoming")session.Selection.SelectRoom(roomFilter);Render();});
             }
+            if(!session.State.Cargo.Any(i=>i.Id==selected&&Visible(i)))selected=session.State.Cargo.FirstOrDefault(Visible)?.Id;
+            var itemContent=ScrollContent("Cargo item viewport",new Vector2(.02f,.46f),new Vector2(.38f,.74f));
             int index = 0;
             foreach (var i in session.State.Cargo.Where(Visible))
             {
                 var location = i.EquippedUnitId == null ? (i.CustodyRoomId == null ? "Incoming inventory" : session.State.Base.Rooms.Single(r => r.Id == i.CustodyRoomId).Definition.Name) : "Equipped / " + session.State.Base.Units.Single(u => u.Id == i.EquippedUnitId).Name;
-                PrototypeUi.Button("cargo-" + i.Id, transform, new Vector2(.02f, .58f - index * .15f), new Vector2(.38f, .72f - index * .15f),
-                    RecoveredCargo.Name(session.State, i) + "\n" + location, i.Id == selected ? new Color(.23f, .4f, .42f) : new Color(.12f, .25f, .3f), () => { selected = i.Id; Render(); }); index++;
+                var row=PrototypeUi.Button("cargo-" + i.Id, itemContent, new Vector2(.02f, .58f - index * .15f), new Vector2(.38f, .72f - index * .15f),
+                    Reference(i)+" / "+RecoveredCargo.Name(session.State, i) + "\n" + location, i.Id == selected ? new Color(.23f, .4f, .42f) : new Color(.12f, .25f, .3f), () => { selected = i.Id; Render(); });
+                var rect=row.GetComponent<RectTransform>();rect.anchorMin=new Vector2(0,1);rect.anchorMax=Vector2.one;rect.offsetMin=new Vector2(2,-(index+1)*88+3);rect.offsetMax=new Vector2(-2,-index*88-3);index++;
             }
+            itemContent.sizeDelta=new Vector2(0,Mathf.Max(88,index*88));
+            var countLabel=PrototypeUi.Label(PrototypeUi.Rect("Cargo item count",transform,new Vector2(.02f,.745f),new Vector2(.38f,.775f)),index+" items / scroll to browse",12);
+            countLabel.rectTransform.offsetMin=new Vector2(2,0);countLabel.rectTransform.offsetMax=new Vector2(-2,0);
             if (index == 0) PrototypeUi.Label(PrototypeUi.Rect("No recovered cargo", transform, new Vector2(.02f, .48f), new Vector2(.98f, .72f)), session.State.Cargo.Count == 0 ? "No physical cargo recovered. Discover recoverable objects and choose them at the mission debrief." : "No items currently in custody here. Storage reservations remain with the assigned storage room while items are away.", 20);
             var item = session.State.Cargo.SingleOrDefault(i => i.Id == selected && Visible(i));
+            if(item!=null&&ResourceCargo.IsResource(session.State,item)){RenderResource(item);LayoutActions(item);return;}
             if (item != null)
             {
                 var catalog = RecoveredCargo.Catalog(session.State); var d = catalog.Incoming.Single(x => x.Id == item.Id);
                 var order = session.State.Receiving.SingleOrDefault(o => o.InstanceId == item.Id);
                 var complete = order != null && ReceivingWork.IsComplete(catalog, order);
-                var text = RecoveredCargo.Name(session.State, item) +
+                var text = Reference(item)+" / "+RecoveredCargo.Name(session.State, item) +
                     "\nIntake: " + (complete ? "Complete (handling / broad classification only)" : order == null ? "Not admitted" : "In progress") +
                     "\nIdentification: " + (CargoExamination.Identified(session.State, item) ? "Established" : "Unresolved — Analysis required");
                 if (CargoExamination.Completed(item) && item.CustodyRoomId == item.Examination.RoomId && item.CustodyRoomId != item.RoomId)
@@ -77,7 +105,7 @@ namespace Orionis.Presentation
                 var retention = PrototypeUi.Button("Retain cargo", transform, new Vector2(.02f, .34f), new Vector2(.38f, .44f), item.Retained ? "Mark retention undecided" : "Keep for SGC", new Color(.12f, .3f, .36f), () => Run(() => session.RetainCargo(item.Id, !item.Retained)));
                 retention.interactable = item.EquippedUnitId == null;
                 if (showDebug) PrototypeUi.Button("Reset cargo object", transform, new Vector2(.02f, .24f), new Vector2(.23f, .32f), "Reset object", new Color(.32f, .2f, .16f), () => Run(() => session.ResetCargoObject(item.Id), "Object reset to incoming inventory. Staff and SG-team assignments kept; Save preserves this setup."));
-                PrototypeUi.ScrollLabel("Cargo physical details", transform, new Vector2(.42f, .45f), new Vector2(.98f, .74f), text, 17);
+                PrototypeUi.ScrollLabel("Cargo physical details", transform, new Vector2(.42f, .52f), new Vector2(.98f, .74f), text, 17);
                 int n = 0;
                 if (order == null)
                     foreach (var room in session.State.Base.Rooms.Where(r => catalog.Rooms.Any(p => p.DefinitionId == r.Definition.Id && p.Capabilities.Contains(catalog.RequiredCapability))))
@@ -154,7 +182,61 @@ namespace Orionis.Presentation
                         "Containment is storage only. Send custody to a staffed Analysis lab to reveal remaining properties. Assigned storage stays reserved.\nEquipment Storage requires all properties revealed, established identity and intact condition.", 16);
                 }
             }
+            if(item!=null)PrototypeUi.Rect("Cargo inspection tracker",transform,new Vector2(.42f,.41f),new Vector2(.98f,.50f)).gameObject.AddComponent<InspectionProgressView>().Cargo(session.State,item,session);
+            LayoutActions(item);
             PrototypeUi.Label(PrototypeUi.Rect("Cargo status", transform, new Vector2(.02f, 0), new Vector2(.98f, .09f)), message, 16);
+        }
+        private void RenderResource(RecoveredItem item)
+        {
+            var s=session.State;var d=s.Base.ResourceProcessing;var work=item.ResourceWork;
+            int pending=work.Outcomes.Keys.Count(i=>!work.Committed.Contains(i));
+            string text=ResourceCargo.Name(s,item)+"\nRecipe work: "+work.Committed.Count+"/"+d.Bubbles.Count+" bubbles committed / "+pending+" pending deposit"+
+                "\nCustody: "+(item.CustodyRoomId??"Incoming inventory")+"\nFallback: Incoming inventory\nRecovery: "+ResourceCargo.AllocationLabel(s,item);
+            if(ResourceCargo.Known(s,item,"CONVERSION")){var totals=ResourceCargo.Totals(s,item);text+="\nKnown conversion: "+(d.ConversionStat/100d).ToString("0.00")+"\nRecovery total: "+string.Join(" / ",totals.Select(p=>p.Value+" "+p.Key));}
+            else text+="\nConversion rate is unknown; finish the inspection bubbles.";
+            if(pending>0)text+="\nStorage capacity blocks finished outcomes. No further work or reroll is required for those bubbles. Create capacity, then retry.";
+            PrototypeUi.ScrollLabel("Cargo physical details",transform,new Vector2(.42f,.52f),new Vector2(.98f,.74f),text,17);
+            var tracker=PrototypeUi.Rect("Resource recipe progress",transform,new Vector2(.42f,.41f),new Vector2(.98f,.50f)).gameObject.AddComponent<InspectionProgressView>();
+            tracker.Show(s,"Resource processing",work.Bubbles.Select((b,i)=>new InspectionWork(d.Bubbles[i].DurationTicks,b.Ticks,d.Bubbles[i].Profession,b.ActorId)),session,"resource/"+item.Id+"/"+item.RecoveredTick);
+            if(item.CustodyRoomId==null)
+            {
+                int n=0;foreach(var room in s.Base.Rooms.Where(r=>r.Definition.Id==d.RoomDefinitionId))
+                    PrototypeUi.Button("Admit resource "+room.Id,transform,new Vector2(.42f,.3f-n*.1f),new Vector2(.98f,.4f-n++*.1f),"Send custody to "+room.Definition.Name+" "+room.Id+" / 0 ticks",new Color(.12f,.3f,.36f),()=>Run(()=>session.AdmitResourceCache(item.Id,room.Id)));
+            }
+            if(item.CustodyRoomId!=null)PrototypeUi.Label(PrototypeUi.Rect("Resource blocker",transform,new Vector2(.42f,.33f),new Vector2(.98f,.41f)),ResourceCargo.BlockedReason(s,item),16);
+            if(pending>0)PrototypeUi.Button("Retry resource outputs",transform,new Vector2(.42f,.18f),new Vector2(.98f,.28f),"Retry fixed pending outputs / no additional work",new Color(.45f,.3f,.1f),()=>Run(session.RetryResourceOutputs));
+            PrototypeUi.Label(PrototypeUi.Rect("Resource work requirements",transform,new Vector2(.02f,.1f),new Vector2(.38f,.43f)),"Receiving staff work the Recipe while the clock runs.\nInspections: Technician/TET1, then Scientist/SCT1.\nRecovery: any available local staff, one Actor per bubble.\nOne open container per Receiving room. Resource credits require atomic Recipe commits.",16);
+            PrototypeUi.Label(PrototypeUi.Rect("Cargo status",transform,Vector2.zero,new Vector2(1,.09f)),message,16);
+        }
+        private Transform Active(string name)=>transform.Cast<Transform>().FirstOrDefault(t=>t.gameObject.activeSelf&&t.name==name);
+        private RectTransform ScrollContent(string name,Vector2 min,Vector2 max)
+        {
+            var viewport=PrototypeUi.Rect(name,transform,min,max);viewport.gameObject.AddComponent<RectMask2D>();
+            viewport.gameObject.AddComponent<Image>().color=new Color(.06f,.095f,.12f);
+            var content=PrototypeUi.Rect(name+" content",viewport,new Vector2(0,1),Vector2.one);content.pivot=new Vector2(.5f,1);
+            var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.viewport=viewport;scroll.content=content;scroll.horizontal=false;scroll.scrollSensitivity=40;scroll.movementType=ScrollRect.MovementType.Clamped;
+            var bar=PrototypeUi.Rect(name+" scrollbar",viewport,new Vector2(.985f,.01f),new Vector2(1,.99f));bar.gameObject.AddComponent<Image>().color=new Color(.08f,.13f,.16f);
+            var thumb=PrototypeUi.Rect("Scroll handle",bar,Vector2.zero,Vector2.one);var graphic=thumb.gameObject.AddComponent<Image>();graphic.color=new Color(.36f,.57f,.64f);
+            var scrollbar=bar.gameObject.AddComponent<Scrollbar>();scrollbar.handleRect=thumb;scrollbar.targetGraphic=graphic;scrollbar.direction=Scrollbar.Direction.BottomToTop;
+            scroll.verticalScrollbar=scrollbar;scroll.verticalScrollbarVisibility=ScrollRect.ScrollbarVisibility.AutoHide;
+            return content;
+        }
+        private void LayoutActions(RecoveredItem item)
+        {
+            var actions=transform.Cast<Transform>().Where(t=>t.gameObject.activeSelf&&t.GetComponent<Button>()!=null&&t.GetComponent<RectTransform>().anchorMin.x>=.4f&&t.name!="Close recovered cargo"&&!t.name.StartsWith("cargo-room-")).ToArray();
+            var content=ScrollContent("Cargo action viewport",new Vector2(.42f,.11f),new Vector2(.98f,.39f));
+            content.sizeDelta=new Vector2(0,Mathf.Max(62,actions.Length*62));
+            for(int i=0;i<actions.Length;i++)
+            {
+                var action=actions[i].GetComponent<RectTransform>();action.SetParent(content,false);action.anchorMin=new Vector2(0,1);action.anchorMax=Vector2.one;
+                action.offsetMin=new Vector2(2,-(i+1)*62+3);action.offsetMax=new Vector2(-2,-i*62-3);
+                var label=action.GetComponentInChildren<Text>();label.fontSize=14;label.rectTransform.offsetMin=new Vector2(8,3);label.rectTransform.offsetMax=new Vector2(-8,-3);
+            }
+            if(renderedItem!=item?.Id){detailPosition=actionPosition=1;renderedItem=item?.Id;}
+            Canvas.ForceUpdateCanvases();
+            Active("Cargo item viewport").GetComponent<ScrollRect>().verticalNormalizedPosition=itemPosition;
+            Active("Cargo action viewport").GetComponent<ScrollRect>().verticalNormalizedPosition=actionPosition;
+            var details=Active("Cargo physical details")?.GetComponent<ScrollRect>();if(details!=null)details.verticalNormalizedPosition=detailPosition;
         }
         private string RouteReason(string id, string roomId)
         {

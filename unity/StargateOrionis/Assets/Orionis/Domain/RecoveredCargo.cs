@@ -4,8 +4,13 @@ using System.Linq;
 
 namespace Orionis.Domain
 {
+    public sealed class CargoCache
+    {
+        public string ContainerId,Label,StageId;public FieldRequirements Recipe;public IReadOnlyList<IncomingItem> Items;public IReadOnlyDictionary<string,string> Payloads;
+    }
     public sealed class CargoDefinition
     {
+        public IReadOnlyList<CargoCache> Caches {get;}
         public string ContainerId { get; }
         public string Label { get; }
         public string StageId { get; }
@@ -17,9 +22,9 @@ namespace Orionis.Domain
         // It is opaque to simulation and never a player-facing display string.
         public IReadOnlyDictionary<string, string> Payloads { get; }
         public CargoDefinition(string containerId, string label, string stageId, string guardId, int suspicionDelta,
-            FieldRequirements reveal, IEnumerable<IncomingItem> items, IDictionary<string, string> payloads)
+            FieldRequirements reveal, IEnumerable<IncomingItem> items, IDictionary<string, string> payloads,IEnumerable<CargoCache> additionalCaches=null)
         { ContainerId = containerId; Label = label; StageId = stageId; GuardId = guardId; SuspicionDelta = suspicionDelta; Reveal = reveal;
-          Items = items.ToList().AsReadOnly(); Payloads = new System.Collections.ObjectModel.ReadOnlyDictionary<string, string>(new Dictionary<string, string>(payloads)); }
+          Caches=new[]{new CargoCache{ContainerId=containerId,Label=label,StageId=stageId,Recipe=reveal,Items=items.ToArray(),Payloads=new System.Collections.ObjectModel.ReadOnlyDictionary<string,string>(payloads)}}.Concat(additionalCaches??Array.Empty<CargoCache>()).ToArray();Items=Caches.SelectMany(c=>c.Items).ToArray();Payloads=Caches.SelectMany(c=>c.Payloads).ToDictionary(p=>p.Key,p=>p.Value); }
     }
     public sealed class RecoveredItem
     {
@@ -28,6 +33,8 @@ namespace Orionis.Domain
         public string SourceMissionId { get; }
         public long RecoveredTick { get; }
         public string Payload { get; }
+        public RecipeWorkState ResourceWork { get; }
+        public string FieldStageId { get; }
         public string RoomId { get; }
         // RoomId is the reserved storage room, never a temporary work destination.
         // Incoming inventory is a valid logical fallback before room storage admission.
@@ -38,34 +45,37 @@ namespace Orionis.Domain
         public bool Retained { get; }
         public ExaminationOrder Examination { get; }
         public string EquippedUnitId { get; }
-        public RecoveredItem(string id, string sourceContainerId, string sourceMissionId, long recoveredTick, string payload, string roomId, HandlingOrder handling = null, bool retained = false, ExaminationOrder examination = null, string equippedUnitId = null, string custodyRoomId = null)
-        { Id = id; SourceContainerId = sourceContainerId; SourceMissionId = sourceMissionId; RecoveredTick = recoveredTick; Payload = payload; RoomId = roomId; Handling = handling; Retained = retained; Examination = examination; EquippedUnitId = equippedUnitId; CustodyRoomId = equippedUnitId == null ? custodyRoomId ?? roomId : custodyRoomId; }
-        public RecoveredItem At(string roomId) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, roomId, Handling, Retained, Examination, EquippedUnitId);
-        public RecoveredItem InCustody(string roomId) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, Retained, Examination, null, roomId);
-        public RecoveredItem WithHandling(HandlingOrder order) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, order, Retained, Examination, EquippedUnitId, CustodyRoomId);
-        public RecoveredItem Keep(bool retained) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, retained, Examination, EquippedUnitId, CustodyRoomId);
-        public RecoveredItem WithExamination(ExaminationOrder order) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, Retained, order, EquippedUnitId, CustodyRoomId);
-        public RecoveredItem Equip(string unitId) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, Retained, Examination, unitId);
+        public RecoveredItem(string id, string sourceContainerId, string sourceMissionId, long recoveredTick, string payload, string roomId, HandlingOrder handling = null, bool retained = false, ExaminationOrder examination = null, string equippedUnitId = null, string custodyRoomId = null, RecipeWorkState resourceWork = null, string fieldStageId = null)
+        { ResourceWork=resourceWork; FieldStageId=fieldStageId; Id = id; SourceContainerId = sourceContainerId; SourceMissionId = sourceMissionId; RecoveredTick = recoveredTick; Payload = payload; RoomId = roomId; Handling = handling; Retained = retained; Examination = examination; EquippedUnitId = equippedUnitId; CustodyRoomId = equippedUnitId == null ? custodyRoomId ?? roomId : custodyRoomId; }
+        public RecoveredItem WithResource(RecipeWorkState work,string stage)=>new RecoveredItem(Id,SourceContainerId,SourceMissionId,RecoveredTick,Payload,RoomId,Handling,Retained,Examination,EquippedUnitId,CustodyRoomId,work,stage);
+        public RecoveredItem At(string roomId) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, roomId, Handling, Retained, Examination, EquippedUnitId, resourceWork: ResourceWork, fieldStageId: FieldStageId);
+        public RecoveredItem InCustody(string roomId) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, Retained, Examination, null, roomId, ResourceWork, FieldStageId);
+        public RecoveredItem WithHandling(HandlingOrder order) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, order, Retained, Examination, EquippedUnitId, CustodyRoomId, ResourceWork, FieldStageId);
+        public RecoveredItem Keep(bool retained) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, retained, Examination, EquippedUnitId, CustodyRoomId, ResourceWork, FieldStageId);
+        public RecoveredItem WithExamination(ExaminationOrder order) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, Retained, order, EquippedUnitId, CustodyRoomId, ResourceWork, FieldStageId);
+        public RecoveredItem Equip(string unitId) => new RecoveredItem(Id, SourceContainerId, SourceMissionId, RecoveredTick, Payload, RoomId, Handling, Retained, Examination, unitId, resourceWork: ResourceWork, fieldStageId: FieldStageId);
     }
     public static class RecoveredCargo
     {
         public static bool Revealed(CampaignState s) => s.Base.Cargo != null && s.Expedition?.Travel?.Field?.Completed.Any(w => w.RecipeId == s.Base.Cargo.Reveal.Id) == true;
-        public static bool CanRecover(CampaignState s) => Revealed(s) && s.Expedition.Returned &&
-            MissionEvacuation.SecureRoute(s, s.Base.Cargo.StageId) != null && !s.Cargo.Any(i => i.SourceContainerId == s.Base.Cargo.ContainerId);
+        public static bool CacheRevealed(CampaignState s,CargoCache cache)=>s.Expedition?.Travel?.Field?.Completed.Any(w=>w.RecipeId==cache.Recipe.Id)==true;
+        // Current extraction policy: every marked cache returns. Selection and
+        // per-cache extraction constraints belong to the later extraction wave.
+        public static bool CacheRecoverable(CampaignState s,CargoCache cache)=>s.Expedition?.Returned==true&&CacheRevealed(s,cache)&&!s.Cargo.Any(i=>i.SourceContainerId==cache.ContainerId);
+        public static bool CanRecover(CampaignState s)=>s.Base.Cargo?.Caches.Any(c=>CacheRecoverable(s,c))==true;
         public static CampaignState Recover(CampaignState s)
         {
-            if (!CanRecover(s)) throw new InvalidOperationException("Recovery requires a revealed crate, an extracted team and a secure known route; each instance can be recovered once.");
-            var d = s.Base.Cargo;
-            return Replace(s, s.Cargo.Concat(d.Items.Select(i => new RecoveredItem(i.Id, d.ContainerId, s.Expedition.MissionId,
-                s.Clock.ElapsedTicks, d.Payloads[i.Id], null))));
+            if(!CanRecover(s))throw new InvalidOperationException("Recovery requires cargo marked for extraction and a return to SGC.");
+            return Replace(s,s.Cargo.Concat(s.Base.Cargo.Caches.Where(c=>CacheRecoverable(s,c)).SelectMany(c=>c.Items.Select(i=>new RecoveredItem(i.Id,c.ContainerId,s.Expedition.MissionId,s.Clock.ElapsedTicks,c.Payloads[i.Id],null)))));
         }
         public static ReceivingCatalog Catalog(CampaignState s)
         {
             var c = s.Base.Receiving; if (s.Base.Cargo == null) return c;
-            return new ReceivingCatalog(c.RecipeId, c.RequiredCapability, c.StorageClass, c.Steps, c.Incoming.Concat(s.Base.Cargo.Items), c.Rooms, c.Workers, c.RequiredTags, c.Authorize, c.Complete);
+            return new ReceivingCatalog(c.RecipeId, c.RequiredCapability, c.StorageClass, c.Steps, c.Incoming.Concat(s.Base.Cargo.Items).Concat(s.Base.ResourceProcessing==null?Array.Empty<IncomingItem>():new[]{s.Base.ResourceProcessing.Incoming}), c.Rooms, c.Workers, c.RequiredTags, c.Authorize, c.Complete);
         }
         public static string Name(CampaignState s, RecoveredItem i)
         {
+            if(ResourceCargo.IsResource(s,i))return ResourceCargo.Name(s,i);
             var finding = CargoExamination.Finding(s, i); if (CargoExamination.Identified(s, i)) return finding.Name;
             var d = Catalog(s).Incoming.Single(x => x.Id == i.Id); var work = s.Receiving.SingleOrDefault(w => w.InstanceId == i.Id);
             return work != null && ReceivingWork.IsComplete(Catalog(s), work) ? d.ReceivingName : d.InitialName;
@@ -95,23 +105,10 @@ namespace Orionis.Domain
             bool equipment = s.Base.Storage?.Find(target.Definition.Id)?.Tabs.Any(t => t.Classes.Contains("EQ")) == true;
             if (source?.Definition.Id == s.Base.Handling?.OrdinaryStorageDefinitionId && !containment)
                 throw new InvalidOperationException("Warehouse storage may be reassigned only to Containment. Use Analysis for temporary work custody.");
-            // Supply cargo conversion (Wave 1A): cleared supply cargo stored in Supply Storage is
-            // converted to Supply units and removed from physical inventory. Uses the authorized
-            // conversion stat of 1 (handlingCost x quantity) and the item's authored storage class
-            // (S1/S2/S3) as the Supply tier.
-            var supplyItem = d.Items.Single(x => x.Id == id);
-            var supplyClass = supplyItem.StorageClasses.FirstOrDefault(sc => sc == "S1" || sc == "S2" || sc == "S3");
-            if (supplyClass != null && target.Definition.Id == "supply_storage")
-            {
-                if (s.Construction == null) throw new InvalidOperationException("Construction Supply accounting is not configured.");
-                double supplyValue = supplyItem.HandlingCost * supplyItem.Quantity;
-                var supply = s.Construction.Supply.ToDictionary(p => p.Key, p => p.Value);
-                if (!supply.ContainsKey(supplyClass)) throw new InvalidOperationException("Unknown Supply class: " + supplyClass);
-                supply[supplyClass] = supply[supplyClass] + supplyValue;
-                var nextCargo = s.Cargo.Where(x => x.Id != id);
-                var construction = new ConstructionState(supply, s.Construction.Sites, s.Construction.Excavated, s.Construction.Groups, s.Construction.Clearings);
-                return new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers, s.Expedition, s.Teams, nextCargo, s.Personnel, construction);
-            }
+            // Routing is not a resource-producing Recipe. Handling footprint is
+            // never a conversion stat, and the physical object is not consumed here.
+            if (target.Definition.Id == s.Base.Construction?.SupplyStorageDefinitionId)
+                throw new InvalidOperationException("Supply Storage accepts committed resource outputs from an authored recovery Recipe; storage routing does not convert physical cargo.");
             var next = i.At(destination);
             if (equipment) next = next.Keep(true); // Explicit acceptance into SGC Equipment Storage.
             return Replace(s, s.Cargo.Select(x => x == i ? next : x));
@@ -136,7 +133,7 @@ namespace Orionis.Domain
             var item = s.Cargo.Single(i => i.Id == id);
             var reset = new RecoveredItem(item.Id, item.SourceContainerId, item.SourceMissionId, item.RecoveredTick, item.Payload, null);
             return new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving.Where(o => o.InstanceId != id),
-                s.Transfers.Where(t => t.WorkInstanceId != id), s.Expedition, s.Teams, s.Cargo.Select(i => i == item ? reset : i), s.Personnel, construction: s.Construction);
+                s.Transfers.Where(t => t.WorkInstanceId != id), s.Expedition, s.Teams, s.Cargo.Select(i => i == item ? reset : i), s.Personnel, construction: s.Construction, cores: s.Cores, workforce: s.Workforce, completedWork: s.CompletedWork);
         }
         private static StorageTab EquipmentTab(CampaignState s, RecoveredItem item, RoomStorageProfile profile)
         {
@@ -144,17 +141,19 @@ namespace Orionis.Domain
             return profile.Tabs.FirstOrDefault(t => t.Classes.Contains("EQ") && s.Base.Processing.EquipmentTabTags.TryGetValue(t.Id, out var tag) && known.Contains(tag));
         }
         internal static CampaignState Replace(CampaignState s, IEnumerable<RecoveredItem> cargo, IEnumerable<ReceivingOrder> receiving = null) =>
-            new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, receiving ?? s.Receiving, s.Transfers, s.Expedition, s.Teams, cargo, s.Personnel, construction: s.Construction);
+            new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, receiving ?? s.Receiving, s.Transfers, s.Expedition, s.Teams, cargo, s.Personnel, construction: s.Construction, cores: s.Cores, workforce: s.Workforce, completedWork: s.CompletedWork);
         public static void Validate(CampaignState s)
         {
             if (s.Cargo.Count == 0) return;
             var d = s.Base.Cargo ?? throw new InvalidOperationException("Cargo definitions are missing.");
             if (s.Cargo.Any(i => i == null) || s.Cargo.Select(i => i.Id).Distinct().Count() != s.Cargo.Count ||
-                !s.Cargo.Select(i => i.Id).OrderBy(x => x).SequenceEqual(d.Items.Select(i => i.Id).OrderBy(x => x)))
+                s.Cargo.Any(i=>!ResourceCargo.IsResource(s,i)) && !s.Cargo.Where(i=>!ResourceCargo.IsResource(s,i)).Select(i => i.Id).OrderBy(x => x).SequenceEqual(d.Caches.Where(c=>s.Cargo.Any(i=>i.SourceContainerId==c.ContainerId)).SelectMany(c=>c.Items).Select(i=>i.Id).OrderBy(x=>x)))
                 throw new InvalidOperationException("Recovery must preserve every physical crate/content instance exactly once.");
             foreach (var i in s.Cargo)
             {
-                if (i.SourceContainerId != d.ContainerId || i.SourceMissionId != s.Base.Mission.Id || i.RecoveredTick < 0 || i.RecoveredTick > s.Clock.ElapsedTicks || i.Payload != d.Payloads[i.Id])
+                if(ResourceCargo.IsResource(s,i)){ResourceCargo.Validate(s,i);continue;}
+                if(i.ResourceWork!=null||i.FieldStageId!=null)throw new InvalidOperationException("Legacy physical cargo cannot carry a resource process.");
+                if (!d.Caches.Any(c=>c.ContainerId==i.SourceContainerId&&c.Items.Any(p=>p.Id==i.Id)) || i.SourceMissionId != s.Base.Mission.Id || i.RecoveredTick < 0 || i.RecoveredTick > s.Clock.ElapsedTicks || i.Payload != d.Payloads[i.Id])
                     throw new InvalidOperationException("Recovered physical state or provenance changed without an implemented transition.");
                 CargoHandling.Validate(s, i);
                 CargoExamination.Validate(s, i);
@@ -181,7 +180,7 @@ namespace Orionis.Domain
                 {
                     // Warehouse is ordinary holding; unresolved properties remain unknown until Containment examination.
                     long occupied = s.Cargo.Where(x => x.RoomId == room.Id || CargoExamination.Active(x) && x.Examination.PrimaryRoomId == room.Id).Sum(x => (long)d.Items.Single(a => a.Id == x.Id).Quantity);
-                    if (occupied > p.CapacityByTier[room.ConstructionTier]) throw new InvalidOperationException("Warehouse item places are full.");
+                    if (occupied + RoomCores.WarehouseReserved(s,room.Id) > p.CapacityByTier[room.ConstructionTier]) throw new InvalidOperationException("Warehouse item places are full.");
                 }
                 else
                 {

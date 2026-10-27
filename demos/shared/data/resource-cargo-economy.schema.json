@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stargate-orionis.local/schemas/resource-cargo-economy.schema.json",
+  "title": "Shared resource cargo economics and physical payloads",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "conversionScale",
+    "bubbleDurationTicks",
+    "tierWeights",
+    "families",
+    "qualityBands",
+    "sizeBands",
+    "policies",
+    "examples"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "format": {
+      "const": "orionis-resource-cargo-economy-1"
+    },
+    "conversionScale": {
+      "const": 100
+    },
+    "bubbleDurationTicks": {
+      "const": [
+        1,
+        20
+      ]
+    },
+    "tierWeights": {
+      "type": "object",
+      "required": [
+        "1",
+        "2",
+        "3"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "1": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "2": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "3": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "families": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "SUPPLY",
+        "MATERIAL",
+        "RATIONS"
+      ],
+      "properties": {
+        "SUPPLY": {
+          "const": [
+            "S1",
+            "S2",
+            "S3"
+          ]
+        },
+        "MATERIAL": {
+          "const": [
+            "M1",
+            "M2",
+            "M3"
+          ]
+        },
+        "RATIONS": {
+          "const": [
+            "R1"
+          ]
+        }
+      }
+    },
+    "qualityBands": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/band"
+      }
+    },
+    "sizeBands": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/band"
+          }
+        ],
+        "required": [
+          "minimumHighTier"
+        ]
+      }
+    },
+    "policies": {
+      "type": "object",
+      "required": [
+        "QUANTITY",
+        "BALANCED",
+        "QUALITY"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "QUANTITY": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "BALANCED": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "QUALITY": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "inv",
+          "conversionStat",
+          "family",
+          "tiers",
+          "policy",
+          "outputs"
+        ],
+        "properties": {
+          "inv": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "conversionStat": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 2000
+          },
+          "family": {
+            "enum": [
+              "SUPPLY",
+              "MATERIAL",
+              "RATIONS"
+            ]
+          },
+          "tiers": {
+            "$ref": "#/$defs/tiers"
+          },
+          "policy": {
+            "enum": [
+              "QUANTITY",
+              "BALANCED",
+              "QUALITY"
+            ]
+          },
+          "outputs": {
+            "$ref": "#/$defs/resourceTotals"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "band": {
+      "type": "object",
+      "required": [
+        "id",
+        "min",
+        "max"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "min": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimumHighTier": {
+          "type": "object",
+          "required": [
+            "2",
+            "3"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "2": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "3": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "tiers": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    "resourceClass": {
+      "enum": [
+        "S1",
+        "S2",
+        "S3",
+        "M1",
+        "M2",
+        "M3",
+        "R1"
+      ]
+    },
+    "resourceTotals": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/resourceClass"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "cargoPayload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "family",
+            "tiers",
+            "conversionStat"
+          ],
+          "properties": {
+            "mode": {
+              "const": "WILD"
+            },
+            "family": {
+              "enum": [
+                "SUPPLY",
+                "MATERIAL",
+                "RATIONS"
+              ]
+            },
+            "tiers": {
+              "$ref": "#/$defs/tiers"
+            },
+            "conversionStat": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 2000
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "family": {
+                    "const": "RATIONS"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "tiers": {
+                    "const": [
+                      1
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "resources"
+          ],
+          "properties": {
+            "mode": {
+              "const": "MANIFESTED"
+            },
+            "resources": {
+              "$ref": "#/$defs/resourceTotals"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "knowledgeInstanceIds"
+          ],
+          "properties": {
+            "mode": {
+              "const": "MANIFESTED"
+            },
+            "knowledgeInstanceIds": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "pendingResourceOutcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transactionId",
+        "bubbleId",
+        "resources"
+      ],
+      "properties": {
+        "transactionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bubbleId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resources": {
+          "type": "object",
+          "minProperties": 0,
+          "propertyNames": {
+            "$ref": "#/$defs/resourceClass"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "description": "Fixed complete outcome including any authored bonus, retained on an existing process until an atomic capacity-validated commit. This is not another resource balance."
+    }
+  }
+}

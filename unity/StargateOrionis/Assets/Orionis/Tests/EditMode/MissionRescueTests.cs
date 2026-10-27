@@ -21,7 +21,7 @@ namespace Orionis.Tests
             s.ChooseGate(false);
             if (!prepare) return s;
             s.MoveParty("door-gate-to-yard"); s.Respond("yard-ignore", "unit-6"); Fight(s, "incident-yard-guards");
-            s.MoveParty("door-yard-to-mainhall"); Work(s, s.State.Base.Mission.Travel.Field.DoorRecipes.Single().Id);
+            s.MoveParty("door-yard-to-mainhall"); Work(s, s.State.Base.Mission.Travel.Field.DoorRecipes.Single(r=>r.DoorId=="door-mainhall-to-holding").Id);
             s.MoveParty("door-mainhall-to-holding"); Fight(s, "incident-holding-guards");
             s.Talk("dialogue-operative"); s.Respond("operative-ready", "unit-6");
             foreach (var r in s.State.Base.Care.Recipes) Work(s, r.Id);
@@ -71,7 +71,7 @@ namespace Orionis.Tests
         [Test] public void PersonnelMigrationRejectsInvalidStateAndKeepsIncapacitatedUnitsUnavailable()
         {
             var s = Create(false); var codec = new CampaignSaveCodec(Json); var old = JObject.Parse(codec.Serialize(new SavedSession(s.State, null)));
-            old["schemaVersion"] = 19; old.Property("personnel").Remove(); foreach (JObject p in old["expedition"]["party"]) p.Property("startingHealth").Remove();
+            old["schemaVersion"] = 19;old.Property("archivedCargoSupply")?.Remove(); old.Property("personnel").Remove(); foreach (JObject p in old["expedition"]["party"]) p.Property("startingHealth").Remove();
             s = new CampaignSession(codec.Deserialize(old.ToString()).Campaign, null);
             Assert.That(s.State.Personnel, Is.Empty); Assert.That(MissionCombat.Inspect(s.State).PartyHealth.Values.All(h => h == s.State.Base.Combat.PartyHealth), Is.True);
             var active = s.State; Assert.Throws<InvalidOperationException>(s.PrepareRedeployment); Assert.That(s.State, Is.SameAs(active));
@@ -114,7 +114,7 @@ namespace Orionis.Tests
             if (problem == "custody") j["expedition"]["travel"]["field"]["subjects"][0]["evacuation"] = "EXTRACTED";
             if (problem == "objective") j["expedition"]["travel"]["field"]["objectives"]["extract-operative"] = "COMPLETED";
             if (problem == "time") j["expedition"]["extractedTick"] = 1000;
-            if (problem == "legacy") { j["schemaVersion"] = 10; j.Property("teams").Remove(); j.Property("rescueFingerprint").Remove(); }
+            if (problem == "legacy") { j["schemaVersion"] = 10;j.Property("archivedCargoSupply")?.Remove(); j.Property("teams").Remove(); j.Property("rescueFingerprint").Remove(); }
             if (problem == "fingerprint") j["rescueFingerprint"] = "bad";
             Assert.Catch(() => c.Deserialize(j.ToString()));
         }

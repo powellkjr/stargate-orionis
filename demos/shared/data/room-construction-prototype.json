@@ -24,6 +24,7 @@
   "minimumNewRoomHours": 24,
   "hoursPerOccupantPlace": 6,
   "execution": {
+    "generalWorkShare": 0.8,
     "requiredRoomDefinitionId": "maintenance",
     "actorSelection": "MAINTENANCE_PERMANENT_STAFF",
     "profession": "TECHNICIAN",
@@ -52,15 +53,77 @@
     "clearingRecipe": {
       "id": "CLEAR_ROCK",
       "bubbles": [
-        { "id": "clear-1", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-2", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-3", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-4", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-5", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-6", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-7", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null },
-        { "id": "clear-8", "durationTicks": 1, "actor": "UNTRAINED", "toolService": null, "roomService": null }
+        {
+          "id": "clear-1",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-2",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-3",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-4",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-5",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-6",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-7",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        },
+        {
+          "id": "clear-8",
+          "durationTicks": 1,
+          "actor": "UNTRAINED",
+          "toolService": null,
+          "roomService": null
+        }
       ]
+    },
+    "variation": {
+      "id": "CLEAR_ROCK_VARIED",
+      "minBubbles": 8,
+      "maxBubbles": 12,
+      "durations": [
+        1,
+        20
+      ],
+      "longPercent": 40,
+      "specialist": {
+        "profession": "TECHNICIAN",
+        "minimumTier": 1
+      }
     }
   },
   "startupStaff": [

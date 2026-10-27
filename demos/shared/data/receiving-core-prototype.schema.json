@@ -1,0 +1,496 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "contentStatus",
+    "runtimeStatus",
+    "definitionSource",
+    "itemSource",
+    "power",
+    "embeddedT0",
+    "receiving",
+    "cargoCapabilityPreferences",
+    "starterInstances",
+    "legacySeeding",
+    "installedStorage",
+    "uninstalledStorage",
+    "installationRecipeId",
+    "deferred",
+    "roomTagsByDefinition"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "format": {
+      "const": "orionis-receiving-cores-1"
+    },
+    "contentStatus": {
+      "const": "PROVISIONAL_PLAYTEST"
+    },
+    "runtimeStatus": {
+      "const": "PROVISIONAL_EXECUTABLE"
+    },
+    "definitionSource": {
+      "const": "theory/stargate_theory_simulator_import.json"
+    },
+    "itemSource": {
+      "const": "item.json"
+    },
+    "power": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generatorOutput",
+        "activeCostIsTotal",
+        "reserve",
+        "activation",
+        "roomBaseByDefinition",
+        "roomBaseTierMultipliers",
+        "generatorOutputTierMultipliers",
+        "fuel",
+        "outages",
+        "generatorDefinitionId"
+      ],
+      "properties": {
+        "generatorOutput": {
+          "const": 100
+        },
+        "activeCostIsTotal": {
+          "const": true
+        },
+        "reserve": {
+          "type": "string",
+          "minLength": 1
+        },
+        "activation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "roomBaseByDefinition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cultural_platform",
+            "analysis",
+            "containment",
+            "data_storage",
+            "equipment_storage",
+            "gate_room",
+            "holding",
+            "infirmary",
+            "living_quarters",
+            "maintenance",
+            "material_storage",
+            "generator",
+            "ration_storage",
+            "receiving",
+            "research",
+            "response_room",
+            "supply_storage",
+            "tech_platform",
+            "workshop",
+            "ready_room",
+            "warehouse"
+          ],
+          "properties": {
+            "cultural_platform": {
+              "type": "number",
+              "minimum": 0
+            },
+            "analysis": {
+              "type": "number",
+              "minimum": 0
+            },
+            "containment": {
+              "type": "number",
+              "minimum": 0
+            },
+            "data_storage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "equipment_storage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "gate_room": {
+              "type": "number",
+              "minimum": 0
+            },
+            "holding": {
+              "type": "number",
+              "minimum": 0
+            },
+            "infirmary": {
+              "type": "number",
+              "minimum": 0
+            },
+            "living_quarters": {
+              "type": "number",
+              "minimum": 0
+            },
+            "maintenance": {
+              "type": "number",
+              "minimum": 0
+            },
+            "material_storage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "generator": {
+              "type": "number",
+              "minimum": 0
+            },
+            "ration_storage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "receiving": {
+              "type": "number",
+              "minimum": 0
+            },
+            "research": {
+              "type": "number",
+              "minimum": 0
+            },
+            "response_room": {
+              "type": "number",
+              "minimum": 0
+            },
+            "supply_storage": {
+              "type": "number",
+              "minimum": 0
+            },
+            "tech_platform": {
+              "type": "number",
+              "minimum": 0
+            },
+            "workshop": {
+              "type": "number",
+              "minimum": 0
+            },
+            "ready_room": {
+              "type": "number",
+              "minimum": 0
+            },
+            "warehouse": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "roomBaseTierMultipliers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "1",
+            "2",
+            "3"
+          ],
+          "properties": {
+            "1": {
+              "type": "number",
+              "minimum": 0
+            },
+            "2": {
+              "type": "number",
+              "minimum": 0
+            },
+            "3": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "generatorOutputTierMultipliers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "1",
+            "2",
+            "3"
+          ],
+          "properties": {
+            "1": {
+              "type": "number",
+              "minimum": 0
+            },
+            "2": {
+              "type": "number",
+              "minimum": 0
+            },
+            "3": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "fuel": {
+          "const": false
+        },
+        "outages": {
+          "const": false
+        },
+        "generatorDefinitionId": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "embeddedT0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "removable",
+        "usesCoreSlot",
+        "powerIncludedInRoomBase",
+        "receiving"
+      ],
+      "properties": {
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "removable": {
+          "const": false
+        },
+        "usesCoreSlot": {
+          "const": false
+        },
+        "powerIncludedInRoomBase": {
+          "const": true
+        },
+        "receiving": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "providesServices",
+            "supportedSizes",
+            "recovery"
+          ],
+          "properties": {
+            "providesServices": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "supportedSizes": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "recovery": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "highTierFixedPercent",
+                "lowTierFixedPercent",
+                "flexiblePercent",
+                "flexibleHighTierShare"
+              ],
+              "properties": {
+                "highTierFixedPercent": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "lowTierFixedPercent": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "flexiblePercent": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "flexibleHighTierShare": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "receiving": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coreSlotsByConstructionTier",
+        "reconfiguration",
+        "resolution",
+        "samePrioritySelection",
+        "duplicates",
+        "recoveryFamilies",
+        "notes"
+      ],
+      "properties": {
+        "coreSlotsByConstructionTier": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "1",
+            "2",
+            "3"
+          ],
+          "properties": {
+            "1": {
+              "type": "number",
+              "minimum": 0
+            },
+            "2": {
+              "type": "number",
+              "minimum": 0
+            },
+            "3": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "reconfiguration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolution": {
+          "type": "string",
+          "minLength": 1
+        },
+        "samePrioritySelection": {
+          "type": "string",
+          "minLength": 1
+        },
+        "duplicates": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recoveryFamilies": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "cargoCapabilityPreferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "SIM_SUPPLY_CACHE"
+      ],
+      "properties": {
+        "SIM_SUPPLY_CACHE": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "handling",
+            "recovery"
+          ],
+          "properties": {
+            "handling": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "recovery": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "starterInstances": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "instanceId",
+          "coreDefinitionId",
+          "roomInstanceId",
+          "slotIndex"
+        ],
+        "properties": {
+          "instanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "coreDefinitionId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "roomInstanceId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "slotIndex": {
+            "type": "number",
+            "minimum": 0
+          }
+        }
+      },
+      "maxItems": 2
+    },
+    "legacySeeding": {
+      "type": "string",
+      "minLength": 1
+    },
+    "installedStorage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "uninstalledStorage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "installationRecipeId": {
+      "const": "RECONFIGURE_ROOM_CORE"
+    },
+    "deferred": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "roomTagsByDefinition": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "receiving-core-prototype.schema.json",
+  "title": "Provisional Receiving equipment and base power authoring"
+}

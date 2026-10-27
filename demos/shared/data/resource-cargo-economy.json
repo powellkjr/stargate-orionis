@@ -1,0 +1,30 @@
+{
+  "$schema": "./resource-cargo-economy.schema.json",
+  "format": "orionis-resource-cargo-economy-1",
+  "conversionScale": 100,
+  "bubbleDurationTicks": [1, 20],
+  "tierWeights": { "1": 1, "2": 4, "3": 16 },
+  "families": {
+    "SUPPLY": ["S1", "S2", "S3"],
+    "MATERIAL": ["M1", "M2", "M3"],
+    "RATIONS": ["R1"]
+  },
+  "qualityBands": [
+    { "id": "POOR", "min": 100, "max": 499 },
+    { "id": "STANDARD", "min": 500, "max": 999 },
+    { "id": "RICH", "min": 1000, "max": 1499 },
+    { "id": "EXCEPTIONAL", "min": 1500, "max": 2000 }
+  ],
+  "sizeBands": [
+    { "id": "SMALL", "min": 1, "max": 5, "minimumHighTier": { "2": 2, "3": 2 } },
+    { "id": "MEDIUM", "min": 6, "max": 10, "minimumHighTier": { "2": 4, "3": 3 } },
+    { "id": "LARGE", "min": 11, "max": 20, "minimumHighTier": { "2": 8, "3": 5 } },
+    { "id": "HUGE", "min": 21, "max": 40, "minimumHighTier": { "2": 12, "3": 10 } }
+  ],
+  "policies": { "QUANTITY": 25, "BALANCED": 50, "QUALITY": 75 },
+  "examples": [
+    { "inv": 20, "conversionStat": 1230, "family": "SUPPLY", "tiers": [1, 2], "policy": "QUANTITY", "outputs": { "S1": 184, "S2": 15 } },
+    { "inv": 20, "conversionStat": 1230, "family": "SUPPLY", "tiers": [1, 2], "policy": "BALANCED", "outputs": { "S1": 123, "S2": 30 } },
+    { "inv": 20, "conversionStat": 1230, "family": "SUPPLY", "tiers": [1, 2], "policy": "QUALITY", "outputs": { "S1": 61, "S2": 46 } }
+  ]
+}

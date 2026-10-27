@@ -2177,6 +2177,82 @@
           "FIELD_TEST"
         ]
       ]
+    },
+    {
+      "id": "RECONFIGURE_ROOM_CORE",
+      "name": "Install / remove room equipment Core",
+      "type": "RECIPE",
+      "contentStatus": "PROVISIONAL_PLAYTEST",
+      "knowledgeRequirements": [],
+      "targetKind": "PHYSICAL_CORE",
+      "reversible": true,
+      "inputs": [],
+      "outputs": [],
+      "directions": {
+        "INSTALL": {
+          "from": "WAREHOUSE",
+          "to": "PHYSICAL_ROOM_CORE_SLOT",
+          "releaseWarehousePlaceOnCommit": true,
+          "reserveCoreSlotAndActivePowerBeforeStart": true
+        },
+        "REMOVE": {
+          "from": "PHYSICAL_ROOM_CORE_SLOT",
+          "to": "WAREHOUSE",
+          "reserveWarehousePlaceBeforeStart": true,
+          "releaseCoreSlotAndPowerOnCommit": true
+        }
+      },
+      "boundary": "NO_MANUFACTURING_NO_SALVAGE",
+      "commit": "AT_RECIPE_COMPLETION",
+      "bubbles": [
+        {
+          "id": "POSITION_EQUIPMENT",
+          "durationTicks": 1,
+          "actorRequirement": "UNTRAINED",
+          "toolRequirement": null,
+          "roomServiceRequirement": null,
+          "toolCharges": 0
+        },
+        {
+          "id": "CONNECT_EQUIPMENT",
+          "durationTicks": 1,
+          "actorRequirement": "TE1",
+          "toolRequirement": "TET1",
+          "roomServiceRequirement": null,
+          "toolCharges": 1
+        },
+        {
+          "id": "VALIDATE_CONNECTIONS",
+          "durationTicks": 1,
+          "actorRequirement": "TE1",
+          "toolRequirement": "TET1",
+          "roomServiceRequirement": null,
+          "toolCharges": 1
+        },
+        {
+          "id": "SECURE_EQUIPMENT",
+          "durationTicks": 1,
+          "actorRequirement": "UNTRAINED",
+          "toolRequirement": null,
+          "roomServiceRequirement": null,
+          "toolCharges": 0
+        }
+      ],
+      "edges": [
+        [
+          "POSITION_EQUIPMENT",
+          "CONNECT_EQUIPMENT"
+        ],
+        [
+          "CONNECT_EQUIPMENT",
+          "VALIDATE_CONNECTIONS"
+        ],
+        [
+          "VALIDATE_CONNECTIONS",
+          "SECURE_EQUIPMENT"
+        ]
+      ],
+      "notes": "Same four-bubble graph in either direction. No consumables/refunds. Equipped Tool charges are spent on each completed technical bubble, including removal. Partial work preserves its sticky Actor and reservations; retry or pause, never clone/swap equipment."
     }
   ],
   "coreDefinitions": [
@@ -2185,14 +2261,219 @@
       "tier": 2,
       "providesServices": [
         "ELECTRODYNAMICS_FABRICATION_II"
-      ]
+      ],
+      "contentStatus": "PROVISIONAL_PLAYTEST",
+      "minimumConstructionTier": 2,
+      "compatibleRoomTags": [
+        "WORKSHOP_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 3,
+        "active": 16
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "SERVICE",
+        "stacking": "NONSTACKING"
+      }
     },
     {
       "id": "ELECTRODYNAMICS_TEST_CORE_II",
       "tier": 2,
       "providesServices": [
         "SHIELDED_ELECTRODYNAMICS_TEST_II"
-      ]
+      ],
+      "contentStatus": "PROVISIONAL_PLAYTEST",
+      "minimumConstructionTier": 2,
+      "compatibleRoomTags": [
+        "WORKSHOP_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 3,
+        "active": 16
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "SERVICE",
+        "stacking": "NONSTACKING"
+      }
+    },
+    {
+      "id": "RECEIVING_MEDIUM_PROCESSING_CORE_1",
+      "name": "Medium Processing Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_HANDLING_MEDIUM"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 2,
+        "active": 12
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "HANDLING",
+        "supportedSizes": [
+          "SMALL",
+          "MEDIUM"
+        ],
+        "stacking": "NONSTACKING"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_LARGE_PROCESSING_CORE_2",
+      "name": "Large Processing Equipment",
+      "tier": 2,
+      "providesServices": [
+        "RECEIVING_HANDLING_LARGE"
+      ],
+      "minimumConstructionTier": 2,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 3,
+        "active": 20
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "HANDLING",
+        "supportedSizes": [
+          "SMALL",
+          "MEDIUM",
+          "LARGE"
+        ],
+        "stacking": "NONSTACKING"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_HUGE_PROCESSING_CORE_3",
+      "name": "Huge Processing Equipment",
+      "tier": 3,
+      "providesServices": [
+        "RECEIVING_HANDLING_HUGE"
+      ],
+      "minimumConstructionTier": 3,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 4,
+        "active": 30
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "HANDLING",
+        "supportedSizes": [
+          "SMALL",
+          "MEDIUM",
+          "LARGE",
+          "HUGE"
+        ],
+        "stacking": "NONSTACKING"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_QUANTITY_RECOVERY_CORE_1",
+      "name": "Quantity Recovery Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_RECOVERY_QUANTITY"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 1,
+        "active": 8
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "RECOVERY",
+        "families": [
+          "SUPPLY",
+          "MATERIAL",
+          "RATIONS"
+        ],
+        "highTierFixedPercent": 25,
+        "lowTierFixedPercent": 25,
+        "flexiblePercent": 50,
+        "flexibleHighTierShare": 0,
+        "stacking": "NONSTACKING",
+        "degradation": "LINEAR_TO_BALANCED"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_BALANCED_RECOVERY_CORE_1",
+      "name": "Balanced Recovery Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_RECOVERY_BALANCED"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 1,
+        "active": 8
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "RECOVERY",
+        "families": [
+          "SUPPLY",
+          "MATERIAL",
+          "RATIONS"
+        ],
+        "highTierFixedPercent": 25,
+        "lowTierFixedPercent": 25,
+        "flexiblePercent": 50,
+        "flexibleHighTierShare": 0.5,
+        "stacking": "NONSTACKING",
+        "degradation": "LINEAR_TO_BALANCED"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_QUALITY_RECOVERY_CORE_1",
+      "name": "Quality Recovery Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_RECOVERY_QUALITY"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 1,
+        "active": 8
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "RECOVERY",
+        "families": [
+          "SUPPLY",
+          "MATERIAL",
+          "RATIONS"
+        ],
+        "highTierFixedPercent": 25,
+        "lowTierFixedPercent": 25,
+        "flexiblePercent": 50,
+        "flexibleHighTierShare": 1,
+        "stacking": "NONSTACKING",
+        "degradation": "LINEAR_TO_BALANCED"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
     }
   ],
   "provisionalDefinitions": {
@@ -2200,7 +2481,13 @@
       "PULSED_POWER_PROCESSING_II",
       "ELECTROMAGNETIC_PROCESSING_II",
       "SAFE_ELECTROMAGNETIC_ENVIRONMENT_II",
-      "HUMAN_WORKSHOP_II"
+      "HUMAN_WORKSHOP_II",
+      "RECEIVING_HANDLING_MEDIUM",
+      "RECEIVING_HANDLING_LARGE",
+      "RECEIVING_HANDLING_HUGE",
+      "RECEIVING_RECOVERY_QUANTITY",
+      "RECEIVING_RECOVERY_BALANCED",
+      "RECEIVING_RECOVERY_QUALITY"
     ],
     "notes": [
       "These names are sufficient for simulator testing but are not yet locked production vocabulary.",

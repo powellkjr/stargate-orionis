@@ -1,0 +1,22 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "RECEIVING_BASELINE_PROTOTYPE"
+caption "demos/shared/data/receiving-prototype.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "format: orionis-receiving-prototype-1\ncontentStatus: PROVISIONAL_PLAYTEST\nnotes: User authorized provisional Receiving choices on October 17.\nOrdinary nondestructive inspection, no expendable charges, no\nadditional technical Room Service. Tune after playtesting; no\nautomatic exit routing or institutional Knowledge grants.\nincomingInstanceIds:\n  - ITEM_ASGARD_RIFLE_0001\nid: RECEIVING_BASELINE_PROTOTYPE\nrequiredRoomCapability: CAN_ACCEPT_RECEIVING\nstorageClass: INV" as nea7792a26f405e2ae9c6 #FFF1CC
+rectangle "id: DETERMINE_HANDLING\nname: Inspect handling and condition\nprofession: TECHNICIAN\nminimumTier: 1\ntoolService: TET1\nroomService: null\ndurationTicks: 2\nexposureCategory: conditionTags" as n0b224dd62081ac84c36e #EAF1F8
+rectangle "id: DETERMINE_ITEM_CLASS\nname: Classify the object\nprofession: SCIENTIST\nminimumTier: 1\ntoolService: SCT1\nroomService: null\ndurationTicks: 2\nexposureCategory: identityTags" as n5242b1bcf8c410ce3911 #EAF1F8
+n0b224dd62081ac84c36e --> n5242b1bcf8c410ce3911 : "authored order"
+nea7792a26f405e2ae9c6 ..> n0b224dd62081ac84c36e : "execution requirements"
+@enduml

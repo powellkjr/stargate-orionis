@@ -47,7 +47,7 @@ namespace Orionis.Domain
         // Bounded projection of runtime.mjs evacuationStageClear/returnRoute.
         // Ordinary travel can pass neutral guards; secure evacuation cannot.
         public static bool StageClear(CampaignState s, string stageId) =>
-            s.Base.Care != null && s.Base.Combat != null && MissionCombat.GuardsClear(s, stageId) &&
+            s.Base.Care != null && s.Base.Combat != null && MissionCombat.GuardsClear(s, stageId) && ResourceCargo.StageSafe(s,stageId) &&
             (s.Base.Care.StageId != stageId || MissionCare.Resolved(s));
         public static IReadOnlyList<string> SecureRoute(CampaignState s, string fromStageId = null)
         {
@@ -60,7 +60,7 @@ namespace Orionis.Domain
             while (queue.Count > 0)
             {
                 var current = queue.Dequeue(); if (current.Stage == s.Base.Mission.GateStageId) return current.Path.AsReadOnly();
-                foreach (var door in d.Transitions.Where(x => x.Destination(current.Stage) != null))
+                foreach (var door in d.Transitions.Where(x => x.Destination(current.Stage) != null&&MissionTravel.DoorVisible(s,x)))
                 {
                     var next = door.Destination(current.Stage); var stage = d.Stages.Single(x => x.Id == next);
                     // Every projected nonlocked CLOSED transition is authored routine.

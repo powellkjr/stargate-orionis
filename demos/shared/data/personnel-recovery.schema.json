@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "baseHealthPerTick",
+    "bedHealthPerTick",
+    "infirmaryRoomId",
+    "refillToolsOnReturn"
+  ],
+  "properties": {
+    "format": {
+      "const": "orionis-personnel-recovery-1"
+    },
+    "baseHealthPerTick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "bedHealthPerTick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "infirmaryRoomId": {
+      "type": "string"
+    },
+    "refillToolsOnReturn": {
+      "type": "boolean"
+    }
+  }
+}

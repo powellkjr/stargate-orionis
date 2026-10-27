@@ -155,7 +155,7 @@ namespace Orionis.Tests
         {
             var s = Create(); s.AssignUnit(Worker(s, "TECHNICIAN"), "r2"); s.AdvanceOneTick();
             var codec = new CampaignSaveCodec(json); var value = JObject.Parse(codec.Serialize(new SavedSession(s.State, null)));
-            value["schemaVersion"] = 3; value.Property("teams").Remove(); value.Property("receiving").Remove(); value.Property("receivingFingerprint").Remove();
+            value["schemaVersion"] = 3;value.Property("archivedCargoSupply")?.Remove(); value.Property("teams").Remove(); value.Property("receiving").Remove(); value.Property("receivingFingerprint").Remove();
             value.Property("transfers").Remove();
             value.Property("expedition").Remove(); value.Property("missionFingerprint").Remove(); value.Property("combatFingerprint").Remove(); value.Property("careFingerprint").Remove(); value.Property("rescueFingerprint").Remove();
             var restored = codec.Deserialize(value.ToString()).Campaign;

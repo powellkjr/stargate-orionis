@@ -1,0 +1,749 @@
+{
+  "sources": [
+    {
+      "path": "demos/shared/data/base-execution.schema.json",
+      "sha256": "32ace34917fe0c1c1f69f23915de089eda0d02046ec3ee5afd774b9209244423"
+    },
+    {
+      "path": "demos/shared/data/base-execution.json",
+      "sha256": "5e0e748c086d2d0b03adce89476d68f990addd221777a30b2a7cbfba0c963ca7"
+    },
+    {
+      "path": "demos/shared/data/receiving-core-prototype.json",
+      "sha256": "6986887443726afdbe2f35b8b50373907e9fc924ecde9e3bfe8d7fdaa08c6d03"
+    },
+    {
+      "path": "demos/shared/data/receiving-core-prototype.schema.json",
+      "sha256": "7d915183f1bda06e7f1a44071084e64d814f0c749b6742d422ab91c4051e90b6"
+    },
+    {
+      "path": "demos/shared/data/theory/stargate_theory_simulator_import.json",
+      "sha256": "eac4b5aba2d5cd1c926fad641860a93c67a5af1aa4cc14750efd1b4c67348156"
+    },
+    {
+      "path": "demos/shared/data/rooms_schema.json",
+      "sha256": "8492faee02f9fd6d08539952454437156dc87ce78244f946e2ea8c623b8e66db"
+    },
+    {
+      "path": "demos/shared/data/room-construction-prototype.json",
+      "sha256": "8ef1de78a5b46981d42c58761bad6a68ac01a5e7f34dd85653317d396e92e9b0"
+    },
+    {
+      "path": "demos/shared/data/room-construction.schema.json",
+      "sha256": "0b43a6b1adc2f5fcdfe6c927a8c80b4c62d5c095af856c6ba6b4e1854db5af66"
+    },
+    {
+      "path": "demos/shared/data/resource-cargo-economy.json",
+      "sha256": "6c4de08f01b897f232592f618e18fce38f1def3e2ab4da9dc7de4fe88ab5267f"
+    },
+    {
+      "path": "demos/shared/data/resource-cargo-economy.schema.json",
+      "sha256": "a120c5a0c7f312d9bb528410be355c987736227629418d3035ce01b6c257c02b"
+    },
+    {
+      "path": "demos/shared/data/resource-cargo-playtest.json",
+      "sha256": "fd50354eccd5fb02444da61bd76bb07a3fafed2aa5abdb037752b26debc1dbcb"
+    },
+    {
+      "path": "demos/shared/data/instance.schema.json",
+      "sha256": "c87b0d2c77b1149deecb2d8bf8f979bca690ecc527f74af57e97dddc5e7bbb01"
+    },
+    {
+      "path": "demos/shared/data/item.schema.json",
+      "sha256": "a2e93cdd6f39fc01cdcc343f9dee1ee824fda86785ab79758f36132341b9f6c0"
+    },
+    {
+      "path": "demos/shared/data/base-configuration.json",
+      "sha256": "019ffa7ad92082c0380ec27efb6202cfe952d49b6e1f0e40caf7b1b5b124c9df"
+    },
+    {
+      "path": "demos/shared/data/base-classes.json",
+      "sha256": "cb839bd9e9bd07e980b33370ce30431407292f04b821d4a3dd06a35e89565cb8"
+    },
+    {
+      "path": "demos/shared/data/personnel-recovery.json",
+      "sha256": "5c5c79c0564e43676ac8b9c328ff55f72a2f625a165e4f34e4266bdd098d1228"
+    },
+    {
+      "path": "demos/shared/data/personnel-recovery.schema.json",
+      "sha256": "44681f134dcada3ab74b57f1db0523cae523106b4112bc94139580adcfaf978c"
+    },
+    {
+      "path": "demos/shared/data/personnel-names.json",
+      "sha256": "434e330d21ac56deb500250089fd2a25cce10770729b928d5168a542bbaae5d3"
+    },
+    {
+      "path": "demos/shared/data/personnel-loadouts.json",
+      "sha256": "adb6133f9e55e50ea8e6c64d890ddb8d72416cd6d52be2d2b75473ffe309cf59"
+    },
+    {
+      "path": "demos/shared/data/personnel-presentation.json",
+      "sha256": "fc6925c508463cf2f17de7019001a900be82c6d558ab64be3b9277b604abd338"
+    },
+    {
+      "path": "demos/shared/data/offworld/party-presets.json",
+      "sha256": "0e2a831f217bb01ba96e9dc5deb74074480124de970c5706b8406c19b066b0da"
+    },
+    {
+      "path": "demos/shared/data/item.json",
+      "sha256": "574fef1e68a8be7a0e0934d5bc8841b75a635ee51aea8b5ebfa7161d5cfd64f3"
+    },
+    {
+      "path": "demos/shared/data/instance.json",
+      "sha256": "3c2fe9915614458062af3c883123fed79831022c22b1a8b3865d08111775b7ce"
+    },
+    {
+      "path": "demos/shared/data/cargo-handling-prototype.json",
+      "sha256": "58471a24fa0d86db282885f89ae44e79c13a1ad810112100318f51f57dd293b0"
+    },
+    {
+      "path": "demos/shared/data/cargo-processing-prototype.json",
+      "sha256": "45aa75d4a52f68d3d644704b401389f0033ccb2712ef583f95b7cf4f7e19a14c"
+    },
+    {
+      "path": "demos/shared/data/unit-equipment-prototype.json",
+      "sha256": "4af650dadf46fa8c95041c4f243fd389c6c7adbe7017c4e1e93c05d14c63acd7"
+    },
+    {
+      "path": "demos/shared/data/receiving-prototype.json",
+      "sha256": "10e080f7beb4f61c0811816de148e7637bd94a179e136eb46f5431df5dbe3d14"
+    },
+    {
+      "path": "demos/shared/data/process-matrix.json",
+      "sha256": "b69fdee4f3609aef0d4e17bb8c740b7e80306945c51f5399d586c49f78f35ec5"
+    },
+    {
+      "path": "demos/shared/data/processing-contracts.json",
+      "sha256": "003a2dd60dd8398ba9deef05a8e2d7a8fb2d3675ceb2852c5b97542416f84a73"
+    },
+    {
+      "path": "demos/shared/data/offworld/archetypes.json",
+      "sha256": "89dc1e98259708a80ee52ecfac51558ffff814755f964867cecd08c6c8175ad9"
+    },
+    {
+      "path": "demos/shared/data/offworld/missing-operative-001.finalized.json",
+      "sha256": "54c46bb3b9aece0e1173964e33af57a752b0790d6ee3b6fcce5ce22b8cf0ad32"
+    },
+    {
+      "path": "unity/tools/fixtures/receiving-before-communications.json",
+      "sha256": "eda9b6f9be2b82b5978a1af19318cb6e8def0525731bbde088af88adee23b900"
+    },
+    {
+      "path": "unity/tools/fixtures/core-setup-before-communications.json",
+      "sha256": "8473b57644d6fa931ecfad5f5ed95b2311197106121643449908993caf198232"
+    },
+    {
+      "path": "unity/tools/fixtures/room-definitions-before-communications.json",
+      "sha256": "19a1457ecdb7141f12cf6103fa8c902a6dbc83f21dda503b5cf5b031ee38e863"
+    },
+    {
+      "path": "unity/tools/fixtures/mission-before-offworld-interactions.json",
+      "sha256": "ff4455b0d39257647a704e8edc5259d4d79ba3acaa4e37f0700259658ce81aed"
+    },
+    {
+      "path": "unity/tools/fixtures/mission-before-offworld-expansion.json",
+      "sha256": "2c4ef74f00a19b18c09460a3026283a7bf9974d78869283ba36d618f6aa20baf"
+    },
+    {
+      "path": "unity/tools/fixtures/resource-processing-before-medium-cache.json",
+      "sha256": "b20ff858d4aa36006482aa076d584c30005de6fa5eec45525bfe12db9289d851"
+    },
+    {
+      "path": "unity/tools/bootstrap-snapshot.mjs",
+      "sha256": "101e1876b7781264d72e21fb9592037b527a696c379e879d7bd812b6103e801a"
+    },
+    {
+      "path": "demos/shared/js/rooms.js",
+      "sha256": "f9b1c3834aa14bb9d13dd8985d710da4d287126d15c654e725e1030f62d01888"
+    },
+    {
+      "path": "demos/shared/js/resource-cargo.mjs",
+      "sha256": "360ce1146130d2dfe35a87db6bcaf41919dfd15bf85eeb88bb7a910eea900f74"
+    },
+    {
+      "path": "demos/shared/js/base-configuration.mjs",
+      "sha256": "5be81cb4105c4c2eecc082a23361f7f91a22213227d7012bdb0c1a794997c924"
+    },
+    {
+      "path": "demos/shared/js/room-construction.mjs",
+      "sha256": "2a4d0f71c933873ce7dddb48278ebe1376756117bbda11313d9edfb37f90eb6e"
+    },
+    {
+      "path": "demos/shared/js/personnel-roster.mjs",
+      "sha256": "fbb476523e6e0ebf223dbe805ad65da76d291c0a801eb8b10814b4b9be3756be"
+    },
+    {
+      "path": "demos/shared/offworld/roster.mjs",
+      "sha256": "7dfbfe535bd9f38c427be6f116b96faaf34e1da151915f8ffc134b0380ec8d15"
+    },
+    {
+      "path": "demos/shared/offworld/personnel-save.mjs",
+      "sha256": "d5d8573afeb49bc4f5d056e83e397f2a08e9c4f02f9c71fb2d08af55375d9485"
+    },
+    {
+      "path": "demos/shared/offworld/equipment.mjs",
+      "sha256": "b6408fea371ba557e9347275a6ac92b61e699a323dd593a947d2c9752cf18123"
+    },
+    {
+      "path": "demos/shared/portraits/portrait-bust.mjs",
+      "sha256": "ad1ae071ac5e59d2ec38e65f2d4f3e569fc550c0c3f95653eb72038b61e4064b"
+    },
+    {
+      "path": "demos/shared/offworld/mission.mjs",
+      "sha256": "31cafbf5f651927448dbf5141edafee02a5e56bfb323d8dbb695b1f485c48442"
+    },
+    {
+      "path": "demos/shared/offworld/runtime.mjs",
+      "sha256": "e885a616b0b47d7cedee3081c087c8a17dde266aac649abd78760ea2baba8b93"
+    },
+    {
+      "path": "demos/shared/offworld/dialogue.mjs",
+      "sha256": "48df039b8eb34705e04edbee1ff74e4343e99b2c6585720f4be8f8b654b08b90"
+    },
+    {
+      "path": "demos/shared/offworld/npc.mjs",
+      "sha256": "0168f11d43b3393257615bd1b4678e427d2179ecbbb8028444e773002c770275"
+    },
+    {
+      "path": "demos/shared/offworld/field.mjs",
+      "sha256": "4d961989ce6020ddb8ee8a9de0bb96a06295514b2dee7cec50bc583dd56977c2"
+    },
+    {
+      "path": "demos/shared/offworld/campaign.mjs",
+      "sha256": "3d014a568840e984b8e448e8c8e607c689f0877df2dfaadd6cbd211625f87fdf"
+    },
+    {
+      "path": "demos/shared/offworld/party-tools.mjs",
+      "sha256": "d29a7e94ee3a0a94d3cd5d059e8d05d4d137ecfae26d4c8b2836e911c33a7639"
+    },
+    {
+      "path": "unity/tools/fixtures/base-before-construction-start.json",
+      "sha256": "aac5b9dc3a8a9d8caf3e87059caf5678a92f5d6cc19cea8e650ce7859563e595"
+    },
+    {
+      "path": "unity/tools/fixtures/rooms-before-ct1-balance.json",
+      "sha256": "bc52958b3a7086bc0855477c5bd657635c2398468892482f8d0366a8eb24023e"
+    },
+    {
+      "path": "unity/tools/fixtures/bootstrap-before-staffing.json",
+      "sha256": "a035e87e793e6b4608157ea59e7be67a8a92f6d8efaa7cfc2a8af6aa8791bd3d"
+    },
+    {
+      "path": "unity/tools/fixtures/bootstrap-before-suffix-cleanup.json",
+      "sha256": "3c880b156320ada9aee0aff5293adbbdca6452be81d8f4e67d47e83960d6e1a4"
+    },
+    {
+      "path": "unity/tools/fixtures/bootstrap-before-holding-route.json",
+      "sha256": "ed3df224d6180320a6a8907df8da83086b1d3cff964017e313b5145694833b46"
+    },
+    {
+      "path": "unity/tools/fixtures/bootstrap-before-ready-room.json",
+      "sha256": "49a952b696c27267b9295e6438545f073fe8e5a122e4460a94bebc88330e41aa"
+    },
+    {
+      "path": "unity/tools/fixtures/bootstrap-before-storage-rooms.json",
+      "sha256": "1e8e35d02be01e7a6bd687ab10b3eef3f8de56f0690f465e677d3d3d33f9a35b"
+    },
+    {
+      "path": "unity/tools/fixtures/bootstrap-before-warehouse.json",
+      "sha256": "bbcfefd393d36436306486b741ca2e68c20282d19adb7d2e2fea99f198371b4c"
+    },
+    {
+      "path": "unity/tools/fixtures/cargo-before-safe.json",
+      "sha256": "c2f06e228d77aaa2abf849b9aa735f433ee905792d41510d1fe258993753b4a4"
+    },
+    {
+      "path": "unity/tools/fixtures/mission-before-lab.json",
+      "sha256": "824d32c0188ddc26d3d1f04c33c6cc47b86cf250dd98e209386b9a030e957954"
+    },
+    {
+      "path": "unity/tools/fixtures/cargo-before-lab.json",
+      "sha256": "d34fe398446826c2ef0d66456251bb5f3e56d81b06340dd060327c825093f9b3"
+    }
+  ],
+  "joinRuleSha256": "04200ee3027d989dc0c83e56e6cd15f72049fb32c706ea267d10c5d1f0dfad77",
+  "rooms": [
+    {
+      "id": "cultural_platform",
+      "name": "Cultural Platform",
+      "color": "#bd7390",
+      "width": 2,
+      "height": 2,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Operations",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "analysis",
+      "name": "Analysis",
+      "color": "#4ea8de",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 2,
+        "3": 2
+      },
+      "category": "Science & Technology",
+      "joinGroup": "analysis",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "containment",
+      "name": "Containment",
+      "color": "#52796f",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 2,
+        "3": 2
+      },
+      "category": "Storage",
+      "joinGroup": "containment",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "data_storage",
+      "name": "Data Storage",
+      "color": "#355070",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Storage",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "equipment_storage",
+      "name": "Equipment Storage",
+      "color": "#607d8b",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Storage",
+      "joinGroup": "equipment_storage",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "gate_room",
+      "name": "Gate Room",
+      "color": "#d4a72c",
+      "width": 3,
+      "height": 3,
+      "staffingByTier": {
+        "1": 4
+      },
+      "category": "Command",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1
+      ]
+    },
+    {
+      "id": "holding",
+      "name": "Holding",
+      "color": "#4f8f6f",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 2,
+        "3": 2
+      },
+      "category": "Personnel",
+      "joinGroup": "holding",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "infirmary",
+      "name": "Infirmary",
+      "color": "#65b87a",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 2,
+        "3": 2
+      },
+      "category": "Personnel",
+      "joinGroup": "infirmary",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "living_quarters",
+      "name": "Living Quarters",
+      "color": "#91c788",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Personnel",
+      "joinGroup": "living_quarters",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "maintenance",
+      "name": "Maintenance",
+      "color": "#e07a3f",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2
+      },
+      "category": "Operations",
+      "joinGroup": "maintenance",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1
+      ]
+    },
+    {
+      "id": "material_storage",
+      "name": "Material Storage",
+      "color": "#8d6e63",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Storage",
+      "joinGroup": "material_storage",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "generator",
+      "name": "Generator",
+      "color": "#d4b23c",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Operations",
+      "joinGroup": "generator",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "ration_storage",
+      "name": "Ration Storage",
+      "color": "#c9a66b",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Storage",
+      "joinGroup": "ration_storage",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "receiving",
+      "name": "Receiving",
+      "color": "#f2a65a",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 4,
+        "3": 6
+      },
+      "category": "Operations",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "research",
+      "name": "Research",
+      "color": "#4361ee",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 2,
+        "3": 2
+      },
+      "category": "Science & Technology",
+      "joinGroup": "research",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "response_room",
+      "name": "Response Room",
+      "color": "#c94c4c",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 3,
+        "3": 4
+      },
+      "category": "Command",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "supply_storage",
+      "name": "Supply Storage",
+      "color": "#b07d62",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Storage",
+      "joinGroup": "supply_storage",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "tech_platform",
+      "name": "Tech Platform",
+      "color": "#9b5de5",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "category": "Science & Technology",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop",
+      "color": "#6c757d",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 2,
+        "3": 2
+      },
+      "category": "Science & Technology",
+      "joinGroup": "workshop",
+      "joinLayouts": [
+        "1x1",
+        "1x2",
+        "2x2"
+      ],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "ready_room",
+      "name": "SG Team Ready Room",
+      "color": "#477e94",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 4,
+        "2": 5,
+        "3": 6
+      },
+      "teamSlots": 4,
+      "teamExperienceSharing": "ALL_ASSIGNED_MEMBERS_EQUAL",
+      "category": "Command",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": "warehouse",
+      "name": "Warehouse",
+      "color": "#8c9781",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 0
+      },
+      "category": "Storage",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1
+      ]
+    },
+    {
+      "id": "communications",
+      "name": "Communications",
+      "color": "#4d82a5",
+      "width": 1,
+      "height": 1,
+      "staffingByTier": {
+        "1": 2,
+        "2": 3,
+        "3": 4
+      },
+      "category": "Command",
+      "joinGroup": null,
+      "joinLayouts": [],
+      "tiers": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

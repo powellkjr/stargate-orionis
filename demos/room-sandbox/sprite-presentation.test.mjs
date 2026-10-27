@@ -9,8 +9,8 @@ test('room catalog uses mapped floors and props without modifying physical rooms
  for(const definition of rooms){
   const room={roomId:definition.identity.id,instanceId:'r1',staffCount:3,constructionTier:2},before=JSON.stringify(room);
   const html=roomSpriteSurface(room,[{x:0,y:0}],{stroke:'#38bdf8',showInterior:false}),mapping=spriteManifest.roomTypes[room.roomId];
-  assert(html.includes(`data-sprite="${mapping.floor}"`));assert(html.includes('stroke="#38bdf8"'));assert.equal(JSON.stringify(room),before);
-  for(const prop of mapping.props.filter(p=>p!=='gate-open'))assert(html.includes(`data-sprite="${prop}"`));
+  assert(html.includes(`data-sprite="${mapping?.floor??'floor-indoor'}"`));assert(html.includes('stroke="#38bdf8"'));assert.equal(JSON.stringify(room),before);
+  for(const prop of (mapping?.props??[]).filter(p=>p!=='gate-open'))assert(html.includes(`data-sprite="${prop}"`));
   assert(!html.includes('data-sprite="gate-open"'));assert(!html.includes('data-sprite="worker"'),'staff counts are rendered separately');
  }
 });

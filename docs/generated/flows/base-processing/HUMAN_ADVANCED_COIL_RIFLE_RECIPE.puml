@@ -1,0 +1,34 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"
+caption "demos/shared/data/theory/stargate_theory_simulator_import.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "schemaVersion: theory-0.1\ncontentStatus: SIMULATOR_TEST\nid: HUMAN_ADVANCED_COIL_RIFLE_RECIPE\nname: Human Advanced Coil Rifle\ntype: RECIPE\nknowledgeRequirements:\n  - HUMAN_ADVANCED_RIFLE_PATTERN\n  - HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II\noutput:\n  object: HUMAN_ADVANCED_COIL_RIFLE" as nea7792a26f405e2ae9c6 #FFF1CC
+rectangle "id: FABRICATE_RIFLE_COMPONENTS\nactorRequirement: TE2\ntoolRequirement: TET2_MODIFY\nroomServiceRequirement: HUMAN_WORKSHOP_II" as n9ddab439a8ac9631b275 #EAF1F8
+rectangle "id: FABRICATE_ACCELERATOR_COMPONENTS\nactorRequirement: TE2\ntoolRequirement: TET2_MODIFY\nroomServiceRequirement: ELECTRODYNAMICS_FABRICATION_II" as n32b544746f80a1589c7f #EAF1F8
+rectangle "id: ASSEMBLE_RIFLE_BODY\nactorRequirement: TE2\ntoolRequirement: TET2_MODIFY\nroomServiceRequirement: HUMAN_WORKSHOP_II" as n00007841b3a47f6b0c2c #EAF1F8
+rectangle "id: ASSEMBLE_ACCELERATOR\nactorRequirement: TE2\ntoolRequirement: TET2_MODIFY\nroomServiceRequirement: HUMAN_WORKSHOP_II" as nd6c3dc30c2947caa2eb4 #EAF1F8
+rectangle "id: INTEGRATE_ACCELERATOR\nactorRequirement: TE2\ntoolRequirement: TET2_MODIFY\nroomServiceRequirement: HUMAN_WORKSHOP_II" as neebdf57c4904314db409 #EAF1F8
+rectangle "id: CALIBRATE_ACCELERATOR\nactorRequirement: TE2\ntoolRequirement: TET2_MODIFY\nroomServiceRequirement: SHIELDED_ELECTRODYNAMICS_TEST_II" as n17a8d69069c56614fb37 #EAF1F8
+rectangle "id: TECHNICAL_VALIDATION\nactorRequirement: SC2\ntoolRequirement: SCT2\nroomServiceRequirement: SHIELDED_ELECTRODYNAMICS_TEST_II" as n099835fe7aa4a0b462c6 #EAF1F8
+rectangle "id: FIELD_TEST\nactorRequirement: SO1\ntoolRequirement: null\nroomServiceRequirement: null" as nd6b26f1afab567988614 #EAF1F8
+n9ddab439a8ac9631b275 --> n32b544746f80a1589c7f : "authored order"
+n32b544746f80a1589c7f --> n00007841b3a47f6b0c2c : "authored order"
+n00007841b3a47f6b0c2c --> nd6c3dc30c2947caa2eb4 : "authored order"
+nd6c3dc30c2947caa2eb4 --> neebdf57c4904314db409 : "authored order"
+neebdf57c4904314db409 --> n17a8d69069c56614fb37 : "authored order"
+n17a8d69069c56614fb37 --> n099835fe7aa4a0b462c6 : "authored order"
+n099835fe7aa4a0b462c6 --> nd6b26f1afab567988614 : "authored order"
+nea7792a26f405e2ae9c6 ..> n9ddab439a8ac9631b275 : "execution requirements"
+@enduml

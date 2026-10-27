@@ -1,0 +1,18 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "stage-hidden-store / processing"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "collect-equipment-crate-02\nTarget: Sealed equipment crate 02 / equipment-crate-02\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_recovery_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 0\nprofession: UNTRAINED\nactionType: COLLECT\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: CARRY_TARGET\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []" as nc59a38af2501967bdc2a #EAF1F8
+@enduml

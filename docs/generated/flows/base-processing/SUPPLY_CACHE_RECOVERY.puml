@@ -1,0 +1,38 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "SUPPLY_CACHE_RECOVERY"
+caption "demos/shared/data/resource-cargo-playtest.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "format: orionis-resource-cargo-playtest-1\ncontentStatus: PROVISIONAL_PLAYTEST\ninstanceId: supply-cache-01\nroomDefinitionId: receiving\nnotes: 20 INV includes two linked inspections and eighteen\nindependent recovery bubbles. Exact output distribution is authored\nhere. No critical chance or mandatory special property is invented.\ndefaultPolicies:\n  SUPPLY: BALANCED\n  MATERIAL: BALANCED\nallocationStatus: PROVISIONAL_DEFAULT_WITHOUT_CORES\nid: SUPPLY_CACHE_RECOVERY\nfinalEffect: CONSUME_TARGET" as nea7792a26f405e2ae9c6 #FFF1CC
+rectangle "id: ASSESS_CACHE_QUALITY\ndurationTicks: 1\nprofession: TECHNICIAN\nminimumTier: 1\ntoolService: TET1\ndependsOn:\n  []\noutputWeight: 0\nreveals:\n  - QUALITY\n  - TIERS\n  - SAFE_HANDLING" as n40acac14cbb038e582ef #EAF1F8
+rectangle "id: MEASURE_CACHE_CONVERSION\ndurationTicks: 1\nprofession: SCIENTIST\nminimumTier: 1\ntoolService: SCT1\ndependsOn:\n  - ASSESS_CACHE_QUALITY\noutputWeight: 0\nreveals:\n  - CONVERSION" as nc9aee16e21aa86885cde #EAF1F8
+rectangle "id: RECOVER_CACHE_1\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as nc4090624864876344611 #EAF1F8
+rectangle "id: RECOVER_CACHE_2\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as n981d0ee16bc9eead7730 #EAF1F8
+rectangle "id: RECOVER_CACHE_3\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as n7540ccf14736343b993f #EAF1F8
+rectangle "id: RECOVER_CACHE_4\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as nc290a6ebdf4c657a075c #EAF1F8
+rectangle "id: RECOVER_CACHE_5\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as nba039a3f8c47d65a10d8 #EAF1F8
+rectangle "id: RECOVER_CACHE_6\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as n9e9853c074f71728dd3d #EAF1F8
+rectangle "id: RECOVER_CACHE_7\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as n5f43c101efed657ef9ad #EAF1F8
+rectangle "id: RECOVER_CACHE_8\ndurationTicks: 1\nprofession: UNTRAINED\nminimumTier: 0\ntoolService: null\ndependsOn:\n  - MEASURE_CACHE_CONVERSION\noutputWeight: 1\nreveals:\n  []" as nb1a69444f0cf696b7320 #EAF1F8
+n40acac14cbb038e582ef --> nc9aee16e21aa86885cde : "authored order"
+nc9aee16e21aa86885cde --> nc4090624864876344611 : "authored order"
+nc9aee16e21aa86885cde --> n981d0ee16bc9eead7730 : "authored order"
+nc9aee16e21aa86885cde --> n7540ccf14736343b993f : "authored order"
+nc9aee16e21aa86885cde --> nc290a6ebdf4c657a075c : "authored order"
+nc9aee16e21aa86885cde --> nba039a3f8c47d65a10d8 : "authored order"
+nc9aee16e21aa86885cde --> n9e9853c074f71728dd3d : "authored order"
+nc9aee16e21aa86885cde --> n5f43c101efed657ef9ad : "authored order"
+nc9aee16e21aa86885cde --> nb1a69444f0cf696b7320 : "authored order"
+nea7792a26f405e2ae9c6 ..> n40acac14cbb038e582ef : "execution requirements"
+@enduml

@@ -16,9 +16,11 @@ namespace Orionis.Domain
         public string InstanceId { get; }
         public string RoomId { get; }
         public bool Paused { get; }
+        public long? StartedTick {get;}
+        public long? CompletedTick {get;}
         public IReadOnlyList<InspectionProgress> Progress { get; }
-        public ReceivingOrder(string instanceId, string roomId, bool paused, IEnumerable<InspectionProgress> progress)
-        { InstanceId = instanceId; RoomId = roomId; Paused = paused; Progress = progress.ToList().AsReadOnly(); }
+        public ReceivingOrder(string instanceId, string roomId, bool paused, IEnumerable<InspectionProgress> progress,long? startedTick=null,long? completedTick=null)
+        { StartedTick=startedTick;CompletedTick=completedTick;InstanceId = instanceId; RoomId = roomId; Paused = paused; Progress = progress.ToList().AsReadOnly(); }
     }
     public static class ReceivingWork
     {
@@ -81,6 +83,7 @@ namespace Orionis.Domain
                         throw new InvalidOperationException("Invalid sticky Receiving Actor.");
                     earlierComplete &= progress.Ticks == step.DurationTicks;
                 }
+                if(order.StartedTick<0||order.StartedTick>state.Clock.ElapsedTicks||order.CompletedTick>state.Clock.ElapsedTicks||order.CompletedTick.HasValue&&(!IsComplete(catalog,order)||order.CompletedTick<order.StartedTick))throw new InvalidOperationException("Invalid Receiving work timestamps.");
                 ProcessingTags(catalog, order); // The resulting authored tag transition must also be valid.
             }
         }
@@ -91,14 +94,14 @@ namespace Orionis.Domain
             var recovered = state.Cargo.SingleOrDefault(i => i.Id == instanceId);
             if (state.Base.Cargo?.Items.Any(i => i.Id == instanceId) == true && (recovered == null || recovered.CustodyRoomId != null || recovered.RoomId != null)) throw new InvalidOperationException("Recover this physical instance before admission; it must still be incoming.");
             if (!catalog.RequiredTags.All(item.InitialProcessingTags.Contains)) throw new InvalidOperationException("Incoming processing requirements are missing.");
-            var order = new ReceivingOrder(instanceId, roomId, false, catalog.Steps.Select(s => new InspectionProgress(s.Id, null, 0)));
+            var order = new ReceivingOrder(instanceId, roomId, false, catalog.Steps.Select(s => new InspectionProgress(s.Id, null, 0)),state.Clock.ElapsedTicks);
             return RecoveredCargo.Replace(state, state.Cargo.Select(i => i == recovered ? i.InCustody(roomId) : i), state.Receiving.Append(order));
         }
         public static CampaignState SetPaused(CampaignState state, string instanceId, bool paused)
         {
             if (!state.Receiving.Any(o => o.InstanceId == instanceId)) throw new ArgumentException("Unknown Receiving order.");
             return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving.Select(o =>
-                o.InstanceId == instanceId ? new ReceivingOrder(o.InstanceId, o.RoomId, paused, o.Progress) : o), state.Transfers, state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+                o.InstanceId == instanceId ? new ReceivingOrder(o.InstanceId, o.RoomId, paused, o.Progress,o.StartedTick,o.CompletedTick) : o), state.Transfers, state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
         }
         public static string BlockedReason(CampaignState state, ReceivingOrder order) => Readiness(state, order, null) ?? "Ready to work on the next campaign tick.";
         private static string Readiness(CampaignState state, ReceivingOrder order, ISet<string> busy)
@@ -106,6 +109,7 @@ namespace Orionis.Domain
             var catalog = RecoveredCargo.Catalog(state);
             if (RecoveredCargo.IsStored(state, order.InstanceId)) return "Receiving work is complete; assigned storage remains reserved.";
             if (IsComplete(catalog, order)) return "Receiving complete. Ready for routing review.";
+            if (RoomCores.HoldsNewWork(state,order.RoomId)&&!order.Progress.Any(p=>p.Ticks>0))return "Waiting for Core reconfiguration.";
             if (order.Paused) return "Inspection paused. Progress and assigned Actors are retained.";
             var index = order.Progress.ToList().FindIndex(p => p.Ticks < catalog.Steps.Single(s => s.Id == p.StepId).DurationTicks);
             var step = catalog.Steps[index]; var progress = order.Progress[index];
@@ -114,15 +118,12 @@ namespace Orionis.Domain
             if (step.RoomService != null && !RoomGroups.HasService(state, order.RoomId, step.RoomService)) return "Waiting for Room Service: " + step.RoomService;
             var candidates = Candidates(state, order, step, progress).ToList();
             if (candidates.Count == 0) return progress.ActorId == null ? "Assign a qualified " + step.Profession + " to this room." : "Waiting for the original Actor to return to this room.";
-            if (!candidates.Any(w => step.ToolService == null || PersonnelCondition.HasToolService(state, w.UnitId, step.ToolService))) return "Waiting for equipped Tool Service: " + step.ToolService;
-            if (!candidates.Any(w => (step.ToolService == null || PersonnelCondition.HasToolService(state, w.UnitId, step.ToolService)) && (busy == null || !busy.Contains(w.UnitId)))) return "Qualified Actor is working on another inspection this tick.";
+            if (!candidates.Any(w => step.ToolService == null || BaseWork.HasTool(state,order.RoomId,w.UnitId,step.ToolService))) return "Waiting for equipped Tool Service: " + step.ToolService;
+            if (!candidates.Any(w => (step.ToolService == null || BaseWork.HasTool(state,order.RoomId,w.UnitId,step.ToolService)) && (busy == null || !busy.Contains(w.UnitId)))) return "Qualified Actor is working on another inspection this tick.";
             return null;
         }
         private static IEnumerable<InspectionWorker> Candidates(CampaignState state, ReceivingOrder order, InspectionStep step, InspectionProgress progress) =>
-            RecoveredCargo.Catalog(state).Workers.Where(w => (progress.ActorId == null || progress.ActorId == w.UnitId) &&
-                !Expeditions.IsIncapacitated(state, w.UnitId) && !RoomConstruction.ReservesActor(state, w.UnitId) &&
-                state.Assignments.Any(a => a.UnitId == w.UnitId && RoomGroups.Contains(state, order.RoomId, a.RoomInstanceId)) &&
-                w.Qualifications.TryGetValue(step.Profession, out var tier) && tier >= step.MinimumTier).OrderBy(w => RoomGroups.ActorPriority(state, order.RoomId, w.UnitId)).ThenBy(w => w.UnitId, StringComparer.Ordinal);
+            BaseWork.Workers(state,order.RoomId,step.Profession,step.MinimumTier,progress.ActorId).Where(w=>!RoomConstruction.ReservesActor(state,w.UnitId));
 
         public static CampaignState AdvanceTick(CampaignState state)
         { return AdvanceTick(state, null); }
@@ -135,15 +136,16 @@ namespace Orionis.Domain
                 if (Readiness(state, order, busy) != null) continue;
                 int index = order.Progress.ToList().FindIndex(p => p.Ticks < catalog.Steps.Single(s => s.Id == p.StepId).DurationTicks);
                 var step = catalog.Steps[index]; var progress = order.Progress[index];
-                var actor = Candidates(state, order, step, progress).First(w => !busy.Contains(w.UnitId) && (step.ToolService == null || PersonnelCondition.HasToolService(state, w.UnitId, step.ToolService)));
+                var actor = Candidates(state, order, step, progress).First(w => !busy.Contains(w.UnitId) && (step.ToolService == null || BaseWork.HasTool(state,order.RoomId,w.UnitId,step.ToolService)));
                 busy.Add(actor.UnitId);
                 var next = order.Progress.ToList(); next[index] = new InspectionProgress(step.Id, actor.UnitId, progress.Ticks + 1);
-                orders[orders.IndexOf(order)] = new ReceivingOrder(order.InstanceId, order.RoomId, false, next);
+                orders[orders.IndexOf(order)] = new ReceivingOrder(order.InstanceId, order.RoomId, false, next,order.StartedTick,next.Select((p,i)=>p.Ticks==catalog.Steps[i].DurationTicks).All(done=>done)?clock.ElapsedTicks:(long?)null);
                 // Only the step eligible at tick start advances. A dependent step waits until the next tick.
             }
             var cargo = CargoHandling.Advance(state, clock, busy);
             cargo = CargoExamination.Advance(state, clock, busy, cargo);
-            return RoomConstruction.Advance(StaffTransfers.CommitTick(state, clock, orders, expedition, cargo), busy, state);
+            cargo = ResourceCargo.Advance(state,clock,busy,cargo,out var construction);
+            return PersonnelRecovery.Tick(RoomConstruction.Advance(RoomCores.Advance(StaffTransfers.CommitTick(state, clock, orders, expedition, cargo,construction),busy), busy, state));
         }
     }
 }

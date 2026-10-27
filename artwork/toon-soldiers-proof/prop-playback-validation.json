@@ -1,0 +1,9 @@
+{
+  "allPropsPresent": true,
+  "instances": 92,
+  "excludedGenericModels": [
+    "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Archer Animations/Models/HumanArcher_Bow.fbx",
+    "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Archer Animations/Models/HumanArcher_BycocketHat.fbx"
+  ],
+  "compileFailed": false
+}

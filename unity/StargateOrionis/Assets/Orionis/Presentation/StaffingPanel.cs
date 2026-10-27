@@ -43,6 +43,7 @@ namespace Orionis.Presentation
             cancel = PrototypeUi.Button("Cancel transfer", transform, new Vector2(.02f, .22f), new Vector2(.98f, .34f),
                 "Cancel planned move", new Color(.15f, .23f, .3f), () => Run(() => session.CancelTransfer(selection.Current.Id), "Planned move cancelled. Place released."));
             status = PrototypeUi.Label(PrototypeUi.Rect("Staffing status", transform, Vector2.zero, new Vector2(1, .22f)), "Select a Unit, choose its room, then Assign.", 14);
+            destination.onValueChanged.AddListener(_=>Refresh());
             selection.Changed += SelectionChanged;
             session.StaffingChanged += Refresh;
             session.TickCommitted += OnTick;
@@ -66,6 +67,9 @@ namespace Orionis.Presentation
             nextTick.interactable = finishStep.interactable = unit && rooms.Count > 0;
             unassign.interactable = unit && session.State.Assignments.Any(a => a.UnitId == current.Id);
             cancel.interactable = unit && session.State.Transfers.Any(t => t.UnitId == current.Id);
+            bool conflict=unit&&(session.State.Receiving.Any(o=>o.Progress.Any(p=>p.ActorId==current.Id&&p.Ticks>0&&p.Ticks<session.State.Base.Receiving.Steps.Single(s=>s.Id==p.StepId).DurationTicks))||session.State.Cargo.Any(i=>i.Handling?.ActorId==current.Id&&!CargoHandling.Completed(i)&&i.Handling.Ticks>0||i.Examination?.ActorId==current.Id&&CargoExamination.Active(i)&&i.Examination.Ticks>0));
+            nextTick.gameObject.SetActive(conflict);finishStep.gameObject.SetActive(conflict);
+            cancel.gameObject.SetActive(unit&&session.State.Transfers.Any(t=>t.UnitId==current.Id));
             if (current?.Kind == SelectionKind.Unit && !unit) status.text = "This Unit is offworld, assigned to an SG team, or incapacitated.";
             for (int i = 0; i < rooms.Count; i++)
             {
@@ -78,7 +82,7 @@ namespace Orionis.Presentation
                 var move = session.State.Transfers.SingleOrDefault(t => t.UnitId == current.Id);
                 if (move != null) status.text = "Place reserved in " + rooms.Single(r => r.Id == move.DestinationRoomId).Definition.Name +
                     (move.Timing == StaffTransferTiming.NextTick ? ". Moves after next tick." : ". Moves when the current step finishes.");
-                else status.text = "No planned move. Immediate moves retain committed work.";
+                else status.text = conflict?"This Unit has unfinished room work. Choose when to move.":"";
             }
         }
         private void OnTick(long _) => Refresh();

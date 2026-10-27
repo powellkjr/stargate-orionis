@@ -38,7 +38,7 @@ namespace Orionis.Domain
         {
             if (!state.Base.Units.Any(u => u.Id == unitId)) throw new ArgumentException("Unknown Unit.");
             return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments.Where(a => a.UnitId != unitId), state.Receiving,
-                state.Transfers.Where(t => t.UnitId != unitId), state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+                state.Transfers.Where(t => t.UnitId != unitId), state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
         }
     }
 }

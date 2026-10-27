@@ -8,17 +8,18 @@ namespace Orionis.Domain
     public sealed class PersonnelRecord
     {
         public string UnitId { get; }
+        public string BedRoomId { get; }
         public int Health { get; }
         public int Stamina { get; }
         public int Endurance { get; }
         public IReadOnlyList<ExpeditionTool> Tools { get; }
-        public PersonnelRecord(string unitId, int health, int stamina, int endurance, IEnumerable<ExpeditionTool> tools)
-        { UnitId = unitId; Health = health; Stamina = stamina; Endurance = endurance; Tools = tools.ToList().AsReadOnly(); }
+        public PersonnelRecord(string unitId, int health, int stamina, int endurance, IEnumerable<ExpeditionTool> tools, string bedRoomId = null)
+        { UnitId = unitId; BedRoomId = bedRoomId; Health = health; Stamina = stamina; Endurance = endurance; Tools = tools.ToList().AsReadOnly(); }
     }
     public static class PersonnelCondition
     {
         public static int MaximumHealth(CampaignState s) => s.Base.Combat?.PartyHealth ?? 100;
-        private static ExpeditionMember Current(CampaignState s, string id) => s.Expedition?.Party.SingleOrDefault(p => p.UnitId == id);
+        private static ExpeditionMember Current(CampaignState s, string id) => s.Expedition?.Returned == true ? null : s.Expedition?.Party.SingleOrDefault(p => p.UnitId == id);
         private static PersonnelRecord Stored(CampaignState s, string id) => s.Personnel.SingleOrDefault(p => p.UnitId == id);
         public static int BaselineHealth(CampaignState s, string id) => Stored(s, id)?.Health ?? MaximumHealth(s);
         public static int Health(CampaignState s, string id) => Current(s, id) != null ? MissionCombat.Inspect(s).PartyHealth[id] : Stored(s, id)?.Health ?? MaximumHealth(s);
@@ -31,8 +32,8 @@ namespace Orionis.Domain
         {
             if (s.Expedition?.Returned != true) throw new InvalidOperationException("Finish and extract the current mission before preparing redeployment.");
             var records = s.Personnel.Where(p => !s.Expedition.Party.Any(m => m.UnitId == p.UnitId)).Concat(
-                s.Expedition.Party.Select(m => new PersonnelRecord(m.UnitId, Health(s, m.UnitId), m.Stamina, m.Endurance, m.Tools)));
-            return new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers, teams: s.Teams, cargo: s.Cargo, personnel: records, construction: s.Construction);
+                s.Expedition.Party.Select(m => new PersonnelRecord(m.UnitId, Health(s, m.UnitId), m.Stamina, m.Endurance, Tools(s,m.UnitId),Stored(s,m.UnitId)?.BedRoomId)));
+            return new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers, teams: s.Teams, cargo: s.Cargo, personnel: records, construction: s.Construction, cores: s.Cores, workforce: s.Workforce, completedWork: s.CompletedWork);
         }
         internal static void Validate(CampaignState s)
         {
@@ -48,7 +49,7 @@ namespace Orionis.Domain
                 {
                     var expected = loadout.Tools.SingleOrDefault(t => t.InstanceId == tool.InstanceId);
                     if (expected == null || tool.KitId != expected.KitId || tool.Slot != expected.Slot || tool.Charges < 0 || tool.Charges > expected.Charges || tool.Tier != expected.Tier || !tool.Services.SequenceEqual(expected.Services))
-                        throw new InvalidOperationException("Personnel Tool identity, capability or charges changed without an authored transition.");
+                        throw new InvalidOperationException("Personnel Tool validation failed for "+p.UnitId+" / "+tool.InstanceId+": "+tool.KitId+" (tier "+tool.Tier+", "+tool.Charges+" charges); expected "+expected?.KitId+" (tier "+expected?.Tier+", max "+expected?.Charges+"). Capability and slot must also match the authored loadout.");
                 }
             }
         }

@@ -1,5 +1,11 @@
 # Cargo conversion authoring handoff
 
+The newer [supplied cargo handoff](orionis-cargo-shared-schema-handoff-unity-migration-wave-0.md)
+now settles the quality/size ranges and conversion formulas requested here.
+See [current implementation and remaining gaps](shared-cargo-reconciliation.md).
+The original brief below is retained as history; its provisional conversion1
+and unresolved-range statements no longer define new resource cargo economics.
+
 Prepared October 20, 2026. Purpose: settle the shared cargo definitions needed
 for Unity migration Wave 1, using the same schemas/data as the simulators.
 This is an authoring brief, not an approved formula or a runtime implementation.

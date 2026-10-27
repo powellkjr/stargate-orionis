@@ -381,7 +381,7 @@
     "identity": {
       "id": "data_storage",
       "name": "Data Storage",
-      "category": "Science & Technology"
+      "category": "Storage"
     },
     "form": {
       "color": "#355070",
@@ -2544,6 +2544,80 @@
     "function": {
       "base": "Temporary holding after Receiving safe handling, before retention or disposition. Unsafe items require Containment. No joining, stacking, staff or Cores.",
       "subordinateTabs": []
+    }
+  },
+  {
+    "identity": {
+      "id": "communications",
+      "name": "Communications",
+      "category": "Command"
+    },
+    "form": {
+      "color": "#4d82a5",
+      "footprint": {
+        "width": 1,
+        "height": 1
+      }
+    },
+    "rules": {
+      "joining": {
+        "supportsJoining": false,
+        "notes": "This room does not currently participate in the standard joined-room patterns."
+      },
+      "construction": {
+        "supportsConstruction": true,
+        "constructionLimit": "limited",
+        "supportsProgression": true,
+        "progression": [
+          1,
+          2,
+          3
+        ],
+        "notes": "Command room that scales through staffing and CT progression but does not join."
+      },
+      "staffing": {
+        "supportsStaffing": true,
+        "supportsProgression": true,
+        "progression": [
+          2,
+          3,
+          4
+        ],
+        "notes": "Staffing scales by tiered values defined directly in the source data."
+      },
+      "queues": {
+        "supportsQueues": false,
+        "notes": "No queue behavior is currently defined in this baseline."
+      },
+      "storage": {
+        "supportsStorage": false,
+        "notes": "No storage rule is currently defined in this baseline."
+      },
+      "specialization": {
+        "supportsSpecialization": false,
+        "notes": "No specialization path is currently defined."
+      },
+      "inventory": {
+        "supportsInventory": false,
+        "notes": "No inventory interface is currently defined in this baseline."
+      },
+      "cores": {
+        "supportsCores": true,
+        "notes": "Two mission Core places; executable mission acquisition definitions are pending."
+      },
+      "capacity": {
+        "supportsCapacity": false,
+        "notes": "No explicit capacity rule is currently defined."
+      }
+    },
+    "function": {
+      "base": "Receives mission opportunities through configured mission Cores. Room envelope is provisional; mission-Core definitions and acquisition execution remain unauthored.",
+      "slotConfig": {
+        "core": {
+          "fixed": 2,
+          "notes": "Two authored Core slots per physical room."
+        }
+      }
     }
   }
 ]

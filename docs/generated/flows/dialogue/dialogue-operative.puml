@@ -1,0 +1,24 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-operative"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-operative\nparticipants:\n  right: operative-01\n  left: ACTIVE_SGC_SPEAKER\nstartNodeId: operative-contact\nonStartEffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-holding-01\n    delta: 45\n    when:\n      instanceId: guard-holding-01\n      field: combatState\n      equals: NEUTRAL\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: operative-located\n  - \n    type: SET_DETECTION_STATE\n    instanceId: operative-01\n    value: LOCATED" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "operative-contact\nspeaker: operative-01\nside: RIGHT\ntext: Keep your voice down. I can move once the patients are safe or\nthe source is contained. If you clear the yard checkpoint first, I\ncan slip out early." as nfdccfaec191ce36f7a81 #EAF1F8
+rectangle "operative-ready\ntext: Stay put while we make a route to the Gate.\nsource: NEUTRAL\neffects:\n  - \n    type: SET_EVAC_STATE\n    instanceId: operative-01\n    value: READY_TO_EVACUATE\n  - \n    type: ACTIVATE_OBJECTIVE\n    objectiveId: extract-operative\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: operative-contacted\nendConversation: true" as n663f747105a19b149d4f #E5DAF5
+ncced28c6dc3f99c2396a --> nfdccfaec191ce36f7a81 : "default start"
+nfdccfaec191ce36f7a81 --> n663f747105a19b149d4f : "choose response, then qualified Actor"
+n663f747105a19b149d4f --> n361e48d0308f20e32dba
+@enduml

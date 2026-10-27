@@ -10,11 +10,11 @@
       "toolSlots": [
         {
           "kitId": "SOT1",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -31,11 +31,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "MKT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -52,11 +52,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "GUT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -73,11 +73,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TAT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -94,11 +94,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "STT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -115,11 +115,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -136,11 +136,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SCT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -157,11 +157,11 @@
       "toolSlots": [
         {
           "kitId": "SOT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "MET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -195,11 +195,11 @@
       "toolSlots": [
         {
           "kitId": "STT1",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -216,11 +216,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "PAT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -237,11 +237,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TRT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -258,11 +258,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "OBT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -279,11 +279,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SOT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -300,11 +300,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -321,11 +321,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SCT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -363,11 +363,11 @@
       "toolSlots": [
         {
           "kitId": "STT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -380,11 +380,11 @@
       "toolSlots": [
         {
           "kitId": "TET1",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -422,11 +422,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "IGT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -443,11 +443,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 8
+          "charges": 9
         },
         {
           "kitId": "OVT3",
-          "charges": 8
+          "charges": 9
         }
       ]
     },
@@ -464,11 +464,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SOT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -485,11 +485,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "STT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -506,11 +506,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SCT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -527,11 +527,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "MET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -548,11 +548,11 @@
       "toolSlots": [
         {
           "kitId": "TET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "DIT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -565,11 +565,11 @@
       "toolSlots": [
         {
           "kitId": "SCT1",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -586,11 +586,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "APT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -628,11 +628,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SGT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -649,11 +649,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SOT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -670,11 +670,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "STT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -691,11 +691,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -712,11 +712,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "MET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -733,11 +733,11 @@
       "toolSlots": [
         {
           "kitId": "SCT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "DIT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -750,11 +750,11 @@
       "toolSlots": [
         {
           "kitId": "MET1",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -771,11 +771,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TUT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -792,11 +792,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "FMT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -813,11 +813,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "EPT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -834,11 +834,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SOT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -855,11 +855,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "STT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -876,11 +876,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -897,11 +897,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SCT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -918,11 +918,11 @@
       "toolSlots": [
         {
           "kitId": "MET3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "DIT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -935,11 +935,11 @@
       "toolSlots": [
         {
           "kitId": "DIT1",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -956,11 +956,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "NET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -977,11 +977,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "AMT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -998,11 +998,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "ART1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -1019,11 +1019,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SOT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -1040,11 +1040,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "STT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -1061,11 +1061,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "TET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -1082,11 +1082,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "SCT1",
-          "charges": 3
+          "charges": 9
         }
       ]
     },
@@ -1103,11 +1103,11 @@
       "toolSlots": [
         {
           "kitId": "DIT3",
-          "charges": 3
+          "charges": 9
         },
         {
           "kitId": "MET1",
-          "charges": 3
+          "charges": 9
         }
       ]
     }

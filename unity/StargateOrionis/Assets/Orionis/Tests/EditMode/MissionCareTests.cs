@@ -18,7 +18,7 @@ namespace Orionis.Tests
             s.Deploy(new[] { "unit-6", "unit-10", "unit-37", "unit-46" }); s.ChooseGate(true);
             s.MoveParty("door-gate-to-yard"); s.Respond("yard-ignore", "unit-6");
             if (clearGuards) Fight(s, "incident-yard-guards");
-            s.MoveParty("door-yard-to-mainhall"); var r = s.State.Base.Mission.Travel.Field.DoorRecipes.Single();
+            s.MoveParty("door-yard-to-mainhall"); var r = s.State.Base.Mission.Travel.Field.DoorRecipes.Single(r=>r.DoorId=="door-mainhall-to-holding");
             var c = MissionField.Candidates(s.State, r).First(); s.StartFieldWork(r.Id, c.ActorId, c.ToolId); s.AdvanceFieldWork();
             s.MoveParty("door-mainhall-to-holding");
             if (clearGuards) Fight(s, "incident-holding-guards");
@@ -66,7 +66,7 @@ namespace Orionis.Tests
             Assert.That(s.State, Is.SameAs(before)); Start(s, 0); var w = s.State.Expedition.Travel.Field.Work;
             Assert.Throws<InvalidOperationException>(() => s.MoveParty("door-mainhall-to-holding"));
             s.CancelFieldWork(); Assert.That(s.State.Clock.ElapsedTicks, Is.EqualTo(before.Clock.ElapsedTicks));
-            Assert.That(s.State.Expedition.Party.Single(u => u.UnitId == w.ActorId).Tools.Single(t => t.InstanceId == w.ToolId).Charges, Is.EqualTo(3));
+            Assert.That(s.State.Expedition.Party.Single(u => u.UnitId == w.ActorId).Tools.Single(t => t.InstanceId == w.ToolId).Charges, Is.EqualTo(9));
         }
         [Test] public void PatientCareSuspicionStartsTheAuthoredGuardEncounterAtOneHundred()
         {
@@ -96,13 +96,13 @@ namespace Orionis.Tests
             if (problem == "actor") completed.Last["actorId"] = "unit-6";
             if (problem == "charges") j["expedition"]["party"][2]["tools"][0]["charges"] = 3;
             if (problem == "overlap") completed.Last["startedTick"] = completed.First["startedTick"].DeepClone();
-            if (problem == "legacy") { j["schemaVersion"] = 9; j.Property("teams").Remove(); j.Property("careFingerprint").Remove(); j.Property("rescueFingerprint").Remove(); }
+            if (problem == "legacy") { j["schemaVersion"] = 9;j.Property("archivedCargoSupply")?.Remove(); j.Property("teams").Remove(); j.Property("careFingerprint").Remove(); j.Property("rescueFingerprint").Remove(); }
             Assert.Catch(() => c.Deserialize(j.ToString()));
         }
         [Test] public void SchemaNineMigrationKeepsBattlesAndAddsNoCompletedMedicalCare()
         {
             var s = Create(); var c = new CampaignSaveCodec(Json); var j = JObject.Parse(c.Serialize(new SavedSession(s.State, null)));
-            j["schemaVersion"] = 9; j.Property("teams").Remove(); j.Property("careFingerprint").Remove(); j.Property("rescueFingerprint").Remove(); var restored = c.Deserialize(j.ToString()).Campaign;
+            j["schemaVersion"] = 9;j.Property("archivedCargoSupply")?.Remove(); j.Property("teams").Remove(); j.Property("careFingerprint").Remove(); j.Property("rescueFingerprint").Remove(); var restored = c.Deserialize(j.ToString()).Campaign;
             Assert.That(restored.Expedition.Combat.Battles.Count, Is.EqualTo(2)); Assert.That(MissionCare.Resolved(restored), Is.False);
             Assert.That(MissionEvacuation.SecureRoute(restored), Is.Null); Assert.That(restored.Expedition.StageId, Is.EqualTo(s.State.Expedition.StageId));
         }

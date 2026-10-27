@@ -1,0 +1,928 @@
+{
+  "assignments": [
+    {
+      "roomId": "base:cultural_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Plinth_01.prefab"
+    },
+    {
+      "roomId": "base:cultural_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Statue_01.prefab"
+    },
+    {
+      "roomId": "base:cultural_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Pot_01.prefab"
+    },
+    {
+      "roomId": "base:cultural_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:cultural_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Microphone_01.prefab"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Bottle_01.prefab"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "sprite:test-rig"
+    },
+    {
+      "roomId": "base:analysis",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "base:containment",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Keypad_01.prefab"
+    },
+    {
+      "roomId": "base:containment",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:containment",
+      "assetId": "sprite:floor-room-containment"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "base:data_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:equipment_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:equipment_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab"
+    },
+    {
+      "roomId": "base:equipment_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:equipment_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Cardboard_Box_01.prefab"
+    },
+    {
+      "roomId": "base:equipment_storage",
+      "assetId": "sprite:storage-rack"
+    },
+    {
+      "roomId": "base:equipment_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Rifle_01.prefab"
+    },
+    {
+      "roomId": "base:gate_room",
+      "assetId": "sprite:gate"
+    },
+    {
+      "roomId": "base:gate_room",
+      "assetId": "sprite:gate-open"
+    },
+    {
+      "roomId": "base:gate_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab"
+    },
+    {
+      "roomId": "base:gate_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "base:gate_room",
+      "assetId": "sprite:console"
+    },
+    {
+      "roomId": "base:holding",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:holding",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Medkit_01.prefab"
+    },
+    {
+      "roomId": "base:holding",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Window_Bar_01.prefab"
+    },
+    {
+      "roomId": "base:holding",
+      "assetId": "sprite:holding-bench"
+    },
+    {
+      "roomId": "base:holding",
+      "assetId": "sprite:medical"
+    },
+    {
+      "roomId": "base:infirmary",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Medkit_01.prefab"
+    },
+    {
+      "roomId": "base:infirmary",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Bottle_01.prefab"
+    },
+    {
+      "roomId": "base:infirmary",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:infirmary",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:infirmary",
+      "assetId": "sprite:bed"
+    },
+    {
+      "roomId": "base:infirmary",
+      "assetId": "sprite:medical"
+    },
+    {
+      "roomId": "base:living_quarters",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:living_quarters",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:living_quarters",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Mug_01.prefab"
+    },
+    {
+      "roomId": "base:living_quarters",
+      "assetId": "sprite:bunk"
+    },
+    {
+      "roomId": "base:living_quarters",
+      "assetId": "sprite:bed"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Straight_01.prefab"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Corner_01.prefab"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Valve_01.prefab"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Switch_01.prefab"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "sprite:generator"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:maintenance",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Cardboard_Box_01.prefab"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "sprite:storage-rack"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Barrel_Metal_01.prefab"
+    },
+    {
+      "roomId": "base:material_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_MetalPlate_01.prefab"
+    },
+    {
+      "roomId": "base:generator",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Straight_01.prefab"
+    },
+    {
+      "roomId": "base:generator",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Corner_01.prefab"
+    },
+    {
+      "roomId": "base:generator",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Valve_01.prefab"
+    },
+    {
+      "roomId": "base:generator",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Switch_01.prefab"
+    },
+    {
+      "roomId": "base:generator",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:generator",
+      "assetId": "sprite:generator"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Cardboard_Box_01.prefab"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "sprite:storage-rack"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Sack_01.prefab"
+    },
+    {
+      "roomId": "base:ration_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Food_Bread_01.prefab"
+    },
+    {
+      "roomId": "base:receiving",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:receiving",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:receiving",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:receiving",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Cone_01.prefab"
+    },
+    {
+      "roomId": "base:receiving",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "base:receiving",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "base:research",
+      "assetId": "sprite:research-desk"
+    },
+    {
+      "roomId": "base:response_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:response_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:response_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:response_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Rifle_01.prefab"
+    },
+    {
+      "roomId": "base:response_room",
+      "assetId": "sprite:security"
+    },
+    {
+      "roomId": "base:supply_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:supply_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab"
+    },
+    {
+      "roomId": "base:supply_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:supply_storage",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Cardboard_Box_01.prefab"
+    },
+    {
+      "roomId": "base:supply_storage",
+      "assetId": "sprite:storage-rack"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Bottle_01.prefab"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "sprite:test-rig"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "base:tech_platform",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Keypad_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Straight_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Corner_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Valve_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Switch_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "sprite:generator"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_MetalPlate_01.prefab"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "base:workshop",
+      "assetId": "sprite:test-rig"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "base:ready_room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Cardboard_Box_01.prefab"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "sprite:storage-rack"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Barrel_Metal_01.prefab"
+    },
+    {
+      "roomId": "base:warehouse",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Cone_01.prefab"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "base:communications",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Microphone_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-gate-yard",
+      "assetId": "sprite:gate"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-gate-yard",
+      "assetId": "sprite:gate-open"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-gate-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-gate-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-gate-yard",
+      "assetId": "sprite:console"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-outer-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Ground_Dirt_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-outer-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-outer-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Bush_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-outer-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-outer-yard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-main-hall",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Light_Wall_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-main-hall",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Keypad_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-main-hall",
+      "assetId": "sprite:door"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-main-hall",
+      "assetId": "sprite:security"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Medkit_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Bottle_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "sprite:bed"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "sprite:medical"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "sprite:holding-bench"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-holding-area",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Straight_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Corner_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Valve_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Switch_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "sprite:generator"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Barrel_Metal_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-processing",
+      "assetId": "sprite:test-rig"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-security-hall",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Light_Wall_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-security-hall",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Keypad_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-security-hall",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-security-hall",
+      "assetId": "sprite:security"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-overseer-office",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-store",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-store",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-store",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-store",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Cardboard_Box_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-store",
+      "assetId": "sprite:storage-rack"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-safe",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chest_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-safe",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Keypad_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-safe",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-hidden-safe",
+      "assetId": "sprite:crate"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Bottle_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "sprite:test-rig"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "mission:missing-operative-001:stage-analysis-lab",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-gate-clearing",
+      "assetId": "sprite:gate"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-gate-clearing",
+      "assetId": "sprite:gate-open"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-gate-clearing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-gate-clearing",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-gate-clearing",
+      "assetId": "sprite:console"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-approach-trail",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Ground_Dirt_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-approach-trail",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-approach-trail",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Cliff_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-approach-trail",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Bush_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-approach-trail",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Mountain_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-courtyard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Ground_Dirt_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-courtyard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-courtyard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Bush_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-courtyard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-courtyard",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Barrier_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-control-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-control-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-control-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-control-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Papers_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-control-room",
+      "assetId": "sprite:terminal"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-control-room",
+      "assetId": "sprite:evidence"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-maintenance-shelter",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-maintenance-shelter",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Crate_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-maintenance-shelter",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Medkit_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-maintenance-shelter",
+      "assetId": "sprite:bed"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-maintenance-shelter",
+      "assetId": "sprite:workbench"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-generator-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Straight_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-generator-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Corner_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-generator-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Building/SM_Gen_Bld_Pipe_Valve_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-generator-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Switch_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-generator-room",
+      "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Screen_01.prefab"
+    },
+    {
+      "roomId": "mission:last-transmission-001:relay-generator-room",
+      "assetId": "sprite:generator"
+    }
+  ]
+}

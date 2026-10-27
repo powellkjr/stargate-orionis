@@ -1,0 +1,250 @@
+[
+  {
+    "id": "cultural_platform",
+    "name": "Cultural Platform",
+    "color": "#bd7390",
+    "width": 2,
+    "height": 2,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "analysis",
+    "name": "Analysis",
+    "color": "#4ea8de",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    }
+  },
+  {
+    "id": "containment",
+    "name": "Containment",
+    "color": "#52796f",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    }
+  },
+  {
+    "id": "data_storage",
+    "name": "Data Storage",
+    "color": "#355070",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "equipment_storage",
+    "name": "Equipment Storage",
+    "color": "#607d8b",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "gate_room",
+    "name": "Gate Room",
+    "color": "#d4a72c",
+    "width": 3,
+    "height": 3,
+    "staffingByTier": {
+      "1": 4
+    }
+  },
+  {
+    "id": "holding",
+    "name": "Holding",
+    "color": "#4f8f6f",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    }
+  },
+  {
+    "id": "infirmary",
+    "name": "Infirmary",
+    "color": "#65b87a",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    }
+  },
+  {
+    "id": "living_quarters",
+    "name": "Living Quarters",
+    "color": "#91c788",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "maintenance",
+    "name": "Maintenance",
+    "color": "#e07a3f",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2
+    }
+  },
+  {
+    "id": "material_storage",
+    "name": "Material Storage",
+    "color": "#8d6e63",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "generator",
+    "name": "Generator",
+    "color": "#d4b23c",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "ration_storage",
+    "name": "Ration Storage",
+    "color": "#c9a66b",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "receiving",
+    "name": "Receiving",
+    "color": "#f2a65a",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 4,
+      "3": 6
+    }
+  },
+  {
+    "id": "research",
+    "name": "Research",
+    "color": "#4361ee",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    }
+  },
+  {
+    "id": "response_room",
+    "name": "Response Room",
+    "color": "#c94c4c",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 3,
+      "3": 4
+    }
+  },
+  {
+    "id": "supply_storage",
+    "name": "Supply Storage",
+    "color": "#b07d62",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "tech_platform",
+    "name": "Tech Platform",
+    "color": "#9b5de5",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0,
+      "2": 0,
+      "3": 0
+    }
+  },
+  {
+    "id": "workshop",
+    "name": "Workshop",
+    "color": "#6c757d",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 2,
+      "2": 2,
+      "3": 2
+    }
+  },
+  {
+    "id": "ready_room",
+    "name": "SG Team Ready Room",
+    "color": "#477e94",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 4,
+      "2": 5,
+      "3": 6
+    },
+    "teamSlots": 4,
+    "teamExperienceSharing": "ALL_ASSIGNED_MEMBERS_EQUAL"
+  },
+  {
+    "id": "warehouse",
+    "name": "Warehouse",
+    "color": "#8c9781",
+    "width": 1,
+    "height": 1,
+    "staffingByTier": {
+      "1": 0
+    }
+  }
+]

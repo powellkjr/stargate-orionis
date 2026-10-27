@@ -1,0 +1,48 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "stage-processing / processing"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "inspect-mining-system\nTarget: Processing equipment / mining-system-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 1\nprofession: TECHNICIAN\nactionType: INSPECT\nrequiredToolService: TECH_SERVICE_I\nchargeCost: 1\neffects:\n  - \n    type: SET_TARGET_STATE\n    field: inspected\n    value: true\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []" as n2b791d7acb2d58d59f64 #EAF1F8
+rectangle "isolate-mining-power\nTarget: Processing equipment / mining-system-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 2\nprofession: TECHNICIAN\nactionType: REPAIR\nrequiredToolService: TECH_SERVICE_II\nchargeCost: 1\neffects:\n  - \n    type: SET_INSTANCE_STATE\n    instanceId: mining-system-01\n    field: operational\n    value: false\n  - \n    type: SET_INSTANCE_STATE\n    instanceId: mining-system-01\n    field: powerFeedIsolated\n    value: true\n  - \n    type: SET_INSTANCE_STATE\n    instanceId: radiation-source-01\n    field: active\n    value: false\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []" as nb36bc93f94da674a4b33 #EAF1F8
+rectangle "record-mining-readings\nTarget: Processing equipment / mining-system-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 1\nprofession: SCIENTIST\nactionType: INSPECT\nrequiredToolService: SCT1\nchargeCost: 1\neffects:\n  []\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\ncreatesDiscoveryId: discovery-advanced-mining-tech" as nffb80bfbfbe996d6140c #EAF1F8
+rectangle "Discovery question\ndiscoveryId: discovery-advanced-mining-tech\nsourceInstanceIds:\n  - mining-system-01\n  - advanced-component-01\nevidenceRequirements:\n  - \n    type: ANY\n    conditions:\n      - \n        type: KNOWLEDGE_PRESENT\n        factId: advanced-mining-technology-confirmed\n      - \n        type: ASSET_CUSTODY\n        assetInstanceId: advanced-component-01\n        equals: CARRIED_OFFWORLD\n      - \n        type: ASSET_CUSTODY\n        assetInstanceId: advanced-component-01\n        equals: RECOVERED_TO_SGC\nquestion: How does the advanced mining technology alter or increase\nSupply extraction?" as ndf05a218dc085aecf33a #D9EEDB
+rectangle "recover-advanced-component\nTarget: Component / advanced-component-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_recovery_standard\nimplemented: true\ndurationMinutes: 60\nminimumTier: 2\nprofession: TECHNICIAN\nactionType: COLLECT\nrequiredToolService: TECH_SERVICE_II\nchargeCost: 1\neffects:\n  - \n    type: CARRY_TARGET\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nrequiresState:\n  instanceId: mining-system-01\n  field: powerFeedIsolated\n  equals: true" as n582864076c71d6a52af8 #EAF1F8
+rectangle "State prerequisite\ninstanceId: mining-system-01\nfield: powerFeedIsolated\nequals: true" as ne409a78755c5d40b8a86 #FFF1CC
+rectangle "collect-supply-cache\nTarget: supply cache / supply-cache-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_recovery_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 0\nprofession: UNTRAINED\nactionType: COLLECT\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: CARRY_TARGET\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []" as nf9187d989afaeb7e63c9 #EAF1F8
+rectangle "inquire-worker-processing\nTarget: Worker / worker-processing-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_npc_standard\nimplemented: true\ndurationMinutes: 1\nminimumTier: 1\nprofession: DIPLOMAT\nactionType: INQUIRE\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    factId: office-hidden-safe-known\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\noutcomeText: The worker reveals a hidden safe room behind the\nOverseer office. Its concealed door is now visible.\nrequiresState:\n  instanceId: radiation-source-01\n  field: active\n  equals: false" as ne17bc0552c6e468b920f #EAF1F8
+rectangle "State prerequisite\ninstanceId: radiation-source-01\nfield: active\nequals: false" as n751fac45a0fbfb9127e3 #FFF1CC
+rectangle "Knowledge / office-hidden-safe-known" as n5beb9cd9482752da930c #FFF1CC
+rectangle "hack-door-processing-to-lab\nTarget: door-processing-to-lab / target-door-processing-to-lab\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-processing-to-lab\nimplemented: true\nprofession: TECHNICIAN\nactionType: HACK\nminimumTier: 1\nrequiredToolService: TECH_SERVICE_I\nchargeCost: 1\ndurationMinutes: 3\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nminimumPerception: 0\nrequiresState:\n  type: TRANSITION_STATE\n  transitionId: door-processing-to-lab\n  equals: LOCKED" as nac85a472d0ce7a1742e7 #EAF1F8
+rectangle "State prerequisite\ntype: TRANSITION_STATE\ntransitionId: door-processing-to-lab\nequals: LOCKED" as n53ad9c7db65e9b612439 #FFF1CC
+rectangle "enter-code-door-processing-to-lab\nTarget: door-processing-to-lab / target-door-processing-to-lab\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-processing-to-lab\nimplemented: true\ndurationMinutes: 1\nminimumTier: 0\nprofession: UNTRAINED\nactionType: ENTER_DOOR_CODE\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nrequiresState:\n  type: ALL\n  conditions:\n    - \n      type: KNOWLEDGE_PRESENT\n      factId: facility-room-codes-known\n    - \n      type: TRANSITION_STATE\n      transitionId: door-processing-to-lab\n      equals: LOCKED\noutcomeText: The room code is accepted. No Tool charge spent." as n0c8c810dae1f7a614dc5 #EAF1F8
+rectangle "State prerequisite\ntype: ALL\nconditions:\n  - \n    type: KNOWLEDGE_PRESENT\n    factId: facility-room-codes-known\n  - \n    type: TRANSITION_STATE\n    transitionId: door-processing-to-lab\n    equals: LOCKED" as n59aa6fddb5697e58c131 #FFF1CC
+rectangle "obs-processing-radiation\nPassive observation\nminimumTier: 1\nminimumPerception: 5\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - processing-radiation-hazard-confirmed\nstageId: stage-processing\nsubjectInstanceId: radiation-source-01\nprofession: SCIENTIST\ntext: Readings indicate hazardous radiation around the processing\nequipment.\nrequiredToolService: SCT1" as n3a3a2f69d13170cc4c46 #DAEDEB
+rectangle "Knowledge / processing-radiation-hazard-confirmed" as n1d58516743d26282474d #FFF1CC
+rectangle "obs-processing-machine-damage\nPassive observation\nminimumTier: 1\nminimumPerception: 6\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - mining-system-power-feed-unstable\nstageId: stage-processing\nsubjectInstanceId: mining-system-01\nprofession: TECHNICIAN\ntext: The processing system is operating with an unstable damaged\npower feed.\nrevealsInteractionIds:\n  - target-mining-system-01" as nde200e0c889ed05661d3 #DAEDEB
+rectangle "Knowledge / mining-system-power-feed-unstable" as nb7e0dc59d35520ee822e #FFF1CC
+rectangle "obs-processing-nonstandard-tech\nPassive observation\nminimumTier: 1\nminimumPerception: 8\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - advanced-mining-technology-confirmed\nstageId: stage-processing\nsubjectInstanceId: mining-system-01\nprofession: SCIENTIST\ntext: The extraction system uses technology beyond what is expected\nfor this mining operation.\ncreatesDiscoveryId: discovery-advanced-mining-tech" as n0f9e2b69f495bcb1c54d #DAEDEB
+rectangle "Knowledge / advanced-mining-technology-confirmed" as n99d392f2319e0cb49f07 #FFF1CC
+nffb80bfbfbe996d6140c --> ndf05a218dc085aecf33a : "records question"
+ne409a78755c5d40b8a86 ..> n582864076c71d6a52af8 : "requires state"
+n751fac45a0fbfb9127e3 ..> ne17bc0552c6e468b920f : "requires state"
+ne17bc0552c6e468b920f --> n5beb9cd9482752da930c : "produces"
+n53ad9c7db65e9b612439 ..> nac85a472d0ce7a1742e7 : "requires state"
+n59aa6fddb5697e58c131 ..> n0c8c810dae1f7a614dc5 : "requires state"
+n3a3a2f69d13170cc4c46 --> n1d58516743d26282474d : "reveals"
+nde200e0c889ed05661d3 --> nb7e0dc59d35520ee822e : "reveals"
+n0f9e2b69f495bcb1c54d --> n99d392f2319e0cb49f07 : "reveals"
+nb36bc93f94da674a4b33 --> ne409a78755c5d40b8a86 : "sets matching state"
+nb36bc93f94da674a4b33 --> n751fac45a0fbfb9127e3 : "sets matching state"
+@enduml

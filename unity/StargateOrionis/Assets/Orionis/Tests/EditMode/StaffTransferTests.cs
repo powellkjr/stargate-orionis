@@ -120,7 +120,7 @@ namespace Orionis.Tests
             s.AssignUnit(Tech, "r2"); s.AdmitIncoming(Item, "r2"); s.AdvanceOneTick();
             var codec = new CampaignSaveCodec(json); var value = JObject.Parse(codec.Serialize(new SavedSession(s.State, null)));
             var archived = JObject.Parse(File.ReadAllText("../tools/fixtures/bootstrap-before-suffix-cleanup.json"));
-            value["schemaVersion"] = 4; value.Property("teams").Remove(); value.Property("transfers").Remove();
+            value["schemaVersion"] = 4;value.Property("archivedCargoSupply")?.Remove(); value.Property("teams").Remove(); value.Property("transfers").Remove();
             value.Property("expedition").Remove(); value.Property("missionFingerprint").Remove(); value.Property("combatFingerprint").Remove(); value.Property("careFingerprint").Remove(); value.Property("rescueFingerprint").Remove();
             value["fixtureFingerprint"] = BootstrapReader.Parse(json).saveCompatibility.Single(c => c.maxSaveVersion == 4).fromFingerprint;
             var oldName = archived["units"].Single(u => u["id"].Value<string>() == "unit-2")["name"].Value<string>();

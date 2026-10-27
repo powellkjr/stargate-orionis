@@ -1,0 +1,1096 @@
+{
+    "clips": [
+        {
+            "label": "BA_BackSwordGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_BackSwordGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_BackSwordStabAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_BackSwordStabAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_BackSwordStabAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_BackSwordStabAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DodgeDown01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeDown01.FBX",
+            "reason": "Unarmed defensive/reaction study; no combat rule or root-motion travel added.",
+            "recommended": true
+        },
+        {
+            "label": "BA_DodgeDown02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeDown02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DodgeRight01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeRight01.FBX",
+            "reason": "Unarmed defensive/reaction study; no combat rule or root-motion travel added.",
+            "recommended": true
+        },
+        {
+            "label": "BA_DodgeRight02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeRight02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DodgeRight03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeRight03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DodgeRight04",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DodgeRight04.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualBackHandSwordAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualBackHandSwordAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualBackHandSwordAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualBackHandSwordAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualBackHandSwordStabAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualBackHandSwordStabAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandGuard02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandGuard02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandGuard03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandGuard03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandGuard04",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandGuard04.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandHeadGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandHeadGuard01.FBX",
+            "reason": "Unarmed defensive/reaction study; no combat rule or root-motion travel added.",
+            "recommended": true
+        },
+        {
+            "label": "BA_DualHandHeadGuard02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandHeadGuard02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandMagicAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandMagicAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandMagicAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandMagicAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandMagicAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandMagicAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandMagicAttack04",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandMagicAttack04.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandStomackGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandStomackGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordAttack04",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordAttack04.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordAttack05",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordAttack05.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordSkillAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordSkillAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordSkillAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordSkillAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordSkillAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordSkillAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandSwordStabAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandSwordStabAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_DualHandXGuard03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_DualHandXGuard03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_Harakiri",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_Harakiri.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_KneeKick01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_KneeKick01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_KneeKick02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_KneeKick02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_KnockBack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_KnockBack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_KnockDown01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_KnockDown01.FBX",
+            "reason": "Unarmed defensive/reaction study; no combat rule or root-motion travel added.",
+            "recommended": true
+        },
+        {
+            "label": "BA_LeftElbowAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftElbowAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandGuard02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandGuard02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandGuard03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandGuard03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandMagicAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandMagicAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandMagicAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandMagicAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandMagicAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandMagicAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandMagicGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandMagicGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandStomachGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandStomachGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandStomachGuard02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandStomachGuard02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LeftHandStomachGuard03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LeftHandStomachGuard03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_LightHit01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_LightHit01.FBX",
+            "reason": "Unarmed defensive/reaction study; no combat rule or root-motion travel added.",
+            "recommended": true
+        },
+        {
+            "label": "BA_PoisnDamage01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_PoisnDamage01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightBackHandSwordAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightBackHandSwordAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightBackHandSwordAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack04",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightBackHandSwordAttack04.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightBackHandSwordSkillAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightBackHandSwordSkillAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightBackHandSwordStabAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightBackHandSwordStabAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightElbowAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightElbowAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightFootFinish01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightFootFinish01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightFootFinish02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightFootFinish02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightFootFinish03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightFootFinish03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightFootMagicAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightFootMagicAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightFootMagicAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightFootMagicAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightFootMagicAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightFootMagicAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandGuard01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandGuard01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicAttack03",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicAttack03.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicAttack04",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicAttack04.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicAttack05",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicAttack05.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicAttack06",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicAttack06.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicChant01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicChant01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandMagicChant02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandMagicChant02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RIghtHandSwordAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RIghtHandSwordAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandSwordAttack02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandSwordAttack02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandSwordPullAndPut01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandSwordPullAndPut01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RIghtHandSwordPullAndPut02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RIghtHandSwordPullAndPut02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandSwordStabAttack01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandSwordStabAttack01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_RightHandThrowWeapon01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_RightHandThrowWeapon01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_SwordFInish01",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_SwordFInish01.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "BA_SwordFinish02",
+            "path": "Assets/CaD_vol1/Animations/Combat/BA_SwordFinish02.FBX",
+            "reason": "Not shortlisted: weapon fit, fantasy magic or elaborate melee choreography outside the current game-art needs.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Applaud",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Applaud.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_BackPain1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_BackPain1.FBX",
+            "reason": "Visible discomfort study; does not represent medical treatment.",
+            "recommended": true
+        },
+        {
+            "label": "CA_BackPain2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_BackPain2.FBX",
+            "reason": "Visible discomfort study; does not represent medical treatment.",
+            "recommended": false
+        },
+        {
+            "label": "CA_BackPain3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_BackPain3.FBX",
+            "reason": "Visible discomfort study; does not represent medical treatment.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Beg1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Beg1.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Beg2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Beg2.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Bow1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Bow1.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Bow2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Bow2.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Bow3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Bow3.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_CallSomeoneByRightHand",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_CallSomeoneByRightHand.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Dogeza",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Dogeza.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_DrinkingWithLeftHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_DrinkingWithLeftHand01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_DrinkingWithRightHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_DrinkingWithRightHand01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_DrinkingWithRightHand02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_DrinkingWithRightHand02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_GuideWithBothHands01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithBothHands01.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": true
+        },
+        {
+            "label": "CA_GuideWithLeftHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithLeftHand01.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": true
+        },
+        {
+            "label": "CA_GuideWithRightHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithRightHand01.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": true
+        },
+        {
+            "label": "CA_GuideWithRightHand02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithRightHand02.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": false
+        },
+        {
+            "label": "CA_GuideWithRightHand03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithRightHand03.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": false
+        },
+        {
+            "label": "CA_GuideWithRightHand04",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_GuideWithRightHand04.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Hi1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi1.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Hi2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi2.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Hi3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi3.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Hi4",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi4.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Hi5",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Hi5.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Kiss1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Kiss1.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Kiss2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Kiss2.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LeanAgainstTheWall01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LeanAgainstTheWall01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LeanAgainstTheWall02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LeanAgainstTheWall02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LeanAgainstTheWall03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LeanAgainstTheWall03.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LeanAgainstTheWall04",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LeanAgainstTheWall04.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LeanAgainstTheWall05",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LeanAgainstTheWall05.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LookAtTheWatch",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LookAtTheWatch.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_LookingAround",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_LookingAround.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Nod1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Nod1.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Nod2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Nod2.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Nod3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Nod3.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_OMG1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_OMG1.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_OMG2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_OMG2.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_OMG3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_OMG3.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Phone1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Phone1.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Phone2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Phone2.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Phone3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Phone3.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_PickUp01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_PickUp01.FBX",
+            "reason": "Worker / Technician / Scientist pickup study; target placement still needed.",
+            "recommended": true
+        },
+        {
+            "label": "CA_PickUp02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_PickUp02.FBX",
+            "reason": "Worker / Technician / Scientist pickup study; target placement still needed.",
+            "recommended": true
+        },
+        {
+            "label": "CA_PickUp03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_PickUp03.FBX",
+            "reason": "Worker / Technician / Scientist pickup study; target placement still needed.",
+            "recommended": false
+        },
+        {
+            "label": "CA_PickUp04",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_PickUp04.FBX",
+            "reason": "Worker / Technician / Scientist pickup study; target placement still needed.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Salut1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Salut1.FBX",
+            "reason": "Guard / Soldier / Captain greeting or acknowledgement study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Salut2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Salut2.FBX",
+            "reason": "Guard / Soldier / Captain greeting or acknowledgement study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Salut3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Salut3.FBX",
+            "reason": "Guard / Soldier / Captain greeting or acknowledgement study.",
+            "recommended": false
+        },
+        {
+            "label": "CA_ScratchHead",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_ScratchHead.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_ScratchLeftShoulder",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_ScratchLeftShoulder.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_ScratchRightShoulder",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_ScratchRightShoulder.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_ShakeHead",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_ShakeHead.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_SitInAChairAndApplaud",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndApplaud.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndDrinking",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndDrinking.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndFan",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndFan.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndSalut1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndSalut1.FBX",
+            "reason": "Guard / Soldier / Captain greeting or acknowledgement study.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndSalut2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndSalut2.FBX",
+            "reason": "Guard / Soldier / Captain greeting or acknowledgement study.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndSalut3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndSalut3.FBX",
+            "reason": "Guard / Soldier / Captain greeting or acknowledgement study.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndSayNo",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndSayNo.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndWavingHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndWavingHand01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndWavingHand02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndWavingHand02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitInAChairAndWhy",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitInAChairAndWhy.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitOnChair01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitOnChair01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitOnChair02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitOnChair02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitOnChair03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitOnChair03.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_SitOnChair04",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_SitOnChair04.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Smoking1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Smoking1.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Smoking2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Smoking2.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Squat",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Squat.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_StandingNextToChair01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_StandingNextToChair01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_StandingWithCane01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_StandingWithCane01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_StandingWithCane02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_StandingWithCane02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_StandingWithInformationBoard01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_StandingWithInformationBoard01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_StandingWithInformationBoard02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_StandingWithInformationBoard02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_StandingWithInformationBoard03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_StandingWithInformationBoard03.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Stop",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Stop.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Stretch1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Stretch1.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Stretch2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Stretch2.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Stretch3",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Stretch3.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Taming01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Taming01.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Taming02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Taming02.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Taming03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Taming03.FBX",
+            "reason": "Optional tone-specific social motion; not selected for the initial game shortlist.",
+            "recommended": false
+        },
+        {
+            "label": "CA_TieShoelaces",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_TieShoelaces.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_TiredAndLeanAgainstTheWall01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_TiredAndLeanAgainstTheWall01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_TiredAndLeanAgainstTheWall02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_TiredAndLeanAgainstTheWall02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_TouchSmartPhone",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_TouchSmartPhone.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_TouchTheBelly",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_TouchTheBelly.FBX",
+            "reason": "Visible discomfort study; does not represent medical treatment.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Waiting1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Waiting1.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Waiting2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Waiting2.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_WalkingAround",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WalkingAround.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Warning",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Warning.FBX",
+            "reason": "Directions / warning / briefing gesture for party and NPC communication.",
+            "recommended": true
+        },
+        {
+            "label": "CA_WavingHandWithInformationBoard01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WavingHandWithInformationBoard01.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_WavingHandWIthInformationBoard02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WavingHandWIthInformationBoard02.FBX",
+            "reason": "Needs a fitted prop or scene surface; no matching prop is supplied by this pack.",
+            "recommended": false
+        },
+        {
+            "label": "CA_WavingLeftHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WavingLeftHand01.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_WavingRightHand01",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WavingRightHand01.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_WavingRightHand02",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WavingRightHand02.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_WavingRightHand03",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_WavingRightHand03.FBX",
+            "reason": "Optional source variation; available in the full library for review.",
+            "recommended": false
+        },
+        {
+            "label": "CA_Why1",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Why1.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        },
+        {
+            "label": "CA_Why2",
+            "path": "Assets/CaD_vol1/Animations/Dialogue/CA_Why2.FBX",
+            "reason": "Shared conversation / acknowledgement / ambient NPC gesture study.",
+            "recommended": true
+        }
+    ]
+}

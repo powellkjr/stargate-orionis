@@ -1,0 +1,951 @@
+{
+  "containerId": "equipment-crate-01",
+  "label": "Sealed equipment crate 01",
+  "stageId": "stage-holding-area",
+  "reveal": {
+    "id": "persuade-epidemiologist",
+    "profession": "DIPLOMAT",
+    "minimumTier": 1,
+    "ticks": 1
+  },
+  "guardId": "guard-holding-01",
+  "suspicionDelta": 30,
+  "items": [
+    {
+      "instance": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {
+          "receiving": {
+            "state": "NOT_STARTED"
+          }
+        },
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-holding-area"
+          }
+        ],
+        "instanceId": "equipment-crate-01",
+        "itemId": "SIM_SUPPLY_CRATE",
+        "custody": {
+          "storageId": "stage-holding-area",
+          "containerId": "stage-holding-area",
+          "state": "STANDBY",
+          "status": "STORED",
+          "cost": {
+            "unitCost": 1,
+            "extendedCost": 1
+          }
+        },
+        "processingTags": [
+          "RECEIVING_REQUIRED"
+        ],
+        "displayName": "Sealed equipment crate 01"
+      },
+      "item": {
+        "id": "SIM_SUPPLY_CRATE",
+        "name": "Weapon crate",
+        "nameResolution": {
+          "initialName": "Unknown weapon crate",
+          "processExitNames": {
+            "receiving": "Unknown weapon crate",
+            "analysis": "Weapon crate"
+          },
+          "previousName": "Supply crate"
+        },
+        "type": "ITEM",
+        "version": 1,
+        "tags": [
+          "PHYSICAL_OBJECT"
+        ],
+        "identity": {
+          "description": "Existing Missing Operative simulator object; provisional handling benchmark.",
+          "subjectTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "physical": {
+          "inventoryClass": "EQUIPMENT",
+          "isContainer": true,
+          "isTool": false
+        },
+        "storage": {
+          "storageClasses": [
+            "INV"
+          ],
+          "handlingCost": 1,
+          "isUnique": false,
+          "isStackable": false,
+          "isCargo": true
+        },
+        "processCompatibility": {
+          "receiving": true,
+          "analysis": true,
+          "construction": false,
+          "repair": false,
+          "reverseEngineering": false,
+          "salvage": false
+        },
+        "extension": {
+          "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+          "handlingCostProvisional": true
+        },
+        "theoryBindings": [],
+        "materials": null
+      },
+      "physicalPayload": {
+        "state": {
+          "quantity": 1,
+          "condition": "UNKNOWN",
+          "constructionState": "COMPLETE",
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "authoredTags": [
+            "PHYSICAL_OBJECT"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null
+        },
+        "processes": {},
+        "history": [
+          {
+            "event": "AUTHORED_MISSION_INSTANCE",
+            "location": "stage-holding-area"
+          }
+        ],
+        "instanceId": "equipment-crate-01",
+        "itemId": "SIM_SUPPLY_CRATE",
+        "custody": {
+          "storageId": "stage-holding-area",
+          "containerId": "stage-holding-area",
+          "state": "STANDBY",
+          "status": "STORED",
+          "cost": {
+            "unitCost": 1,
+            "extendedCost": 1
+          }
+        }
+      }
+    },
+    {
+      "instance": {
+        "instanceId": "missing-operative-rifle-01",
+        "itemId": "ASGARD_EM_RIFLE",
+        "displayName": "Unknown object",
+        "state": {
+          "condition": "UNKNOWN",
+          "quantity": 1,
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "theoryBindings": [
+            {
+              "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+              "implementedProperties": [],
+              "implementationTags": [
+                "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+              ]
+            }
+          ],
+          "authoredTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "identityTags": [],
+          "conditionTags": [],
+          "functionalityTags": [],
+          "instanceFindings": []
+        },
+        "processingTags": [
+          "RECEIVING_REQUIRED",
+          "IDENTITY_UNKNOWN"
+        ],
+        "custody": {
+          "storageId": "equipment-crate-01",
+          "containerId": "equipment-crate-01",
+          "status": "STORED",
+          "cost": {
+            "unitCost": 1,
+            "extendedCost": 1
+          }
+        },
+        "processes": {
+          "receiving": {
+            "state": "NOT_STARTED"
+          }
+        }
+      },
+      "item": {
+        "id": "ASGARD_EM_RIFLE",
+        "family": "RIFLE",
+        "version": 1,
+        "identity": {
+          "description": "A handheld Asgard ranged weapon using Tier-II electromagnetic acceleration.",
+          "civilization": "ASGARD",
+          "formFactor": "RIFLE",
+          "subjectTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD"
+          ]
+        },
+        "possibleReality": {
+          "inherentTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+          ],
+          "possibleTags": [
+            "FUNCTIONAL",
+            "DAMAGED",
+            "CHARGED",
+            "DISCHARGED",
+            "CONTAMINATED",
+            "UNSTABLE"
+          ]
+        },
+        "processingExposure": {
+          "receiving": {
+            "identityTags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE"
+            ],
+            "conditionTags": [
+              "FUNCTIONAL",
+              "DAMAGED",
+              "CHARGED",
+              "DISCHARGED",
+              "CONTAMINATED",
+              "UNSTABLE"
+            ]
+          },
+          "analysis": {
+            "orderedFunctionalityTags": [
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          }
+        },
+        "nameResolution": {
+          "initialName": "Unknown object",
+          "processExitNames": {
+            "receiving": "Unknown rifle",
+            "analysis": "Unknown electromagnetic rifle"
+          }
+        },
+        "salvageGuidance": {
+          "preserveMass": true
+        },
+        "extension": {
+          "ordinaryAsgardPatternsAreImplicitInFabricationCapability": true
+        },
+        "physical": {
+          "inventoryClass": "EQUIPMENT",
+          "isContainer": false,
+          "isTool": false
+        },
+        "name": "Asgard Electromagnetic Rifle",
+        "type": "ITEM",
+        "tags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "ASGARD"
+        ],
+        "storage": {
+          "storageClasses": [
+            "INV",
+            "CC",
+            "EQ"
+          ],
+          "handlingCost": 1,
+          "isUnique": false,
+          "isStackable": false,
+          "isCargo": true
+        },
+        "processCompatibility": {
+          "receiving": true,
+          "analysis": true,
+          "construction": false,
+          "repair": true,
+          "reverseEngineering": true,
+          "salvage": true
+        },
+        "materials": {
+          "baseCost": 251,
+          "materialClass": "M2"
+        },
+        "theoryBindings": [
+          {
+            "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+            "implementedProperties": [],
+            "implementationTags": [
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          }
+        ]
+      },
+      "physicalPayload": {
+        "instanceId": "missing-operative-rifle-01",
+        "itemId": "ASGARD_EM_RIFLE",
+        "displayName": "Unknown object",
+        "state": {
+          "condition": "UNKNOWN",
+          "quantity": 1,
+          "percentOfWhole": 1000
+        },
+        "reality": {
+          "theoryBindings": [
+            {
+              "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+              "implementedProperties": [],
+              "implementationTags": [
+                "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+              ]
+            }
+          ],
+          "authoredTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+          ]
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "identityTags": [],
+          "conditionTags": [],
+          "functionalityTags": [],
+          "instanceFindings": []
+        },
+        "processingTags": [
+          "RECEIVING_REQUIRED",
+          "IDENTITY_UNKNOWN"
+        ],
+        "custody": {
+          "storageId": "equipment-crate-01",
+          "containerId": "equipment-crate-01",
+          "status": "STORED",
+          "cost": {
+            "unitCost": 1,
+            "extendedCost": 1
+          }
+        }
+      }
+    }
+  ],
+  "additionalCaches": [
+    {
+      "containerId": "equipment-crate-02",
+      "label": "Sealed equipment crate 02",
+      "collection": {
+        "id": "collect-equipment-crate-02",
+        "stageId": "stage-hidden-store",
+        "label": "Collect Sealed equipment crate 02",
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "minimumPerception": 0,
+        "service": null,
+        "chargeCost": 0,
+        "ticks": 1,
+        "effects": []
+      },
+      "items": [
+        {
+          "instance": {
+            "state": {
+              "quantity": 1,
+              "condition": "UNKNOWN",
+              "constructionState": "COMPLETE",
+              "percentOfWhole": 1000
+            },
+            "reality": {
+              "authoredTags": [
+                "PHYSICAL_OBJECT"
+              ]
+            },
+            "knowledge": {
+              "revealedTags": [
+                "PHYSICAL_OBJECT"
+              ],
+              "instanceFindings": [],
+              "recognizedIdentity": null
+            },
+            "processes": {
+              "receiving": {
+                "state": "NOT_STARTED"
+              }
+            },
+            "history": [
+              {
+                "event": "AUTHORED_MISSION_INSTANCE",
+                "location": "stage-hidden-store"
+              }
+            ],
+            "instanceId": "equipment-crate-02",
+            "itemId": "SIM_SUPPLY_CRATE",
+            "custody": {
+              "storageId": "stage-hidden-store",
+              "containerId": "stage-hidden-store",
+              "state": "STANDBY",
+              "status": "STORED",
+              "cost": {
+                "unitCost": 1,
+                "extendedCost": 1
+              }
+            },
+            "processingTags": [
+              "RECEIVING_REQUIRED"
+            ]
+          },
+          "item": {
+            "id": "SIM_SUPPLY_CRATE",
+            "name": "Weapon crate",
+            "nameResolution": {
+              "initialName": "Unknown weapon crate",
+              "processExitNames": {
+                "receiving": "Unknown weapon crate",
+                "analysis": "Weapon crate"
+              },
+              "previousName": "Supply crate"
+            },
+            "type": "ITEM",
+            "version": 1,
+            "tags": [
+              "PHYSICAL_OBJECT"
+            ],
+            "identity": {
+              "description": "Existing Missing Operative simulator object; provisional handling benchmark.",
+              "subjectTags": [
+                "PHYSICAL_OBJECT"
+              ]
+            },
+            "physical": {
+              "inventoryClass": "EQUIPMENT",
+              "isContainer": true,
+              "isTool": false
+            },
+            "storage": {
+              "storageClasses": [
+                "INV"
+              ],
+              "handlingCost": 1,
+              "isUnique": false,
+              "isStackable": false,
+              "isCargo": true
+            },
+            "processCompatibility": {
+              "receiving": true,
+              "analysis": true,
+              "construction": false,
+              "repair": false,
+              "reverseEngineering": false,
+              "salvage": false
+            },
+            "extension": {
+              "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+              "handlingCostProvisional": true
+            },
+            "theoryBindings": [],
+            "materials": null
+          },
+          "physicalPayload": {
+            "state": {
+              "quantity": 1,
+              "condition": "UNKNOWN",
+              "constructionState": "COMPLETE",
+              "percentOfWhole": 1000
+            },
+            "reality": {
+              "authoredTags": [
+                "PHYSICAL_OBJECT"
+              ]
+            },
+            "knowledge": {
+              "revealedTags": [
+                "PHYSICAL_OBJECT"
+              ],
+              "instanceFindings": [],
+              "recognizedIdentity": null
+            },
+            "processes": {},
+            "history": [
+              {
+                "event": "AUTHORED_MISSION_INSTANCE",
+                "location": "stage-hidden-store"
+              }
+            ],
+            "instanceId": "equipment-crate-02",
+            "itemId": "SIM_SUPPLY_CRATE",
+            "custody": {
+              "storageId": "stage-hidden-store",
+              "containerId": "stage-hidden-store",
+              "state": "STANDBY",
+              "status": "STORED",
+              "cost": {
+                "unitCost": 1,
+                "extendedCost": 1
+              }
+            }
+          }
+        },
+        {
+          "instance": {
+            "instanceId": "missing-operative-rifle-02",
+            "itemId": "HUMAN_ADVANCED_COIL_RIFLE",
+            "displayName": "Unknown object",
+            "state": {
+              "condition": "UNKNOWN",
+              "quantity": 1,
+              "percentOfWhole": 1000
+            },
+            "reality": {
+              "theoryBindings": [
+                {
+                  "theoryId": "PULSED_POWER_II",
+                  "implementedProperties": [
+                    "ACCUMULATE",
+                    "STORE",
+                    "SHAPE_DISCHARGE",
+                    "SYNCHRONIZE",
+                    "DELIVER_CONTROLLED_PULSE",
+                    "MONITOR_LOAD_RESPONSE",
+                    "RECOVER_COMPENSATE"
+                  ],
+                  "implementationTags": [
+                    "PULSED_POWER_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "ELECTROMAGNETIC_ACTUATION_II",
+                  "implementedProperties": [
+                    "RECEIVE_CONTROL_INPUT",
+                    "GENERATE_FIELD",
+                    "APPLY_ELECTROMAGNETIC_FORCE",
+                    "PRODUCE_CONTROLLED_MOTION",
+                    "RETURN_OR_HOLD"
+                  ],
+                  "implementationTags": [
+                    "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                  "implementedProperties": [],
+                  "implementationTags": [
+                    "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "HUMAN_MANUFACTURING_II",
+                  "implementedProperties": [],
+                  "implementationTags": [
+                    "HUMAN_MANUFACTURING_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+                  "implementedProperties": [
+                    "FABRICATE_FIELD_COMPONENTS",
+                    "FABRICATE_POWER_CONTROL_COMPONENTS",
+                    "ASSEMBLE_ACCELERATOR_STAGES",
+                    "INTEGRATE_POWER_CONTROL",
+                    "ALIGN_STAGES",
+                    "CALIBRATE_SEQUENCING",
+                    "POWERED_VALIDATION"
+                  ],
+                  "implementationTags": [
+                    "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "HUMAN_ADVANCED_RIFLE_PATTERN",
+                  "implementedProperties": [
+                    "FABRICATE_STRUCTURAL_COMPONENTS",
+                    "FABRICATE_FEED_CONTROL_COMPONENTS",
+                    "ASSEMBLE_RIFLE_BODY",
+                    "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+                    "FIT_ALIGN",
+                    "FUNCTION_CHECK"
+                  ],
+                  "implementationTags": [
+                    "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+                  ]
+                }
+              ],
+              "authoredTags": [
+                "WEAPON",
+                "RANGED_WEAPON",
+                "RIFLE",
+                "HUMAN",
+                "COIL_RIFLE",
+                "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+              ]
+            },
+            "knowledge": {
+              "revealedTags": [
+                "PHYSICAL_OBJECT"
+              ],
+              "identityTags": [],
+              "conditionTags": [],
+              "functionalityTags": [],
+              "instanceFindings": []
+            },
+            "processingTags": [
+              "RECEIVING_REQUIRED",
+              "IDENTITY_UNKNOWN"
+            ],
+            "custody": {
+              "storageId": "equipment-crate-02",
+              "containerId": "equipment-crate-02",
+              "status": "STORED",
+              "cost": {
+                "unitCost": 1,
+                "extendedCost": 1
+              }
+            },
+            "processes": {
+              "receiving": {
+                "state": "NOT_STARTED"
+              }
+            }
+          },
+          "item": {
+            "id": "HUMAN_ADVANCED_COIL_RIFLE",
+            "family": "RIFLE",
+            "version": 1,
+            "identity": {
+              "description": "A Human Technology Tier-II rifle using a Human electromagnetic accelerator implementation.",
+              "civilization": "HUMAN",
+              "formFactor": "RIFLE",
+              "subjectTags": [
+                "WEAPON",
+                "RANGED_WEAPON",
+                "RIFLE",
+                "HUMAN",
+                "COIL_RIFLE"
+              ]
+            },
+            "possibleReality": {
+              "inherentTags": [
+                "WEAPON",
+                "RANGED_WEAPON",
+                "RIFLE",
+                "HUMAN",
+                "COIL_RIFLE",
+                "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+              ],
+              "possibleTags": [
+                "FUNCTIONAL",
+                "DAMAGED",
+                "CHARGED",
+                "DISCHARGED"
+              ]
+            },
+            "processingExposure": {
+              "receiving": {
+                "identityTags": [
+                  "WEAPON",
+                  "RANGED_WEAPON",
+                  "RIFLE",
+                  "COIL_RIFLE"
+                ],
+                "conditionTags": [
+                  "FUNCTIONAL",
+                  "DAMAGED",
+                  "CHARGED",
+                  "DISCHARGED"
+                ]
+              },
+              "analysis": {
+                "orderedFunctionalityTags": [
+                  "PULSED_POWER_II_IMPLEMENTATION",
+                  "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION",
+                  "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+                  "HUMAN_MANUFACTURING_II_IMPLEMENTATION",
+                  "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION",
+                  "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+                ]
+              }
+            },
+            "nameResolution": {
+              "initialName": "Unknown object",
+              "processExitNames": {
+                "receiving": "Unknown coil rifle",
+                "analysis": "Human advanced coil rifle"
+              }
+            },
+            "salvageGuidance": {
+              "preserveMass": true
+            },
+            "extension": {
+              "sourceRecipeId": "HUMAN_ADVANCED_COIL_RIFLE_RECIPE"
+            },
+            "physical": {
+              "inventoryClass": "EQUIPMENT",
+              "isContainer": false,
+              "isTool": false
+            },
+            "name": "Human Advanced Coil Rifle",
+            "type": "ITEM",
+            "tags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE",
+              "HUMAN",
+              "COIL_RIFLE"
+            ],
+            "storage": {
+              "storageClasses": [
+                "INV",
+                "CC",
+                "EQ"
+              ],
+              "handlingCost": 1,
+              "isUnique": false,
+              "isStackable": false,
+              "isCargo": true
+            },
+            "processCompatibility": {
+              "receiving": true,
+              "analysis": true,
+              "construction": true,
+              "repair": true,
+              "reverseEngineering": true,
+              "salvage": true
+            },
+            "materials": {
+              "baseCost": 171,
+              "materialClass": "M2"
+            },
+            "theoryBindings": [
+              {
+                "theoryId": "PULSED_POWER_II",
+                "implementedProperties": [
+                  "ACCUMULATE",
+                  "STORE",
+                  "SHAPE_DISCHARGE",
+                  "SYNCHRONIZE",
+                  "DELIVER_CONTROLLED_PULSE",
+                  "MONITOR_LOAD_RESPONSE",
+                  "RECOVER_COMPENSATE"
+                ],
+                "implementationTags": [
+                  "PULSED_POWER_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "ELECTROMAGNETIC_ACTUATION_II",
+                "implementedProperties": [
+                  "RECEIVE_CONTROL_INPUT",
+                  "GENERATE_FIELD",
+                  "APPLY_ELECTROMAGNETIC_FORCE",
+                  "PRODUCE_CONTROLLED_MOTION",
+                  "RETURN_OR_HOLD"
+                ],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_MANUFACTURING_II",
+                "implementedProperties": [],
+                "implementationTags": [
+                  "HUMAN_MANUFACTURING_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+                "implementedProperties": [
+                  "FABRICATE_FIELD_COMPONENTS",
+                  "FABRICATE_POWER_CONTROL_COMPONENTS",
+                  "ASSEMBLE_ACCELERATOR_STAGES",
+                  "INTEGRATE_POWER_CONTROL",
+                  "ALIGN_STAGES",
+                  "CALIBRATE_SEQUENCING",
+                  "POWERED_VALIDATION"
+                ],
+                "implementationTags": [
+                  "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION"
+                ]
+              },
+              {
+                "theoryId": "HUMAN_ADVANCED_RIFLE_PATTERN",
+                "implementedProperties": [
+                  "FABRICATE_STRUCTURAL_COMPONENTS",
+                  "FABRICATE_FEED_CONTROL_COMPONENTS",
+                  "ASSEMBLE_RIFLE_BODY",
+                  "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+                  "FIT_ALIGN",
+                  "FUNCTION_CHECK"
+                ],
+                "implementationTags": [
+                  "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+                ]
+              }
+            ]
+          },
+          "physicalPayload": {
+            "instanceId": "missing-operative-rifle-02",
+            "itemId": "HUMAN_ADVANCED_COIL_RIFLE",
+            "displayName": "Unknown object",
+            "state": {
+              "condition": "UNKNOWN",
+              "quantity": 1,
+              "percentOfWhole": 1000
+            },
+            "reality": {
+              "theoryBindings": [
+                {
+                  "theoryId": "PULSED_POWER_II",
+                  "implementedProperties": [
+                    "ACCUMULATE",
+                    "STORE",
+                    "SHAPE_DISCHARGE",
+                    "SYNCHRONIZE",
+                    "DELIVER_CONTROLLED_PULSE",
+                    "MONITOR_LOAD_RESPONSE",
+                    "RECOVER_COMPENSATE"
+                  ],
+                  "implementationTags": [
+                    "PULSED_POWER_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "ELECTROMAGNETIC_ACTUATION_II",
+                  "implementedProperties": [
+                    "RECEIVE_CONTROL_INPUT",
+                    "GENERATE_FIELD",
+                    "APPLY_ELECTROMAGNETIC_FORCE",
+                    "PRODUCE_CONTROLLED_MOTION",
+                    "RETURN_OR_HOLD"
+                  ],
+                  "implementationTags": [
+                    "ELECTROMAGNETIC_ACTUATION_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+                  "implementedProperties": [],
+                  "implementationTags": [
+                    "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "HUMAN_MANUFACTURING_II",
+                  "implementedProperties": [],
+                  "implementationTags": [
+                    "HUMAN_MANUFACTURING_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II",
+                  "implementedProperties": [
+                    "FABRICATE_FIELD_COMPONENTS",
+                    "FABRICATE_POWER_CONTROL_COMPONENTS",
+                    "ASSEMBLE_ACCELERATOR_STAGES",
+                    "INTEGRATE_POWER_CONTROL",
+                    "ALIGN_STAGES",
+                    "CALIBRATE_SEQUENCING",
+                    "POWERED_VALIDATION"
+                  ],
+                  "implementationTags": [
+                    "HUMAN_ELECTROMAGNETIC_ACCELERATOR_PATTERN_II_IMPLEMENTATION"
+                  ]
+                },
+                {
+                  "theoryId": "HUMAN_ADVANCED_RIFLE_PATTERN",
+                  "implementedProperties": [
+                    "FABRICATE_STRUCTURAL_COMPONENTS",
+                    "FABRICATE_FEED_CONTROL_COMPONENTS",
+                    "ASSEMBLE_RIFLE_BODY",
+                    "INTEGRATE_PRIMARY_WEAPON_SYSTEM",
+                    "FIT_ALIGN",
+                    "FUNCTION_CHECK"
+                  ],
+                  "implementationTags": [
+                    "HUMAN_ADVANCED_RIFLE_PATTERN_IMPLEMENTATION"
+                  ]
+                }
+              ],
+              "authoredTags": [
+                "WEAPON",
+                "RANGED_WEAPON",
+                "RIFLE",
+                "HUMAN",
+                "COIL_RIFLE",
+                "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+              ]
+            },
+            "knowledge": {
+              "revealedTags": [
+                "PHYSICAL_OBJECT"
+              ],
+              "identityTags": [],
+              "conditionTags": [],
+              "functionalityTags": [],
+              "instanceFindings": []
+            },
+            "processingTags": [
+              "RECEIVING_REQUIRED",
+              "IDENTITY_UNKNOWN"
+            ],
+            "custody": {
+              "storageId": "equipment-crate-02",
+              "containerId": "equipment-crate-02",
+              "status": "STORED",
+              "cost": {
+                "unitCost": 1,
+                "extendedCost": 1
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

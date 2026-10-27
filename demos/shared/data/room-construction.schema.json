@@ -130,6 +130,12 @@
           "type": "string",
           "minLength": 1
         },
+        "generalWorkShare": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Share of new construction work requiring any local Maintenance Actor, without a Tool. Supersedes the legacy serial Technician-only execution description. Security is included in the remaining specialist share."
+        },
         "actorSelection": {
           "const": "MAINTENANCE_PERMANENT_STAFF"
         },
@@ -242,19 +248,111 @@
           "minimum": 0
         },
         "clearingRecipe": {
-          "type": "object", "additionalProperties": false,
-          "required": ["id", "bubbles"],
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "bubbles"
+          ],
           "properties": {
-            "id": { "type": "string", "minLength": 1 },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
             "bubbles": {
-              "type": "array", "minItems": 8, "maxItems": 8,
+              "type": "array",
+              "minItems": 8,
+              "maxItems": 8,
               "items": {
-                "type": "object", "additionalProperties": false,
-                "required": ["id", "durationTicks", "actor", "toolService", "roomService"],
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "durationTicks",
+                  "actor",
+                  "toolService",
+                  "roomService"
+                ],
                 "properties": {
-                  "id": { "type": "string", "minLength": 1 },
-                  "durationTicks": { "enum": [1, 20] },
-                  "actor": { "const": "UNTRAINED" }, "toolService": { "type": "null" }, "roomService": { "type": "null" }
+                  "id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "durationTicks": {
+                    "enum": [
+                      1,
+                      20
+                    ]
+                  },
+                  "actor": {
+                    "const": "UNTRAINED"
+                  },
+                  "toolService": {
+                    "type": "null"
+                  },
+                  "roomService": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "variation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "minBubbles",
+            "maxBubbles",
+            "durations",
+            "longPercent",
+            "specialist"
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minBubbles": {
+              "const": 8
+            },
+            "maxBubbles": {
+              "const": 12
+            },
+            "durations": {
+              "const": [
+                1,
+                20
+              ]
+            },
+            "longPercent": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 99
+            },
+            "specialist": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "profession",
+                "minimumTier"
+              ],
+              "properties": {
+                "profession": {
+                  "enum": [
+                    "TECHNICIAN",
+                    "SOLDIER",
+                    "SCIENTIST",
+                    "SCOUT",
+                    "MEDIC",
+                    "DIPLOMAT"
+                  ]
+                },
+                "minimumTier": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 3
                 }
               }
             }

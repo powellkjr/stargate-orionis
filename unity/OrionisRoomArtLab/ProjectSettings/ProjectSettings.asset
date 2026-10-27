@@ -1,0 +1,11 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 29
+  productGUID: e30be18ff2734bdcaee7dddb48373791
+  companyName: Orionis
+  productName: Orionis Room Art Lab
+  runInBackground: 1
+  colorSpace: 1

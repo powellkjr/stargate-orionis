@@ -22,14 +22,14 @@ namespace Orionis.Tests
             var s = New(json); s.Deploy(new[] { "unit-6", "unit-10", "unit-37", "unit-46" }); s.ChooseGate(false);
             Assert.Throws<InvalidOperationException>(s.RecoverMissionCargo);
             s.MoveParty("door-gate-to-yard"); s.Respond("yard-ignore", "unit-6"); Fight(s, "incident-yard-guards");
-            s.MoveParty("door-yard-to-mainhall"); Work(s, s.State.Base.Mission.Travel.Field.DoorRecipes.Single().Id);
+            s.MoveParty("door-yard-to-mainhall"); Work(s, s.State.Base.Mission.Travel.Field.DoorRecipes.Single(r=>r.DoorId=="door-mainhall-to-holding").Id);
             s.MoveParty("door-mainhall-to-holding"); Fight(s, "incident-holding-guards");
             var tick = s.State.Clock.ElapsedTicks; Work(s, s.State.Base.Cargo.Reveal.Id);
             Assert.That(s.State.Clock.ElapsedTicks, Is.EqualTo(tick + 1)); Assert.That(RecoveredCargo.Revealed(s.State), Is.True);
             foreach (var r in s.State.Base.Care.Recipes) Work(s, r.Id);
             Assert.Throws<InvalidOperationException>(s.RecoverMissionCargo);
             s.MoveParty("door-mainhall-to-holding"); s.MoveParty("door-yard-to-mainhall"); s.MoveParty("door-gate-to-yard"); s.RedialGate(); s.ExtractMission();
-            Assert.That(RecoveredCargo.CanRecover(s.State), Is.True); s.RecoverMissionCargo(); return s;
+            Assert.That(RecoveredCargo.CanRecover(s.State), Is.False); Assert.That(s.State.Cargo.Count,Is.EqualTo(2)); return s;
         }
         private void Inspect(CampaignSession s)
         {
@@ -41,7 +41,7 @@ namespace Orionis.Tests
             }
             for (int i = 0; i < 4; i++) s.AdvanceOneTick();
         }
-        [Test] public void RecoveryInspectionAndContainmentPreserveTheSamePhysicalInstancesAcrossSaveAndReset()
+        [Test] public void RecoveryInspectionPreservesInstancesAndExplicitMissionResetRestoresLoot()
         {
             var s = ReturnWithDiscovery(); var original = s.State; Assert.That(s.State.Cargo.Count, Is.EqualTo(2));
             Assert.Throws<InvalidOperationException>(s.RecoverMissionCargo); Assert.That(s.State, Is.SameAs(original));
@@ -57,11 +57,9 @@ namespace Orionis.Tests
             Assert.Throws<InvalidOperationException>(() => s.MoveCargo(Rifle, "r9")); Assert.That(s.State, Is.SameAs(original));
             s.MoveCargo(Rifle, "r10"); s.AdvanceOneTick(); s.ResetMission();
             var codec = new CampaignSaveCodec(Json); var restored = codec.Deserialize(codec.Serialize(new SavedSession(s.State, null))).Campaign;
-            Assert.That(restored.Cargo.Single(i => i.Id == Rifle).RoomId, Is.EqualTo("r10")); Assert.That(restored.Cargo.Single(i => i.Id == Rifle).Payload, Is.EqualTo(payload));
-            Assert.That(restored.Cargo.Single(i => i.Id == "equipment-crate-01").RoomId, Is.Null, "Do not destroy or silently consume the packaging.");
-            Assert.That(restored.Receiving.Single().Progress.All(p => p.Ticks == 2), Is.True);
+            Assert.That(restored.Cargo,Is.Empty);Assert.That(restored.Receiving.Any(o=>o.InstanceId==Rifle),Is.False);
             var replay = new CampaignSession(restored, null); replay.Deploy(new[] { "unit-46" }); replay.ChooseGate(false); replay.MoveParty("door-gate-to-yard");
-            Assert.That(replay.State.Cargo.Single(i => i.Id == Rifle).RoomId, Is.EqualTo("r10"));
+            Assert.That(replay.State.Cargo,Is.Empty);
         }
         [Test] public void NoFieldOrBaseAdmissionCanInventAnUnrecoveredObject()
         {
@@ -152,7 +150,7 @@ namespace Orionis.Tests
             {
                 if (completed) s.AdvanceOneTick();
                 var record = JObject.Parse(codec.Serialize(new SavedSession(s.State, null)));
-                record["schemaVersion"] = 18; record["processingFingerprint"] = JObject.Parse(Json)["cargoProcessing"]["previousProcessingFingerprint"];
+                record["schemaVersion"] = 18;record.Property("archivedCargoSupply")?.Remove(); record["processingFingerprint"] = JObject.Parse(Json)["cargoProcessing"]["previousProcessingFingerprint"];
                 foreach (JObject row in record["cargo"])
                 {
                     row.Property("storageLocationId").Remove(); row.Property("custodyRoomId").Remove();
@@ -209,7 +207,7 @@ namespace Orionis.Tests
         {
             var original = JObject.Parse(Json)["previousProgressionSnapshot"].ToString();
             var s = ReturnWithDiscovery(original); Contain(s); var codec = new CampaignSaveCodec(original);
-            var saved = JObject.Parse(codec.Serialize(new SavedSession(s.State, null))); saved["schemaVersion"] = 16;
+            var saved = JObject.Parse(codec.Serialize(new SavedSession(s.State, null))); saved["schemaVersion"] = 16;saved.Property("archivedCargoSupply")?.Remove();
             saved.Property("processingFingerprint").Remove(); foreach (JObject item in saved["cargo"]) item.Property("examination").Remove();
             var current = new CampaignSaveCodec(Json); s = new CampaignSession(current.Deserialize(saved.ToString()).Campaign, null);
             Assert.That(s.State.Base.Units.Single(u => u.Id == "unit-1").Tier, Is.EqualTo(1));
@@ -314,7 +312,7 @@ namespace Orionis.Tests
         [Test] public void PersonalEquipmentSchemaSeventeenMigrationDoesNotInventCarriedItemsOrRewriteCombat()
         {
             var s = ReturnWithDiscovery(); var codec = new CampaignSaveCodec(Json); var before = MissionCombat.Inspect(s.State).PartyHealth["unit-6"];
-            var record = JObject.Parse(codec.Serialize(new SavedSession(s.State, null))); record["schemaVersion"] = 17; record.Property("equipmentFingerprint").Remove();
+            var record = JObject.Parse(codec.Serialize(new SavedSession(s.State, null))); record["schemaVersion"] = 17;record.Property("archivedCargoSupply")?.Remove(); record.Property("equipmentFingerprint").Remove();
             foreach (JObject item in record["cargo"]) item.Property("equippedUnitId").Remove();
             foreach (JObject member in record["expedition"]["party"]) member.Property("equipment").Remove();
             var restored = codec.Deserialize(record.ToString()).Campaign;
@@ -325,7 +323,7 @@ namespace Orionis.Tests
         [Test] public void SchemaFourteenSaveRetainsItsMissionAndDoesNotGainCargo()
         {
             var s = New(); s.Deploy(new[] { "unit-6" }); s.ChooseGate(false); var codec = new CampaignSaveCodec(Json);
-            var j = JObject.Parse(codec.Serialize(new SavedSession(s.State, null))); j["schemaVersion"] = 14; j.Property("cargo").Remove(); j.Property("cargoFingerprint").Remove();
+            var j = JObject.Parse(codec.Serialize(new SavedSession(s.State, null))); j["schemaVersion"] = 14;j.Property("archivedCargoSupply")?.Remove(); j.Property("cargo").Remove(); j.Property("cargoFingerprint").Remove();
             var state = codec.Deserialize(j.ToString()).Campaign; Assert.That(state.Cargo, Is.Empty); Assert.That(state.Expedition.Party.Single().UnitId, Is.EqualTo("unit-6"));
         }
         [Test] public void JoinedAnalysisUsesGroupStaffAndSplitRetainsStickyScientistProgress()

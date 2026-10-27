@@ -100,7 +100,7 @@ namespace Orionis.Tests
             var oldJson = old.ToString(); var initial = new CampaignState(BootstrapReader.Read(oldJson), new RandomState(1, 1));
             var deployed = Expeditions.ChooseGate(Expeditions.Deploy(initial, new[] { "unit-6" }), true);
             var saved = JObject.Parse(new CampaignSaveCodec(oldJson).Serialize(new SavedSession(deployed, null)));
-            saved["schemaVersion"] = 6; saved.Property("teams").Remove(); saved.Property("combatFingerprint").Remove(); saved.Property("careFingerprint").Remove(); saved.Property("rescueFingerprint").Remove(); ((JObject)saved["expedition"]).Property("travel").Remove();
+            saved["schemaVersion"] = 6;saved.Property("archivedCargoSupply")?.Remove(); saved.Property("teams").Remove(); saved.Property("combatFingerprint").Remove(); saved.Property("careFingerprint").Remove(); saved.Property("rescueFingerprint").Remove(); ((JObject)saved["expedition"]).Property("travel").Remove();
             var restored = new CampaignSaveCodec(Json).Deserialize(saved.ToString()).Campaign;
             Assert.That(restored.Expedition.Travel.Visits.Keys, Is.EqualTo(new[] { "stage-gate-yard" }));
             Assert.That(restored.Expedition.Travel.History, Is.Empty); Assert.That(restored.Expedition.Party[0].UnitId, Is.EqualTo("unit-6"));

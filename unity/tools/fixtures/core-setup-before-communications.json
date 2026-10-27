@@ -1,0 +1,721 @@
+{
+  "$schema": "./receiving-core-prototype.schema.json",
+  "format": "orionis-receiving-cores-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "runtimeStatus": "PROVISIONAL_EXECUTABLE",
+  "definitionSource": "theory/stargate_theory_simulator_import.json",
+  "itemSource": "item.json",
+  "power": {
+    "generatorOutput": 100,
+    "activeCostIsTotal": true,
+    "reserve": "SUM_ROOM_BASE_AND_INSTALLED_CORE_MAX_ACTIVE",
+    "activation": "SELECTED_SERVICE_PROVISION_ONLY",
+    "roomBaseByDefinition": {
+      "cultural_platform": 4,
+      "analysis": 4,
+      "containment": 3,
+      "data_storage": 2,
+      "equipment_storage": 2,
+      "gate_room": 8,
+      "holding": 3,
+      "infirmary": 4,
+      "living_quarters": 2,
+      "maintenance": 4,
+      "material_storage": 1,
+      "generator": 0,
+      "ration_storage": 1,
+      "receiving": 4,
+      "research": 4,
+      "response_room": 3,
+      "supply_storage": 1,
+      "tech_platform": 4,
+      "workshop": 4,
+      "ready_room": 2,
+      "warehouse": 1
+    },
+    "roomBaseTierMultipliers": {
+      "1": 1,
+      "2": 1.5,
+      "3": 2
+    },
+    "generatorOutputTierMultipliers": {
+      "1": 1,
+      "2": 1,
+      "3": 1
+    },
+    "fuel": false,
+    "outages": false,
+    "generatorDefinitionId": "generator"
+  },
+  "embeddedT0": {
+    "scope": "EVERY_PHYSICAL_ROOM",
+    "removable": false,
+    "usesCoreSlot": false,
+    "powerIncludedInRoomBase": true,
+    "receiving": {
+      "providesServices": [
+        "CARGO_PROCESSING"
+      ],
+      "supportedSizes": [
+        "SMALL"
+      ],
+      "recovery": {
+        "highTierFixedPercent": 0,
+        "lowTierFixedPercent": 100,
+        "flexiblePercent": 0,
+        "flexibleHighTierShare": 0
+      }
+    }
+  },
+  "receiving": {
+    "coreSlotsByConstructionTier": {
+      "1": 2,
+      "2": 4,
+      "3": 6
+    },
+    "reconfiguration": "WAIT_ACTIVE_ITEM_NEW_WORK_WAITS_QUEUED_ITEMS_DO_NOT_BLOCK",
+    "resolution": "CARGO_AUTHORED_SERVICE_ORDER_THEN_T0",
+    "samePrioritySelection": "FIRST_INSTALLED_EQUIVALENT_PROVIDER_ONLY",
+    "duplicates": "ALLOWED_NONSTACKING",
+    "recoveryFamilies": [
+      "SUPPLY",
+      "MATERIAL",
+      "RATIONS"
+    ],
+    "notes": "Cargo hierarchy selects capability before equivalent duplicate-instance tie-break; slot order never chooses between different Services."
+  },
+  "cargoCapabilityPreferences": {
+    "SIM_SUPPLY_CACHE": {
+      "handling": [
+        "RECEIVING_HANDLING_MEDIUM",
+        "RECEIVING_HANDLING_LARGE",
+        "RECEIVING_HANDLING_HUGE"
+      ],
+      "recovery": [
+        "RECEIVING_RECOVERY_BALANCED",
+        "RECEIVING_RECOVERY_QUANTITY",
+        "RECEIVING_RECOVERY_QUALITY"
+      ]
+    }
+  },
+  "starterInstances": [
+    {
+      "instanceId": "starter-receiving-medium-core-01",
+      "coreDefinitionId": "RECEIVING_MEDIUM_PROCESSING_CORE_1",
+      "roomInstanceId": "r2",
+      "slotIndex": 0
+    },
+    {
+      "instanceId": "starter-receiving-balanced-core-01",
+      "coreDefinitionId": "RECEIVING_BALANCED_RECOVERY_CORE_1",
+      "roomInstanceId": "r2",
+      "slotIndex": 1
+    }
+  ],
+  "legacySeeding": "ONCE_FOR_CAMPAIGNS_WITHOUT_CORE_RECORDS_USE_STABLE_IDS_NEVER_DUPLICATE_EXISTING_CORES",
+  "installedStorage": "RELEASE_WAREHOUSE_PLACE_NO_FALLBACK_RESERVATION",
+  "uninstalledStorage": "WAREHOUSE_ONE_PLACE_PER_CORE",
+  "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+  "deferred": [
+    "HIGHER_TIER_RECOVERY_CORES",
+    "CORE_MANUFACTURING_RECIPES",
+    "FUEL_AND_POWER_DISRUPTIONS"
+  ],
+  "roomTagsByDefinition": {
+    "receiving": [
+      "RECEIVING_EQUIPMENT_BAY"
+    ],
+    "workshop": [
+      "WORKSHOP_EQUIPMENT_BAY"
+    ]
+  },
+  "coreDefinitions": [
+    {
+      "id": "ELECTRODYNAMICS_FABRICATION_CORE_II",
+      "tier": 2,
+      "providesServices": [
+        "ELECTRODYNAMICS_FABRICATION_II"
+      ],
+      "contentStatus": "PROVISIONAL_PLAYTEST",
+      "minimumConstructionTier": 2,
+      "compatibleRoomTags": [
+        "WORKSHOP_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 3,
+        "active": 16
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "SERVICE",
+        "stacking": "NONSTACKING"
+      }
+    },
+    {
+      "id": "ELECTRODYNAMICS_TEST_CORE_II",
+      "tier": 2,
+      "providesServices": [
+        "SHIELDED_ELECTRODYNAMICS_TEST_II"
+      ],
+      "contentStatus": "PROVISIONAL_PLAYTEST",
+      "minimumConstructionTier": 2,
+      "compatibleRoomTags": [
+        "WORKSHOP_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 3,
+        "active": 16
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "SERVICE",
+        "stacking": "NONSTACKING"
+      }
+    },
+    {
+      "id": "RECEIVING_MEDIUM_PROCESSING_CORE_1",
+      "name": "Medium Processing Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_HANDLING_MEDIUM"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 2,
+        "active": 12
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "HANDLING",
+        "supportedSizes": [
+          "SMALL",
+          "MEDIUM"
+        ],
+        "stacking": "NONSTACKING"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_LARGE_PROCESSING_CORE_2",
+      "name": "Large Processing Equipment",
+      "tier": 2,
+      "providesServices": [
+        "RECEIVING_HANDLING_LARGE"
+      ],
+      "minimumConstructionTier": 2,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 3,
+        "active": 20
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "HANDLING",
+        "supportedSizes": [
+          "SMALL",
+          "MEDIUM",
+          "LARGE"
+        ],
+        "stacking": "NONSTACKING"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_HUGE_PROCESSING_CORE_3",
+      "name": "Huge Processing Equipment",
+      "tier": 3,
+      "providesServices": [
+        "RECEIVING_HANDLING_HUGE"
+      ],
+      "minimumConstructionTier": 3,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 4,
+        "active": 30
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "HANDLING",
+        "supportedSizes": [
+          "SMALL",
+          "MEDIUM",
+          "LARGE",
+          "HUGE"
+        ],
+        "stacking": "NONSTACKING"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_QUANTITY_RECOVERY_CORE_1",
+      "name": "Quantity Recovery Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_RECOVERY_QUANTITY"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 1,
+        "active": 8
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "RECOVERY",
+        "families": [
+          "SUPPLY",
+          "MATERIAL",
+          "RATIONS"
+        ],
+        "highTierFixedPercent": 25,
+        "lowTierFixedPercent": 25,
+        "flexiblePercent": 50,
+        "flexibleHighTierShare": 0,
+        "stacking": "NONSTACKING",
+        "degradation": "LINEAR_TO_BALANCED"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_BALANCED_RECOVERY_CORE_1",
+      "name": "Balanced Recovery Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_RECOVERY_BALANCED"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 1,
+        "active": 8
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "RECOVERY",
+        "families": [
+          "SUPPLY",
+          "MATERIAL",
+          "RATIONS"
+        ],
+        "highTierFixedPercent": 25,
+        "lowTierFixedPercent": 25,
+        "flexiblePercent": 50,
+        "flexibleHighTierShare": 0.5,
+        "stacking": "NONSTACKING",
+        "degradation": "LINEAR_TO_BALANCED"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    },
+    {
+      "id": "RECEIVING_QUALITY_RECOVERY_CORE_1",
+      "name": "Quality Recovery Equipment",
+      "tier": 1,
+      "providesServices": [
+        "RECEIVING_RECOVERY_QUALITY"
+      ],
+      "minimumConstructionTier": 1,
+      "compatibleRoomTags": [
+        "RECEIVING_EQUIPMENT_BAY"
+      ],
+      "power": {
+        "idle": 1,
+        "active": 8
+      },
+      "installationRecipeId": "RECONFIGURE_ROOM_CORE",
+      "contribution": {
+        "kind": "RECOVERY",
+        "families": [
+          "SUPPLY",
+          "MATERIAL",
+          "RATIONS"
+        ],
+        "highTierFixedPercent": 25,
+        "lowTierFixedPercent": 25,
+        "flexiblePercent": 50,
+        "flexibleHighTierShare": 1,
+        "stacking": "NONSTACKING",
+        "degradation": "LINEAR_TO_BALANCED"
+      },
+      "contentStatus": "PROVISIONAL_PLAYTEST"
+    }
+  ],
+  "items": {
+    "RECEIVING_MEDIUM_PROCESSING_CORE_1": {
+      "id": "RECEIVING_MEDIUM_PROCESSING_CORE_1",
+      "name": "Medium Processing Equipment",
+      "nameResolution": {
+        "initialName": "Medium Processing Equipment",
+        "processExitNames": {}
+      },
+      "type": "ITEM",
+      "version": 1,
+      "tags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "identity": {
+        "description": "Medium Processing Equipment; removable room equipment, not a manufacturing Pattern.",
+        "formFactor": "CORE",
+        "subjectTags": [
+          "PHYSICAL_OBJECT"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isContainer": false,
+        "isTool": false
+      },
+      "storage": {
+        "storageClasses": [
+          "INV"
+        ],
+        "handlingCost": 1,
+        "isUnique": false,
+        "isStackable": false,
+        "isCargo": false
+      },
+      "processCompatibility": {
+        "receiving": false,
+        "analysis": false,
+        "construction": false,
+        "repair": false,
+        "reverseEngineering": false,
+        "salvage": false
+      },
+      "extension": {
+        "contentStatus": "PROVISIONAL_PLAYTEST",
+        "coreDefinitionId": "RECEIVING_MEDIUM_PROCESSING_CORE_1"
+      },
+      "theoryBindings": [],
+      "materials": null
+    },
+    "RECEIVING_LARGE_PROCESSING_CORE_2": {
+      "id": "RECEIVING_LARGE_PROCESSING_CORE_2",
+      "name": "Large Processing Equipment",
+      "nameResolution": {
+        "initialName": "Large Processing Equipment",
+        "processExitNames": {}
+      },
+      "type": "ITEM",
+      "version": 1,
+      "tags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "identity": {
+        "description": "Large Processing Equipment; removable room equipment, not a manufacturing Pattern.",
+        "formFactor": "CORE",
+        "subjectTags": [
+          "PHYSICAL_OBJECT"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isContainer": false,
+        "isTool": false
+      },
+      "storage": {
+        "storageClasses": [
+          "INV"
+        ],
+        "handlingCost": 1,
+        "isUnique": false,
+        "isStackable": false,
+        "isCargo": false
+      },
+      "processCompatibility": {
+        "receiving": false,
+        "analysis": false,
+        "construction": false,
+        "repair": false,
+        "reverseEngineering": false,
+        "salvage": false
+      },
+      "extension": {
+        "contentStatus": "PROVISIONAL_PLAYTEST",
+        "coreDefinitionId": "RECEIVING_LARGE_PROCESSING_CORE_2"
+      },
+      "theoryBindings": [],
+      "materials": null
+    },
+    "RECEIVING_HUGE_PROCESSING_CORE_3": {
+      "id": "RECEIVING_HUGE_PROCESSING_CORE_3",
+      "name": "Huge Processing Equipment",
+      "nameResolution": {
+        "initialName": "Huge Processing Equipment",
+        "processExitNames": {}
+      },
+      "type": "ITEM",
+      "version": 1,
+      "tags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "identity": {
+        "description": "Huge Processing Equipment; removable room equipment, not a manufacturing Pattern.",
+        "formFactor": "CORE",
+        "subjectTags": [
+          "PHYSICAL_OBJECT"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isContainer": false,
+        "isTool": false
+      },
+      "storage": {
+        "storageClasses": [
+          "INV"
+        ],
+        "handlingCost": 1,
+        "isUnique": false,
+        "isStackable": false,
+        "isCargo": false
+      },
+      "processCompatibility": {
+        "receiving": false,
+        "analysis": false,
+        "construction": false,
+        "repair": false,
+        "reverseEngineering": false,
+        "salvage": false
+      },
+      "extension": {
+        "contentStatus": "PROVISIONAL_PLAYTEST",
+        "coreDefinitionId": "RECEIVING_HUGE_PROCESSING_CORE_3"
+      },
+      "theoryBindings": [],
+      "materials": null
+    },
+    "RECEIVING_QUANTITY_RECOVERY_CORE_1": {
+      "id": "RECEIVING_QUANTITY_RECOVERY_CORE_1",
+      "name": "Quantity Recovery Equipment",
+      "nameResolution": {
+        "initialName": "Quantity Recovery Equipment",
+        "processExitNames": {}
+      },
+      "type": "ITEM",
+      "version": 1,
+      "tags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "identity": {
+        "description": "Quantity Recovery Equipment; removable room equipment, not a manufacturing Pattern.",
+        "formFactor": "CORE",
+        "subjectTags": [
+          "PHYSICAL_OBJECT"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isContainer": false,
+        "isTool": false
+      },
+      "storage": {
+        "storageClasses": [
+          "INV"
+        ],
+        "handlingCost": 1,
+        "isUnique": false,
+        "isStackable": false,
+        "isCargo": false
+      },
+      "processCompatibility": {
+        "receiving": false,
+        "analysis": false,
+        "construction": false,
+        "repair": false,
+        "reverseEngineering": false,
+        "salvage": false
+      },
+      "extension": {
+        "contentStatus": "PROVISIONAL_PLAYTEST",
+        "coreDefinitionId": "RECEIVING_QUANTITY_RECOVERY_CORE_1"
+      },
+      "theoryBindings": [],
+      "materials": null
+    },
+    "RECEIVING_BALANCED_RECOVERY_CORE_1": {
+      "id": "RECEIVING_BALANCED_RECOVERY_CORE_1",
+      "name": "Balanced Recovery Equipment",
+      "nameResolution": {
+        "initialName": "Balanced Recovery Equipment",
+        "processExitNames": {}
+      },
+      "type": "ITEM",
+      "version": 1,
+      "tags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "identity": {
+        "description": "Balanced Recovery Equipment; removable room equipment, not a manufacturing Pattern.",
+        "formFactor": "CORE",
+        "subjectTags": [
+          "PHYSICAL_OBJECT"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isContainer": false,
+        "isTool": false
+      },
+      "storage": {
+        "storageClasses": [
+          "INV"
+        ],
+        "handlingCost": 1,
+        "isUnique": false,
+        "isStackable": false,
+        "isCargo": false
+      },
+      "processCompatibility": {
+        "receiving": false,
+        "analysis": false,
+        "construction": false,
+        "repair": false,
+        "reverseEngineering": false,
+        "salvage": false
+      },
+      "extension": {
+        "contentStatus": "PROVISIONAL_PLAYTEST",
+        "coreDefinitionId": "RECEIVING_BALANCED_RECOVERY_CORE_1"
+      },
+      "theoryBindings": [],
+      "materials": null
+    },
+    "RECEIVING_QUALITY_RECOVERY_CORE_1": {
+      "id": "RECEIVING_QUALITY_RECOVERY_CORE_1",
+      "name": "Quality Recovery Equipment",
+      "nameResolution": {
+        "initialName": "Quality Recovery Equipment",
+        "processExitNames": {}
+      },
+      "type": "ITEM",
+      "version": 1,
+      "tags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "identity": {
+        "description": "Quality Recovery Equipment; removable room equipment, not a manufacturing Pattern.",
+        "formFactor": "CORE",
+        "subjectTags": [
+          "PHYSICAL_OBJECT"
+        ]
+      },
+      "physical": {
+        "inventoryClass": "EQUIPMENT",
+        "isContainer": false,
+        "isTool": false
+      },
+      "storage": {
+        "storageClasses": [
+          "INV"
+        ],
+        "handlingCost": 1,
+        "isUnique": false,
+        "isStackable": false,
+        "isCargo": false
+      },
+      "processCompatibility": {
+        "receiving": false,
+        "analysis": false,
+        "construction": false,
+        "repair": false,
+        "reverseEngineering": false,
+        "salvage": false
+      },
+      "extension": {
+        "contentStatus": "PROVISIONAL_PLAYTEST",
+        "coreDefinitionId": "RECEIVING_QUALITY_RECOVERY_CORE_1"
+      },
+      "theoryBindings": [],
+      "materials": null
+    }
+  },
+  "recipes": [
+    {
+      "id": "RECONFIGURE_ROOM_CORE",
+      "name": "Install / remove room equipment Core",
+      "type": "RECIPE",
+      "contentStatus": "PROVISIONAL_PLAYTEST",
+      "knowledgeRequirements": [],
+      "targetKind": "PHYSICAL_CORE",
+      "reversible": true,
+      "inputs": [],
+      "outputs": [],
+      "directions": {
+        "INSTALL": {
+          "from": "WAREHOUSE",
+          "to": "PHYSICAL_ROOM_CORE_SLOT",
+          "releaseWarehousePlaceOnCommit": true,
+          "reserveCoreSlotAndActivePowerBeforeStart": true
+        },
+        "REMOVE": {
+          "from": "PHYSICAL_ROOM_CORE_SLOT",
+          "to": "WAREHOUSE",
+          "reserveWarehousePlaceBeforeStart": true,
+          "releaseCoreSlotAndPowerOnCommit": true
+        }
+      },
+      "boundary": "NO_MANUFACTURING_NO_SALVAGE",
+      "commit": "AT_RECIPE_COMPLETION",
+      "bubbles": [
+        {
+          "id": "POSITION_EQUIPMENT",
+          "durationTicks": 1,
+          "actorRequirement": "UNTRAINED",
+          "toolRequirement": null,
+          "roomServiceRequirement": null,
+          "toolCharges": 0
+        },
+        {
+          "id": "CONNECT_EQUIPMENT",
+          "durationTicks": 1,
+          "actorRequirement": "TE1",
+          "toolRequirement": "TET1",
+          "roomServiceRequirement": null,
+          "toolCharges": 1
+        },
+        {
+          "id": "VALIDATE_CONNECTIONS",
+          "durationTicks": 1,
+          "actorRequirement": "TE1",
+          "toolRequirement": "TET1",
+          "roomServiceRequirement": null,
+          "toolCharges": 1
+        },
+        {
+          "id": "SECURE_EQUIPMENT",
+          "durationTicks": 1,
+          "actorRequirement": "UNTRAINED",
+          "toolRequirement": null,
+          "roomServiceRequirement": null,
+          "toolCharges": 0
+        }
+      ],
+      "edges": [
+        [
+          "POSITION_EQUIPMENT",
+          "CONNECT_EQUIPMENT"
+        ],
+        [
+          "CONNECT_EQUIPMENT",
+          "VALIDATE_CONNECTIONS"
+        ],
+        [
+          "VALIDATE_CONNECTIONS",
+          "SECURE_EQUIPMENT"
+        ]
+      ],
+      "notes": "Same four-bubble graph in either direction. No consumables/refunds. Equipped Tool charges are spent on each completed technical bubble, including removal. Partial work preserves its sticky Actor and reservations; retry or pause, never clone/swap equipment."
+    }
+  ]
+}

@@ -65,7 +65,7 @@ namespace Orionis.Domain
             if (!Enum.IsDefined(typeof(StaffTransferTiming), timing)) throw new ArgumentException("Unknown transfer timing.");
             if (!state.Base.Units.Any(u => u.Id == unitId)) throw new ArgumentException("Unknown Unit.");
             if (SGTeams.ForUnit(state, unitId) != null) throw new InvalidOperationException("Remove the Unit from its SG team before assigning ordinary room work.");
-            if (Expeditions.IsIncapacitated(state, unitId)) throw new InvalidOperationException("This Unit is incapacitated; medical recovery is not implemented yet.");
+            if (Expeditions.IsIncapacitated(state, unitId)) throw new InvalidOperationException("This Unit needs to recover before working. Assign an Infirmary bed or allow recovery at base.");
             if (!state.Base.Rooms.Any(r => r.Id == roomId)) throw new ArgumentException("Unknown physical room.");
             var source = state.Assignments.SingleOrDefault(a => a.UnitId == unitId);
             var otherMoves = state.Transfers.Where(t => t.UnitId != unitId).ToList();
@@ -76,22 +76,22 @@ namespace Orionis.Domain
             if (source == null || source.RoomInstanceId == roomId || timing == StaffTransferTiming.Now || timing == StaffTransferTiming.FinishStep && order == null && handlingItem == null && analysisItem == null)
             {
                 var assignments = state.Assignments.Where(a => a.UnitId != unitId).Append(new StaffAssignment(unitId, roomId));
-                return new CampaignState(state.Base, state.Random, state.Clock, assignments, state.Receiving, otherMoves, state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+                return new CampaignState(state.Base, state.Random, state.Clock, assignments, state.Receiving, otherMoves, state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
             }
             state.Clock.AdvanceOneTick(); // Future-boundary requests must be representable by the campaign clock.
             var progress = order?.Progress.First(p => p.ActorId == unitId && p.Ticks > 0 && p.Ticks < state.Base.Receiving.Steps.Single(s => s.Id == p.StepId).DurationTicks);
             otherMoves.Add(new StaffTransfer(unitId, source.RoomInstanceId, roomId, timing, state.Clock.ElapsedTicks,
                 timing == StaffTransferTiming.FinishStep ? order?.InstanceId ?? handlingItem?.Id ?? analysisItem?.Id : null,
                 timing == StaffTransferTiming.FinishStep ? progress?.StepId ?? (handlingItem != null ? state.Base.Handling.Step.Id : state.Base.Processing.Step.Id) : null));
-            return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, otherMoves, state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+            return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, otherMoves, state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
         }
         public static CampaignState Cancel(CampaignState state, string unitId)
         {
             if (!state.Transfers.Any(t => t.UnitId == unitId)) throw new ArgumentException("This Unit has no planned move.");
-            return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, state.Transfers.Where(t => t.UnitId != unitId), state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+            return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, state.Transfers.Where(t => t.UnitId != unitId), state.Expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
         }
         // Resolve work first, then due transfers, and validate the complete result before publishing one tick.
-        internal static CampaignState CommitTick(CampaignState previous, CampaignClock clock, IReadOnlyList<ReceivingOrder> work, ExpeditionState expedition = null, IReadOnlyList<RecoveredItem> cargo = null)
+        internal static CampaignState CommitTick(CampaignState previous, CampaignClock clock, IReadOnlyList<ReceivingOrder> work, ExpeditionState expedition = null, IReadOnlyList<RecoveredItem> cargo = null, ConstructionState construction = null)
         {
             var assignments = previous.Assignments.ToList(); var remaining = previous.Transfers.ToList();
             foreach (var move in previous.Transfers.OrderBy(t => t.UnitId, StringComparer.Ordinal))
@@ -105,7 +105,7 @@ namespace Orionis.Domain
                 assignments.Add(new StaffAssignment(move.UnitId, move.DestinationRoomId));
                 remaining.Remove(move);
             }
-            return new CampaignState(previous.Base, previous.Random, clock, assignments, work, remaining, Expeditions.AtTick(expedition ?? previous.Expedition, clock), teams: previous.Teams, cargo: cargo ?? previous.Cargo, personnel: previous.Personnel, construction: previous.Construction);
+            return new CampaignState(previous.Base, previous.Random, clock, assignments, work, remaining, Expeditions.AtTick(expedition ?? previous.Expedition, clock), teams: previous.Teams, cargo: cargo ?? previous.Cargo, personnel: previous.Personnel, construction: construction ?? previous.Construction, cores: previous.Cores, workforce: previous.Workforce, completedWork: previous.CompletedWork);
         }
     }
 }

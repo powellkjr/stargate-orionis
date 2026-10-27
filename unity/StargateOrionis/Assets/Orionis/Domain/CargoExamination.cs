@@ -57,12 +57,8 @@ namespace Orionis.Domain
             var known = intake == null ? catalog.Incoming.Single(d => d.Id == item.Id).InitialKnown : ReceivingWork.KnownTags(catalog, intake);
             return known.Concat(Finding(s, item)?.Evidence ?? Array.Empty<string>()).Distinct().ToList().AsReadOnly();
         }
-        private static IEnumerable<InspectionWorker> Candidates(CampaignState s, ExaminationOrder order) => s.Base.Receiving.Workers
-            .Where(w => (order.ActorId == null || w.UnitId == order.ActorId) &&
-                s.Assignments.Any(a => a.UnitId == w.UnitId && RoomGroups.Contains(s, order.RoomId, a.RoomInstanceId)) && !Expeditions.IsIncapacitated(s, w.UnitId) && !RoomConstruction.ReservesActor(s, w.UnitId) &&
-                w.Qualifications.TryGetValue(s.Base.Processing.Step.Profession, out var tier) && tier >= s.Base.Processing.Step.MinimumTier &&
-                (s.Base.Processing.Step.ToolService == null || PersonnelCondition.HasToolService(s, w.UnitId, s.Base.Processing.Step.ToolService)))
-            .OrderBy(w => RoomGroups.ActorPriority(s, order.RoomId, w.UnitId)).ThenBy(w => w.UnitId, StringComparer.Ordinal);
+        private static IEnumerable<InspectionWorker> Candidates(CampaignState s,ExaminationOrder order)
+        {var step=s.Base.Processing.Step;return BaseWork.Workers(s,order.RoomId,step.Profession,step.MinimumTier,order.ActorId).Where(w=>!RoomConstruction.ReservesActor(s,w.UnitId)&&BaseWork.HasTool(s,order.RoomId,w.UnitId,step.ToolService));}
         public static string Status(CampaignState s, RecoveredItem item)
         {
             if (Completed(item)) return Identified(s, item) ? "All properties revealed. Identity established: " + Finding(s, item).Name + ". No institutional Theory or manufacturing Pattern granted." :

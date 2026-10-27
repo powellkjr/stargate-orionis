@@ -1,0 +1,1327 @@
+{
+  "format": "orionis-personnel-profiles-1",
+  "atlas": "personnel-profiles",
+  "width": 1024,
+  "height": 1280,
+  "signature": "31eef42d14f31ad695b7b95ada84cbe34ce9ad05b634d1782ccc4fbcbd4e58bf",
+  "portraits": {
+    "unit-1": {
+      "x": 0,
+      "y": 0,
+      "width": 96,
+      "height": 128
+    },
+    "unit-2": {
+      "x": 256,
+      "y": 0,
+      "width": 96,
+      "height": 128
+    },
+    "unit-3": {
+      "x": 512,
+      "y": 0,
+      "width": 96,
+      "height": 128
+    },
+    "unit-4": {
+      "x": 768,
+      "y": 0,
+      "width": 96,
+      "height": 128
+    },
+    "unit-5": {
+      "x": 0,
+      "y": 128,
+      "width": 96,
+      "height": 128
+    },
+    "unit-6": {
+      "x": 256,
+      "y": 128,
+      "width": 96,
+      "height": 128
+    },
+    "unit-7": {
+      "x": 512,
+      "y": 128,
+      "width": 96,
+      "height": 128
+    },
+    "unit-8": {
+      "x": 768,
+      "y": 128,
+      "width": 96,
+      "height": 128
+    },
+    "unit-9": {
+      "x": 0,
+      "y": 256,
+      "width": 96,
+      "height": 128
+    },
+    "unit-10": {
+      "x": 256,
+      "y": 256,
+      "width": 96,
+      "height": 128
+    },
+    "unit-11": {
+      "x": 384,
+      "y": 256,
+      "width": 96,
+      "height": 128
+    },
+    "unit-12": {
+      "x": 640,
+      "y": 256,
+      "width": 96,
+      "height": 128
+    },
+    "unit-13": {
+      "x": 896,
+      "y": 256,
+      "width": 96,
+      "height": 128
+    },
+    "unit-14": {
+      "x": 128,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-15": {
+      "x": 256,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-16": {
+      "x": 384,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-17": {
+      "x": 512,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-18": {
+      "x": 640,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-19": {
+      "x": 768,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-20": {
+      "x": 896,
+      "y": 384,
+      "width": 96,
+      "height": 128
+    },
+    "unit-21": {
+      "x": 128,
+      "y": 512,
+      "width": 96,
+      "height": 128
+    },
+    "unit-22": {
+      "x": 384,
+      "y": 512,
+      "width": 96,
+      "height": 128
+    },
+    "unit-23": {
+      "x": 640,
+      "y": 512,
+      "width": 96,
+      "height": 128
+    },
+    "unit-24": {
+      "x": 768,
+      "y": 512,
+      "width": 96,
+      "height": 128
+    },
+    "unit-25": {
+      "x": 896,
+      "y": 512,
+      "width": 96,
+      "height": 128
+    },
+    "unit-26": {
+      "x": 0,
+      "y": 640,
+      "width": 96,
+      "height": 128
+    },
+    "unit-27": {
+      "x": 128,
+      "y": 640,
+      "width": 96,
+      "height": 128
+    },
+    "unit-28": {
+      "x": 256,
+      "y": 640,
+      "width": 96,
+      "height": 128
+    },
+    "unit-29": {
+      "x": 384,
+      "y": 640,
+      "width": 96,
+      "height": 128
+    },
+    "unit-30": {
+      "x": 640,
+      "y": 640,
+      "width": 96,
+      "height": 128
+    },
+    "unit-31": {
+      "x": 896,
+      "y": 640,
+      "width": 96,
+      "height": 128
+    },
+    "unit-32": {
+      "x": 128,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-33": {
+      "x": 256,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-34": {
+      "x": 384,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-35": {
+      "x": 512,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-36": {
+      "x": 640,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-37": {
+      "x": 768,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-38": {
+      "x": 896,
+      "y": 768,
+      "width": 96,
+      "height": 128
+    },
+    "unit-39": {
+      "x": 128,
+      "y": 896,
+      "width": 96,
+      "height": 128
+    },
+    "unit-40": {
+      "x": 384,
+      "y": 896,
+      "width": 96,
+      "height": 128
+    },
+    "unit-41": {
+      "x": 640,
+      "y": 896,
+      "width": 96,
+      "height": 128
+    },
+    "unit-42": {
+      "x": 768,
+      "y": 896,
+      "width": 96,
+      "height": 128
+    },
+    "unit-43": {
+      "x": 896,
+      "y": 896,
+      "width": 96,
+      "height": 128
+    },
+    "unit-44": {
+      "x": 0,
+      "y": 1024,
+      "width": 96,
+      "height": 128
+    },
+    "unit-45": {
+      "x": 128,
+      "y": 1024,
+      "width": 96,
+      "height": 128
+    },
+    "unit-46": {
+      "x": 256,
+      "y": 1024,
+      "width": 96,
+      "height": 128
+    },
+    "unit-47": {
+      "x": 384,
+      "y": 1024,
+      "width": 96,
+      "height": 128
+    },
+    "unit-48": {
+      "x": 640,
+      "y": 1024,
+      "width": 96,
+      "height": 128
+    },
+    "unit-49": {
+      "x": 896,
+      "y": 1024,
+      "width": 96,
+      "height": 128
+    },
+    "unit-50": {
+      "x": 128,
+      "y": 1152,
+      "width": 96,
+      "height": 128
+    },
+    "unit-51": {
+      "x": 256,
+      "y": 1152,
+      "width": 96,
+      "height": 128
+    },
+    "unit-52": {
+      "x": 384,
+      "y": 1152,
+      "width": 96,
+      "height": 128
+    },
+    "unit-53": {
+      "x": 512,
+      "y": 1152,
+      "width": 96,
+      "height": 128
+    },
+    "unit-54": {
+      "x": 640,
+      "y": 1152,
+      "width": 96,
+      "height": 128
+    }
+  },
+  "names": {
+    "unit-1": {
+      "canonical": "Wade Callahan",
+      "nickname": "Bulldog",
+      "display": "Wade \"Bulldog\" Callahan"
+    },
+    "unit-2": {
+      "canonical": "Blake Prescott",
+      "nickname": "Tank",
+      "display": "Blake \"Tank\" Prescott"
+    },
+    "unit-3": {
+      "canonical": "Jillian Burke",
+      "nickname": "Hammer",
+      "display": "Jillian \"Hammer\" Burke"
+    },
+    "unit-4": {
+      "canonical": "Morgan Conrad",
+      "nickname": "Sarge",
+      "display": "Morgan \"Sarge\" Conrad"
+    },
+    "unit-5": {
+      "canonical": "Sydney Donovan",
+      "nickname": "Brick",
+      "display": "Sydney \"Brick\" Donovan"
+    },
+    "unit-6": {
+      "canonical": "Brooke Griffin",
+      "nickname": "Deadbolt",
+      "display": "Brooke \"Deadbolt\" Griffin"
+    },
+    "unit-7": {
+      "canonical": "Connor Carver",
+      "nickname": "Knuckles",
+      "display": "Connor \"Knuckles\" Carver"
+    },
+    "unit-8": {
+      "canonical": "Ashley Strickland",
+      "nickname": "Rook",
+      "display": "Ashley \"Rook\" Strickland"
+    },
+    "unit-9": {
+      "canonical": "Brett Lawson",
+      "nickname": "Fuse",
+      "display": "Brett \"Fuse\" Lawson"
+    },
+    "unit-10": {
+      "canonical": "River Fielding",
+      "nickname": "Ghost",
+      "display": "River \"Ghost\" Fielding"
+    },
+    "unit-11": {
+      "canonical": "Hazel Hill",
+      "nickname": "Whisper",
+      "display": "Hazel \"Whisper\" Hill"
+    },
+    "unit-12": {
+      "canonical": "Briar Brookfield",
+      "nickname": "Hawkeye",
+      "display": "Briar \"Hawkeye\" Brookfield"
+    },
+    "unit-13": {
+      "canonical": "Clay Hartley",
+      "nickname": "Trailblazer",
+      "display": "Clay \"Trailblazer\" Hartley"
+    },
+    "unit-14": {
+      "canonical": "Laurel Oakley",
+      "nickname": "Pathfinder",
+      "display": "Laurel \"Pathfinder\" Oakley"
+    },
+    "unit-15": {
+      "canonical": "Heather Hollis",
+      "nickname": "Fox",
+      "display": "Heather \"Fox\" Hollis"
+    },
+    "unit-16": {
+      "canonical": "Glenn Hawthorn",
+      "nickname": "Longshot",
+      "display": "Glenn \"Longshot\" Hawthorn"
+    },
+    "unit-17": {
+      "canonical": "Meadow Meadows",
+      "nickname": "Nighthawk",
+      "display": "Meadow \"Nighthawk\" Meadows"
+    },
+    "unit-18": {
+      "canonical": "Forrest Linden",
+      "nickname": "Shadow",
+      "display": "Forrest \"Shadow\" Linden"
+    },
+    "unit-19": {
+      "canonical": "Dorothy Cartwright",
+      "nickname": "Sparky",
+      "display": "Dorothy \"Sparky\" Cartwright"
+    },
+    "unit-20": {
+      "canonical": "Ernest Weaver",
+      "nickname": "Wrench",
+      "display": "Ernest \"Wrench\" Weaver"
+    },
+    "unit-21": {
+      "canonical": "Beatrice Turner",
+      "nickname": "Socket",
+      "display": "Beatrice \"Socket\" Turner"
+    },
+    "unit-22": {
+      "canonical": "Winifred Whitworth",
+      "nickname": "Hotwire",
+      "display": "Winifred \"Hotwire\" Whitworth"
+    },
+    "unit-23": {
+      "canonical": "Gilbert Brass",
+      "nickname": "Gizmo",
+      "display": "Gilbert \"Gizmo\" Brass"
+    },
+    "unit-24": {
+      "canonical": "Edith Millwright",
+      "nickname": "Ratchet",
+      "display": "Edith \"Ratchet\" Millwright"
+    },
+    "unit-25": {
+      "canonical": "Florence Copper",
+      "nickname": "Patchwork",
+      "display": "Florence \"Patchwork\" Copper"
+    },
+    "unit-26": {
+      "canonical": "Walter Wainwright",
+      "nickname": "Jumper",
+      "display": "Walter \"Jumper\" Wainwright"
+    },
+    "unit-27": {
+      "canonical": "Harriet Crompton",
+      "nickname": "DuctTape",
+      "display": "Harriet \"DuctTape\" Crompton"
+    },
+    "unit-28": {
+      "canonical": "Victor Osborne",
+      "nickname": "Brainwave",
+      "display": "Victor \"Brainwave\" Osborne"
+    },
+    "unit-29": {
+      "canonical": "Wilhelmina Fenwick",
+      "nickname": "ThinkTank",
+      "display": "Wilhelmina \"ThinkTank\" Fenwick"
+    },
+    "unit-30": {
+      "canonical": "Tabitha Godfrey",
+      "nickname": "Quark",
+      "display": "Tabitha \"Quark\" Godfrey"
+    },
+    "unit-31": {
+      "canonical": "Henrietta Wilcox",
+      "nickname": "Orbit",
+      "display": "Henrietta \"Orbit\" Wilcox"
+    },
+    "unit-32": {
+      "canonical": "Cecily Davenport",
+      "nickname": "Hypothesis",
+      "display": "Cecily \"Hypothesis\" Davenport"
+    },
+    "unit-33": {
+      "canonical": "Edgar Tremaine",
+      "nickname": "Chalkdust",
+      "display": "Edgar \"Chalkdust\" Tremaine"
+    },
+    "unit-34": {
+      "canonical": "Frances Bancroft",
+      "nickname": "Numbers",
+      "display": "Frances \"Numbers\" Bancroft"
+    },
+    "unit-35": {
+      "canonical": "Rosalind Pemberton",
+      "nickname": "Eureka",
+      "display": "Rosalind \"Eureka\" Pemberton"
+    },
+    "unit-36": {
+      "canonical": "Eleanor Harwood",
+      "nickname": "Paradox",
+      "display": "Eleanor \"Paradox\" Harwood"
+    },
+    "unit-37": {
+      "canonical": "Gabriel Campbell",
+      "nickname": "Doc",
+      "display": "Gabriel \"Doc\" Campbell"
+    },
+    "unit-38": {
+      "canonical": "Daniel Wallace",
+      "nickname": "Stitch",
+      "display": "Daniel \"Stitch\" Wallace"
+    },
+    "unit-39": {
+      "canonical": "Hannah Palmer",
+      "nickname": "Lifeline",
+      "display": "Hannah \"Lifeline\" Palmer"
+    },
+    "unit-40": {
+      "canonical": "Jacob Fisher",
+      "nickname": "Pulse",
+      "display": "Jacob \"Pulse\" Fisher"
+    },
+    "unit-41": {
+      "canonical": "Chloe Graham",
+      "nickname": "Bandage",
+      "display": "Chloe \"Bandage\" Graham"
+    },
+    "unit-42": {
+      "canonical": "Emma Jennings",
+      "nickname": "SteadyHands",
+      "display": "Emma \"SteadyHands\" Jennings"
+    },
+    "unit-43": {
+      "canonical": "Benjamin Williams",
+      "nickname": "Patch",
+      "display": "Benjamin \"Patch\" Williams"
+    },
+    "unit-44": {
+      "canonical": "Olivia Sullivan",
+      "nickname": "Vitals",
+      "display": "Olivia \"Vitals\" Sullivan"
+    },
+    "unit-45": {
+      "canonical": "Matthew Davidson",
+      "nickname": "Triage",
+      "display": "Matthew \"Triage\" Davidson"
+    },
+    "unit-46": {
+      "canonical": "Fabian Devereux",
+      "nickname": "theRealDeal",
+      "display": "Fabian \"theRealDeal\" Devereux"
+    },
+    "unit-47": {
+      "canonical": "Lavinia Ashford",
+      "nickname": "SilverTongue",
+      "display": "Lavinia \"SilverTongue\" Ashford"
+    },
+    "unit-48": {
+      "canonical": "Octavian Belvedere",
+      "nickname": "Handshake",
+      "display": "Octavian \"Handshake\" Belvedere"
+    },
+    "unit-49": {
+      "canonical": "Maximilian Harrington",
+      "nickname": "SmoothTalk",
+      "display": "Maximilian \"SmoothTalk\" Harrington"
+    },
+    "unit-50": {
+      "canonical": "Desmond Fairfax",
+      "nickname": "Peacemaker",
+      "display": "Desmond \"Peacemaker\" Fairfax"
+    },
+    "unit-51": {
+      "canonical": "Montgomery Montague",
+      "nickname": "FinePrint",
+      "display": "Montgomery \"FinePrint\" Montague"
+    },
+    "unit-52": {
+      "canonical": "Isadora Kensington",
+      "nickname": "Bridge",
+      "display": "Isadora \"Bridge\" Kensington"
+    },
+    "unit-53": {
+      "canonical": "Valentina Ravenscroft",
+      "nickname": "Accord",
+      "display": "Valentina \"Accord\" Ravenscroft"
+    },
+    "unit-54": {
+      "canonical": "Reginald Langley",
+      "nickname": "LastWord",
+      "display": "Reginald \"LastWord\" Langley"
+    }
+  },
+  "toolStyles": {
+    "SOT1": {
+      "track": "SOLDIER",
+      "color": "#d1495b",
+      "icon": {
+        "x": 128,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SOT2": {
+      "track": "SOLDIER",
+      "color": "#d1495b",
+      "icon": {
+        "x": 128,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SOT3": {
+      "track": "SOLDIER",
+      "color": "#d1495b",
+      "icon": {
+        "x": 128,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "MKT1": {
+      "track": "Marksman",
+      "color": "#d1495b",
+      "icon": {
+        "x": 384,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "MKT2": {
+      "track": "Marksman",
+      "color": "#d1495b",
+      "icon": {
+        "x": 384,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "MKT3": {
+      "track": "Marksman",
+      "color": "#d1495b",
+      "icon": {
+        "x": 384,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "GUT1": {
+      "track": "Guardian",
+      "color": "#d1495b",
+      "icon": {
+        "x": 640,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "GUT2": {
+      "track": "Guardian",
+      "color": "#d1495b",
+      "icon": {
+        "x": 640,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "GUT3": {
+      "track": "Guardian",
+      "color": "#d1495b",
+      "icon": {
+        "x": 640,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TAT1": {
+      "track": "Tactician",
+      "color": "#d1495b",
+      "icon": {
+        "x": 896,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TAT2": {
+      "track": "Tactician",
+      "color": "#d1495b",
+      "icon": {
+        "x": 896,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TAT3": {
+      "track": "Tactician",
+      "color": "#d1495b",
+      "icon": {
+        "x": 896,
+        "y": 0,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "STT1": {
+      "track": "SCOUT",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 128,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "STT2": {
+      "track": "SCOUT",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 128,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "STT3": {
+      "track": "SCOUT",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 128,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TET1": {
+      "track": "TECHNICIAN",
+      "color": "#f4a261",
+      "icon": {
+        "x": 384,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TET2": {
+      "track": "TECHNICIAN",
+      "color": "#f4a261",
+      "icon": {
+        "x": 384,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TET3": {
+      "track": "TECHNICIAN",
+      "color": "#f4a261",
+      "icon": {
+        "x": 384,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SCT1": {
+      "track": "SCIENTIST",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 640,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SCT2": {
+      "track": "SCIENTIST",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 640,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SCT3": {
+      "track": "SCIENTIST",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 640,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "MET1": {
+      "track": "MEDIC",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 896,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "MET2": {
+      "track": "MEDIC",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 896,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "MET3": {
+      "track": "MEDIC",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 896,
+        "y": 128,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "DIT1": {
+      "track": "DIPLOMAT",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 128,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "DIT2": {
+      "track": "DIPLOMAT",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 128,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "DIT3": {
+      "track": "DIPLOMAT",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 128,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "PAT1": {
+      "track": "Pathfinder",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 512,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "PAT2": {
+      "track": "Pathfinder",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 512,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "PAT3": {
+      "track": "Pathfinder",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 512,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TRT1": {
+      "track": "Tracker",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 768,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TRT2": {
+      "track": "Tracker",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 768,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TRT3": {
+      "track": "Tracker",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 768,
+        "y": 256,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OBT1": {
+      "track": "Observer",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 0,
+        "y": 384,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OBT2": {
+      "track": "Observer",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 0,
+        "y": 384,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OBT3": {
+      "track": "Observer",
+      "color": "#2a9d8f",
+      "icon": {
+        "x": 0,
+        "y": 384,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "DET1": {
+      "track": "Demolitions",
+      "color": "#f4a261",
+      "icon": {
+        "x": 0,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "DET2": {
+      "track": "Demolitions",
+      "color": "#f4a261",
+      "icon": {
+        "x": 0,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "DET3": {
+      "track": "Demolitions",
+      "color": "#f4a261",
+      "icon": {
+        "x": 0,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "IGT1": {
+      "track": "Integrations",
+      "color": "#f4a261",
+      "icon": {
+        "x": 256,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "IGT2": {
+      "track": "Integrations",
+      "color": "#f4a261",
+      "icon": {
+        "x": 256,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "IGT3": {
+      "track": "Integrations",
+      "color": "#f4a261",
+      "icon": {
+        "x": 256,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OVT1": {
+      "track": "Overdrive",
+      "color": "#f4a261",
+      "icon": {
+        "x": 512,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OVT2": {
+      "track": "Overdrive",
+      "color": "#f4a261",
+      "icon": {
+        "x": 512,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OVT3": {
+      "track": "Overdrive",
+      "color": "#f4a261",
+      "icon": {
+        "x": 512,
+        "y": 512,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "APT1": {
+      "track": "Applied",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 512,
+        "y": 640,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "APT2": {
+      "track": "Applied",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 512,
+        "y": 640,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "APT3": {
+      "track": "Applied",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 512,
+        "y": 640,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OPT1": {
+      "track": "Operational",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 768,
+        "y": 640,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OPT2": {
+      "track": "Operational",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 768,
+        "y": 640,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "OPT3": {
+      "track": "Operational",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 768,
+        "y": 640,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SGT1": {
+      "track": "Strategic",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 0,
+        "y": 768,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SGT2": {
+      "track": "Strategic",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 0,
+        "y": 768,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "SGT3": {
+      "track": "Strategic",
+      "color": "#7b6ef6",
+      "icon": {
+        "x": 0,
+        "y": 768,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TUT1": {
+      "track": "Trauma",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 0,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TUT2": {
+      "track": "Trauma",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 0,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "TUT3": {
+      "track": "Trauma",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 0,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "FMT1": {
+      "track": "Field Medicine",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 256,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "FMT2": {
+      "track": "Field Medicine",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 256,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "FMT3": {
+      "track": "Field Medicine",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 256,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "EPT1": {
+      "track": "Epidemiology",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 512,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "EPT2": {
+      "track": "Epidemiology",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 512,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "EPT3": {
+      "track": "Epidemiology",
+      "color": "#4cc9f0",
+      "icon": {
+        "x": 512,
+        "y": 896,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "NET1": {
+      "track": "Negotiator",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 512,
+        "y": 1024,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "NET2": {
+      "track": "Negotiator",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 512,
+        "y": 1024,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "NET3": {
+      "track": "Negotiator",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 512,
+        "y": 1024,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "AMT1": {
+      "track": "Ambassador",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 768,
+        "y": 1024,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "AMT2": {
+      "track": "Ambassador",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 768,
+        "y": 1024,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "AMT3": {
+      "track": "Ambassador",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 768,
+        "y": 1024,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "ART1": {
+      "track": "Arbiter",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 0,
+        "y": 1152,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "ART2": {
+      "track": "Arbiter",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 0,
+        "y": 1152,
+        "width": 64,
+        "height": 64
+      }
+    },
+    "ART3": {
+      "track": "Arbiter",
+      "color": "#b8a14f",
+      "icon": {
+        "x": 0,
+        "y": 1152,
+        "width": 64,
+        "height": 64
+      }
+    }
+  }
+}

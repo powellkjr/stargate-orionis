@@ -1,0 +1,20 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "ANALYSIS_EXAMINATION_PROTOTYPE"
+caption "demos/shared/data/cargo-processing-prototype.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "format: orionis-cargo-processing-prototype-1\ncontentStatus: PROVISIONAL_PLAYTEST\nnotes: Containment is storage only. Analysis reveals authored\ninstance properties using a local Scientist I with SCT1, two ticks,\nno additional technical Room Service or charges. Work custody\npreserves reserved fallback storage. Provisional playtest tuning; no\ninstitutional Theory or Pattern grants.\nreceivingFindings:\n  []\nequipmentTabTags:\n  weapons: WEAPON\n  armor: ARMOR\npreviousProcessingFingerprint:\n1eb5c6d85525fcd34944078ac9a14703eda94fcdc17cce04c1ae331382f6ec7c\nid: ANALYSIS_EXAMINATION_PROTOTYPE\nname: Examine unknown properties in Analysis\nprofession: SCIENTIST\nminimumTier: 1\ntoolService: SCT1\nroomService: null\ndurationTicks: 2\nexposureCategory: authoredInstanceProperties" as nea7792a26f405e2ae9c6 #FFF1CC
+rectangle "id: ANALYSIS_EXAMINATION_PROTOTYPE\nname: Examine unknown properties in Analysis\nprofession: SCIENTIST\nminimumTier: 1\ntoolService: SCT1\nroomService: null\ndurationTicks: 2\nexposureCategory: authoredInstanceProperties" as nce94c80b603e3edcfa47 #EAF1F8
+nea7792a26f405e2ae9c6 ..> nce94c80b603e3edcfa47 : "execution requirements"
+@enduml

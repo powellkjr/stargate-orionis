@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Orionis.Domain
 {
-    // Technical random stream for future simulation callers; no gameplay draws yet.
+    // Immutable deterministic stream; new battles draw a persisted targeting seed.
     public sealed class RandomState
     {
         public const string Algorithm = "lcg32-v1";
@@ -18,6 +18,9 @@ namespace Orionis.Domain
     public sealed class CampaignState
     {
         public ConstructionState Construction { get; }
+        public RoomCoreState Cores {get;}
+        public WorkforceState Workforce {get;}
+        public IReadOnlyList<CompletedOperation> CompletedWork {get;private set;}
         public BootstrapData Base { get; }
         public RandomState Random { get; }
         public CampaignClock Clock { get; }
@@ -29,8 +32,11 @@ namespace Orionis.Domain
         public IReadOnlyList<SGTeam> Teams { get; }
         public IReadOnlyList<PersonnelRecord> Personnel { get; }
         public CampaignState(BootstrapData data, RandomState random, CampaignClock clock = null, IEnumerable<StaffAssignment> assignments = null,
-            IEnumerable<ReceivingOrder> receiving = null, IEnumerable<StaffTransfer> transfers = null, ExpeditionState expedition = null, IEnumerable<SGTeam> teams = null, IEnumerable<RecoveredItem> cargo = null, IEnumerable<PersonnelRecord> personnel = null, ConstructionState construction = null)
+            IEnumerable<ReceivingOrder> receiving = null, IEnumerable<StaffTransfer> transfers = null, ExpeditionState expedition = null, IEnumerable<SGTeam> teams = null, IEnumerable<RecoveredItem> cargo = null, IEnumerable<PersonnelRecord> personnel = null, ConstructionState construction = null, RoomCoreState cores = null, WorkforceState workforce = null,IEnumerable<CompletedOperation> completedWork=null)
         {
+            CompletedWork=(completedWork??Enumerable.Empty<CompletedOperation>()).ToList().AsReadOnly();
+            Workforce=workforce??new WorkforceState(System.Array.Empty<string>());
+            Cores=cores??RoomCores.Seed(data);
             Base = data; Construction = construction ?? (data.Construction == null ? null : new ConstructionState(data.Construction.StartingSupply.ToDictionary(p => p.Key, p => p.Value), Enumerable.Empty<RoomConstructionSite>())); Random = random; Clock = clock ?? new CampaignClock();
             Personnel = (personnel ?? Enumerable.Empty<PersonnelRecord>()).ToList().AsReadOnly();
             PersonnelCondition.Validate(this);
@@ -49,6 +55,11 @@ namespace Orionis.Domain
             RecoveredCargo.Validate(this);
             RoomGroups.Validate(this);
             RoomConstruction.Validate(this);
+            PersonnelRecovery.ValidateBeds(this);
+            RoomCores.Validate(this);
+            BaseWork.Validate(this);
+            BaseOperations.ValidateHistory(this);
+            if(data.Execution!=null)CompletedWork=BaseOperations.Capture(this,CompletedWork);
         }
     }
 }

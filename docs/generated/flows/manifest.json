@@ -1,0 +1,73 @@
+{
+  "format": "orionis-authored-flow-export-1",
+  "sources": [
+    {
+      "path": "demos/shared/data/offworld/missing-operative-001.finalized.json",
+      "sha256": "54c46bb3b9aece0e1173964e33af57a752b0790d6ee3b6fcce5ce22b8cf0ad32"
+    },
+    {
+      "path": "demos/shared/data/offworld/archetypes.json",
+      "sha256": "89dc1e98259708a80ee52ecfac51558ffff814755f964867cecd08c6c8175ad9"
+    },
+    {
+      "path": "demos/shared/data/item.json",
+      "sha256": "574fef1e68a8be7a0e0934d5bc8841b75a635ee51aea8b5ebfa7161d5cfd64f3"
+    },
+    {
+      "path": "demos/shared/data/receiving-prototype.json",
+      "sha256": "10e080f7beb4f61c0811816de148e7637bd94a179e136eb46f5431df5dbe3d14"
+    },
+    {
+      "path": "demos/shared/data/cargo-handling-prototype.json",
+      "sha256": "58471a24fa0d86db282885f89ae44e79c13a1ad810112100318f51f57dd293b0"
+    },
+    {
+      "path": "demos/shared/data/cargo-processing-prototype.json",
+      "sha256": "45aa75d4a52f68d3d644704b401389f0033ccb2712ef583f95b7cf4f7e19a14c"
+    },
+    {
+      "path": "demos/shared/data/resource-cargo-playtest.json",
+      "sha256": "fd50354eccd5fb02444da61bd76bb07a3fafed2aa5abdb037752b26debc1dbcb"
+    },
+    {
+      "path": "demos/shared/data/process-matrix.json",
+      "sha256": "b69fdee4f3609aef0d4e17bb8c740b7e80306945c51f5399d586c49f78f35ec5"
+    },
+    {
+      "path": "demos/shared/data/processing-contracts.json",
+      "sha256": "003a2dd60dd8398ba9deef05a8e2d7a8fb2d3675ceb2852c5b97542416f84a73"
+    },
+    {
+      "path": "demos/shared/data/theory/stargate_theory_simulator_import.json",
+      "sha256": "eac4b5aba2d5cd1c926fad641860a93c67a5af1aa4cc14750efd1b4c67348156"
+    }
+  ],
+  "diagrams": [
+    "dialogue/dialogue-yard-entry.puml",
+    "dialogue/dialogue-yard-return.puml",
+    "dialogue/dialogue-holding-worker.puml",
+    "dialogue/dialogue-holding-guard.puml",
+    "dialogue/dialogue-operative.puml",
+    "dialogue/dialogue-processing-worker.puml",
+    "dialogue/dialogue-reynolds.puml",
+    "dialogue/dialogue-mcguffin-cover.puml",
+    "dialogue/dialogue-yard-checkpoint.puml",
+    "mission-processing/stage-gate-yard.puml",
+    "mission-processing/stage-outer-yard.puml",
+    "mission-processing/stage-main-hall.puml",
+    "mission-processing/stage-holding-area.puml",
+    "mission-processing/stage-processing.puml",
+    "mission-processing/stage-security-hall.puml",
+    "mission-processing/stage-overseer-office.puml",
+    "mission-processing/stage-hidden-store.puml",
+    "mission-processing/stage-hidden-safe.puml",
+    "mission-processing/stage-analysis-lab.puml",
+    "base-processing/RECEIVING_BASELINE_PROTOTYPE.puml",
+    "base-processing/RECEIVING_HANDLING_REVIEW_PROTOTYPE.puml",
+    "base-processing/ANALYSIS_EXAMINATION_PROTOTYPE.puml",
+    "base-processing/SUPPLY_CACHE_RECOVERY.puml",
+    "base-processing/HUMAN_ADVANCED_COIL_RIFLE_RECIPE.puml",
+    "base-processing/RECONFIGURE_ROOM_CORE.puml",
+    "base-processing/processing-contracts.puml"
+  ]
+}

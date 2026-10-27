@@ -19,7 +19,7 @@ namespace Orionis.Infrastructure
             public JObject field;
         }
         private sealed class Visit { [JsonRequired] public string stageId; [JsonRequired] public int count; }
-        private sealed class Npc { [JsonRequired] public string id, disposition; [JsonRequired] public int suspicion, hostility; }
+        private sealed class Npc { [JsonRequired] public string id; [JsonProperty(Required=Required.AllowNull)] public string disposition; [JsonRequired] public int suspicion, hostility; }
         private sealed class Line
         {
             [JsonRequired] public string sceneId, entryId;
@@ -32,7 +32,7 @@ namespace Orionis.Infrastructure
             startedConversations = t.StartedConversations.ToList(), sceneId = t.SceneId, nodeId = t.NodeId,
             history = t.History.Select(l => new Line { sceneId = l.SceneId, entryId = l.EntryId, actorId = l.ActorId }).ToList(), field = FieldSave.Write(t.Field)
         });
-        public static TravelState Read(JObject token, MissionDefinition mission, string[] legacyNpcIds = null)
+        public static TravelState Read(JObject token, MissionDefinition mission, string[] legacyNpcIds = null,string[] expandedNpcIds=null,string[] priorSubjects=null)
         {
             if (mission.Travel == null && token == null) return null;
             if (mission.Travel == null || token == null) throw new FormatException("Missing mission travel state or definition.");
@@ -42,7 +42,12 @@ namespace Orionis.Infrastructure
                 if (token.Property("field") != null || r.npcs == null || !r.npcs.Select(n => n.id).OrderBy(x => x).SequenceEqual(legacyNpcIds.OrderBy(x => x))) throw new FormatException("Invalid legacy mission state.");
                 r.npcs.AddRange(mission.Travel.Npcs.Where(n => !legacyNpcIds.Contains(n.Id)).Select(n => new Npc { id = n.Id, disposition = n.Disposition, suspicion = n.Suspicion, hostility = n.Hostility }));
             }
-            else if (token.Property("field") == null) throw new FormatException("Missing field record.");
+            if(expandedNpcIds!=null)
+            {
+                if(r.npcs==null||!r.npcs.Select(n=>n.id).OrderBy(id=>id).SequenceEqual(expandedNpcIds.OrderBy(id=>id)))throw new FormatException("Invalid pre-expansion NPC records.");
+                r.npcs.AddRange(mission.Travel.Npcs.Where(n=>!expandedNpcIds.Contains(n.Id)).Select(n=>new Npc{id=n.Id,disposition=n.Disposition,suspicion=n.Suspicion,hostility=n.Hostility}));
+            }
+            if (legacyNpcIds==null&&token.Property("field") == null) throw new FormatException("Missing field record.");
             if (r.visits == null || r.visits.Any(v => v == null) || r.openDoors == null || r.knowledge == null || r.startedConversations == null ||
                 r.npcs == null || r.npcs.Any(n => n == null) || r.history == null || r.history.Any(l => l == null)) throw new FormatException("Incomplete travel state.");
             var npcs = r.npcs.Select(n =>
@@ -52,7 +57,7 @@ namespace Orionis.Infrastructure
             });
             return new TravelState(r.visits.ToDictionary(v => v.stageId, v => v.count), r.openDoors, r.knowledge, npcs, r.startedConversations,
                 r.sceneId, r.nodeId, r.history.Select(l => new ConversationLine(l.sceneId, l.entryId, l.actorId)),
-                legacyNpcIds == null ? FieldSave.Read(r.field, mission.Travel.Field) : MissionField.Initial(mission.Travel.Field));
+                legacyNpcIds == null ? FieldSave.Read(r.field, mission.Travel.Field,priorSubjects) : MissionField.Initial(mission.Travel.Field));
         }
     }
 }

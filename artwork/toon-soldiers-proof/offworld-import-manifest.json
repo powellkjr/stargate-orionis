@@ -1,0 +1,266 @@
+{
+  "source": "unity/OrionisArtLab",
+  "clips": [
+    "HumanM@Idle01",
+    "HumanM@Walk01_Forward",
+    "HumanM@Talk01",
+    "HumanM@Gathering02",
+    "HumanM@Gathering01",
+    "infantry_combat_shoot",
+    "HumanM@Death01"
+  ],
+  "files": [
+    {
+      "path": "Assets/Kevin Iglesias.meta",
+      "sha256": "827d199f08c80a7c8358ccfc5d25d4f6fcc1bfc5a4aaef1a4de7a93e9436ab61"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations.meta",
+      "sha256": "fd51799fb4beeadd14d91ba26650745b9ca410aa60a78c416edde87ecd20229c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations.meta",
+      "sha256": "ec61334d90663c60ee8f88caecfe5632044e6bf1a7b1d49e8ee75274e37648e1"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male.meta",
+      "sha256": "ddba972e66f5e69e93aaffd9d9c7f8d2a695c327d07126dfd80da195c2a5d1ec"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles.meta",
+      "sha256": "1b34476ba2ad4e7784af95eea857cb6372061dd36a76da82db7cd3f31d4957a9"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01.fbx",
+      "sha256": "3702df28d81122f2c7465466cbcb5cc3c1be4a9e82ad27a82bf24b56cb8e29d2"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Idles/HumanM@Idle01.fbx.meta",
+      "sha256": "5d7bdb3f1565586c003756a078259eb3e0ac7d6f52436ed714570367cb7c00ed"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement.meta",
+      "sha256": "abf15e348496bf6adb8f058acadad22c2fcb4309b570d67ed3abea9c9707ee96"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Walk.meta",
+      "sha256": "901674b140f9cffd3cb36c61c9690e881e518e7437b5de0fb609949d9a100de5"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Walk/HumanM@Walk01_Forward.fbx",
+      "sha256": "e72bce8ba4f12efcc12ba877e33f86aa3626e9a0ba2a183c2368b37e6573bf27"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Movement/Walk/HumanM@Walk01_Forward.fbx.meta",
+      "sha256": "054eb4b77ec2c534014c61475a87f2faac151db8d05fa4dd8cccfa612e846239"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Models.meta",
+      "sha256": "dd3f35d6262787d9f22b35bf2343d417b5942041771cddf3e2f42e3e403d00b6"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Models/Avatar Masks.meta",
+      "sha256": "7d364cf789be77081a21eaf11b573bf9c557cac877a98281dbf40bd38ad29886"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Models/Avatar Masks/Human Body Full Mask.mask",
+      "sha256": "b9ef1f71e7cc7073bf6b1c4ea3ec11b5434f5120af855c413e8ed9b53a36c4a1"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Models/Avatar Masks/Human Body Full Mask.mask.meta",
+      "sha256": "5dc3660230348d0db1bc679f81980262ed16ea0886d5fbe1e030f8e11ee6bd5c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Models/HumanM_Model.fbx",
+      "sha256": "23c21d030341aa335b4dfbcab1fac9a81ac5f21a513bfb2b49ab97084c4be4b5"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Models/HumanM_Model.fbx.meta",
+      "sha256": "708bfcb46f1902cb00b94d6f3dce4c3f4d818bdc88bfa650d996373a3bc6093b"
+    },
+    {
+      "path": "Assets/Toon_Soldiers.meta",
+      "sha256": "7b52845a43dfe79586690d02bcc560b4c71063734ae55fd7beabc9f7d057fa97"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2.meta",
+      "sha256": "483c9ea9d49306a4011f4bcd3f74f0e27e4617409a4960e17eb8a7a451c4b23e"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models.meta",
+      "sha256": "e6dcaeb2c38873c37f3e12e79d4ea07043b100ed0ae1f7ed298a645ba2f460bf"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials.meta",
+      "sha256": "fe516ed147870bf3aa53a290f572a691c246a9871f98c77e680acd462c974608"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/ToonSoldiers_material.mat",
+      "sha256": "d9fdb86810cf31cf23f3ac9486a30d4930e3084997a293097da50adc57b4b528"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/ToonSoldiers_material.mat.meta",
+      "sha256": "e29b3b8a07f84296c4bec67c83fa5bb96cd3dd29f7fe9a7d5a038fdb007c0e42"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/ToonSoldiers_weapons.mat",
+      "sha256": "fc382b2cdbb92a5e93324aae0f84072d8381590bb57a2043448fccc2cbda321a"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/ToonSoldiers_weapons.mat.meta",
+      "sha256": "5baac11f74398744120cc5af3a930fa2b181741aefb1a314d65fee768db0f95f"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures.meta",
+      "sha256": "903505f78a06604e1e9daf24f0cee11dc8a1c10b72c1d76f331003061e120c4d"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/TS_weapons_texture.tga",
+      "sha256": "221d23e596e000fc2d26edd957bed1d2bc67508a16aa34000f05b15f2d72b5b6"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/TS_weapons_texture.tga.meta",
+      "sha256": "2ab120eebcc198e584a5b0d6efdd5edb2f5a5de60d89c95b46d9f7900cb44985"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_blue.tga",
+      "sha256": "48ca8ab29d53e7350fa9f006677443c251f3510f1c26a927208130729d2b9d6d"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_blue.tga.meta",
+      "sha256": "a288a3898dc8598d2c38c2e78c5c7e32423e8130b27bc4b1bdad9733567b46cf"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_green.tga",
+      "sha256": "71eae38bb3e5f2a26b696912a8e15ef3189c9174f5f6aff61e290ad6f53fb439"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_green.tga.meta",
+      "sha256": "5d47ddddb335ce46e59dd862b0706ccfad66f9a544938da0b473081836042b04"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_red.tga",
+      "sha256": "67f6e9fe02164184c7d3734479a40dd9014b49303f79204ca696ebb16d3d7412"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_red.tga.meta",
+      "sha256": "1b9de2b18ea2cff9427e63cf9a863a1c7e6fa92c9222f8f9bbd01a20f2c74702"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_yellow.tga",
+      "sha256": "38bc8884f4d36664e221f52fae407508421b7fb40d53f13720e9cec21e02bb44"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_yellow.tga.meta",
+      "sha256": "742818774610dc8934a8faf70fe3813841c0defb6fc9ce22e2cb65356a8dbab4"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/ToonSoldiers_customizable.FBX",
+      "sha256": "2e9f4785f2988f1a3abc6640767e393057f5d91eb4df4b126cbe23273ab0cef1"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/ToonSoldiers_customizable.FBX.meta",
+      "sha256": "694a7f088c38fb5320fe2839d7702f1ded32e2f0a6ac5daabcc58be924082270"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/weapons.meta",
+      "sha256": "94326ba087a3644f4e245b5d491fc3205253bcf5a080ae13320b7b6eac794e7f"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/weapons/weapon_assault_rifle_A.FBX",
+      "sha256": "8d3fe094a15a88cd8c2ee5e1cf86704d16ccd3926dbdec5a81c7ee55345bfe54"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/weapons/weapon_assault_rifle_A.FBX.meta",
+      "sha256": "77b95418190c86fba06b45d09c1f3b204bcae442678474d344b1d82551996411"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/prefabs.meta",
+      "sha256": "ae1cb0e8e09c2fba609b6f8c8eddcfb842513b472c02b352622339c5c6a4f243"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/prefabs/ToonSoldiers_infantry.prefab",
+      "sha256": "c19a125e572b84bc84cf5dea2c947812cf3db8f94ac1f46847a92d0792e4e9e9"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/prefabs/ToonSoldiers_infantry.prefab.meta",
+      "sha256": "6f8e26d0b9d4fc039b84b2724f30a06d71313ccbc5647aef5a008ff707b63888"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Social.meta",
+      "sha256": "c0e024bfcc9de5abec8f8e3886ea654a58d05adb2cb2abb378b9c2be7d5ed1f9"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Social/Conversation.meta",
+      "sha256": "567953f915649f58c74ff2b7d1997fe6359ad7914ffaff4b0cab7179b088360c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Social/Conversation/HumanM@Talk01.fbx",
+      "sha256": "366da7af0631b673184384a2ffe88e49c585944acebbfd5b7991e54475cfdc1c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Social/Conversation/HumanM@Talk01.fbx.meta",
+      "sha256": "da39b8236587e6d8b7764ecc2989a7986ba9e8b175ba10a798db02b2e3c4a539"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work.meta",
+      "sha256": "990d54f82ba91b71c72150a3e2d1de944b5e7b38fac3ed58d9915c94d72f6390"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering.meta",
+      "sha256": "a1ceb78c2413f9c15b7400ce0827e22f01c08920b19fa98a017d760b42c8529c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering/HumanM@Gathering02.fbx",
+      "sha256": "173034ae6d74448383536884d20bffe398c15d647421e1ee42587c2184b98023"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering/HumanM@Gathering02.fbx.meta",
+      "sha256": "909b5f83b178bd44ca6211b969c11cd1300604a7a11a4565cd329019837f305f"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering/HumanM@Gathering01.fbx",
+      "sha256": "11ae098b4862ffc2070ef1ddbc98f471de3fd7afd793776e2dbfbd7349f5be64"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Work/Gathering/HumanM@Gathering01.fbx.meta",
+      "sha256": "0aaf9d2f6f733ee94d4b4c3b080b48c62d855a53ecc34e5073618823c4a8fa6c"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation.meta",
+      "sha256": "094884d476301daa38849b2066a0390401a3a713d0fd388e279158c60f893719"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry.meta",
+      "sha256": "16bd9603775aa6016ca1a563ae3a83727136c384d0b3d04996eb0d746d0e975c"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_combat_shoot.FBX",
+      "sha256": "22111ced93f77d2dae9eb408c4d46880e64b8c2afe9f4cecfb2e08339f37c5e1"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/animation/Infantry/infantry_combat_shoot.FBX.meta",
+      "sha256": "0da9c25e7bd72dcd5ece119d75c4aa175143fa219741aea129d8dc2aee68c35f"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat.meta",
+      "sha256": "734664ae08940bf2632303a2526afa704303c072b29decfc5edb0699748ec93c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat/HumanM@Death01.fbx",
+      "sha256": "876adde1b9d1296ecdd5ae5a91402fd8d8563bc2cde466a15eb3f9e87a61d30c"
+    },
+    {
+      "path": "Assets/Kevin Iglesias/Human Animations/Animations/Male/Combat/HumanM@Death01.fbx.meta",
+      "sha256": "3b5b0596b5e7a8a4251023e182d9dae590f64be1f35570886aba5c247058bbb8"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_grey.tga",
+      "sha256": "026633eb83f542f18b935329652a57676deeb2c6a100f14ee972e99c6b4b4b8b"
+    },
+    {
+      "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/textures/ToonSoldiers_texture_grey.tga.meta",
+      "sha256": "de82cf0eed31795dc636f3b97165a31e531fd1bbc93ba9492c2598bd84b53055"
+    }
+  ]
+}

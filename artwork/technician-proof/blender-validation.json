@@ -1,0 +1,70 @@
+{
+  "original": true,
+  "bones": 18,
+  "vertices": 1468,
+  "triangles": 2772,
+  "invalid_weight_vertices": 0,
+  "actions": {
+    "Idle": [
+      1,
+      61
+    ],
+    "Walk": [
+      1,
+      31
+    ]
+  },
+  "fps": 30,
+  "palette": {
+    "Suit": [
+      0.085,
+      0.18,
+      0.24,
+      1
+    ],
+    "Armor": [
+      0.18,
+      0.29,
+      0.32,
+      1
+    ],
+    "Boots": [
+      0.032,
+      0.045,
+      0.06,
+      1
+    ],
+    "Skin": [
+      0.55,
+      0.31,
+      0.18,
+      1
+    ],
+    "Accent": [
+      0.95,
+      0.4,
+      0.045,
+      1
+    ],
+    "Visor": [
+      0.035,
+      0.28,
+      0.37,
+      1
+    ],
+    "Metal": [
+      0.48,
+      0.56,
+      0.57,
+      1
+    ],
+    "Lamp": [
+      0.88,
+      0.92,
+      0.68,
+      1
+    ]
+  },
+  "note": "Segmented low-poly proof, not final production topology or approved costume.",
+  "degenerate_triangles": 0
+}

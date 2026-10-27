@@ -499,6 +499,13 @@ See [migration plan](../../docs/unity-migration-plan.md) and
 [Wave 0 audit](../../docs/unity-migration-audit.md) for later timing, persistence
 and render-to-sprite work.
 
+Player builds automatically export authored dialogue and processing PlantUML to
+[docs/generated/flows](../../docs/generated/flows/README.md) before validating
+snapshot freshness. Local PlantUML renders PNGs when its jar is available. The
+standalone command is `node tools/export-flows.mjs` from the repository root;
+`--render` renders, `--check` verifies, and `--mission FILE` selects another
+authored source. Snapshot export also refreshes these diagrams.
+
 Warehouse r11 provides provisional 20-place safe temporary holding before retention decisions; actual item inventory and transfers remain pending. See `docs/unity-storage-rooms.md` at the repository root. Four-member Ready Room/briefing summaries scroll when needed.
 
 The first physical recovery loop now supports the authored Holding crate and its unknown rifle: medical-worker persuasion -> debrief recovery -> Base > Recovered cargo -> Receiving -> compatible Containment. See `docs/unity-cargo-recovery.md` at the repo root for the walkthrough and remaining safety/retention limits.

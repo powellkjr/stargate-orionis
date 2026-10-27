@@ -1,0 +1,7 @@
+{
+  "format": "orionis-personnel-recovery-1",
+  "baseHealthPerTick": 1,
+  "bedHealthPerTick": 2,
+  "infirmaryRoomId": "infirmary",
+  "refillToolsOnReturn": true
+}

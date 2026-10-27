@@ -19,8 +19,8 @@ namespace Orionis.Infrastructure
             public JObject field;
         }
         private sealed class Stage { [JsonRequired] public string id, name; [JsonRequired] public bool known; }
-        private sealed class Door { [JsonRequired] public string id, from, to, initialState; }
-        private sealed class Npc { [JsonRequired] public string id, stageId, label, disposition; [JsonRequired] public int suspicion, hostility; }
+        private sealed class Door { [JsonRequired] public string id, from, to, initialState; public string requiredKnowledge; }
+        private sealed class Npc { [JsonRequired] public string id, stageId, label; [JsonProperty(Required=Required.AllowNull)] public string disposition; [JsonRequired] public int suspicion, hostility; }
         private sealed class Scene
         {
             [JsonRequired] public string id, stageId, npcId, startNodeId;
@@ -64,7 +64,7 @@ namespace Orionis.Infrastructure
             Require(r.transitions.All(t => t != null && !string.IsNullOrWhiteSpace(t.id) && t.from != t.to && r.stages.Any(s => s.id == t.from) &&
                 r.stages.Any(s => s.id == t.to) && new[] { "OPEN", "CLOSED", "LOCKED" }.Contains(t.initialState)) && r.transitions.Select(t => t.id).Distinct().Count() == r.transitions.Count);
             Require(r.npcs.All(n => n != null && !string.IsNullOrWhiteSpace(n.id) && r.stages.Any(s => s.id == n.stageId) &&
-                !string.IsNullOrWhiteSpace(n.disposition) && n.suspicion >= 0 && n.suspicion <= 100 && n.hostility >= 0 && n.hostility < 100) &&
+                (n.disposition==null||!string.IsNullOrWhiteSpace(n.disposition)) && n.suspicion >= 0 && n.suspicion <= 100 && n.hostility >= 0 && n.hostility < 100) &&
                 r.npcs.Select(n => n.id).Distinct().Count() == r.npcs.Count);
             Require(r.startingKnowledge.All(k => !string.IsNullOrWhiteSpace(k)) && r.startingKnowledge.Distinct().Count() == r.startingKnowledge.Count);
             Require(r.conversations.All(c => c != null) && r.conversations.Select(c => c.id).Distinct().Count() == r.conversations.Count);
@@ -100,7 +100,7 @@ namespace Orionis.Infrastructure
                         ValidateEffect(effect);
                 }
             }
-            return new TravelDefinition(r.stages.Select(s => new TravelStage(s.id, s.name, s.known)), r.transitions.Select(t => new TravelDoor(t.id, t.from, t.to, t.initialState)),
+            return new TravelDefinition(r.stages.Select(s => new TravelStage(s.id, s.name, s.known)), r.transitions.Select(t => new TravelDoor(t.id, t.from, t.to, t.initialState,t.requiredKnowledge)),
                 r.npcs.Select(n => new MissionNpc(n.id, n.stageId, n.label, n.disposition, n.suspicion, n.hostility)), r.startingKnowledge,
                 r.conversations.Select(c => new ConversationDefinition(c.id, c.stageId, c.npcId, c.startNodeId, c.firstVisit, c.dispositions,
                     c.nodes.Select(n => new ConversationNode(n.id, n.text, n.end, n.responses.Select(x => new ConversationResponse(x.id, x.text, x.profession, x.minimumTier, x.nextNodeId, x.end, Effects(x.effects))), Effects(n.effects))), Effects(c.onStartEffects ?? new List<Effect>()))), field);

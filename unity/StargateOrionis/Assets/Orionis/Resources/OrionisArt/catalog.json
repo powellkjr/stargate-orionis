@@ -1,0 +1,413 @@
+{
+  "format": "orionis-presentation-art-1",
+  "variantSeed": "unity-presentation-1",
+  "rooms": {
+    "cultural_platform": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-fb98635a23b866ecfe53"
+    },
+    "analysis": {
+      "floor": "art-570b86f84679c5ddd22c",
+      "overlay": "art-15da3d0217a72d68006b"
+    },
+    "containment": {
+      "floor": "art-570b86f84679c5ddd22c",
+      "overlay": "art-a4bbbbe7e905b4aa359c"
+    },
+    "data_storage": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-3bb62c30e2dbcfa2fa1c"
+    },
+    "equipment_storage": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-e7a9a729634c933aef94"
+    },
+    "gate_room": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-1c108ab6c99a23dc997a"
+    },
+    "holding": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-0d657c5442b67680a0c8"
+    },
+    "infirmary": {
+      "floor": "art-570b86f84679c5ddd22c",
+      "overlay": "art-c22124c438457d34afbc"
+    },
+    "living_quarters": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-4a69eddeb8722a6c25e3"
+    },
+    "maintenance": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-b511d1bc1cd4a52d2101"
+    },
+    "material_storage": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-68c64dfabb5ddbd66156"
+    },
+    "generator": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-305b39e56fb2d38a3ecb"
+    },
+    "ration_storage": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-98c6b48371188973c603"
+    },
+    "receiving": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-1a1db89c5c3292d20b99"
+    },
+    "research": {
+      "floor": "art-570b86f84679c5ddd22c",
+      "overlay": "art-4553a2157e489101ef6c"
+    },
+    "response_room": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-69047f2548e4d1ca2ea7"
+    },
+    "supply_storage": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-190cb1555c6dffd2a250"
+    },
+    "tech_platform": {
+      "floor": "art-570b86f84679c5ddd22c",
+      "overlay": "art-cf508ed5a9482a33b614"
+    },
+    "workshop": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": "art-ed4bd73b82abd857aa17"
+    },
+    "ready_room": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": null
+    },
+    "warehouse": {
+      "floor": "art-8c59e22dc2f3377101ec",
+      "overlay": null
+    }
+  },
+  "professions": {
+    "SOLDIER": "art-7325901077857bad050d",
+    "SCOUT": "art-8cfc02f199b840792ab2",
+    "TECHNICIAN": "art-005ede3f94526c7cfff6",
+    "SCIENTIST": "art-ed6553a9a976516c446d",
+    "MEDIC": "art-d88dbee7a0339e3d9a38",
+    "DIPLOMAT": "art-2880a95b8851c3bf71b7"
+  },
+  "units": {
+    "unit-1": "art-a42dd3412371d8926820",
+    "unit-2": "art-af2e405111975a6cdc7b",
+    "unit-3": "art-7325901077857bad050d",
+    "unit-4": "art-a42dd3412371d8926820",
+    "unit-5": "art-af2e405111975a6cdc7b",
+    "unit-6": "art-7325901077857bad050d",
+    "unit-7": "art-a42dd3412371d8926820",
+    "unit-8": "art-af2e405111975a6cdc7b",
+    "unit-9": "art-7325901077857bad050d",
+    "unit-10": "art-68c0ce574956eac9536e",
+    "unit-11": "art-8cfc02f199b840792ab2",
+    "unit-12": "art-eb0796abe846f78544cc",
+    "unit-13": "art-68c0ce574956eac9536e",
+    "unit-14": "art-eb0796abe846f78544cc",
+    "unit-15": "art-68c0ce574956eac9536e",
+    "unit-16": "art-8cfc02f199b840792ab2",
+    "unit-17": "art-eb0796abe846f78544cc",
+    "unit-18": "art-eb0796abe846f78544cc",
+    "unit-19": "art-1a507492283b240ac5a5",
+    "unit-20": "art-0a57d2c246ccd884d946",
+    "unit-21": "art-005ede3f94526c7cfff6",
+    "unit-22": "art-1a507492283b240ac5a5",
+    "unit-23": "art-0a57d2c246ccd884d946",
+    "unit-24": "art-1a507492283b240ac5a5",
+    "unit-25": "art-0a57d2c246ccd884d946",
+    "unit-26": "art-005ede3f94526c7cfff6",
+    "unit-27": "art-1a507492283b240ac5a5",
+    "unit-28": "art-ed6553a9a976516c446d",
+    "unit-29": "art-627525daa6f9d50f06aa",
+    "unit-30": "art-c5ceb827d50444cdb39f",
+    "unit-31": "art-627525daa6f9d50f06aa",
+    "unit-32": "art-627525daa6f9d50f06aa",
+    "unit-33": "art-ed6553a9a976516c446d",
+    "unit-34": "art-ed6553a9a976516c446d",
+    "unit-35": "art-c5ceb827d50444cdb39f",
+    "unit-36": "art-c5ceb827d50444cdb39f",
+    "unit-37": "art-0e9500661417475b6ec6",
+    "unit-38": "art-ca914970a6155ebf1761",
+    "unit-39": "art-d88dbee7a0339e3d9a38",
+    "unit-40": "art-ca914970a6155ebf1761",
+    "unit-41": "art-0e9500661417475b6ec6",
+    "unit-42": "art-d88dbee7a0339e3d9a38",
+    "unit-43": "art-ca914970a6155ebf1761",
+    "unit-44": "art-0e9500661417475b6ec6",
+    "unit-45": "art-d88dbee7a0339e3d9a38",
+    "unit-46": "art-2880a95b8851c3bf71b7",
+    "unit-47": "art-1643abc609589092b0e4",
+    "unit-48": "art-2880a95b8851c3bf71b7",
+    "unit-49": "art-1643abc609589092b0e4",
+    "unit-50": "art-ceeaed5fd6db498a75ca",
+    "unit-51": "art-1643abc609589092b0e4",
+    "unit-52": "art-1643abc609589092b0e4",
+    "unit-53": "art-2880a95b8851c3bf71b7",
+    "unit-54": "art-1643abc609589092b0e4"
+  },
+  "stages": {
+    "stage-gate-yard": {
+      "floor": "art-72bc2de79fe73873da09"
+    },
+    "stage-outer-yard": {
+      "floor": "art-72bc2de79fe73873da09"
+    },
+    "stage-main-hall": {
+      "floor": "art-8c59e22dc2f3377101ec"
+    },
+    "stage-holding-area": {
+      "floor": "art-570b86f84679c5ddd22c"
+    },
+    "stage-processing": {
+      "floor": "art-8c59e22dc2f3377101ec"
+    }
+  },
+  "files": {
+    "art-8c59e22dc2f3377101ec": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-G6gpYa/floor-indoor.png",
+      "sha256": "8c59e22dc2f3377101ecc1eeb04430ed71acf673d47a46cf7ad8dbd1a8e24f5b",
+      "key": "floor-indoor",
+      "sourceId": "sprite-prepared/orionis-floor-indoor-b003/v02/floor-indoor.png"
+    },
+    "art-fb98635a23b866ecfe53": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-LLiciS/floor-room-cultural-platform.png",
+      "sha256": "fb98635a23b866ecfe53fe9829c96c771453eef925399256a2b8554f0d04209e",
+      "key": "floor-room-cultural-platform",
+      "sourceId": "orionis-floor-room-cultural-platform-transparent-b001/floor-room-cultural-platform__v02__source.png"
+    },
+    "art-570b86f84679c5ddd22c": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-0Iyg14/floor-lab.png",
+      "sha256": "570b86f84679c5ddd22ccd279d456953995b6ce55a3a627ad08666a6a0e7c5d4",
+      "key": "floor-lab",
+      "sourceId": "orionis-floor-lab-b001/floor-lab__v03__source.png"
+    },
+    "art-15da3d0217a72d68006b": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-OQrHef/floor-room-analysis.png",
+      "sha256": "15da3d0217a72d68006bd5dfe41eed1e121b1504c7b8f67524b4ed0360d48381",
+      "key": "floor-room-analysis",
+      "sourceId": "sprite-prepared/orionis-floor-room-analysis-transparent-b001/v03/floor-room-analysis.png"
+    },
+    "art-a4bbbbe7e905b4aa359c": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-9WBzdK/floor-room-containment.png",
+      "sha256": "a4bbbbe7e905b4aa359cff93a65bbfbe8fb346d40ba66f299d6a2d81f5c2183e",
+      "key": "floor-room-containment",
+      "sourceId": "sprite-prepared/orionis-floor-room-containment-transparent-b001/v01/floor-room-containment.png"
+    },
+    "art-3bb62c30e2dbcfa2fa1c": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-yw1VH6/floor-room-data-storage.png",
+      "sha256": "3bb62c30e2dbcfa2fa1c0931a79227dd630efc3f284a6211c2de6f9334523721",
+      "key": "floor-room-data-storage",
+      "sourceId": "sprite-prepared/orionis-floor-room-data-storage-transparent-b001/v01/floor-room-data-storage.png"
+    },
+    "art-e7a9a729634c933aef94": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-YgyrVw/floor-room-equipment-storage.png",
+      "sha256": "e7a9a729634c933aef94b21665dc8b823c8128cf06dd6f4691e2ff6ed28f4581",
+      "key": "floor-room-equipment-storage",
+      "sourceId": "sprite-prepared/orionis-floor-room-equipment-storage-transparent-b001/v01/floor-room-equipment-storage.png"
+    },
+    "art-1c108ab6c99a23dc997a": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-8uXy4O/floor-room-gate-room.png",
+      "sha256": "1c108ab6c99a23dc997a890c96323f0a30c3245740ad7a2eaaa5e8c3c1171808",
+      "key": "floor-room-gate-room",
+      "sourceId": "sprite-prepared/orionis-floor-room-gate-room-transparent-b001/v01/floor-room-gate-room.png"
+    },
+    "art-0d657c5442b67680a0c8": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-Uyl72A/floor-room-holding.png",
+      "sha256": "0d657c5442b67680a0c82e1a2bff417166c913399d9137cb6f623fe195ecd267",
+      "key": "floor-room-holding",
+      "sourceId": "sprite-prepared/orionis-floor-room-holding-transparent-b001/v01/floor-room-holding.png"
+    },
+    "art-c22124c438457d34afbc": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-5gXbvp/floor-room-infirmary.png",
+      "sha256": "c22124c438457d34afbc17919cf999314afecc5dcb14a715b7bdcbac9766791d",
+      "key": "floor-room-infirmary",
+      "sourceId": "sprite-prepared/orionis-floor-room-infirmary-transparent-b001/v02/floor-room-infirmary.png"
+    },
+    "art-4a69eddeb8722a6c25e3": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-I1leJb/floor-room-living-quarters.png",
+      "sha256": "4a69eddeb8722a6c25e38e934bc24d3d8b4b254c9d49f01d755d40a0288662a7",
+      "key": "floor-room-living-quarters",
+      "sourceId": "sprite-prepared/orionis-floor-room-living-quarters-transparent-b001/v03/floor-room-living-quarters.png"
+    },
+    "art-b511d1bc1cd4a52d2101": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-2gSWI0/floor-room-maintenance.png",
+      "sha256": "b511d1bc1cd4a52d21013fd380ff3c60c1fdb1dd429094b3bd55884f3db99593",
+      "key": "floor-room-maintenance",
+      "sourceId": "sprite-prepared/orionis-floor-room-maintenance-transparent-b001/v01/floor-room-maintenance.png"
+    },
+    "art-68c64dfabb5ddbd66156": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-HedaRe/floor-room-material-storage.png",
+      "sha256": "68c64dfabb5ddbd661562f321560ecaf1c0d2d2fc09781790f9be68b41b93f98",
+      "key": "floor-room-material-storage",
+      "sourceId": "sprite-prepared/orionis-floor-room-material-storage-transparent-b001/v02/floor-room-material-storage.png"
+    },
+    "art-305b39e56fb2d38a3ecb": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-fWpcia/floor-room-generator.png",
+      "sha256": "305b39e56fb2d38a3ecb2777447f04db7560c14fbf37f14f5209a4b8b1f4966c",
+      "key": "floor-room-generator",
+      "sourceId": "sprite-prepared/orionis-floor-room-generator-transparent-b001/v03/floor-room-generator.png"
+    },
+    "art-98c6b48371188973c603": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-QO2vZR/floor-room-ration-storage.png",
+      "sha256": "98c6b48371188973c603325d50471ee9e1a7c1c9c9190499daf8a114df92e560",
+      "key": "floor-room-ration-storage",
+      "sourceId": "sprite-prepared/orionis-floor-room-ration-storage-transparent-b001/v03/floor-room-ration-storage.png"
+    },
+    "art-1a1db89c5c3292d20b99": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-mZvAPp/floor-room-receiving.png",
+      "sha256": "1a1db89c5c3292d20b9978c3ad114f96768b5a9d1b7fe06f86844cb78b2366ef",
+      "key": "floor-room-receiving",
+      "sourceId": "sprite-prepared/orionis-floor-room-receiving-transparent-b001/v01/floor-room-receiving.png"
+    },
+    "art-4553a2157e489101ef6c": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-2x3bTA/floor-room-research.png",
+      "sha256": "4553a2157e489101ef6cee38237c97d0c7e9f076e7df4b06d4e6bf6e0cb89a25",
+      "key": "floor-room-research",
+      "sourceId": "sprite-prepared/orionis-floor-room-research-transparent-b001/v03/floor-room-research.png"
+    },
+    "art-69047f2548e4d1ca2ea7": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-lylsss/floor-room-response-room.png",
+      "sha256": "69047f2548e4d1ca2ea7d4e6bb2c34555d1be2011c8bcb5c5e491fbdde3b91ee",
+      "key": "floor-room-response-room",
+      "sourceId": "sprite-prepared/orionis-floor-room-response-room-transparent-b001/v01/floor-room-response-room.png"
+    },
+    "art-190cb1555c6dffd2a250": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-IC9RTi/floor-room-supply-storage.png",
+      "sha256": "190cb1555c6dffd2a25040c7ba88259ec337e4edae73eab8a7aef197a437e758",
+      "key": "floor-room-supply-storage",
+      "sourceId": "sprite-prepared/orionis-floor-room-supply-storage-transparent-b001/v01/floor-room-supply-storage.png"
+    },
+    "art-cf508ed5a9482a33b614": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-tkh8wn/floor-room-tech-platform.png",
+      "sha256": "cf508ed5a9482a33b614ff605d11c08668ee67875b4d0d456c9dc36bac4b29a0",
+      "key": "floor-room-tech-platform",
+      "sourceId": "sprite-prepared/orionis-floor-room-tech-platform-transparent-b001/v03/floor-room-tech-platform.png"
+    },
+    "art-ed4bd73b82abd857aa17": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-Ol33pX/floor-room-workshop.png",
+      "sha256": "ed4bd73b82abd857aa174cd0271a7ecedcfe041609c36bc1b3606ef19752a8ad",
+      "key": "floor-room-workshop",
+      "sourceId": "sprite-prepared/orionis-floor-room-workshop-transparent-b001/v02/floor-room-workshop.png"
+    },
+    "art-7325901077857bad050d": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-ZbPWdM/soldier.png",
+      "sha256": "7325901077857bad050dbefd76f9f039cc47cc9b10108e70b5d42a53b1fd91dc",
+      "key": "soldier",
+      "sourceId": "sprite-prepared/orionis-soldier-b001/v03/soldier.png"
+    },
+    "art-8cfc02f199b840792ab2": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-rg99hB/scout.png",
+      "sha256": "8cfc02f199b840792ab2a67f416086c4f34edb753d4894a677f12354ada53f43",
+      "key": "scout",
+      "sourceId": "sprite-prepared/orionis-scout-b001/v01/scout.png"
+    },
+    "art-005ede3f94526c7cfff6": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-AsJoJG/technician.png",
+      "sha256": "005ede3f94526c7cfff6139ebd4f3a294abae23c671a8fcfede23c2fd3ff7153",
+      "key": "technician",
+      "sourceId": "sprite-prepared/orionis-technician-b001/v01/technician.png"
+    },
+    "art-ed6553a9a976516c446d": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-iQiFwG/scientist.png",
+      "sha256": "ed6553a9a976516c446d7b21dbaf72922c46c5087400baa0d2723fe1ad626388",
+      "key": "scientist",
+      "sourceId": "sprite-prepared/orionis-scientist-b001/v03/scientist.png"
+    },
+    "art-d88dbee7a0339e3d9a38": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-Trcy3r/medic.png",
+      "sha256": "d88dbee7a0339e3d9a38d9224bb56d6c250e14b58efd84b76c6069387ded66f9",
+      "key": "medic",
+      "sourceId": "sprite-prepared/orionis-medic-b001/v03/medic.png"
+    },
+    "art-2880a95b8851c3bf71b7": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-QSdQdO/diplomat.png",
+      "sha256": "2880a95b8851c3bf71b763fec12ec2a01d271c998cba252b1a8fba6489329c5d",
+      "key": "diplomat",
+      "sourceId": "sprite-prepared/orionis-diplomat-b001/v01/diplomat.png"
+    },
+    "art-a42dd3412371d8926820": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-VtXCnm/soldier.png",
+      "sha256": "a42dd3412371d892682052aad9c09116199672e453d92c4a7801112c59f94fee",
+      "key": "soldier",
+      "sourceId": "sprite-prepared/orionis-soldier-b001/v01/soldier.png"
+    },
+    "art-af2e405111975a6cdc7b": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-8BmR85/soldier.png",
+      "sha256": "af2e405111975a6cdc7bdb59525563ddcbeefc7f5c8f65c5039c4c1f6a33df4c",
+      "key": "soldier",
+      "sourceId": "sprite-prepared/orionis-soldier-b001/v02/soldier.png"
+    },
+    "art-68c0ce574956eac9536e": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-SI7lVg/scout.png",
+      "sha256": "68c0ce574956eac9536e34a054363a6dc9c9245e677778330044978a0280ef89",
+      "key": "scout",
+      "sourceId": "sprite-prepared/orionis-scout-b001/v02/scout.png"
+    },
+    "art-eb0796abe846f78544cc": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-NZ5XcN/scout.png",
+      "sha256": "eb0796abe846f78544cc1525803e1bfd596d17f668e3bd6a0bf14cf6231c16a7",
+      "key": "scout",
+      "sourceId": "sprite-prepared/orionis-scout-b001/v03/scout.png"
+    },
+    "art-1a507492283b240ac5a5": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-0vLiqB/technician.png",
+      "sha256": "1a507492283b240ac5a52eccee8c1405b3e39bffb7c94e8d0b63a6d310b5cf70",
+      "key": "technician",
+      "sourceId": "sprite-prepared/orionis-technician-b001/v02/technician.png"
+    },
+    "art-0a57d2c246ccd884d946": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-dfK3fy/technician.png",
+      "sha256": "0a57d2c246ccd884d946cee8a4c9f92c3989358f1f5cb5bc6130093c76fe06bb",
+      "key": "technician",
+      "sourceId": "sprite-prepared/orionis-technician-b001/v03/technician.png"
+    },
+    "art-627525daa6f9d50f06aa": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-onbhNK/scientist.png",
+      "sha256": "627525daa6f9d50f06aa485b7f3557f3d84bfac75a41fa96004d0daa8502274a",
+      "key": "scientist",
+      "sourceId": "sprite-prepared/orionis-scientist-b001/v01/scientist.png"
+    },
+    "art-c5ceb827d50444cdb39f": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-D0AqRK/scientist.png",
+      "sha256": "c5ceb827d50444cdb39f3b18ac2bd62f2d2a8a1bf9bf9e04b9b53d82eec77635",
+      "key": "scientist",
+      "sourceId": "sprite-prepared/orionis-scientist-b001/v02/scientist.png"
+    },
+    "art-0e9500661417475b6ec6": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-SxV1RA/medic.png",
+      "sha256": "0e9500661417475b6ec62f5dae24370e4654ce6d3886be2d0666391e5383b9af",
+      "key": "medic",
+      "sourceId": "sprite-prepared/orionis-medic-b001/v02/medic.png"
+    },
+    "art-ca914970a6155ebf1761": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-TITHX1/medic.png",
+      "sha256": "ca914970a6155ebf1761eef065e84117fff2e0a3c9acd222b40f65f5eebfc23d",
+      "key": "medic",
+      "sourceId": "sprite-prepared/orionis-medic-b001/v01/medic.png"
+    },
+    "art-1643abc609589092b0e4": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-e6WfaH/diplomat.png",
+      "sha256": "1643abc609589092b0e43569c241de47e524bcb6b080c86e4d66850a0084660f",
+      "key": "diplomat",
+      "sourceId": "sprite-prepared/orionis-diplomat-b001/v02/diplomat.png"
+    },
+    "art-ceeaed5fd6db498a75ca": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-C57nZC/diplomat.png",
+      "sha256": "ceeaed5fd6db498a75caa612a98a67d726a00f38d7a874ae1609eb64fae54277",
+      "key": "diplomat",
+      "sourceId": "sprite-prepared/orionis-diplomat-b001/v03/diplomat.png"
+    },
+    "art-72bc2de79fe73873da09": {
+      "source": "demos/shared/sprites/offworld/production/installed-install-fOqtcp/floor-outdoor.png",
+      "sha256": "72bc2de79fe73873da0941f348e4649a9fe2f89308d688104373fe6cf842893f",
+      "key": "floor-outdoor",
+      "sourceId": "orionis-floor-outdoor-b002/floor-outdoor__v01__source.png"
+    }
+  }
+}

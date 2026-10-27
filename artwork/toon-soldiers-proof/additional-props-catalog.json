@@ -1,0 +1,219 @@
+{
+    "props": [
+        {
+            "label": "Archer / ArrowToShoot",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Archer Animations/Prefabs/HumanArcher_ArrowToShoot.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Archer / Bow",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Archer Animations/Prefabs/HumanArcher_Bow.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Archer / Quiver",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Archer Animations/Prefabs/HumanArcher_Quiver.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / Axe",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Axe.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / Basket",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Basket.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / Bucket",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Bucket.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / FishingPole",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_FishingPole.prefab",
+            "reviewedHandFit": true
+        },
+        {
+            "label": "Crafting / Hammer",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Hammer.prefab",
+            "reviewedHandFit": true
+        },
+        {
+            "label": "Crafting / Knife",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Knife.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / Pickaxe",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Pickaxe.prefab",
+            "reviewedHandFit": true
+        },
+        {
+            "label": "Crafting / Plow",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Plow.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / Sword",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_Sword.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Crafting / WateringCan",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Crafting Animations/Prefabs/Tools/Human_WateringCan.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Melee / Dagger",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee Animations/Prefabs/Weapons/Human_Dagger.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Melee / Greatsword",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee Animations/Prefabs/Weapons/Human_Greatsword.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Melee / Polearm",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee Animations/Prefabs/Weapons/Human_Polearm.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Melee / Shield",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee Animations/Prefabs/Weapons/Human_Shield.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Melee / Sword",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee Animations/Prefabs/Weapons/Human_Sword.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Melee / Warhammer",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Melee Animations/Prefabs/Weapons/Human_Warhammer.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Soldier / AssaultRifle",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Soldier Animations/Prefabs/Weapons/Human_AssaultRifle.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Soldier / Bazooka",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Soldier Animations/Prefabs/Weapons/Human_Bazooka.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Soldier / Gun",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Soldier Animations/Prefabs/Weapons/Human_Gun.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Soldier / Rifle",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Soldier Animations/Prefabs/Weapons/Human_Rifle.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Throwing / Baseball",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Throwing Animations/Prefabs/Props/Human_Baseball.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Throwing / BigRock",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Throwing Animations/Prefabs/Props/Human_BigRock.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Throwing / Javelin",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Throwing Animations/Prefabs/Props/Human_Javelin.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Throwing / Knife",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Throwing Animations/Prefabs/Props/Human_Knife.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Throwing / ThrowingAxe",
+            "path": "Assets/Kevin Iglesias/Human Animations/Unity Demo Scenes/Human Throwing Animations/Prefabs/Props/Human_ThrowingAxe.prefab",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / item_ammo_box",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/item_ammo_box.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / item_ammo_crate",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/item_ammo_crate.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / item_medikit",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/item_medikit.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_arrow",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_arrow.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_grenade_A",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_grenade_A.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_grenade_A_unpin",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_grenade_A_unpin.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_grenade_B",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_grenade_B.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_grenade_B_unpin",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_grenade_B_unpin.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_grenade_C",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_grenade_C.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_grenade_C_unpin",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_grenade_C_unpin.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_launcher_grenade",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_launcher_grenade.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / projectile_rocket",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/projectile_rocket.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / shell_pistol",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/shell_pistol.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / shell_rifle",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/shell_rifle.FBX",
+            "reviewedHandFit": false
+        },
+        {
+            "label": "Toon items / shell_shotgun",
+            "path": "Assets/Toon_Soldiers/ToonSoldiers_2/models/extra_models/shell_shotgun.FBX",
+            "reviewedHandFit": false
+        }
+    ]
+}

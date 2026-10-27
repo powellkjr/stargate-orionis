@@ -89,7 +89,7 @@ namespace Orionis.Tests
             var previous = new CampaignState(BootstrapReader.Read(previousJson), new RandomState(1, 1));
             var value = JObject.Parse(new CampaignSaveCodec(previousJson).Serialize(new SavedSession(previous, new SelectionReference(SelectionKind.Room, "r5"))));
             Assert.That(fixture.saveCompatibility[0].toFingerprint, Is.EqualTo(value["fixtureFingerprint"].Value<string>()));
-            value["schemaVersion"] = 2; value.Property("teams").Remove(); value.Property("assignments").Remove();
+            value["schemaVersion"] = 2;value.Property("archivedCargoSupply")?.Remove(); value.Property("teams").Remove(); value.Property("assignments").Remove();
             value.Property("receiving").Remove(); value.Property("receivingFingerprint").Remove();
             value.Property("transfers").Remove();
             value.Property("expedition").Remove(); value.Property("missionFingerprint").Remove(); value.Property("combatFingerprint").Remove(); value.Property("careFingerprint").Remove(); value.Property("rescueFingerprint").Remove();

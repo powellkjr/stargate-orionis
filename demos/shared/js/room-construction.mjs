@@ -7,6 +7,7 @@ export function validateConstructionPolicy(policy){
   !['hoursPerCoreSlot','hoursPerStaffSlot','hoursPerInventoryPlace','hoursPerResourceUnit','hoursPerOccupantPlace','supplyPerWorkHour','minimumNewRoomHours'].every(k=>Number.isFinite(policy[k])&&policy[k]>0)||
   ![1,2,3].every(t=>policy.supplyClassByConstructionTier?.[t]===`S${t}`))throw Error('Invalid room construction policy.');
  const clearing=policy.terrain?.clearingRecipe;
+ if(policy.execution?.generalWorkShare!=null&&(!Number.isFinite(policy.execution.generalWorkShare)||policy.execution.generalWorkShare<0||policy.execution.generalWorkShare>1))throw Error('Invalid general construction work share.');
  if(clearing&&(!clearing.id||clearing.bubbles?.length!==8||new Set(clearing.bubbles.map(b=>b.id)).size!==8||clearing.bubbles.some(b=>!b.id||![1,20].includes(b.durationTicks)||b.actor!=='UNTRAINED'||b.toolService!==null||b.roomService!==null)))throw Error('Clearing requires eight untrained-Actor bubbles.');
  return policy;
 }

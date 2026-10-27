@@ -1,0 +1,23 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "stage-outer-yard / processing"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "obs-yard-security-focus\nPassive observation\nminimumTier: 1\nminimumPerception: 5\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - security-focuses-on-workers\nstageId: stage-outer-yard\nprofession: SOLDIER\ntext: Security personnel are watching the workers more closely than\nthe perimeter." as n2644f79c9a2344ff88e9 #DAEDEB
+rectangle "Knowledge / security-focuses-on-workers" as n0b15bac809091f2e3993 #FFF1CC
+rectangle "obs-yard-disturbance\nPassive observation\nminimumTier: 1\nminimumPerception: 6\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - recent-internal-movement\nstageId: stage-outer-yard\nprofession: SCOUT\ntext: Recent movement is concentrated between the main facility and\ninterior work areas." as n26f9e59391437bb538fe #DAEDEB
+rectangle "Knowledge / recent-internal-movement" as ne61dc5edb250c87818e2 #FFF1CC
+n2644f79c9a2344ff88e9 --> n0b15bac809091f2e3993 : "reveals"
+n26f9e59391437bb538fe --> ne61dc5edb250c87818e2 : "reveals"
+@enduml

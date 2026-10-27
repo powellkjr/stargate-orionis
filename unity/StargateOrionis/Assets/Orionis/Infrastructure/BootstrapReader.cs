@@ -13,6 +13,8 @@ namespace Orionis.Infrastructure
         public string format, baseName;
         public List<Source> sources;
         public List<Definition> roomDefinitions;
+        public JArray previousRoomDefinitions;
+        public JObject previousRoomCoreSetup,previousRoomReceiving,previousMissionCargo,previousSafeCargo,previousLabMission,previousLabCargo;
         public List<Room> rooms;
         public List<Unit> units;
         public List<SaveCompatibility> saveCompatibility;
@@ -32,6 +34,16 @@ namespace Orionis.Infrastructure
         public JObject unitEquipment;
         public JObject roomPlanning;
         public JObject roomConstruction;
+        public JObject resourceCargoEconomy;
+        public JObject resourceProcessing;
+        public JObject previousResourceProcessing;
+        public JObject roomCoreSetup;
+        public JObject baseExecution;
+        public JObject previousOffworldMission,previousOffworldCombat,previousOffworldInteractionMission;
+        public JObject previousProcessingMission;
+        public JObject previousToolChargeMission;
+        public JObject previousToolTierMission, previousToolTierReceiving;
+        public JObject personnelRecovery;
         public JObject previousCapacitySnapshot;
         public JObject previousExpansionSnapshot;
         public List<NameMigration> nameMigrations;
@@ -112,7 +124,7 @@ namespace Orionis.Infrastructure
             var combat = CombatReader.Read(source.missionCombat, mission);
             var care = CareReader.Read(source.missionCare, mission, combat);
             var cargo = CargoReader.Read(source.missionCargo, mission);
-            return new BootstrapData(source.baseName, rooms, units, ReceivingReader.Read(source.receiving, data), mission, MissionMapReader.Read(source.missionMap, mission), combat, care, RescueReader.Read(source.missionRescue, mission, care, combat), RoomStorageReader.Read(source.roomStorage, data), cargo, HandlingReader.Read(source.cargoHandling, cargo, data), CargoProcessingReader.Read(source.cargoProcessing, source.missionCargo, data), UnitEquipmentReader.Read(source.unitEquipment, cargo), RoomPlanningReader.Read(source.roomPlanning, definitions), ConstructionSetupReader.Read(source.roomConstruction));
+            return new BootstrapData(source.baseName, rooms, units, ReceivingReader.Read(source.receiving, data), mission, MissionMapReader.Read(source.missionMap, mission), combat, care, RescueReader.Read(source.missionRescue, mission, care, combat), RoomStorageReader.Read(source.roomStorage, data), cargo, HandlingReader.Read(source.cargoHandling, cargo, data), CargoProcessingReader.Read(source.cargoProcessing, source.missionCargo, data), UnitEquipmentReader.Read(source.unitEquipment, cargo), RoomPlanningReader.Read(source.roomPlanning, definitions), ConstructionSetupReader.Read(source.roomConstruction), ResourceCargoEconomyReader.Read(source.resourceCargoEconomy),ResourceProcessingReader.Read(source.resourceProcessing,source.previousResourceProcessing!=null&&JToken.DeepEquals(source.resourceProcessing,source.previousResourceProcessing)),source.personnelRecovery?.ToObject<PersonnelRecoveryRules>(),RoomCoreReader.Read(source.roomCoreSetup),BaseExecutionReader.Read(source.baseExecution));
         }
     }
 }

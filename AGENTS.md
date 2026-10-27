@@ -1,5 +1,30 @@
 # AGENTS.md
 
+## Task Tracking Requirement
+
+Keeping the current task updated is mandatory.
+
+Before starting work:
+- Read the current task and its acceptance criteria.
+- Confirm that the task reflects the work you're about to perform.
+- Update the task status to In Progress.
+
+During work:
+- Update the current task when meaningful progress is made.
+- Record completed steps, decisions, discoveries, blockers, and changes in scope.
+- Keep the task's remaining work and acceptance criteria accurate.
+- Do not wait until the entire implementation is finished to update progress.
+
+Before ending a work session:
+- Update the current task with what was completed.
+- Record any tests performed and their results.
+- Identify unfinished work, blockers, and the next actionable step.
+- Mark the task complete only when its acceptance criteria have been satisfied.
+
+**Task tracking is part of the deliverable. Work is not finished until the current task reflects the actual state of the repository.**
+
+Do not create a replacement task or silently abandon the existing task. If you cannot locate or update the current task, report that explicitly.
+
 ## Navigation — Read Before Broad Exploration
 
 Start with [REPO_MAP.md](REPO_MAP.md) for subsystem paths, authored fixtures,

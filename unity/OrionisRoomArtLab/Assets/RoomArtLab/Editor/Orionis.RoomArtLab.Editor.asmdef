@@ -1,0 +1,5 @@
+{
+  "name": "Orionis.RoomArtLab.Editor",
+  "rootNamespace": "Orionis.RoomArtLab",
+  "includePlatforms": ["Editor"]
+}

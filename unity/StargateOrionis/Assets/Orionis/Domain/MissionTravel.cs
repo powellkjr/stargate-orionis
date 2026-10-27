@@ -18,8 +18,9 @@ namespace Orionis.Domain
         public string From { get; }
         public string To { get; }
         public string InitialState { get; }
-        public TravelDoor(string id, string from, string to, string initialState)
-        { Id = id; From = from; To = to; InitialState = initialState; }
+        public string RequiredKnowledge {get;}
+        public TravelDoor(string id, string from, string to, string initialState,string requiredKnowledge=null)
+        { Id = id; From = from; To = to; InitialState = initialState; RequiredKnowledge=requiredKnowledge; }
         public string Destination(string stage) => From == stage ? To : To == stage ? From : null;
     }
     public sealed class MissionNpc
@@ -133,6 +134,7 @@ namespace Orionis.Domain
                 var tier = u.Profession == response.Profession ? u.Tier : u.BranchKind == "cross" && u.BranchId == response.Profession ? u.BranchTier : 0;
                 return (!requireAvailable || MissionCombat.CanAct(state, member.UnitId)) && (response.Profession == null || tier >= Math.Max(1, response.MinimumTier));
             }).Select(member => member.UnitId);
+        public static bool DoorVisible(CampaignState state,TravelDoor door)=>door.RequiredKnowledge==null||Current(state).Knowledge.Contains(door.RequiredKnowledge);
         public static CampaignState Move(CampaignState state, string doorId)
         {
             MissionCombat.RequireFree(state);
@@ -141,6 +143,7 @@ namespace Orionis.Domain
             if (e.GateChoicePending || travel.SceneId != null || travel.Field?.Work != null) throw new InvalidOperationException("Finish the Gate choice, conversation or field work before moving.");
             var door = state.Base.Mission.Travel.Transitions.SingleOrDefault(t => t.Id == doorId);
             var destination = door?.Destination(e.StageId);
+            if(!DoorVisible(state,door))throw new InvalidOperationException("This route has not been discovered.");
             if (destination == null) throw new InvalidOperationException("Doorway is not adjacent or not implemented.");
             if (door.InitialState == "LOCKED" && !travel.OpenDoors.Contains(door.Id)) throw new InvalidOperationException("Locked doorway requires its authored interaction.");
             var visits = travel.Visits.ToDictionary(p => p.Key, p => p.Value);
@@ -205,7 +208,7 @@ namespace Orionis.Domain
                 travel.Npcs, travel.StartedConversations, scene.Id, nodeId,
                 travel.History.Concat(new[] { new ConversationLine(scene.Id, nodeId, null) }), travel.Field), node.Effects);
         }
-        private static TravelState Apply(TravelState travel, IEnumerable<ConversationEffect> effects)
+        internal static TravelState Apply(TravelState travel, IEnumerable<ConversationEffect> effects)
         {
             var knowledge = travel.Knowledge.ToList(); var npcs = travel.Npcs.ToList(); var field = travel.Field;
             foreach (var effect in effects)
@@ -226,7 +229,7 @@ namespace Orionis.Domain
         {
             var e = state.Expedition;
             return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, state.Transfers,
-                new ExpeditionState(e.MissionId, stageId, e.StartedTick, e.GateChoicePending, e.GateOpen, e.ConnectionOpenedTick, e.Party, travel, e.Combat, e.ExtractedTick, teamId: e.TeamId), teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+                new ExpeditionState(e.MissionId, stageId, e.StartedTick, e.GateChoicePending, e.GateOpen, e.ConnectionOpenedTick, e.Party, travel, e.Combat, e.ExtractedTick, teamId: e.TeamId), teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
         }
         public static void Validate(CampaignState state)
         {
@@ -238,9 +241,10 @@ namespace Orionis.Domain
                 e.GateChoicePending && (e.StageId != state.Base.Mission.GateStageId || travel.Visits.Count != 1))
                 throw new InvalidOperationException("Invalid explored Stages/visit counts.");
             var effects = definition.Conversations.SelectMany(c => c.OnStartEffects.Concat(c.Nodes.SelectMany(n => n.Effects.Concat(n.Responses.SelectMany(r => r.Effects))))).ToList();
+            if(definition.Field!=null)effects.AddRange(definition.Field.Workflows.Groups.Where(g=>travel.Field.Completed.Any(w=>w.GroupId==g.Id)).SelectMany(g=>g.Effects));
             if (travel.OpenDoors.Distinct().Count() != travel.OpenDoors.Count || travel.OpenDoors.Any(id => !definition.Transitions.Any(t => t.Id == id)) ||
                 travel.Knowledge.Distinct().Count() != travel.Knowledge.Count || !definition.StartingKnowledge.All(travel.Knowledge.Contains) ||
-                travel.Knowledge.Any(k => !definition.StartingKnowledge.Contains(k) && !effects.Any(x => x.KnowledgeId == k) && definition.Field?.Observations.Any(o => o.RevealsFacts.Contains(k)) != true) ||
+                travel.Knowledge.Any(k => !definition.StartingKnowledge.Contains(k) && !effects.Any(x => x.KnowledgeId == k) && definition.Field?.Observations.Any(o => o.RevealsFacts.Contains(k)) != true && definition.Field?.Actions.Any(a=>travel.Field.Completed.Any(w=>w.RecipeId==a.Id)&&a.SocialEffects.Any(e=>e.KnowledgeId==k))!=true) ||
                 !travel.Npcs.Select(n => n.Id).OrderBy(id => id).SequenceEqual(definition.Npcs.Select(n => n.Id).OrderBy(id => id)))
                 throw new InvalidOperationException("Invalid mission Knowledge, NPCs or doors.");
             foreach (var npc in travel.Npcs)

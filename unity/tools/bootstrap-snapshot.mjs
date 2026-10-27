@@ -4,25 +4,29 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {resolve, dirname} from 'node:path';
 import {validateRooms,ROOM_CATEGORY_ORDER} from '../../demos/shared/js/rooms.js';
 import {roomConstructionQuote} from '../../demos/shared/js/room-construction.mjs';
+import {validateCargoEconomy,validateCargoRecipe} from '../../demos/shared/js/resource-cargo.mjs';
 import {validateBase} from '../../demos/shared/js/base-configuration.mjs';
 import {deploymentRoster} from '../../demos/shared/offworld/roster.mjs';
 import {createTool,validateEquipment} from '../../demos/shared/offworld/equipment.mjs';
 import {compileMission} from '../../demos/shared/offworld/mission.mjs';
 import {MAX_PARTY_SIZE} from '../../demos/shared/offworld/runtime.mjs';
+import {exportFlows} from '../../tools/export-flows.mjs';
 
 const root=fileURLToPath(new URL('../../',import.meta.url));
-const inputs=['rooms_schema.json','room-construction-prototype.json','room-construction.schema.json','base-configuration.json','base-classes.json',
- 'personnel-names.json','personnel-loadouts.json','personnel-presentation.json','offworld/party-presets.json',
+const inputs=['base-execution.schema.json','base-execution.json','receiving-core-prototype.json','receiving-core-prototype.schema.json','theory/stargate_theory_simulator_import.json','rooms_schema.json','room-construction-prototype.json','room-construction.schema.json','resource-cargo-economy.json','resource-cargo-economy.schema.json','resource-cargo-playtest.json','instance.schema.json','item.schema.json','base-configuration.json','base-classes.json',
+ 'personnel-recovery.json','personnel-recovery.schema.json','personnel-names.json','personnel-loadouts.json','personnel-presentation.json','offworld/party-presets.json',
  'item.json','instance.json','cargo-handling-prototype.json','cargo-processing-prototype.json','unit-equipment-prototype.json','receiving-prototype.json','process-matrix.json','processing-contracts.json','offworld/archetypes.json',
  'offworld/missing-operative-001.finalized.json'];
 // Projection behavior is part of the snapshot provenance too.
-const code=['unity/tools/bootstrap-snapshot.mjs','demos/shared/js/rooms.js',
+const code=['unity/tools/fixtures/receiving-before-communications.json','unity/tools/fixtures/core-setup-before-communications.json','unity/tools/fixtures/room-definitions-before-communications.json','unity/tools/fixtures/mission-before-offworld-interactions.json','unity/tools/fixtures/mission-before-offworld-expansion.json','unity/tools/fixtures/resource-processing-before-medium-cache.json','unity/tools/bootstrap-snapshot.mjs','demos/shared/js/rooms.js','demos/shared/js/resource-cargo.mjs',
  'demos/shared/js/base-configuration.mjs','demos/shared/js/room-construction.mjs','demos/shared/js/personnel-roster.mjs',
  'demos/shared/offworld/roster.mjs','demos/shared/offworld/personnel-save.mjs',
  'demos/shared/offworld/equipment.mjs','demos/shared/portraits/portrait-bust.mjs',
  'demos/shared/offworld/mission.mjs','demos/shared/offworld/runtime.mjs','demos/shared/offworld/dialogue.mjs',
  'demos/shared/offworld/npc.mjs','demos/shared/offworld/field.mjs','demos/shared/offworld/campaign.mjs','demos/shared/offworld/party-tools.mjs',
  'unity/tools/fixtures/base-before-construction-start.json','unity/tools/fixtures/rooms-before-ct1-balance.json','unity/tools/fixtures/bootstrap-before-staffing.json','unity/tools/fixtures/bootstrap-before-suffix-cleanup.json','unity/tools/fixtures/bootstrap-before-holding-route.json','unity/tools/fixtures/bootstrap-before-ready-room.json','unity/tools/fixtures/bootstrap-before-storage-rooms.json','unity/tools/fixtures/bootstrap-before-warehouse.json'];
+code.push('unity/tools/fixtures/cargo-before-safe.json');
+code.push('unity/tools/fixtures/mission-before-lab.json','unity/tools/fixtures/cargo-before-lab.json');
 function staffingByTier(room){
  const schema=room.schema,staff=schema.rules.staffing,config=schema.function?.slotConfig?.staff;
  return Object.fromEntries(schema.rules.construction.progression.map(tier=>{
@@ -55,8 +59,13 @@ export function buildSnapshot(){
  const expandedBase=validateBase(read('base-configuration.json'),currentCatalog);
  if(base.groups.some(group=>group.active))throw Error('Joined-room staffing requires a Room Group adapter before bootstrap import.');
  if(base.rooms.some(room=>room.staffCount!==0))throw Error('Anonymous saved staff counts need identified Unit assignments before bootstrap import.');
+ const authoredLoadouts=read('personnel-loadouts.json');
+ const historicalLoadouts=structuredClone(authoredLoadouts);
+ const historicalPersonnel=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/bootstrap-before-holding-route.json'),'utf8')).mission.personnel;
+ for(const [id,unit] of Object.entries(historicalLoadouts.units))
+  for(const [slot,tool] of unit.toolSlots.entries())tool.charges=historicalPersonnel.find(u=>u.id===id)?.tools.find(t=>t.slot===slot)?.charges??3;
  const roster=deploymentRoster(read('base-classes.json'),read('personnel-names.json'),
-  read('offworld/party-presets.json'),read('personnel-loadouts.json')).units;
+  read('offworld/party-presets.json'),historicalLoadouts).units;
  const equipment=read('offworld/archetypes.json'), items=read('item.json'), instances=read('instance.json');
  const receiving=read('receiving-prototype.json');
  const receivingData={recipe:receiving.recipe,
@@ -328,6 +337,7 @@ export function buildSnapshot(){
  }
  // Capture exact old capacities before applying the authored balance update.
  snapshot.previousCapacitySnapshot=structuredClone(snapshot);
+ snapshot.previousRoomDefinitions=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/room-definitions-before-communications.json'),'utf8'));
  snapshot.roomDefinitions=currentRooms.map(r=>({id:r.id,name:r.name,color:r.color,width:r.width,height:r.height,staffingByTier:staffingByTier(r),...(r.schema.function?.team?{teamSlots:r.schema.function.team.memberSlots,teamExperienceSharing:r.schema.function.team.experienceSharing}:{} )}));
  for(const profile of snapshot.receiving.rooms){
   const room=currentRooms.find(r=>r.id===profile.definitionId);
@@ -340,6 +350,8 @@ export function buildSnapshot(){
    ...(r.schema.function.sharedItemCapacity?{sharedItemCapacity:true}:{}),
    tabs:(r.schema.function.subordinateTabs??[]).filter(t=>t.storage).map(t=>({id:t.id,label:t.name??t.id,classes:t.storage.storageClasses,capacityByTier:capacity(t.slotConfig.item.progressionSource)}))};
  })};
+ // Every physical room needs an explicit admission profile, including new room types.
+ for(const room of currentRooms)if(!snapshot.receiving.rooms.some(p=>p.definitionId===room.id))snapshot.receiving.rooms.push({definitionId:room.id,capacityByTier:{1:0},storageClasses:[],capabilities:room.schema.function.processingCapabilities??[],services:room.schema.function.roomServices??[]});
  // Planning is a read-only projection, excluded from campaign/save fingerprints.
  snapshot.roomPlanning={columns:12,rows:10,categoryOrder:ROOM_CATEGORY_ORDER,resourceClasses:Object.fromEntries(currentRooms.filter(r=>["supply_storage","material_storage","ration_storage"].includes(r.id)).map(r=>[r.schema.rules.storage.storageTypes[0],r.schema.function.subordinateTabs.filter(t=>t.quantity).map(t=>t.name)])),rooms:currentRooms.map(r=>{
   const rules=r.schema.rules, fn=r.schema.function, cores=rules.cores;
@@ -361,13 +373,165 @@ export function buildSnapshot(){
  snapshot.previousExpansionSnapshot=structuredClone(snapshot);
  snapshot.rooms=expandedBase.rooms.map(r=>({id:r.instanceId,definitionId:r.roomId,col:r.col,row:r.row,width:r.width,height:r.height,constructionTier:r.constructionTier}));
  snapshot.roomConstruction=constructionPolicy;
+ snapshot.resourceCargoEconomy=validateCargoEconomy(read('resource-cargo-economy.json'));
+ // Preserve the precise previous mission scope for schema<=23 saves.
+ snapshot.previousProcessingMission=structuredClone(snapshot.mission);
+ const processingStage=mission.indexes.stages['stage-processing'];
+ const processingDoor=mission.transitions.find(t=>t.transitionId==='door-mainhall-to-processing');
+ snapshot.mission.travel.stages.push({id:processingStage.stageId,name:'Processing Room',known:processingStage.knownShapeAtStart});
+ snapshot.mission.travel.transitions.push({id:processingDoor.transitionId,from:processingDoor.fromStageId,to:processingDoor.toStageId,initialState:processingDoor.initialState});
+ const processingHack=mission.indexes.recipes['hack-door-mainhall-to-processing'];
+ snapshot.mission.travel.field.doorRecipes.push({id:processingHack.recipeInstanceId,doorId:processingDoor.transitionId,profession:processingHack.profession,minimumTier:processingHack.minimumTier,minimumPerception:processingHack.minimumPerception??0,service:processingHack.requiredToolService,chargeCost:processingHack.chargeCost,ticks:processingHack.durationMinutes/3});
+ snapshot.missionMap.stages.push({id:processingStage.stageId,cells:processingStage.cells.map(c=>({x:c.x,y:c.y}))});
+ const resourcePolicy=validateCargoRecipe(read('resource-cargo-playtest.json'));
+ const resource=mission.indexes.instances[resourcePolicy.instanceId];
+ const actions=['inspect-mining-system','isolate-mining-power','collect-supply-cache'].map(id=>{
+  const r=mission.indexes.recipes[id];if(!r||r.durationMinutes!==3)throw Error('Processing action needs a supported tick adapter.');
+  return {id:r.recipeInstanceId,stageId:processingStage.stageId,label:r.actionType==='COLLECT'?'Collect Supply cache':r.actionType==='REPAIR'?'Isolate mining power':'Inspect mining system',profession:r.profession,minimumTier:r.minimumTier,minimumPerception:r.minimumPerception??0,service:r.requiredToolService||null,chargeCost:r.chargeCost,ticks:1,effects:r.effects.map(e=>e.type==='SET_TARGET_STATE'?{...e,type:'SET_INSTANCE_STATE',instanceId:mission.indexes.interactionTargets[r.targetId].instanceId}:e.type==='CARRY_TARGET'?{...e,instanceId:resource.instanceId}:e)};
+ });
+ const coreSetup=JSON.parse(readFileSync(resolve(root,'demos/shared/data/receiving-core-prototype.json'),'utf8'));
+ const coreTheory=JSON.parse(readFileSync(resolve(root,'demos/shared/data/'+coreSetup.definitionSource),'utf8'));
+ snapshot.baseExecution=JSON.parse(readFileSync(resolve(root,'demos/shared/data/base-execution.json'),'utf8'));
+ snapshot.previousRoomCoreSetup=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/core-setup-before-communications.json'),'utf8'));
+ snapshot.roomCoreSetup={...coreSetup,coreDefinitions:coreTheory.coreDefinitions,items:Object.fromEntries(coreTheory.coreDefinitions.filter(core=>items[core.id]).map(core=>[core.id,items[core.id]])),recipes:coreTheory.recipes.filter(recipe=>recipe.id===coreSetup.installationRecipeId)};
+ snapshot.previousResourceProcessing=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/resource-processing-before-medium-cache.json'),'utf8'));
+ snapshot.resourceProcessing={...resourcePolicy,stageId:resource.stageId,item:items[resource.itemId],physicalPayload:structuredClone(resource.physicalItem),actions,hazard:mission.incidents.find(i=>i.incidentId==='incident-processing-radiation')};
+ snapshot.resourceProcessing.physicalPayload.instanceId=resource.instanceId;snapshot.resourceProcessing.physicalPayload.itemId=resource.itemId;
+ snapshot.mission.travel.field.actions=actions;
+ // Charge-only compatibility preserves existing campaigns without refilling
+ // their Tools implicitly. The requested live refill is an explicit operation.
+ snapshot.previousToolChargeMission=structuredClone(snapshot.mission);
+ for(const unit of snapshot.mission.personnel)
+  for(const tool of unit.tools)tool.charges=authoredLoadouts.units[unit.id].toolSlots[tool.slot].charges;
+ snapshot.previousToolTierMission=structuredClone(snapshot.mission);
+ snapshot.previousToolTierReceiving=structuredClone(snapshot.receiving);
+ for(const unit of snapshot.mission.personnel){
+  const source=roster.find(u=>u.unitId===unit.id);
+  const leveled={...source,tier:3,branch:source.branch?{...source.branch,tier:3}:null};
+  unit.tools=unit.tools.map(old=>{const t=createTool(leveled,old.slot,old.kitId.replace(/\d+$/,'3'),9,equipment);return {instanceId:t.toolInstanceId,kitId:t.kitId,slot:t.slot,tier:t.tier,label:t.label,services:t.providedServices,charges:t.chargesRemaining,damaged:t.damaged};});
+  snapshot.receiving.units.find(w=>w.id===unit.id).toolServices=[...new Set(unit.tools.flatMap(t=>t.services))];
+ }
+ const recovery=read('personnel-recovery.json');
+ const infirmary=currentRooms.find(r=>r.id===recovery.infirmaryRoomId);
+ snapshot.personnelRecovery={...recovery,bedsPerRoom:infirmary.schema.function.subordinateTabs.find(t=>t.id==='patients').slotConfig.unit.perPhysicalRoom};
  // The new roster is not a name-only, fingerprint-compatible save change.
  snapshot.saveCompatibility=[];
+ // Wider offworld traversal is additive; pinned projections accept existing saves.
+ const beforeOffworld=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/mission-before-offworld-expansion.json'),'utf8'));
+ snapshot.previousOffworldMission=beforeOffworld.mission;snapshot.previousOffworldCombat=beforeOffworld.combat;
+ for(const stage of mission.stages)if(!snapshot.mission.travel.stages.some(s=>s.id===stage.stageId)){
+  snapshot.mission.travel.stages.push({id:stage.stageId,name:stage.stageId.replace(/^stage-/,'').split('-').map(w=>w[0].toUpperCase()+w.slice(1)).join(' '),known:stage.knownShapeAtStart});
+  snapshot.missionMap.stages.push({id:stage.stageId,cells:stage.cells.map(c=>({x:c.x,y:c.y}))});
+ }
+ for(const door of mission.transitions)if(!snapshot.mission.travel.transitions.some(d=>d.id===door.transitionId)){
+  if(door.revealedWhen&&door.revealedWhen.type!=='KNOWLEDGE_PRESENT')throw Error('Unsupported doorway revelation predicate.');
+  if(door.initialState==='CLOSED'&&!door.routine)throw Error('Non-routine closed doorway requires an interaction.');
+  snapshot.mission.travel.transitions.push({id:door.transitionId,from:door.fromStageId,to:door.toStageId,initialState:door.initialState,...(door.revealedWhen?{requiredKnowledge:door.revealedWhen.factId}:{})});
+  const hack=mission.recipes.find(r=>r.archetypeId==='recipe_hack_transition'&&mission.indexes.interactionTargets[r.targetId]?.transitionId===door.transitionId);
+  if(door.initialState==='LOCKED'&&hack&&!snapshot.mission.travel.field.doorRecipes.some(r=>r.id===hack.recipeInstanceId))snapshot.mission.travel.field.doorRecipes.push({id:hack.recipeInstanceId,doorId:door.transitionId,profession:hack.profession,minimumTier:hack.minimumTier,minimumPerception:hack.minimumPerception??0,service:hack.requiredToolService,chargeCost:hack.chargeCost,ticks:hack.durationMinutes/3});
+ }
+ for(const encounter of mission.incidents.filter(i=>i.kind==='COMBAT')){
+  if(!encounter.implemented||encounter.initialState!=='DORMANT'||!encounter.allowRetreat)throw Error('Unsupported additional guard encounter.');
+  if(!snapshot.missionCombat.encounters.some(i=>i.id===encounter.incidentId))snapshot.missionCombat.encounters.push({id:encounter.incidentId,stageId:encounter.stageId,hostileHealth:encounter.hostileHealth,hostileDamage:encounter.hostileDamage,participants:encounter.participantIds.map(id=>({id,label:mission.indexes.instances[id].playerLabel}))});
+  for(const id of encounter.participantIds)if(!snapshot.mission.travel.npcs.some(n=>n.id===id)){const n=mission.indexes.instances[id];snapshot.mission.travel.npcs.push({id,stageId:n.stageId,label:n.playerLabel,...n.npcState});}
+ }
+ // Preserve saves from the first expanded mission as NPC conversations are connected.
+ snapshot.previousOffworldInteractionMission=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/mission-before-offworld-interactions.json'),'utf8'));
+ for(const id of ['dialogue-holding-worker','dialogue-holding-guard','dialogue-processing-worker']){
+  const scene=mission.dialogueScenes.find(s=>s.dialogueSceneId===id);
+  if(!scene||scene.startWhen||scene.conditions||scene.variants)throw Error('Conversation trigger requires an explicit adapter.');
+  const npc=mission.indexes.instances[scene.participants.right];
+  if(!snapshot.mission.travel.npcs.some(n=>n.id===npc.instanceId))snapshot.mission.travel.npcs.push({id:npc.instanceId,stageId:npc.stageId,label:npc.playerLabel,disposition:npc.npcState?.disposition??null,suspicion:npc.npcState?.suspicion??0,hostility:npc.npcState?.hostility??0});
+  const effects=values=>(values??[]).map(e=>{if(!['ADD_KNOWLEDGE','CHANGE_NPC_SUSPICION','SET_NPC_DISPOSITION'].includes(e.type))throw Error('Unsupported authored conversation effect.');return e;});
+  snapshot.mission.travel.conversations.push({id,stageId:npc.stageId,npcId:npc.instanceId,startNodeId:scene.startNodeId,firstVisit:0,dispositions:[],onStartEffects:effects(scene.onStartEffects),nodes:scene.nodes.map(n=>({id:n.nodeId,text:n.text,end:n.endConversation??false,effects:effects(n.effects),responses:(n.responses??[]).map(r=>({id:r.responseId,text:r.text,source:r.source,profession:r.requirements?.profession??null,minimumTier:r.requirements?.minimumTier??1,nextNodeId:r.nextNodeId??null,end:r.endConversation??false,effects:effects(r.effects)}))}))});
+ }
+ // Resource processing owns its original action projection; exploration appends separately.
+ snapshot.mission.travel.field.actions=[...snapshot.mission.travel.field.actions];
+ for(const id of ['small-talk-worker-holding','inquire-worker-processing']){
+  const recipe=mission.indexes.recipes[id],target=mission.indexes.interactionTargets[recipe.targetId];
+  const socialEffects=recipe.effects.map(effect=>{
+   if(!['ADD_KNOWLEDGE','CHANGE_NPC_SUSPICION'].includes(effect.type))throw Error('Unsupported exploration effect.');
+   if(effect.when&&(effect.when.field!=='combatState'||effect.when.equals!=='NEUTRAL'))throw Error('Unsupported exploration effect condition.');
+   return {type:effect.type,instanceId:effect.instanceId??null,knowledgeId:effect.factId??null,value:null,delta:effect.delta??0,...(effect.when?{conditionInstanceId:effect.when.instanceId,conditionField:effect.when.field,conditionEquals:effect.when.equals}:{})};
+  });
+  const gate=recipe.requiresState;
+  if(gate&&(typeof gate.equals!=='boolean'||typeof mission.indexes.instances[gate.instanceId].initialState[gate.field]!=='boolean'))throw Error('Unsupported exploration preparation predicate.');
+  snapshot.mission.travel.field.actions.push({id,stageId:target.stageId,label:recipe.actionType.toLowerCase().replaceAll('_',' '),outcomeText:recipe.outcomeText,profession:recipe.profession,minimumTier:recipe.minimumTier,minimumPerception:recipe.minimumPerception??0,service:recipe.requiredToolService||null,chargeCost:recipe.chargeCost,ticks:Math.ceil(recipe.durationMinutes/3),effects:[],socialEffects,...(gate?{gate:{instanceId:gate.instanceId,field:gate.field,value:gate.equals,initialValue:mission.indexes.instances[gate.instanceId].initialState[gate.field]}}:{})});
+ }
+
+ snapshot.previousRoomReceiving=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/receiving-before-communications.json'),'utf8'));
+ snapshot.previousMissionCargo=structuredClone(snapshot.missionCargo);
+ snapshot.missionCargo.additionalCaches=mission.instances.filter(c=>c.cargo?.length&&c.instanceId!==crate.instanceId).map(c=>{
+  const target=mission.interactionTargets.find(t=>t.instanceId===c.instanceId),r=mission.recipes.find(r=>r.targetId===target?.targetId&&r.actionType==='COLLECT');
+  if(!r||r.durationMinutes!==3||r.requiredToolService||r.chargeCost||r.requiresState||r.requiresKnowledge.length)throw Error('Additional cargo needs a supported collection contract.');
+  return {containerId:c.instanceId,label:c.playerLabel,collection:{id:r.recipeInstanceId,stageId:c.stageId,label:'Collect '+c.playerLabel,profession:r.profession,minimumTier:r.profession==='UNTRAINED'?0:r.minimumTier,minimumPerception:r.minimumPerception??0,service:null,chargeCost:0,ticks:1,effects:[]},items:[c.initialState.physicalItem,...c.cargo].map(p=>{const instance=structuredClone(p);instance.processes={...instance.processes,receiving:{state:'NOT_STARTED'}};instance.processingTags??=['RECEIVING_REQUIRED'];return {instance,item:items[p.itemId],physicalPayload:p};})};
+ });
+ snapshot.previousSafeCargo=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/cargo-before-safe.json'),'utf8'));
+ for(const c of mission.instances.filter(i=>i.recovery?.category==='RECEIVING'&&!i.cargo?.length)){
+  const target=mission.interactionTargets.find(t=>t.instanceId===c.instanceId);
+  const r=mission.recipes.find(r=>r.targetId===target?.targetId&&r.actionType==='COLLECT_SAFE');
+  if(!r)continue; // Mounted/prepared items need their complete authored workflow.
+  if(r.requiredToolService||r.chargeCost||r.requiresState||r.requiresKnowledge.length||r.effects.some(e=>e.type!=='CARRY_TARGET'))throw Error('Unsupported standalone extraction mark.');
+  const p=structuredClone(c.initialState.physicalItem);if(!p)throw Error('Missing standalone physical payload.');
+  const instance=structuredClone(p);instance.processes={...instance.processes,receiving:{state:'NOT_STARTED'}};instance.processingTags??=['RECEIVING_REQUIRED'];
+  snapshot.missionCargo.additionalCaches.push({containerId:c.instanceId,label:c.playerLabel,collection:{id:r.recipeInstanceId,stageId:c.stageId,label:'Mark for extraction: '+c.playerLabel,profession:r.profession,minimumTier:r.minimumTier,minimumPerception:r.minimumPerception??0,service:null,chargeCost:0,ticks:Math.ceil(r.durationMinutes/3),effects:[]},items:[{instance,item:items[p.itemId],physicalPayload:p}]});
+ }
+ snapshot.previousLabMission=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/mission-before-lab.json'),'utf8'));
+ snapshot.previousLabCargo=JSON.parse(readFileSync(resolve(root,'unity/tools/fixtures/cargo-before-lab.json'),'utf8'));
+ const workflow={groups:[],initialStates:{},records:[],discoveries:[]};snapshot.mission.travel.field.workflows=workflow;
+ const scalar=v=>typeof v==='string'?v:JSON.stringify(v);
+ for(const instance of mission.instances){const values={...instance.initialState?.physicalItem?.state,...instance.initialState};workflow.initialStates[instance.instanceId]=Object.fromEntries(Object.entries(values).filter(([,v])=>['string','boolean','number'].includes(typeof v)).map(([k,v])=>[k,scalar(v)]));}
+ const recipeProjection=r=>{
+  const target=mission.indexes.interactionTargets[r.targetId],instance=mission.indexes.instances[target.instanceId],condition=r.requiresState;
+  if(condition&&!['ITEM_STATE','INSTANCE_STATE'].includes(condition.type))throw Error('Unsupported lab state condition.');
+  const socialEffects=[],effects=[];
+  for(const e of r.effects){if(e.type==='ADD_KNOWLEDGE')socialEffects.push({type:e.type,instanceId:null,knowledgeId:e.factId??e.knowledgeId,value:null,delta:0});
+   else if(e.type==='CARRY_TARGET')continue;
+   else if(['SET_ITEM_STATE','SET_TARGET_STATE'].includes(e.type))effects.push({type:'SET_ITEM_STATE',instanceId:e.instanceId??instance.instanceId,field:e.field,stateValue:scalar(e.value)});
+   else if(e.type==='SET_RECOVERY_STATE')effects.push({type:'SET_ITEM_STATE',instanceId:e.instanceId??instance.instanceId,field:'recoveryState',stateValue:e.value});
+   else if(e.type==='ADD_INSTANCE_FINDING')effects.push({type:e.type,instanceId:e.instanceId,stateValue:e.findingId});
+   else if(e.type==='ADD_TO_PARTY_STORAGE')effects.push({type:e.type,instanceId:e.instanceId});
+   else throw Error('Unsupported lab Recipe effect '+e.type);
+  }
+  if(r.createsDiscoveryId)effects.push({type:'CREATE_DISCOVERY',instanceId:r.createsDiscoveryId});
+  return {id:r.recipeInstanceId,stageId:target.stageId,label:r.actionType.toLowerCase().replaceAll('_',' ')+': '+instance.playerLabel,profession:r.profession,minimumTier:r.minimumTier,minimumPerception:r.minimumPerception??0,service:r.requiredToolService||null,chargeCost:r.chargeCost,ticks:Math.ceil(r.durationMinutes/3),effects,socialEffects,outcomeText:r.outcomeText??null,requiresKnowledge:r.requiresKnowledge,hiddenUntilKnowledge:[...new Set([...(r.hiddenUntilKnowledge??[]),...(instance.revealedWhen?.factId?[instance.revealedWhen.factId]:[])])],workGroupId:r.workGroupId??null,...(condition?{condition:{instanceId:condition.instanceId,field:condition.field,value:scalar(condition.equals)}}:{})};
+ };
+ for(const group of mission.workGroups??[]){if(group.recipeInstanceIds.some(id=>mission.indexes.recipes[id]?.durationMinutes!==60))throw Error('Work-group duration needs another adapter.');workflow.groups.push({id:group.workGroupId,stageId:group.stageId,label:group.playerLabel,recipeIds:group.recipeInstanceIds,effects:group.effects.map(e=>({type:e.type,instanceId:e.instanceId??null,knowledgeId:e.factId??null,value:e.value??null,delta:0}))});}
+ const labActions=mission.recipes.filter(r=>mission.indexes.interactionTargets[r.targetId]?.stageId==='stage-analysis-lab');
+ for(const r of labActions){
+  const projection=recipeProjection(r),target=mission.indexes.interactionTargets[r.targetId],instance=mission.indexes.instances[target.instanceId];
+  if(!r.effects.some(e=>e.type==='CARRY_TARGET')){snapshot.mission.travel.field.actions.push(projection);continue;}
+  if(!instance.initialState.physicalItem||!r.requiresState)throw Error('Prepared recovery requires an authored physical item/state.');
+  // The prepared payload is projected from the exact authored predecessor
+  // transitions. Admission proves those transitions before marking the item.
+  const payload=structuredClone(instance.initialState.physicalItem);
+  for(const predecessor of labActions.filter(a=>mission.indexes.interactionTargets[a.targetId]?.instanceId===instance.instanceId))for(const effect of predecessor.effects){if(effect.type==='SET_ITEM_STATE')payload.state[effect.field]=effect.value;if(effect.type==='ADD_INSTANCE_FINDING')payload.knowledge.instanceFindings.push(effect.findingId);}
+  const incoming=structuredClone(payload);incoming.processes={...incoming.processes,receiving:{state:'NOT_STARTED'}};
+  snapshot.missionCargo.additionalCaches.push({containerId:instance.instanceId,label:instance.playerLabel,collection:projection,items:[{instance:incoming,item:items[payload.itemId],physicalPayload:payload}]});
+ }
+ for(const o of mission.observations.filter(o=>o.stageId==='stage-analysis-lab')){
+  if(o.requiresState?.type!=='KNOWLEDGE_PRESENT')throw Error('Lab observation needs another predicate adapter.');
+  if(!snapshot.mission.travel.field.subjects.some(s=>s.id===o.subjectInstanceId)){const i=mission.indexes.instances[o.subjectInstanceId];snapshot.mission.travel.field.subjects.push({id:i.instanceId,stageId:i.stageId,label:i.playerLabel,detection:'HIDDEN',evacuation:null,combat:null});}
+  snapshot.mission.travel.field.observations.push({id:o.observationId,stageId:o.stageId,subjectId:o.subjectInstanceId,text:o.text,profession:o.profession,minimumTier:o.minimumTier,minimumPerception:o.minimumPerception,requiresKnowledge:[...o.requiresKnowledge,o.requiresState.factId],revealsFacts:o.revealsFacts,detection:o.setsDetectionState?.value??'LOCATED'});
+ }
+ workflow.records=mission.instances.filter(i=>i.recovery?.category==='PARTY_STORAGE_WHEN_COLLECTED').map(i=>({id:i.instanceId,label:i.playerLabel}));
+ workflow.discoveries=(mission.discoveries??[]).map(d=>({id:d.discoveryId,label:d.question}));
+ // Door orientation/anchors are presentation only, outside mission save truth.
+ const steps={NORTH:[0,-1],EAST:[1,0],SOUTH:[0,1],WEST:[-1,0]};
+ snapshot.missionMap.doors=mission.transitions.map(t=>{
+  const a=mission.indexes.stages[t.fromStageId],b=mission.indexes.stages[t.toStageId],step=steps[t.directionFrom],back=steps[t.directionTo];
+  if(!step||!back||step[0]!==-back[0]||step[1]!==-back[1])throw Error('Door presentation needs authored opposite directions.');
+  const matches=a.cells.flatMap(fromCell=>b.cells.filter(c=>c.x-fromCell.x===step[0]&&c.y-fromCell.y===step[1]).map(toCell=>({fromCell,toCell})));
+  if(!matches.length)throw Error('No matching exterior cell edge for '+t.transitionId);
+  // Match the existing action-hex first-shared-edge anchor; mark ambiguity.
+  return {id:t.transitionId,from:t.fromStageId,to:t.toStageId,fromDirection:t.directionFrom,toDirection:t.directionTo,...matches[0],provisional:matches.length>1};
+ });
  return snapshot;
 }
 if(process.argv[1]&&pathToFileURL(resolve(process.argv[1])).href===import.meta.url){
  const output=resolve(root,'unity/StargateOrionis/Assets/Orionis/Data/Generated/bootstrap.json');
  const text=JSON.stringify(buildSnapshot(),null,2)+'\n';
+ exportFlows({check:process.argv.includes('--check')});
  if(process.argv.includes('--check')){
   if(readFileSync(output,'utf8').replaceAll('\r\n','\n')!==text)throw Error('Bootstrap snapshot is stale. Run node unity/tools/bootstrap-snapshot.mjs');
   console.log('Bootstrap snapshot matches authored sources.');

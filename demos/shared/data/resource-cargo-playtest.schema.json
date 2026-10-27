@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "resource-cargo-playtest.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "contentStatus",
+    "instanceId",
+    "roomDefinitionId",
+    "recipe",
+    "defaultPolicies",
+    "allocationStatus"
+  ],
+  "properties": {
+    "instanceId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "roomDefinitionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "format": {
+      "const": "orionis-resource-cargo-playtest-1"
+    },
+    "contentStatus": {
+      "const": "PROVISIONAL_PLAYTEST"
+    },
+    "allocationStatus": {
+      "const": "PROVISIONAL_DEFAULT_WITHOUT_CORES"
+    },
+    "defaultPolicies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "SUPPLY",
+        "MATERIAL"
+      ],
+      "properties": {
+        "SUPPLY": {
+          "const": "BALANCED"
+        },
+        "MATERIAL": {
+          "const": "BALANCED"
+        }
+      }
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "bubbles",
+        "finalEffect"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bubbles": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 40,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "durationTicks",
+              "profession",
+              "minimumTier",
+              "toolService",
+              "dependsOn",
+              "outputWeight",
+              "reveals"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "durationTicks": {
+                "enum": [
+                  1,
+                  20
+                ]
+              },
+              "profession": {
+                "enum": [
+                  "UNTRAINED",
+                  "TECHNICIAN",
+                  "SCIENTIST",
+                  "SCOUT",
+                  "SOLDIER",
+                  "MEDIC",
+                  "DIPLOMAT"
+                ]
+              },
+              "minimumTier": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "toolService": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "dependsOn": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "outputWeight": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "reveals": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "QUALITY",
+                    "TIERS",
+                    "SAFE_HANDLING",
+                    "CONVERSION"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "finalEffect": {
+          "const": "CONSUME_TARGET"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

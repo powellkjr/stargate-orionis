@@ -1,0 +1,19 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "stage-hidden-safe / processing"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "collect-safe-intel-01\nTarget: Sealed intel package / safe-intel-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_npc_standard\nimplemented: true\ndurationMinutes: 1\nminimumTier: 0\nprofession: UNTRAINED\nactionType: COLLECT_SAFE\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: CARRY_TARGET\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\noutcomeText: Package secured for recovery." as ndb022e47d6b59ef4da3d #EAF1F8
+rectangle "collect-safe-loot-01\nTarget: Supply crate / safe-loot-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_npc_standard\nimplemented: true\ndurationMinutes: 1\nminimumTier: 0\nprofession: UNTRAINED\nactionType: COLLECT_SAFE\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: CARRY_TARGET\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\noutcomeText: Package secured for recovery." as n3bbb598b8b7b857b2412 #EAF1F8
+@enduml

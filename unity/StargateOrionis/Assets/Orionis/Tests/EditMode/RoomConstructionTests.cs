@@ -11,7 +11,7 @@ namespace Orionis.Tests
     public sealed class RoomConstructionTests
     {
         private string fixture;
-        private CampaignState Fresh() { fixture = File.ReadAllText("Assets/Orionis/Data/Generated/bootstrap.json"); return RoomConstruction.SeedStaff(new CampaignState(BootstrapReader.Read(fixture), new RandomState(1,1))); }
+        private CampaignState Fresh() { var legacy=JObject.Parse(File.ReadAllText("Assets/Orionis/Data/Generated/bootstrap.json"));((JObject)legacy["roomConstruction"]["terrain"]).Property("variation")?.Remove();fixture=legacy.ToString(); return RoomConstruction.SeedStaff(new CampaignState(BootstrapReader.Read(fixture), new RandomState(1,1))); }
         [Test] public void StaffedSequentialBubblesSpendOnceSurviveSaveAndBecomeTheSamePhysicalRoom()
         {
             var state = Fresh();
@@ -22,11 +22,12 @@ namespace Orionis.Tests
             Assert.That(state.Construction.Supply["S1"],Is.EqualTo(500));
             state=ReceivingWork.AdvanceTick(state);
             Assert.That(state.Construction.Clearings.Single().Bubbles.Count(b=>b.CompletedTick.HasValue),Is.EqualTo(2));
+            Assert.That(state.Construction.Supply["S1"],Is.EqualTo(502),"Each pair of finished clearing bubbles deposits its cumulative share immediately.");
             var clearingCodec=new CampaignSaveCodec(fixture);
             state=clearingCodec.Deserialize(clearingCodec.Serialize(new SavedSession(state,null))).Campaign;
             state=ReceivingWork.AdvanceTick(ReceivingWork.AdvanceTick(state));
             Assert.That(RoomConstruction.IsClear(state,0,0),Is.False);
-            Assert.That(state.Construction.Supply["S1"],Is.EqualTo(500));
+            Assert.That(state.Construction.Supply["S1"],Is.EqualTo(507));
             state=ReceivingWork.AdvanceTick(state);
             Assert.That(RoomConstruction.IsClear(state,0,0),Is.True);
             Assert.That(state.Construction.Clearings.Single().Bubbles.Select(b=>b.ActorId).Distinct().Count(),Is.EqualTo(2));
@@ -66,7 +67,7 @@ namespace Orionis.Tests
             Assert.That(state.Construction.Clearings.Single().Bubbles.Count(b=>b.CompletedTick.HasValue),Is.EqualTo(1));
             Assert.That(state.Construction.Clearings.Single().Bubbles.First().ActorId,Is.EqualTo("unit-37"),"Medic can perform untrained work without a Tool.");
             var codec=new CampaignSaveCodec(fixture);var record=JObject.Parse(codec.Serialize(new SavedSession(Fresh(),null)));
-            record["schemaVersion"]=22;record.Property("clearings").Remove();
+            record["schemaVersion"]=22;record.Property("archivedCargoSupply")?.Remove();record.Property("clearings").Remove();record.Property("resourceProcessingFingerprint").Remove();record.Property("personnelRecoveryFingerprint").Remove();
             Assert.That(codec.Deserialize(record.ToString()).Campaign.Construction.Clearings,Is.Empty);
         }
         [Test] public void ConstructionRequiresLocalSecurityAndRejectsActorSubstitution()
@@ -140,7 +141,8 @@ namespace Orionis.Tests
         [Test] public void Schema21ConstructionLoadPreservesStockAndProgress()
         {
             var state=Fresh();state=RoomConstruction.Start(state,"ready_room",1,0,2,"unit-22");state=ReceivingWork.AdvanceTick(state);
-            var codec=new CampaignSaveCodec(fixture);var old=JObject.Parse(codec.Serialize(new SavedSession(state,null)));old["schemaVersion"]=21;old.Property("roomGroups").Remove();foreach(JObject site in old["constructionSites"])site.Property("fromTier").Remove();
+            var codec=new CampaignSaveCodec(fixture);var old=JObject.Parse(codec.Serialize(new SavedSession(state,null)));old["schemaVersion"]=21;old.Property("archivedCargoSupply")?.Remove();old.Property("roomGroups").Remove();foreach(JObject site in old["constructionSites"])site.Property("fromTier").Remove();
+            old.Property("resourceProcessingFingerprint").Remove();old.Property("personnelRecoveryFingerprint").Remove();
             var restored=codec.Deserialize(old.ToString()).Campaign;
             Assert.That(restored.Construction.Supply["S1"],Is.EqualTo(476));Assert.That(restored.Construction.Sites[0].WorkedTicks,Is.EqualTo(1));Assert.That(restored.Construction.Groups,Is.Empty);
         }
@@ -153,10 +155,12 @@ namespace Orionis.Tests
             Assert.That(RoomConstruction.BuildBlocker(state,"cultural_platform",1,0,6),Is.Null);
             state=RoomConstruction.Start(state,"cultural_platform",1,0,6);
             Assert.That(state.Construction.Sites.Single().ActorId,Is.EqualTo("unit-22"));Assert.That(state.Construction.Sites.Single().SecurityActorId,Is.EqualTo("unit-1"));
-            Assert.That(RoomConstruction.ResolveTechnician(state),Is.Null,"Sticky Actors cannot be double booked.");
+            Assert.That(RoomConstruction.ResolveTechnician(state),Is.EqualTo("unit-22"),"Selecting a project does not claim an Actor before its bubble starts.");
             var codec=new CampaignSaveCodec(fixture);state=codec.Deserialize(codec.Serialize(new SavedSession(state,null))).Campaign;
             state=ReceivingWork.AdvanceTick(state);
             Assert.That(state.Construction.Sites.Single().WorkedTicks,Is.EqualTo(1));Assert.That(state.Construction.Sites.Single().ActorId,Is.EqualTo("unit-22"));
+            for(int i=0;i<state.Base.Construction.SecurityTicks+2&&!state.Construction.Sites.Single().Bubbles.Any(b=>b.ActorId=="unit-22"&&b.Ticks>0&&!b.CompletedTick.HasValue);i++)state=ReceivingWork.AdvanceTick(state);
+            Assert.That(state.Construction.Sites.Single().Bubbles.Any(b=>b.ActorId=="unit-22"&&b.Ticks>0&&!b.CompletedTick.HasValue),Is.True);Assert.That(RoomConstruction.ResolveTechnician(state),Is.Null,"An Actor with partial bubble work cannot be double booked.");
         }
     }
 }

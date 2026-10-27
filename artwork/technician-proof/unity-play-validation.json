@@ -1,0 +1,9 @@
+{
+  "playing": true,
+  "idleState": true,
+  "walkState": true,
+  "idleTime": 7.67077,
+  "walkTime": 15.34154,
+  "rootSeparation": 1.36,
+  "walkThigh": "(0.98334, -0.02235, -0.01546, -0.17974)"
+}

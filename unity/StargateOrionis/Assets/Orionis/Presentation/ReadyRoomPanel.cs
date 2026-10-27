@@ -34,14 +34,23 @@ namespace Orionis.Presentation
                 team == null ? "Create team" : "Save designation", new Color(.12f, .35f, .4f), () => Run(() =>
                 { if (team == null) session.CreateTeam(roomId, input.text); else session.RenameTeam(team.Id, input.text); })).interactable = !offworld;
             var capacity = session.State.Base.Rooms.Single(r => r.Id == roomId).TeamCapacity;
-            var text = team == null ? "One team / " + capacity + " permanent member slots.\nAt most four deploy. Create the team, then choose members." : team.Designation + " / " + team.Members.Count + "/" + capacity + "\n" + (offworld ? "Offworld — membership locked" : "Home Ready Room") + "\n\n" +
-                string.Join("\n\n", team.Members.Select((id, i) => (i + 1) + ". " + PrototypeUi.UnitLabel(session.State.Base.Units.Single(u => u.Id == id), session.State.Base.Mission) + "\n" + PrototypeUi.EquipmentLabel(session.State, id)));
-            PrototypeUi.ScrollLabel("SG team members", transform, new Vector2(.02f, .15f), new Vector2(.4f, .6f), text, 17);
+            var text=team==null?"One team / "+capacity+" permanent member slots.\nAt most four deploy.":team.Designation+" / "+team.Members.Count+"/"+capacity+"\n"+(offworld?"Offworld — membership locked":"Home Ready Room");
+            PrototypeUi.Label(PrototypeUi.Rect("SG team members",transform,new Vector2(.02f,.51f),new Vector2(.40f,.60f)),text,17);
+            var slotsViewport=PrototypeUi.Rect("SG member slots viewport",transform,new Vector2(.02f,.15f),new Vector2(.40f,.50f));slotsViewport.gameObject.AddComponent<RectMask2D>();
+            var slots=PrototypeUi.Rect("SG member slots",slotsViewport,new Vector2(0,1),Vector2.one);slots.pivot=new Vector2(.5f,1);slots.sizeDelta=new Vector2(0,((capacity+1)/2)*160);
+            var memberScroll=slotsViewport.gameObject.AddComponent<ScrollRect>();memberScroll.content=slots;memberScroll.viewport=slotsViewport;memberScroll.horizontal=false;memberScroll.scrollSensitivity=35;
+            for(int n=0;n<capacity;n++)
+            {
+                var id=team?.Members.ElementAtOrDefault(n);var unit=session.State.Base.Units.SingleOrDefault(u=>u.Id==id);
+                var card=PrototypeUi.Button("SG member slot "+n,slots,new Vector2(n%2*.5f,1),new Vector2((n%2+1)*.5f,1),unit==null?"Empty team slot\nChoose personnel":PrototypeUi.UnitLabel(unit,session.State.Base.Mission)+"\n"+PrototypeUi.EquipmentLabel(session.State,id),unit==null?new Color(.10f,.16f,.20f):Color.Lerp(PrototypeUi.ParseColor(unit.Color),Color.black,.35f),()=>session.Selection.SelectUnit(id));
+                var rect=card.GetComponent<RectTransform>();rect.offsetMin=new Vector2(3,-(n/2+1)*160+3);rect.offsetMax=new Vector2(-3,-n/2*160-3);card.interactable=unit!=null;
+                card.GetComponentInChildren<Text>().fontSize=13;if(unit!=null)card.gameObject.AddComponent<PersonnelCardView>().Bind(session,id);
+            }
             PrototypeUi.Label(PrototypeUi.Rect("SG team status", transform, new Vector2(.02f, .01f), new Vector2(.4f, .14f)), message, 16);
             var viewport = PrototypeUi.Rect("Team roster", transform, new Vector2(.43f, .02f), new Vector2(.98f, .85f));
             viewport.gameObject.AddComponent<Image>().color = new Color(.08f, .11f, .15f); viewport.gameObject.AddComponent<Mask>().showMaskGraphic = true;
             var content = PrototypeUi.Rect("Team roster entries", viewport, new Vector2(0, 1), Vector2.one); content.pivot = new Vector2(.5f, 1);
-            content.sizeDelta = new Vector2(0, session.State.Base.Units.Count * 90);
+            content.sizeDelta = new Vector2(0, session.State.Base.Units.Count * 140);
             var scroll = viewport.gameObject.AddComponent<ScrollRect>(); scroll.viewport = viewport; scroll.content = content; scroll.horizontal = false; scroll.scrollSensitivity = 35; scroll.movementType = ScrollRect.MovementType.Clamped;
             int index = 0;
             foreach (var unit in session.State.Base.Units)
@@ -53,8 +62,15 @@ namespace Orionis.Presentation
                 var row = PrototypeUi.Button("team-unit-" + unit.Id, content, new Vector2(0, 1), Vector2.one,
                     PrototypeUi.UnitLabel(unit, session.State.Base.Mission) + "\n" + (owner?.Designation ?? (Expeditions.IsDeployed(session.State, unit.Id) ? "Offworld" : assigned == null ? "Available" : "Assigned to " + assigned.RoomInstanceId)),
                     Color.Lerp(PrototypeUi.ParseColor(unit.Color), Color.black, .6f), () => Run(() => session.SetTeamMember(team.Id, unit.Id, !member)));
-                var r = row.GetComponent<RectTransform>(); r.offsetMin = new Vector2(2, -(index + 1) * 90 + 2); r.offsetMax = new Vector2(-2, -index * 90 - 2); index++;
-                row.interactable = available; var label = row.GetComponentInChildren<Text>(); label.fontSize = 16; label.alignment = TextAnchor.MiddleLeft; label.rectTransform.offsetMin = new Vector2(50, 2); label.color = available ? Color.white : Color.gray;
+                var r = row.GetComponent<RectTransform>(); r.offsetMin = new Vector2(2, -(index + 1) * 140 + 2); r.offsetMax = new Vector2(-2, -index * 140 - 2); index++;
+                var card = row.gameObject.AddComponent<PersonnelCardView>();
+                card.Bind(session, unit.Id);
+                row.interactable = available;
+                var label = card.DetailsLabel;
+                label.fontSize = 16;
+                label.alignment = TextAnchor.MiddleLeft;
+                label.rectTransform.offsetMin = new Vector2(card.HasPortrait ? 112 : 50, 2);
+                label.color = available ? Color.white : Color.gray;
                 var box = PrototypeUi.Rect("Team member " + unit.Id, row.transform, new Vector2(0, .5f), new Vector2(0, .5f)); box.sizeDelta = new Vector2(26, 26); box.anchoredPosition = new Vector2(26, 0);
                 var background = box.gameObject.AddComponent<Image>(); background.color = available ? Color.white : Color.gray;
                 var toggle = box.gameObject.AddComponent<Toggle>(); toggle.targetGraphic = background; toggle.transition = Selectable.Transition.None;

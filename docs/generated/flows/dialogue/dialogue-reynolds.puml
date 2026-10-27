@@ -1,0 +1,43 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-reynolds"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-reynolds\nparticipants:\n  right: reynolds-01\n  left: ACTIVE_SGC_SPEAKER\nstartNodeId: reynolds-start\nstartWhen:\n  stageVisitCount:\n    stageId: stage-security-hall\n    minimum: 1" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "reynolds-start\nspeaker: reynolds-01\nside: RIGHT\ntext: Don't wander. Head straight to the overseer's office, and keep\nthe visit brief." as n4f91b3879cb5ce5c5fe4 #EAF1F8
+rectangle "reynolds-routine\ntext: Understood.\nsource: NEUTRAL\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: office-access-routine-known\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: security-office-door-code-known\nendConversation: true" as n637bbc9ff0f10f0aded2 #E5DAF5
+rectangle "reynolds-diplomat\ntext: Anything we should know before we go in?\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: reynolds-01\n    delta: 10\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: mcguffin-expects-operational-update\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: security-office-door-code-known\nendConversation: true" as n5d4f896e304850416b70 #E5DAF5
+rectangle "reynolds-return\nspeaker: reynolds-01\nside: RIGHT\ntext: Finished with the overseer? Where are you heading now?" as na709f51566acb89ad7ba #EAF1F8
+rectangle "reynolds-return-diplomat\ntext: We are following up on the medical situation. Please keep the\nhall clear.\nsource: DIPLOMAT\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: reynolds-01\n    delta: -10\nendConversation: true\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1" as n123a503d330822e8270e #E5DAF5
+rectangle "reynolds-return-soldier\ntext: We are checking the route back to the Gate. Keep your patrol\nout of our way.\nsource: SOLDIER\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: reynolds-01\n    delta: 15\nendConversation: true\nrequirements:\n  profession: SOLDIER\n  minimumTier: 1" as n97953e237c98e5794eaa #E5DAF5
+rectangle "reynolds-return-leave\ntext: Back the way we came.\nsource: NEUTRAL\neffects:\n  []\nendConversation: true" as nfd8d46c4ee5d050b0ac2 #E5DAF5
+rectangle "reynolds-return-engage\ntext: Stand down, or we will force our way through.\nsource: NEUTRAL\neffects:\n  - \n    type: START_HOSTILE_INCIDENT\n    incidentId: incident-security-guards\nendConversation: true" as n8c59531f6e97b078d63d #E5DAF5
+rectangle "return-from-office\nwhen:\n  enteredFromStage: stage-overseer-office\nstartNodeId: reynolds-return" as nf05431c1a5c2eafe885b #FFF1CC
+ncced28c6dc3f99c2396a --> n4f91b3879cb5ce5c5fe4 : "default start"
+ncced28c6dc3f99c2396a --> nf05431c1a5c2eafe885b : "authored variant order"
+nf05431c1a5c2eafe885b --> na709f51566acb89ad7ba : "when matched"
+n4f91b3879cb5ce5c5fe4 --> n637bbc9ff0f10f0aded2 : "choose response, then qualified Actor"
+n637bbc9ff0f10f0aded2 --> n361e48d0308f20e32dba
+n4f91b3879cb5ce5c5fe4 --> n5d4f896e304850416b70 : "choose response, then qualified Actor"
+n5d4f896e304850416b70 --> n361e48d0308f20e32dba
+na709f51566acb89ad7ba --> n123a503d330822e8270e : "choose response, then qualified Actor"
+n123a503d330822e8270e --> n361e48d0308f20e32dba
+na709f51566acb89ad7ba --> n97953e237c98e5794eaa : "choose response, then qualified Actor"
+n97953e237c98e5794eaa --> n361e48d0308f20e32dba
+na709f51566acb89ad7ba --> nfd8d46c4ee5d050b0ac2 : "choose response, then qualified Actor"
+nfd8d46c4ee5d050b0ac2 --> n361e48d0308f20e32dba
+na709f51566acb89ad7ba --> n8c59531f6e97b078d63d : "choose response, then qualified Actor"
+n8c59531f6e97b078d63d --> n361e48d0308f20e32dba
+@enduml

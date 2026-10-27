@@ -51,9 +51,20 @@ namespace Orionis.Domain
         }
         public static FieldSubject SendToGate(CampaignState s, FieldSubject subject) => subject.Id != s.Base.Rescue.SubjectId ? subject :
             new FieldSubject(subject.Id, s.Base.Mission.GateStageId, subject.Label, subject.Detection, "AT_GATE", subject.Combat);
+        public static string ExtractionBlocker(CampaignState s)
+        {
+            var e=s.Expedition;if(e==null||e.Returned)return "No active expedition.";
+            if(e.StageId!=s.Base.Mission.GateStageId)return "Return to the Gate area.";
+            if(e.GateChoicePending)return "Choose whether to maintain the Gate connection.";
+            if(!e.GateOpen||s.Clock.ElapsedTicks-e.ConnectionOpenedTick>=CampaignTiming.GateConnectionTicks)return "The Gate is closed or expired. Redial SGC.";
+            if(e.Travel.SceneId!=null||e.Travel.Field.Work!=null||MissionCombat.Active(s)!=null)return "Finish dialogue, work or combat before extracting.";
+            if(MissionCombat.Inspect(s).Incapacitated)return "The team is incapacitated.";
+            return null;
+        }
         public static CampaignState Extract(CampaignState s)
         {
             MissionCombat.RequireFree(s);
+            var blocker=ExtractionBlocker(s);if(blocker!=null)throw new InvalidOperationException(blocker);
             var e = s.Expedition ?? throw new InvalidOperationException("No mission is active."); var t = e.Travel;
             if (e.GateChoicePending || !e.GateOpen || e.StageId != s.Base.Mission.GateStageId || t.SceneId != null || t.Field.Work != null)
                 throw new InvalidOperationException("Return to the Gate, finish work/dialogue and redial SGC before extracting.");
@@ -63,7 +74,7 @@ namespace Orionis.Domain
             if (s.Base.Rescue != null && subjects.Any(x => x.Id == s.Base.Rescue.SubjectId && x.Evacuation == "EXTRACTED")) objectives[s.Base.Rescue.Requirements.Id] = "COMPLETED";
             var travel = MissionField.With(t, new MissionFieldState(subjects, objectives, f.Observed, null, f.Completed));
             return new CampaignState(s.Base, s.Random, s.Clock, s.Assignments, s.Receiving, s.Transfers,
-                new ExpeditionState(e.MissionId, e.StageId, e.StartedTick, false, false, e.ConnectionOpenedTick, e.Party, travel, e.Combat, s.Clock.ElapsedTicks, teamId: e.TeamId), teams: s.Teams, cargo: s.Cargo, personnel: s.Personnel, construction: s.Construction);
+                new ExpeditionState(e.MissionId, e.StageId, e.StartedTick, false, false, e.ConnectionOpenedTick, e.Party, travel, e.Combat, s.Clock.ElapsedTicks, teamId: e.TeamId), teams: s.Teams, cargo: s.Cargo, personnel: s.Personnel, construction: s.Construction, cores: s.Cores, workforce: s.Workforce, completedWork: s.CompletedWork);
         }
     }
 }

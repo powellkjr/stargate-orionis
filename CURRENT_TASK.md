@@ -6,35 +6,561 @@ been completed or discarded.
 
 ## Active scope and acceptance criteria
 
-- [ ] Offworld spatial actions / extraction and contextual base planning
-  (In Progress; October26). Continue the existing mission. User requests all
-  ordinary mission actions as symbol hexes at their subjects, with full details
-  below; tile-by-tile cosmetic movement through connected rooms and combat aiming;
-  Gate-open/expiry extraction gating and reliable loot arrival in Receiving;
-  clarify extraction-screen roadmap. Move Data Storage to Storage; locate the
-  authored Communications / mission-Core contract and add the requested Command
-  room without inventing mission acquisition rules. Base planning becomes cell
-  context driven: built room -> right-side info/actions, rock -> details/Clear,
-  empty cell -> details/construction carousel -> placement -> explicit Build.
-  Acceptance: representative actual hex/subject interactions, cardinal motion,
-  combat facing, expired/closed/redial Gate and recovered-cargo route work; room,
-  rock and empty-cell planning controls match selected context and preserve state.
-  Preserve latest live campaign, authoring boundaries and independent Art Lab;
-  focused checks only. Earlier Office/lab gameplay adapter work remains pending.
-  Progress: backed up actual returned campaign at tick20137 (three physical cargo
-  instances; cache already fully converted, crate/rifle in existing storage).
-  Added a shared extraction blocker, explicit manifest and automatic eligible
-  cargo arrival on extraction. Main map now spans the lower workspace with a
-  description area; all current stage/dialogue/work/combat/Gate sources project
-  to nearby symbol hexes using authored target/position bindings. Visual paths
-  use cardinal room cells and retain unfinished waypoint tails; combat facing
-  resolves the same living targets as combat replay. Planning is now room/rock/
-  free-cell context based with a horizontal grouped carousel, placement then
-  Build, and only relevant room join/split/upgrade actions. Communications uses
-  the Response-room envelope (1x1, two staff/two Cores at CT1); no acquisition
-  Cores or mission effects were invented. Data Storage is in Storage in shared
-  schema/catalog. Added exact prior room-definition fingerprint support for old
-  saves. Five snapshot tests pass; compilation/live/regression checks underway.
+- [ ] Repository checkpoint and push (In Progress; October27). User explicitly
+  requests one commit of all current repository work and a push. Include the
+  game/shared-data migration, independent labs, tools, docs and review evidence.
+  Preserve established local-only vendor/cache exclusions; add missing Synty
+  and Unity recovery-backup ignore entries. Inspect staged files, whitespace,
+  credential patterns and relevant existing Node checks, then commit and push
+  current branch unity-migration-wave-0 to origin without rewriting history.
+  Progress: all725 changed files staged after preserving vendor/cache/recovery
+  exclusions. No oversized repository artifacts, credential filenames or known
+  credential-content patterns found. Bootstrap snapshot is current; restaged
+  the Room Art Lab's stale catalog after recent shared-data changes. All35 Node
+  checks across6 focused files pass. Source/data staged whitespace checks pass;
+  preserved Unity-generated empty-field spaces and Markdown hard breaks. Worked
+  around directory-listing restrictions for36 authored sprite files using exact
+  temporary copies without changing original files/permissions. No unstaged or
+  untracked source work remains. Commit and push are the remaining steps.
+
+- [x] Party-panel room-action mockup (Complete; October27). User requests a
+  picture of the mission UI with party panels at the bottom and available room
+  action hexes placed on the Units who can perform them. Produce a visual concept
+  using the established dark mission UI/pixel portraits; this request is a mockup,
+  not implementation. Show a room with differentiated Unit actions and preserve
+  the mission map above. Acceptance: deliver the picture for layout review.
+  Delivered one inline image using the built-in imagegen skill/tool, based on
+  the existing mission screenshot. Four bottom party cards carry actor-colored
+  action hexes; an active Scientist action and prerequisite-locked action show
+  the proposed states, while other cards demonstrate available/empty action
+  areas. Map remains above the dock with a selected-action context strip.
+  Inspected the generated picture for card fit, readable labels and placement.
+  Preview-only concept; illustrative action examples do not define new game
+  rules. No runtime/UI implementation, campaign changes or tests needed. Image
+  delivered inline and remains in the tool's generated-images location.
+
+- [x] Authored-flow PlantUML exporter (Complete; October27). Add a repeatable
+  tool that reads the shared source mission/dialogue and processing definitions
+  and generates reviewable PlantUML in the repository. Preserve authored text,
+  branches, conditions, effects, Actor/Tool requirements and processing links;
+  distinguish declared dependencies from inferred runtime routes. Support a
+  different source file and document regeneration/rendering with the user's
+  local PlantUML jar. Acceptance: focused export/reference/escaping/freshness
+  checks, generated diagrams and rendered PNGs where the local jar is available.
+  Do not edit authored game data or operate/reset the Unity campaign for this tool.
+  User requires automatic build integration. Added a generic Unity pre-build
+  callback, covering Windows Slice, batch and Build Settings; generation precedes
+  existing snapshot validation. Snapshot export/check also regenerates/verifies
+  the diagrams. Export covers all9 authored dialogues (including variants,
+  Continue and silent NPC branches), all50 resolved mission Recipes by Stage,
+  passive observations/work-groups/state/Knowledge gates, base Recipe graphs and
+  processing admission/tag transitions. Generated26 diagrams and26 local PNGs.
+  Independent tool supports alternative mission/catalog/output paths and check
+  mode. Thirteen Node checks pass; rendered layout and Unity hook verification
+  remain in progress. No campaign state touched.
+  Completed: tools/export-flows.mjs and its focused tests; generated index,
+  source-hash manifest,26 .puml and26 PNGs in docs/generated/flows; Unity
+  AuthoredFlowBuild preprocessor and WindowsSliceBuild delegation; bootstrap
+  exporter/generated snapshot and REPO_MAP/Unity README/playtest guide. Diagram
+  labels expand nested requirements/effects for review and preserve complete
+  text/IDs. Changed definitions invalidate their old PNG; removed definitions
+  clean only manifest-owned diagrams/previews and leave user notes intact.
+  Final verification:13/13 Node checks pass, zero failures; freshness checks pass
+  for both diagrams and bootstrap; all26 PNGs render with the user's local
+  PlantUML1.2024.6 jar/Java/Graphviz. Opening dialogue render inspected. Game
+  Editor compilation succeeds and the actual IPreprocessBuildWithReport callback
+  completes generation, PNG rendering and snapshot validation successfully.
+  Existing Play mode remains running; no Play/Stop, mission reset, campaign
+  Save/Load or full player build was needed for this tool verification.
+  Assumptions/limits: exports document the complete authored design, including
+  unported branches. They do not infer room custody routes or institutional
+  Knowledge. Build-time text export is mandatory; PNG rendering is automatic
+  when a local jar is available, otherwise explicitly skipped. An available
+  renderer failing is a build error. Standalone alternate sources use --mission,
+  --archetypes, --items and --data-dir. No unfinished work for this exporter.
+
+- [x] Structural presentation handoff, dialogue usability and lab actions (Complete batch;
+  October27). Read docs/room-structure-game-handoff.md and integrate only its
+  primitive perimeter walls/junctions, split sliding doors and CT cap lights
+  into base/mission presentation, preserving floors, physical room/Group IDs,
+  inputs, visibility and runtime door authority. Inspect authoritative base
+  door mappings and mission CT/door anchors; report missing mappings explicitly.
+  Separately fix the confusing opening dialogue and verify all currently ported
+  dialogue branches through real controls, including requirements, Actor choice,
+  terminal Continue, save/load and return to movement. Acceptance: focused pure
+  geometry and existing UI walkthroughs, hidden exits preserved, no art-lab
+  changes/vendor imports, clean ordinary Bootstrap restart; normal Load/Reset
+  rather than backing up/restoring campaign position.
+  User adds that lab symbols still have no actions. Extend this batch to connect
+  the authored lab workflow, including its four-station parallel search, passive
+  profession observations, characterization, prepared same-instance recovery,
+  authored discovery question and report record. Preserve prerequisites and
+  hidden identity; do not invent missing physical report/item definitions.
+  Progress: connected the authored lab work-group and its four sticky station
+  Actors, one-hour parallel completion, passive observations, device state
+  prerequisites, discovery question and report record. Added schema34 with
+  bounded schema33 mission/cargo compatibility. Added readable response/speaker
+  dialogue controls and numbered map choices. Primitive structural adapters now
+  project base Groups and known indoor mission perimeters; base door anchors and
+  mission CT remain absent and are deliberately not inferred. Node projection
+  checks7/7 pass. Initial Unity checks exposed legacy schema7 missing-field
+  admission and two test-harness expectations; corrected, focused rerun underway.
+  Remaining: finish lab/dialogue UI walkthroughs, validate structural rendering,
+  rerun the existing cargo route, ordinary Bootstrap cleanup and normal Load/Reset.
+  Validation progress: all five ported dialogue graphs' reachable responses pass
+  through the readable controls, including speaker requirements, terminal replies
+  and save/load. Geometry checks pass all16 door masks, joins, shared separators
+  and CT fixtures. The full lab route passes search/save/load/preparation/report/
+  extraction/Receiving/Containment/Analysis with unchanged physical ID/payload.
+  Existing six-item safe/crate/aim/Down/confirmation UI route also passes. Field
+  checks18/19 pass including new schema33 migration; pinned schema7 exposed an
+  older expansion branch copying incomplete NPC/subject scope into newer data.
+  Fixed that branch to add only initial definitions, preserving old Knowledge.
+  Explicit gap: report/question records persist in the expedition through
+  extraction and save/load; the base knowledge-cargo database handoff is not
+  ported. Reset mission clears those expedition records. No physical report
+  definition or institutional Theory has been invented to hide this gap.
+  Follow-up: pinned schema7 migration passes after additive NPC/subject expansion;
+  all19 focused field checks now pass (18 initial passes + corrected failure).
+  Normal persistent Load succeeds at tick19870 under schema34. Live inspection
+  found a clipped dialogue heading and no scroll affordance; fixed heading
+  padding and added response count plus a visible draggable list scrollbar.
+  Final validation:19 field EditMode checks pass across the focused run and
+  corrected legacy rerun;4 PlayMode checks pass (all ported dialogue branches,
+  structural geometry, lab-to-base device route, existing six-item cargo/aim/Down
+  route);7 Node projection checks pass. Final dialogue rerun passes after the
+  scrollbar fix. Exact reference geometry/light copies verified with namespace
+  substitution only. Snapshot freshness and focused diff checks pass. Live
+  dialogue/base/indoor-map captures inspected; heading and scroll affordance are
+  visible, structural colors render, original floors/controls remain present.
+  Pipeline cancelled, test controllers removed, ordinary Bootstrap Play/Stop/
+  restart succeeds with zero residual controllers. Final normal Load reads
+  tick19870 and3 existing cargo instances, then Reset mission succeeds. Ordinary
+  Play remains running at the briefing. No campaign-position backup/restore or
+  persistent save write performed.
+  Files: MissionField/MissionFieldWorkflows/MissionTravel/PersonnelRecovery and
+  CampaignSession; FieldReader/FieldSave/TravelSave/CampaignSaveCodec/
+  MissionMapDefinition/MissionMapReader/BootstrapReader; MissionDialogueView,
+  MissionMapView/MissionMapNavigation/MissionTravelPanel/OffworldCharacterPool,
+  RoomMapView/PresentationArt and Presentation/Structure; snapshot exporter,
+  generated bootstrap, pinned pre-lab mission/cargo, Node test, MissionFieldTests,
+  LabDialogueStructureTests and the existing SpatialPlanningTests walkthrough;
+  REPO_MAP, playtest guide, structural handoff and this task.
+  Provisional presentation mapping: two wide mission door boundaries use the
+  existing first shared edge and are explicitly flagged; base door cell anchors
+  and mission CT remain unauthored. No additional connectivity or CT invented.
+  Next actions outside this completed batch: base knowledge-cargo handoff for
+  report/question records; authored base door anchors and mission CT; remaining
+  Office/supervisor dialogue/checkpoints in the broader Offworld migration.
+
+- [x] Room Art Lab input capture and structural game handoff (Complete;
+  October 27). Fix asset-panel gestures leaking into room orbit when crossing
+  the preview. Require explicit gesture ownership, preserve prop dragging and
+  panel controls, and regression-check fast crossing/cancel/normal orbit.
+  Prepare a game-chat handoff limited to the current primitive perimeter walls,
+  split sliding doors and CT cap lights, including exact sources, dimensions,
+  authority boundaries, mission handling and acceptance checks. Do not integrate
+  into the game or operate its Editor. Implemented pending asset-row mouse
+  capture before preview input, hot-control ownership and explicit preview
+  MouseDown requirement for orbit; prop gestures own their capture too.
+  Handoff written at docs/room-structure-game-handoff.md with copyable request,
+  exact sources/transforms/colors, runtime adapter scope, base grouping and
+  mission visibility/door/CT gaps. Node checks3/3 pass; catalog restaged against
+  concurrently updated authored sources. First40-test run timed out inside an
+  automated native drag; added a non-native start seam for the routing test.
+  Closed/reopened only the isolated Editor normally to clear its stuck test
+  request; saved user placements/assignments remain intact. Final suite:40/40
+  Editor tests passed, zero failures/skips; Node3/3 passed. Regression verifies
+  orphan panel-origin drag cannot orbit, fast first movement is captured before
+  preview input, Escape releases capture, and a fresh preview press orbits with
+  the reversed pitch. Editor restored in Edit mode with saved user props,
+  clean active scene, zero test controllers, no placement errors and cleared
+  test state. Handoff source references and focused whitespace checks pass.
+  README/REPO_MAP updated. Handoff explicitly excludes furnishings/browser/UI/
+  vendor imports; records missing base door-edge mapping, mission CT and the
+  need to preserve/project transition direction/edge anchors. Those are future
+  game integration decisions, not invented canonical data. Next actionable step:
+  give the linked handoff/copyable request to the game chat for structural-only
+  presentation integration; no game implementation performed in this workstream.
+
+- [x] Offworld lab/safe, hex continuity and cargo audit (Complete batch; October27).
+  User reports empty mission Analysis lab/hidden safe, confirmation replacing
+  the wrong hex, inconsistent Actor border colors, concentrated combat damage,
+  and confused/lost items along mission -> Receiving -> Containment -> Analysis.
+  Inspect authored content before filling gaps; explain the existing targeting
+  rule before changing combat semantics. Implement existing authored lab/safe
+  coverage where the current generic runtime supports it, preserve selected hex
+  position for confirmation and assigned Actor colors, and trace/fix custody and
+  instance continuity across the whole cargo route including save/load.
+  Acceptance: focused consolidated UI/domain walkthroughs, stable instance IDs
+  and fallback reservations, accurate labels/queues, current authored projection,
+  clean ordinary Bootstrap restart. Continue prior user preference: no campaign
+  position backups/restoration; finish by normal Load and Reset mission in Play.
+  Progress: fixed the Analysis importer to include every additional cache's
+  physical items, not just the primary crate. Added generic object markers for
+  empty prefab profiles; safe intel/loot now project from authored physical data
+  as extraction marks, with a pinned schema32 cargo catalog for compatibility.
+  Confirm occupies the selected Actor/action position; Cancel sits beside it.
+  Single-candidate and active-work hexes retain the actual Actor border color.
+  Added an all-cargo locator and stable non-revealing cargo references to track
+  custody across queues. User approved random living opponents per attack for
+  both sides. New fights persist a targeting seed (schema33); historical fights
+  without seeds retain their old outcomes. Visual aim reads the actual upcoming
+  shot plan. Six Node projection tests pass. Combat tests initially found two
+  now-obsolete focus-fire assertions and two stale fixture/migration assumptions;
+  those are updated, with direct seeded replay/legacy preservation coverage.
+  Consolidated UI walkthrough now covers both safe packages, confirmation/color,
+  lab bench markers and all six physical items through save/load, Receiving,
+  Containment reservation, staffed Analysis and return custody. Awaiting results.
+  Lab search is still explicitly outside this correction: authored four-station
+  parallel one-hour search, device characterization/detachment and report cargo
+  need the generic work-group/item-state/discovery adapters. No shortcut Recipe,
+  fabricated loot, unlocked device identity or hidden Knowledge has been added.
+  Validation now passes:12/12 combat EditMode tests, the expanded six-package
+  PlayMode walkthrough, the full rescue/resource/Analysis/equipment/redeployment
+  PlayMode route, and6/6 Node snapshot tests. A final presentation check found
+  nearby safe targets could overlap; added generic hex collision avoidance and
+  reran the combined walkthrough with actual mouse raycasts for both safe marks:
+  passes. All six item IDs/payloads remain unchanged through Containment's reserved
+  storage, temporary lab custody, mid-examination save/load and return to storage.
+  Test uses legal CT3 Containment capacity for six simultaneous reservations;
+  ordinary CT1 capacity remains two, with existing capacity rejection intact.
+  Provisional timing: authored one-minute safe marks round up to one existing
+  three-minute Unity tick, matching the adapter's coarse field-action clock.
+  Compilation initially stopped on a test calling an internal UI helper; fixed
+  the test to use ColorUtility directly and verified the new assembly was loaded.
+  No production validation was relaxed. Ordinary Bootstrap Play/Stop/restart
+  succeeds. Test pipeline cancelled; three residual test controllers removed,
+  zero remaining. Actual normal save loaded at tick19870 with three existing
+  cargo instances under the new catalog, then Reset mission succeeded; ordinary
+  Play left running at the briefing. No live-position backup/restoration or
+  persistent save write. Snapshot freshness and focused whitespace checks pass.
+  Files changed this batch: MissionMapView/MissionMapNavigation (confirmation,
+  colors, object markers, overlap), CargoPanel (locator/references),
+  CargoProcessingReader (all cache instances), MissionCombat/OffworldCharacterPool
+  (seeded per-attack plans and aim), CampaignSaveCodec/BootstrapReader (schema33
+  and bounded cargo compatibility), CampaignState RNG comment; shared snapshot
+  exporter/generated bootstrap, pinned cargo-before-safe fixture and Node test;
+  combat EditMode and two existing PlayMode walkthrough files; playtest guide,
+  REPO_MAP and this tracker. Final tests:12 combat checks,2 consolidated PlayMode
+  routes,6 Node checks, all passing; latest safe mouse-raycast rerun also passes.
+  Remaining work/next action: generic persistent parallel work-group search for
+  the mission lab, then its authored observations, device preparation and report
+  cargo, preserving all authored prerequisites and hidden identity. Office/
+  supervisor dialogue/checkpoints remain open in the broader Offworld task.
+
+- [x] Room Art Lab drag/drop furnishing and first-pass assignments (Complete;
+  October 27). Make audited room assets visibly placeable by dragging into the
+  preview, with selection, repositioning, rotation/scale and removal when they
+  do not fit. Persist placements independently per base/mission target. Populate
+  starter assignments for all 38 targets from the asset audit without replacing
+  existing choices. Import dependencies only into the isolated lab, preserving
+  vendor sources and gameplay. Acceptance: actual 3D/sprite drops, removal and
+  reload persistence, populated Assigned lists, mission targeting, existing
+  geometry safety and focused tests/live checks. Implemented one-time starter
+  assignment merge for all38 targets (subsequent unassignments stay removed),
+  staged unchanged Synty art only into the lab, and added static render-only
+  prefab previews plus flat image references. Drag/drop, picking/repositioning,
+  rotate/scale, fit warning, Delete/Remove and room/layout-specific save files
+  are in place. Mission selection now renders normalized authored Stage cells.
+  First focused validation:39/39 Editor tests and3/3 Node checks pass, including
+  real table/sprite rendering, picking, floor-ray mapping, internal-seam fit,
+  oversized rejection warning state, removal, persistence and source-material/
+  active-scene preservation. Final validation remains39/39 Editor tests and3/3
+  Node checks passed. Corrected Synty's saved _Albedo_Map fallback when its
+  source shader is unavailable in this renderer; preview materials/thumbnails
+  now retain the atlas without modifying vendor assets. Live DragPerform adds
+  and saves a real table; object mouse drag moves it without camera orbit;
+  Delete removes and persists removal. Mission Analysis shows its authored six
+  cells/nine assignments, accepts an independent drop and removes it correctly.
+  231 starter assignments across all38 targets use53 distinct candidates.
+  Render evidence: artwork/room-art-lab-proof/placed-props.png. User-created
+  placements made during review are preserved. Separate Editor is in Edit mode,
+  active scene clean, zero test controllers and completed test state cleared.
+  README/REPO_MAP updated; catalog freshness, helper syntax and whitespace pass.
+  Provisional art assumptions: native prefab scale with bottom-center alignment,
+  flat1.5-unit sprite references, advisory bounds-fit warnings, per-layout saves.
+  No canonical architecture changes or unresolved architectural ambiguity.
+  Remaining art work: structural module bounds mapping and detailed furnishing/
+  material tuning; character/animation/raw-model sources remain reference-only.
+
+- [x] Room Art Lab asset panel and reversed pitch (Complete; October 27).
+  Reverse vertical orbit dragging. Add a right-side asset browser populated
+  from the audited local inventory, with Show all / Show used / Show assigned,
+  search and persistent per-room assign/unassign for base and mission rooms.
+  Used means assigned anywhere; Assigned means selected room. Assignments are
+  art shortlists, not physical placement or gameplay configuration. Acceptance:
+  correct filters and room isolation, persistence across reload, all audited
+  base/mission targets available, focused checks and clean isolated Editor.
+  Implemented right-side resizable, searchable/category-filtered virtual asset
+  list from all 3,766 audited sources/sprites and all 38 base/mission targets.
+  Added assign/unassign with atomic automatic saving in the lab's own
+  ProjectSettings/RoomArtAssignments.json; failed saves preserve prior state.
+  Reversed vertical drag pitch. Node projection/coverage checks pass (2/2),
+  including all source paths, disabled status and mission targets. Final Editor
+  suite passes 37/37 with zero failures/skips, covering room-isolated/global
+  filters, deduplication, persistence/reload, last-use removal, search/category
+  intersections, invalid IDs and failed-save preservation. Live drag increases
+  pitch from55 to59 for10 pixels downward; right-side panel verified and captured
+  at artwork/room-art-lab-proof/asset-panel.png. Room selector synchronizes base
+  geometry and clears conflicting room-search text. Both side panels resize;
+  sprite images and source/type icons distinguish candidates; Source reveals
+  files without import. Separate Editor left in Edit mode, clean active scene,
+  cleared completed test state and zero nonpersistent test controllers.
+  README and REPO_MAP updated; helper syntax/catalog freshness/whitespace pass.
+  Provisional UI meaning: Used = assigned anywhere; Assigned = selected target.
+  Mission assignments do not alter the labeled base geometry comparison. No
+  architectural ambiguity or gameplay change. Next art work remains source
+  bounds registration and actual prefab/furnishing placement.
+
+- [x] Room and mission asset suitability audit (Complete; October 27).
+  Inventory available art packs/assets and identify concrete candidates for
+  every authored base room and mission location, including reusable structure,
+  furnishings, characters/props and existing 2D artwork. Record exact source
+  paths, suitability limits and missing coverage. Acceptance: reviewable asset
+  inventory and room-by-room mapping grounded in actual files and mission data;
+  no imports, canonical rule changes or operation of other Unity Editors.
+  Enumerated all three Unity Assets roots, authored sprites/studies and the
+  local Unity package cache. Found 495 Polygon Generic and 496 Prototype
+  prefabs; Generic includes furniture, control props, medical props and extensive
+  outdoor terrain. Identified all 22 base definitions and 16 authored mission
+  locations across Missing Operative and Last Transmission. Cached packages
+  add no separate environment pack beyond the installed Prototype bundle.
+  Delivered docs/room-asset-audit.md with source roots, reusable asset shortlist,
+  all 22 base-room mappings and all 16 mission-stage mappings, character/action
+  recommendations, disabled/reference-only distinctions and specialist 3D gaps.
+  docs/room-asset-inventory.json records 3,702 installed prefab/model/animation
+  source paths across the game/character/lab projects, 64 sprite selections
+  (63 enabled), artwork image-family counts and 14 cached Unity packages.
+  Validation: every room/stage ID covered; every recorded source/sprite path
+  exists; all 49 individually named Synty candidates and 43 existing prop-catalog
+  references resolve; prefab totals verified; focused whitespace checks pass.
+  No runtime tests needed for this documentation/inventory-only audit. No assets
+  imported or modified and no Editor/campaign operated. Assumption: available
+  means locally installed/cached art, not the user's online purchase library.
+  Suitability is based on files, representative prefab hierarchies and existing
+  reviews; individual visual/bounds/material approval remains future work.
+  No canonical architecture conflict. Next: register shared shell bounds and
+  preview the shortlisted furnishings in the isolated Room Art Lab.
+
+- [x] Offworld playtest corrections (Complete; October27). Continue the
+  existing mission: consistent travel/combat facing, persistent defeated Holding
+  guard pose, accessible authored hidden-store contents, one shared action or
+  response hex followed by Actor selection, Analysis lab error diagnosis, and
+  one Gate hex switching between Redial and Extract. Preserve live campaign
+  and saves. Acceptance: focused existing walkthroughs and live UI verification,
+  clean compilation, ordinary Bootstrap restart and restored live state.
+  Initial finding: live errors include a map action lookup of a door absent from
+  the bounded travel projection. Inspect lab stack separately before changing
+  examination rules.
+  Progress: actual cause is empty catalog transition strings treated as door IDs;
+  normalize those and tolerate unsupported presentation-only door references.
+  Shared action/response hex now expands adjacent Actor choices; Gate shows
+  Redial or Extract. Facing is applied after Animator evaluation; Down enters
+  directly to avoid an outgoing Walk transition. Added consolidated live route
+  checks. First run stopped on a test-only Animator hierarchy lookup, corrected.
+  User steering: stop backing up/restoring campaign position. Finish by normal
+  Load and Reset mission in Play; do not restore the captured live snapshot.
+  Focused walkthrough now passes (1/1): shared response expands Actor hexes;
+  Holding guard faces its living target after animation and visibly lowers into
+  Down, retained after reload; Store crate collects through the map; Analysis
+  lab entry/return renders without errors; Redial changes to Extract in the same
+  position. Root guard issue: recognized travel NPC was incorrectly hidden by
+  its parallel combat Field record's unused detection value. Fixed presentation
+  only; hidden non-NPC subjects retain detection gating. Five snapshot tests and
+  authored snapshot freshness pass. Full rescue/base Analysis walkthrough next.
+  Further user clarification: crates remain at their source and are marked for
+  extraction; all marked items return for now, with individual selection and
+  per-item extraction constraints deferred to that wave. Existing Recipe IDs
+  and completion receipts remain save-compatible marks; no crate enters party
+  storage. Field resource examination state stays pinned to its source until
+  extraction. Also fixed extracting after inspecting an unmarked cache: leave
+  it in the field instead of attempting recovery. Updated UI/guide terminology.
+  Actual aim follow-up: root-yaw assertions missed the native rifle mesh's -X
+  barrel axis and camera projection/stretch. Replaced aiming with a post-animation
+  barrel solve including pitch; test now compares the projected muzzle direction
+  against each actual Unit/NPC target. Earlier full route passed base Analysis,
+  then exposed stale test assumptions (instant progress, old20-bubble cache,
+  keeping mission equipment through debug Reset); updating only those checks.
+  Final validation: both focused PlayMode walkthroughs pass (2/2, zero failures)
+  and the five snapshot tests pass. Exact projected barrel direction is checked
+  for all four Units and the Holding guard, plus visible Down/reload, shared
+  Actor selection, Store marking/source retention, lab entry/return, single Gate
+  hex and extraction of all marked crates with medical work still unresolved.
+  Full rescue passes Receiving, staffed Analysis/findings, save/load, equipment,
+  authored Medium cache processing, resource conservation and Reset/redeployment.
+  Narrowly handles the existing offline Editor account warning; gameplay logs
+  remain strict. Snapshot freshness and focused whitespace checks pass.
+  Ordinary Bootstrap Play/Stop/restart and final visual encounter review pass.
+  Test pipeline cancelled; four residual test controllers removed, zero remain.
+  Final normal Load then Reset succeeded at loaded tick19870 with22 rooms;
+  left ordinary Play running at mission briefing. No captured position restored,
+  no persistent save overwritten, and temporary backup/diagnostic files removed.
+  Files: mission map/travel/extraction/debrief presentation, character pool/NPC
+  visibility, CampaignSession/RecoveredCargo/ResourceCargo extraction adapters,
+  the two existing PlayMode test files, playtest guide and this tracker.
+  Provisional policy explicitly requested by user: all marked cargo extracts
+  until extraction selection/constraints are implemented. No authored fixture
+  or schema changed. Remaining broader Offworld work: Office/supervisor dialogue,
+  checkpoint semantics and lab search/loot adapters; second mission still paused.
+
+- [x] Room Art Lab construction tier lights (Complete; October 27).
+  Continue the existing isolated room-art work with the simulator's inset CT
+  lamps: CT1 one amber 8-unit run, CT2 two cyan 6-unit runs, CT3 one purple
+  16-unit run within a centered 24-unit channel. Keep close-fitting housings,
+  bright cores, neutral corners and clear door edges/internal joins. Reuse
+  existing room/tier choices and A/B/C/D comparison; no gameplay rule changes.
+  Acceptance: tier lights visible in the separate preview, correct placement
+  and tier pattern, unchanged structural geometry, focused tests and clean
+  isolated Editor state. Implemented cap fixtures with close-fitting bezels,
+  emissive colors/cores and a visibility toggle. Doors now use neutral material;
+  the fixtures carry the CT signal. Added pattern/placement/render coverage.
+  Final validation: 34/34 Editor tests pass, zero failures/skips; Node projection
+  test passes (1/1), catalog remains current, focused whitespace check passes.
+  Rendered CT1/2/3 evidence saved in artwork/room-art-lab-proof/ct*-lights.png.
+  Separate Editor left on CT3 comparison, four doors 65% open, active scene
+  clean, Play stopped, completed test state cleared and zero nonpersistent test
+  controllers. No other Editor operated. Provisional presentation assumption:
+  fixtures sit on wall caps for overhead visibility and use emission without
+  bloom or cast light. Final visual correction uses pure emission to retain
+  amber/cyan/purple under preview lighting; all 34 tests pass after that change
+  and all three evidence renders were refreshed. Simulator art dimensions/colors are presentation values;
+  no canonical rules changed or architectural ambiguity found. Remaining room
+  art work: Synty prefab mapping/bounds, material/geometry tuning, furnishings.
+
+- [x] Room Art Lab join comparison and split sliding doors (Complete;
+  October27). User requests a combined `A A B / A A B / C C D` preview for
+  joinable rooms: square group, vertical pair, horizontal pair and single.
+  Keep group identity, legal-size checks and open internal joins. Show only
+  authored supported joins. Replace vertical door lifting with two leaves
+  sliding apart horizontally along each wall. Verify comparison topology,
+  split-door geometry at closed/partial/open amounts and isolated-scene safety.
+  Implemented: joinable rooms default to an A/B/C/D comparison with separate
+  colored floors and labels. Each group uses the existing legal-layout validator
+  and perimeter assembler; unsupported groups are omitted. Preview-only0.4-unit
+  spacing distinguishes separate perimeters. Single-layout preview remains
+  available by disabling Show all joins together. Two half-width door leaves
+  now meet at center when closed and slide oppositely along the wall into its
+  sides, with fixed height. Final Editor suite:30 passed,0 failures/skips,
+  including exact requested board, unsupported joins, all four door orientations
+  at closed/partial/open positions and scene cleanup. Rendered comparison and
+  sideways leaf opening verified in the separate Editor; evidence saved to
+  artwork/room-art-lab-proof/join-comparison.png. Active scene remains clean,
+  Play stopped, completed test state cleared, zero test controllers. Node
+  catalog freshness and focused whitespace checks pass. Assumption: user's
+  diagram means four independent groups shown together, not one3x3 room.
+  No canonical rule changes. Next work remains Synty prefab mapping/bounds
+  registration, then wider geometry/material/furnishing tuning.
+
+- [x] Room Art Lab Waves A/B (Complete; October27). Use the supplied
+  `unity_room_art_lab_handoff.md` as the design brief, with the user's permission
+  to reuse good code and remove unsuitable code within this work. Reuse the
+  canonical Unity catalog and actual join validation. Deliver an isolated
+  Edit-mode window, data-derived footprint/CT choices, primitive modular floors,
+  square junctions, three wall segments per exterior cell edge and centered
+  preview doors. Acceptance: all room definitions appear; authored special
+  footprints remain distinct from joined physical rooms; illegal joins/shapes
+  are rejected; shared walls/center posts are absent; active scenes stay clean;
+  focused Editor tests pass. Later prefab mapping/tuning/furnishing waves remain
+  outside this first batch. Inspection found no existing Room Art Lab to delete.
+  Preserve existing character Art Lab and unrelated in-progress work.
+  User clarification: this must be a separate Unity project, `unity/OrionisRoomArtLab`,
+  with independent Editor, caches and preview state. Never operate the game or
+  character Editor for this work. Consume a generated presentation-only catalog;
+  share the existing pure join-geometry rule rather than copy gameplay systems.
+  Progress: separate project/package/settings created; catalog staging and freshness
+  helper projects all room definitions from the existing validated snapshot builder.
+  Extracted the existing pure structural join check; game RoomGroups delegates
+  to it and lab stages that exact source. Added isolated PreviewRenderUtility
+  window, physical/joined selector, CT selector, perimeter assembler, exterior
+  door controls/all16 single-cell combinations, module-list selection and camera.
+  Final validation: 24/24 Editor tests pass, zero failures/skips; Node projection
+  test1/1, freshness, helper syntax and focused diff checks pass. Separate Editor
+  opened and rendered successfully, with22 room types. Fixed the empty-string
+  non-joinable label discovered in visual review. Confirmed clean active scene,
+  stopped Play, no residual test run and zero nonpersistent test controllers.
+  Evidence: artwork/room-art-lab-proof/README.md and joined-2x2.png. Editor left
+  on Analysis joined2x2 with two exterior doors; no game/character Editor operated.
+  Provisional presentation assumption:4-unit cells and2-unit walls, built-in
+  neutral renderer/primitive modules; no canonical scale/material changed.
+  No data conflict: self-large authored footprints and joined physical-room
+  groups are distinct. Next batch is WaveC prefab mapping/bounds registration,
+  then WaveD tuning/debug overlays; furnishings and preset save/apply follow.
+
+- [x] Fix mission Reset / loot extraction and overlapping Offworld UI (Complete; October27).
+  Follow-up: user still cannot extract loot and reports stale character lookups
+  after loading/resetting. Inspect extraction modal/input isolation and character
+  view lifetime; verify extraction through the actual UI into Receiving, plus
+  session replacement without missing-character exceptions. Editor is currently
+  closed, so no live state is available to inspect.
+  Reproduce the construction-balance failure on loaded state. Preserve deposited
+  resources and their accounting when reset removes mission cargo/processing.
+  Acceptance: processed-cache -> save/load -> Reset -> save/load succeeds with
+  unchanged stock, staffing and rooms; no balance validation bypass or duplicate
+  resource credits. Verify the real save and one focused regression only.
+  Cause: Reset removed resource-cargo transaction receipts while preserving the
+  deposited stock, breaking the existing conservation equation. Added a separate
+  archived cargo-credit ledger to ConstructionState; Reset transfers only removed
+  instances' committed credits, and normal construction/clearing/resource updates
+  preserve that ledger. Save schema32 persists it; schemas1–31 start with an empty
+  archive. Stock balance validation stays strict. Preserved live tick19870 backup.
+  Added one processed-cache -> load/reset/save -> further tick/repeated reset test,
+  including unchanged staffing/stock and rejection of stock-only tampering.
+  Prior reset validation: zero compile errors/warnings; both focused checks pass,
+  including the actual loaded campaign. Ordinary Bootstrap restart had zero test
+  controllers; restored the original live campaign exactly at tick19870 without
+  applying Reset to it or writing the persistent save.
+  Follow-up delivered: character-pool replacement explicitly detaches old views;
+  stale marker lookups safely stop instead of indexing missing dictionary keys.
+  Extraction covers the workspace with a separately sorted, raycast-blocking
+  modal; cancel disables it immediately. Debrief supports every collected cache
+  and offers direct navigation to Receiving, with non-overlapping action rows.
+  Validation: zero compile errors/warnings. One focused UI walkthrough passes
+  load/reload, pool invalidation, modal hit testing/cancel/confirm, all four
+  crate/rifle instances arriving and appearing in Receiving, and no gameplay
+  errors. The standalone harness first needed Unity's log scope for its final
+  assertion; corrected harness rerun passes. No persistent player save written.
+  Ordinary Bootstrap Stop/restart verified with zero test controllers. Editor
+  was closed before this follow-up; reopened only the main project for checks.
+  No new game rules or provisional gameplay assumptions. Next: user rechecks
+  their saved mission's extraction; remaining Office/lab scope stays below.
+
+
+- [x] Offworld spatial actions / extraction, contextual planning and mission polish
+  (Complete; October26). Continued after the user's stop with the explicitly
+  requested reset/hex/loot/rock/combat batch. Existing Office/lab runtime work
+  remains the separate active item below; no second mission was started.
+  Delivered: spatial action symbols with descriptions below, cardinal visual
+  routes, combat target facing, Gate expiry/redial gating, extraction manifest
+  and automatic eligible cargo arrival. Contextual planning inspects room/rock/
+  empty cells; valid room actions sit under details, then carousel -> placement
+  -> Build. Data Storage is in Storage. Communications has a provisional shared
+  Command envelope, but mission-acquisition Core definitions remain unauthored.
+  Latest polish: explicit Reset mission clears its cargo, Receiving work and
+  dependent transfers while preserving staffing/teams/base. Store's authored
+  second crate and Human coil rifle collect/extract into Receiving with original
+  IDs. Same-target hexes touch; each eligible Actor has a direct work/response
+  hex, and travel uses a direction-aware vector arrow. Combat has start/cancel
+  confirmation then automatic rounds. Downed rig state survives disabling.
+  Rock plans are deterministic by seed/cell: 8–12 bubbles mixing 1/20 ticks,
+  at least one Technician-I bubble; legacy fixed-eight orders retain their graph.
+  Previews show expected work/yield, and category buttons jump the carousel.
+  Provisional choices: 40% long-bubble selection, guaranteed short/long bubbles,
+  one Technician-I requirement; existing 10 S1 yield retained. No new Tools,
+  hidden Knowledge or technology granted. Recipe policy is in shared data/schema.
+  Fixed a real save gap: Communications lacked a Receiving admission profile
+  after construction. New room types now receive explicit schema-derived profiles
+  with exact legacy fingerprint compatibility. Additional cargo caches likewise
+  use bounded compatibility; physical payloads/old jobs remain unchanged.
+  Validation: eight focused Node checks; two consolidated domain routes (Store
+  collection/Receiving/reset and mixed rock eligibility/save/yield) plus actual
+  campaign migration/roundtrip pass. Live checks cover north arrows, direct Actor
+  actions, combat confirmation/automatic completion, two guards staying Down,
+  touching hex spacing, all five category jumps, rock time/yield and specialist.
+  Final compilation: zero errors/warnings. Ordinary Stop/restart with zero test
+  controllers. Restored the latest tick22551 campaign exactly: 23 rooms, existing
+  cargo, assignments, selection/view, paused 8x clock. No persistent save written.
+  User should click Reset mission once to refresh existing mission loot.
 
 
 - [ ] Finish the current offworld mission presentation and interaction coverage

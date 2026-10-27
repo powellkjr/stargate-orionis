@@ -18,7 +18,8 @@ namespace Orionis.Infrastructure
                 r["roomService"]?.Type != JTokenType.Null || Text(r, "exposureCategory") != "authoredInstanceProperties")
                 throw new FormatException("Invalid cargo processing projection.");
             var step = new InspectionStep(Text(r, "id"), Text(r, "name"), Text(r, "profession"), Int(r, "minimumTier"), Int(r, "durationTicks"), Text(r, "toolService"), null, Text(r, "exposureCategory"));
-            var subjects = cargo["items"].Select(entry =>
+            var entries=cargo["items"].Concat((cargo["additionalCaches"]??new JArray()).SelectMany(c=>c["items"])).ToArray();
+            var subjects = entries.Select(entry =>
             {
                 var item = entry["item"]; var payload = entry["physicalPayload"];
                 var evidence = payload["reality"]?["authoredTags"]?.Values<string>().Distinct().ToArray() ?? Array.Empty<string>();
@@ -31,7 +32,7 @@ namespace Orionis.Infrastructure
             var intake = findings.Select(f =>
             {
                 var id = Text(f, "instanceId"); var condition = Text(f, "condition");
-                if (!cargo["items"].Any(i => (string)i["instance"]?["instanceId"] == id) || !new[] { "UNKNOWN", "INTACT", "DAMAGED" }.Contains(condition) || f["ordinaryStorageSafe"]?.Type != JTokenType.Boolean)
+                if (!entries.Any(i => (string)i["instance"]?["instanceId"] == id) || !new[] { "UNKNOWN", "INTACT", "DAMAGED" }.Contains(condition) || f["ordinaryStorageSafe"]?.Type != JTokenType.Boolean)
                     throw new FormatException("Invalid Receiving finding.");
                 return new HandlingFinding(id, condition, (bool)f["ordinaryStorageSafe"], Text(f, "observation"));
             }).ToList();

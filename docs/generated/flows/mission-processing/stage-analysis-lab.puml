@@ -1,0 +1,70 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "stage-analysis-lab / processing"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "characterize-lab-device\nTarget: Mounted device / lab-mounted-rifle-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 1\nprofession: SCIENTIST\nactionType: INSPECT\nrequiredToolService: SCT1\nchargeCost: 1\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    factId: lab-device-characterized\n  - \n    type: ADD_KNOWLEDGE\n    factId: mcguffin-answer-lab-status\n  - \n    type: ADD_INSTANCE_FINDING\n    instanceId: lab-mounted-rifle-01\n    findingId: LAB_DEVICE_PULSE_CHARACTERIZED\nrequiresKnowledge:\n  - lab-test-observations-known\n  - PULSED_POWER_I\n  - ELECTROMAGNETIC_ACCELERATION_I\nhiddenUntilKnowledge:\n  - lab-search-completed\nrequiresLocated: true\nrequiresState:\n  type: ITEM_STATE\n  instanceId: lab-mounted-rifle-01\n  field: mountState\n  equals: MOUNTED\ncreatesDiscoveryId: discovery-lab-device-behavior\noutcomeText: Compared the local logs with repeatable measurements:\noutput diverges during the rig extraction cycle. The pulse behavior\nis characterized and a Research question is recorded. The device\nremains unidentified; its maker and full capabilities are unknown." as n3178bd0a74e6ec50c49d #EAF1F8
+rectangle "Knowledge / lab-test-observations-known" as n581584db47e0836ff000 #FFF1CC
+rectangle "Knowledge / PULSED_POWER_I\nStarting Knowledge" as n530eedecc2ef778f8230 #FFF1CC
+rectangle "Knowledge / ELECTROMAGNETIC_ACCELERATION_I\nStarting Knowledge" as nfc5dbeed8af368b6f135 #FFF1CC
+rectangle "Knowledge / lab-search-completed" as nf2ece9923a6c930f013b #FFF1CC
+rectangle "State prerequisite\ntype: ITEM_STATE\ninstanceId: lab-mounted-rifle-01\nfield: mountState\nequals: MOUNTED" as n506372ef72fea2bd1c7c #FFF1CC
+rectangle "Knowledge / lab-device-characterized" as nfe6359c14ce8fdb21ced #FFF1CC
+rectangle "Knowledge / mcguffin-answer-lab-status" as nd80ef5e9841fd19065b0 #FFF1CC
+rectangle "State prerequisite\ntype: KNOWLEDGE_PRESENT\nfactId: lab-search-completed" as n0978fe3495cc304ff907 #FFF1CC
+rectangle "Discovery question\ndiscoveryId: discovery-lab-device-behavior\nsourceInstanceIds:\n  - lab-mounted-rifle-01\nevidenceRequirements:\n  - \n    type: KNOWLEDGE_PRESENT\n    factId: lab-device-characterized\nquestion: What produces the repeatable electromagnetic pulse, and\nwhy does output diverge during the rig extraction cycle?\ncontentStatus: PROVISIONAL_BENCHMARK" as n0d6e74c2e52cd113ccd5 #D9EEDB
+rectangle "detach-lab-device\nTarget: Mounted device / lab-mounted-rifle-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\ndurationMinutes: 60\nminimumTier: 2\nprofession: TECHNICIAN\nactionType: COLLECT\nrequiredToolService: TECH_SERVICE_II\nchargeCost: 1\neffects:\n  - \n    type: SET_ITEM_STATE\n    instanceId: lab-mounted-rifle-01\n    field: mountState\n    value: DETACHED\n  - \n    type: SET_RECOVERY_STATE\n    instanceId: lab-mounted-rifle-01\n    value: ELIGIBLE_FOR_EVAC\nrequiresKnowledge:\n  - lab-device-characterized\n  - lab-rig-interface-known\nhiddenUntilKnowledge:\n  []\nrequiresState:\n  type: ITEM_STATE\n  instanceId: lab-mounted-rifle-01\n  field: mountState\n  equals: MOUNTED\noutcomeText: Isolated the rig connections and detached the same\ncomplete device safely. It is eligible for Receiving recovery, with\nits field findings preserved." as na755a8f46ca5f4c4796e #EAF1F8
+rectangle "Knowledge / lab-rig-interface-known" as n429154a6aeb9b129a5f1 #FFF1CC
+rectangle "secure-lab-device\nTarget: Mounted device / lab-mounted-rifle-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 0\nprofession: UNTRAINED\nactionType: COLLECT\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: CARRY_TARGET\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nrequiresState:\n  type: ITEM_STATE\n  instanceId: lab-mounted-rifle-01\n  field: mountState\n  equals: DETACHED" as nf0dd97c22e50a1d09743 #EAF1F8
+rectangle "State prerequisite\ntype: ITEM_STATE\ninstanceId: lab-mounted-rifle-01\nfield: mountState\nequals: DETACHED" as n116fea3187d97f3d77a5 #FFF1CC
+rectangle "search-lab-station-1\nTarget: Instrument benches / lab-search-station-1\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\nprofession: UNTRAINED\nminimumTier: 0\ndurationMinutes: 60\nactionType: SEARCH\nrequiredToolService: \nchargeCost: 0\neffects:\n  []\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nworkGroupId: search-analysis-lab" as n980da0f7064290610128 #EAF1F8
+rectangle "search-lab-station-2\nTarget: Test log cabinets / lab-search-station-2\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\nprofession: UNTRAINED\nminimumTier: 0\ndurationMinutes: 60\nactionType: SEARCH\nrequiredToolService: \nchargeCost: 0\neffects:\n  []\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nworkGroupId: search-analysis-lab" as n7a41c8070138187f42e5 #EAF1F8
+rectangle "search-lab-station-3\nTarget: Rig parts shelves / lab-search-station-3\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\nprofession: UNTRAINED\nminimumTier: 0\ndurationMinutes: 60\nactionType: SEARCH\nrequiredToolService: \nchargeCost: 0\neffects:\n  []\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nworkGroupId: search-analysis-lab" as nc5f612bc22c2477ed27e #EAF1F8
+rectangle "search-lab-station-4\nTarget: Sample racks / lab-search-station-4\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_machine_standard\nimplemented: true\nprofession: UNTRAINED\nminimumTier: 0\ndurationMinutes: 60\nactionType: SEARCH\nrequiredToolService: \nchargeCost: 0\neffects:\n  []\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nworkGroupId: search-analysis-lab" as n09230277bbe313232906 #EAF1F8
+rectangle "create-lab-report\nTarget: Report terminal / lab-report-terminal-01\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_terminal_standard\nimplemented: true\ndurationMinutes: 3\nminimumTier: 1\nprofession: SCIENTIST\nactionType: INSPECT\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: SET_TARGET_STATE\n    field: reportCreated\n    value: true\n  - \n    type: ADD_TO_PARTY_STORAGE\n    instanceId: lab-report-01\nrequiresKnowledge:\n  - lab-device-characterized\nhiddenUntilKnowledge:\n  []\noutcomeText: Compiled a detailed report from the characterized\ndevice findings. The report is now in shared party inventory." as nd9a172022869b3a28dc8 #EAF1F8
+rectangle "obs-lab-test-logs\nPassive observation\nminimumTier: 1\nminimumPerception: 0\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - lab-test-observations-known\nstageId: stage-analysis-lab\nsubjectInstanceId: lab-mounted-rifle-01\nprofession: SCIENTIST\ntext: The local test logs contain repeated field pulses and output\nanomalies. They have useful measurements, but no consistent\nexplanation.\nsetsDetectionState:\n  instanceId: lab-mounted-rifle-01\n  value: LOCATED\nrequiresState:\n  type: KNOWLEDGE_PRESENT\n  factId: lab-search-completed" as na1df4baa79528cc4efd4 #DAEDEB
+rectangle "obs-lab-rig-interface\nPassive observation\nminimumTier: 1\nminimumPerception: 0\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  []\nrevealsFacts:\n  - lab-rig-interface-known\nstageId: stage-analysis-lab\nsubjectInstanceId: lab-mounted-rifle-01\nprofession: TECHNICIAN\ntext: The device has separable rig connections. Safe isolation needs\na verified account of the pulse cycle.\nrequiresState:\n  type: KNOWLEDGE_PRESENT\n  factId: lab-search-completed" as n66460e067b195403324c #DAEDEB
+rectangle "obs-lab-tactical-role\nPassive observation\nminimumTier: 1\nminimumPerception: 0\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  - lab-device-characterized\nrevealsFacts:\n  - lab-device-tactical-role-known\nstageId: stage-analysis-lab\nsubjectInstanceId: lab-mounted-rifle-01\nprofession: SOLDIER\ntext: The characterized pulse and aligned output suggest a directed\nweapon role. Its operating limits still need controlled testing.\nrequiresState:\n  type: KNOWLEDGE_PRESENT\n  factId: lab-search-completed" as n91765d8df33f1d0c1b61 #DAEDEB
+rectangle "Knowledge / lab-device-tactical-role-known" as nd436c56cbd21b2cba9ea #FFF1CC
+rectangle "search-analysis-lab\nstageId: stage-analysis-lab\nplayerLabel: Group search · 1 hour\nrecipeInstanceIds:\n  - search-lab-station-1\n  - search-lab-station-2\n  - search-lab-station-3\n  - search-lab-station-4\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    factId: lab-search-completed\n  - \n    type: SET_DETECTION_STATE\n    instanceId: lab-mounted-rifle-01\n    value: LOCATED" as nd4fbe8bf59329cd04deb #E5DAF5
+n581584db47e0836ff000 ..> n3178bd0a74e6ec50c49d : "requires"
+n530eedecc2ef778f8230 ..> n3178bd0a74e6ec50c49d : "requires"
+nfc5dbeed8af368b6f135 ..> n3178bd0a74e6ec50c49d : "requires"
+nf2ece9923a6c930f013b ..> n3178bd0a74e6ec50c49d : "visible when known"
+n506372ef72fea2bd1c7c ..> n3178bd0a74e6ec50c49d : "requires state"
+n3178bd0a74e6ec50c49d --> nfe6359c14ce8fdb21ced : "produces"
+n3178bd0a74e6ec50c49d --> nd80ef5e9841fd19065b0 : "produces"
+n0978fe3495cc304ff907 ..> n3178bd0a74e6ec50c49d : "target visibility"
+n3178bd0a74e6ec50c49d --> n0d6e74c2e52cd113ccd5 : "records question"
+nfe6359c14ce8fdb21ced ..> na755a8f46ca5f4c4796e : "requires"
+n429154a6aeb9b129a5f1 ..> na755a8f46ca5f4c4796e : "requires"
+n506372ef72fea2bd1c7c ..> na755a8f46ca5f4c4796e : "requires state"
+n0978fe3495cc304ff907 ..> na755a8f46ca5f4c4796e : "target visibility"
+n116fea3187d97f3d77a5 ..> nf0dd97c22e50a1d09743 : "requires state"
+n0978fe3495cc304ff907 ..> nf0dd97c22e50a1d09743 : "target visibility"
+nfe6359c14ce8fdb21ced ..> nd9a172022869b3a28dc8 : "requires"
+n0978fe3495cc304ff907 ..> na1df4baa79528cc4efd4 : "requires state"
+na1df4baa79528cc4efd4 --> n581584db47e0836ff000 : "reveals"
+n0978fe3495cc304ff907 ..> n66460e067b195403324c : "requires state"
+n66460e067b195403324c --> n429154a6aeb9b129a5f1 : "reveals"
+nfe6359c14ce8fdb21ced ..> n91765d8df33f1d0c1b61 : "requires"
+n0978fe3495cc304ff907 ..> n91765d8df33f1d0c1b61 : "requires state"
+n91765d8df33f1d0c1b61 --> nd436c56cbd21b2cba9ea : "reveals"
+n980da0f7064290610128 --> nd4fbe8bf59329cd04deb : "parallel station completion"
+n7a41c8070138187f42e5 --> nd4fbe8bf59329cd04deb : "parallel station completion"
+nc5f612bc22c2477ed27e --> nd4fbe8bf59329cd04deb : "parallel station completion"
+n09230277bbe313232906 --> nd4fbe8bf59329cd04deb : "parallel station completion"
+nd4fbe8bf59329cd04deb --> nf2ece9923a6c930f013b : "produces"
+na755a8f46ca5f4c4796e --> n116fea3187d97f3d77a5 : "sets matching state"
+@enduml

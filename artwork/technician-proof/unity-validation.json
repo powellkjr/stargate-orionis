@@ -1,0 +1,12 @@
+{
+    "unity": "6000.5.2f1",
+    "bones": 18,
+    "vertices": 6018,
+    "idleSeconds": 2.0,
+    "walkSeconds": 1.0,
+    "idleMeshMotion": 0.01013117004185915,
+    "walkMeshMotion": 0.7307304739952087,
+    "idleAnimatorMotion": 0.00695409718900919,
+    "walkAnimatorMotion": 0.7307303547859192,
+    "passed": true
+}

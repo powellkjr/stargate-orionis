@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "base-execution.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "contentStatus",
+    "responseRoomDefinitionId",
+    "actorOrder",
+    "baseResponse",
+    "continuity",
+    "toolOrder",
+    "roomServiceScope",
+    "groupToolProviders",
+    "notes"
+  ],
+  "properties": {
+    "format": {
+      "const": "orionis-base-execution-1"
+    },
+    "contentStatus": {
+      "const": "PROVISIONAL_PLAYTEST"
+    },
+    "responseRoomDefinitionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actorOrder": {
+      "const": [
+        "DESTINATION_STAFF",
+        "GROUP_STAFF",
+        "LOCAL_RESPONSE"
+      ]
+    },
+    "baseResponse": {
+      "const": "UNAVAILABLE_FOR_ORDINARY_WORK"
+    },
+    "continuity": {
+      "const": "SAME_ACTOR_RESUMES_NO_SUBSTITUTION"
+    },
+    "toolOrder": {
+      "const": [
+        "EQUIPPED_PERSONAL",
+        "CONFIGURED_GROUP"
+      ]
+    },
+    "roomServiceScope": {
+      "const": "DESTINATION_GROUP_ONLY"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "groupToolProviders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "sourceTheoryId",
+          "roomService",
+          "toolService",
+          "unlimited"
+        ],
+        "properties": {
+          "sourceTheoryId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "roomService": {
+            "type": "string",
+            "minLength": 1
+          },
+          "toolService": {
+            "type": "string",
+            "minLength": 1
+          },
+          "unlimited": {
+            "const": true
+          }
+        }
+      }
+    }
+  }
+}

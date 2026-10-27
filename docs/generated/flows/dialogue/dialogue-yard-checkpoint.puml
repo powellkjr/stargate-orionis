@@ -1,0 +1,33 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-yard-checkpoint"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-yard-checkpoint\nparticipants:\n  left: ACTIVE_SGC_SPEAKER\n  right: guard-yard-01\nconditions:\n  - \n    type: KNOWLEDGE_PRESENT\n    factId: operative-located\nstartNodeId: yard-checkpoint" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "yard-checkpoint\nspeaker: guard-yard-01\nside: RIGHT\ntext: What do you need from this checkpoint?" as ne9ae2b186102b6897051 #EAF1F8
+rectangle "yard-clear-diplomat\ntext: We need a quiet medical transfer. Keep this checkpoint clear.\nsource: DIPLOMAT\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-yard-01\n    delta: -20\n  - \n    type: MARK_ROUTE_SOCIAL_PASSAGE\n    stageId: stage-outer-yard\n    value: true\nendConversation: true\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1" as n354bbcc76df1658d18b1 #E5DAF5
+rectangle "yard-clear-soldier\ntext: Stand clear. We are taking responsibility for this transfer.\nsource: SOLDIER\neffects:\n  - \n    type: MARK_ROUTE_SOCIAL_PASSAGE\n    stageId: stage-outer-yard\n    value: true\nendConversation: true\nrequirements:\n  profession: SOLDIER\n  minimumTier: 2" as n61a422ddd865dc691ffe #E5DAF5
+rectangle "yard-clear-combat\ntext: We will clear the checkpoint by force.\nsource: NEUTRAL\neffects:\n  - \n    type: START_HOSTILE_INCIDENT\n    incidentId: incident-yard-guards\nendConversation: true" as n0fc65970b29ae04c21f2 #E5DAF5
+rectangle "yard-clear-leave\ntext: Nothing yet.\nsource: NEUTRAL\neffects:\n  []\nendConversation: true" as na20bf0cd8c9791907b54 #E5DAF5
+ncced28c6dc3f99c2396a --> ne9ae2b186102b6897051 : "default start"
+ne9ae2b186102b6897051 --> n354bbcc76df1658d18b1 : "choose response, then qualified Actor"
+n354bbcc76df1658d18b1 --> n361e48d0308f20e32dba
+ne9ae2b186102b6897051 --> n61a422ddd865dc691ffe : "choose response, then qualified Actor"
+n61a422ddd865dc691ffe --> n361e48d0308f20e32dba
+ne9ae2b186102b6897051 --> n0fc65970b29ae04c21f2 : "choose response, then qualified Actor"
+n0fc65970b29ae04c21f2 --> n361e48d0308f20e32dba
+ne9ae2b186102b6897051 --> na20bf0cd8c9791907b54 : "choose response, then qualified Actor"
+na20bf0cd8c9791907b54 --> n361e48d0308f20e32dba
+@enduml

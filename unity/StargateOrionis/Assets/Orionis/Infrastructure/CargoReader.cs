@@ -28,7 +28,8 @@ namespace Orionis.Infrastructure
                     !JToken.DeepEquals(p["state"], i["state"]) || !JToken.DeepEquals(p["reality"], i["reality"]) || !JToken.DeepEquals(p["knowledge"], i["knowledge"]))
                     throw new FormatException("Cargo projection changed physical state or Knowledge.");
             }
-            return new CargoDefinition(Text(j, "containerId"), Text(j, "label"), Text(j, "stageId"), Text(j, "guardId"), Int(j, "suspicionDelta"), req, items, payloads);
+            var extras=(j["additionalCaches"]??new JArray()).Select(c=>{var entries=(JArray)c["items"];var collection=c["collection"].ToObject<FieldActionRecipe>();if(collection==null||!mission.Travel.Stages.Any(s=>s.Id==collection.StageId)||collection.Ticks!=1||collection.Effects.Count!=0)throw new FormatException("Invalid extra cargo collection.");return new CargoCache{ContainerId=Text(c,"containerId"),Label=Text(c,"label"),StageId=collection.StageId,Recipe=collection,Items=ReceivingReader.Items(entries),Payloads=entries.ToDictionary(p=>Text(p["instance"],"instanceId"),p=>p["physicalPayload"].ToString(Formatting.None))};}).ToArray();
+            return new CargoDefinition(Text(j, "containerId"), Text(j, "label"), Text(j, "stageId"), Text(j, "guardId"), Int(j, "suspicionDelta"), req, items, payloads,extras);
         }
     }
 }

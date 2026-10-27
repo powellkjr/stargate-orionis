@@ -34,6 +34,30 @@ namespace Orionis.Domain
         public DoorRecipe(string id, string doorId, string profession, int minimumTier, int minimumPerception, string service, int chargeCost, int ticks)
             : base(id, profession, minimumTier, minimumPerception, service, chargeCost, ticks) { DoorId = doorId; }
     }
+    public sealed class FieldActionEffect
+    {
+        public string Type { get; }
+        public string InstanceId { get; }
+        public string Field { get; }
+        public bool Value { get; }
+        public string StateValue {get;}
+        public FieldActionEffect(string type,string instanceId,string field=null,bool value=false,string stateValue=null){Type=type;InstanceId=instanceId;Field=field;Value=value;StateValue=stateValue;}
+    }
+    public sealed class FieldActionGate
+    {public string InstanceId {get;}public string Field {get;}public bool Value {get;}public bool InitialValue {get;}public FieldActionGate(string instanceId,string field,bool value,bool initialValue){InstanceId=instanceId;Field=field;Value=value;InitialValue=initialValue;}}
+    public sealed class FieldActionRecipe : FieldRequirements
+    {
+        public string StageId { get; }
+        public string Label { get; }
+        public string OutcomeText {get;}
+        public FieldActionGate Gate {get;}
+        public IReadOnlyList<ConversationEffect> SocialEffects {get;}
+        public IReadOnlyList<FieldActionEffect> Effects { get; }
+        public IReadOnlyList<string> RequiresKnowledge {get;}public IReadOnlyList<string> HiddenUntilKnowledge {get;}
+        public string WorkGroupId {get;}public FieldValueCondition Condition {get;}
+        public FieldActionRecipe(string id,string stageId,string label,string profession,int minimumTier,int minimumPerception,string service,int chargeCost,int ticks,IEnumerable<FieldActionEffect> effects,IEnumerable<ConversationEffect> socialEffects=null,FieldActionGate gate=null,string outcomeText=null,IEnumerable<string> requiresKnowledge=null,IEnumerable<string> hiddenUntilKnowledge=null,string workGroupId=null,FieldValueCondition condition=null):base(id,profession,minimumTier,minimumPerception,service,chargeCost,ticks)
+        {StageId=stageId;Label=label;Effects=effects.ToList().AsReadOnly();SocialEffects=(socialEffects??Array.Empty<ConversationEffect>()).ToArray();Gate=gate;OutcomeText=outcomeText;RequiresKnowledge=(requiresKnowledge??Array.Empty<string>()).ToArray();HiddenUntilKnowledge=(hiddenUntilKnowledge??Array.Empty<string>()).ToArray();WorkGroupId=workGroupId;Condition=condition;}
+    }
     public sealed class FieldObservation
     {
         public string Id { get; }
@@ -63,12 +87,14 @@ namespace Orionis.Domain
     }
     public sealed class MissionFieldDefinition
     {
+        public IReadOnlyList<FieldActionRecipe> Actions { get; }
         public IReadOnlyList<FieldSubject> Subjects { get; }
         public IReadOnlyList<DoorRecipe> DoorRecipes { get; }
         public IReadOnlyList<FieldObservation> Observations { get; }
         public IReadOnlyList<FieldObjective> Objectives { get; }
-        public MissionFieldDefinition(IEnumerable<FieldSubject> subjects, IEnumerable<DoorRecipe> doorRecipes, IEnumerable<FieldObservation> observations, IEnumerable<FieldObjective> objectives)
-        { Subjects = subjects.ToList().AsReadOnly(); DoorRecipes = doorRecipes.ToList().AsReadOnly(); Observations = observations.ToList().AsReadOnly(); Objectives = objectives.ToList().AsReadOnly(); }
+        public FieldWorkflows Workflows {get;}
+        public MissionFieldDefinition(IEnumerable<FieldSubject> subjects, IEnumerable<DoorRecipe> doorRecipes, IEnumerable<FieldObservation> observations, IEnumerable<FieldObjective> objectives,IEnumerable<FieldActionRecipe> actions=null,FieldWorkflows workflows=null)
+        { Actions=(actions??Array.Empty<FieldActionRecipe>()).ToList().AsReadOnly();Subjects = subjects.ToList().AsReadOnly(); DoorRecipes = doorRecipes.ToList().AsReadOnly(); Observations = observations.ToList().AsReadOnly(); Objectives = objectives.ToList().AsReadOnly(); Workflows=workflows??new FieldWorkflows();}
     }
     public sealed class FieldWork
     {
@@ -77,8 +103,10 @@ namespace Orionis.Domain
         public string ActorId { get; }
         public string ToolId { get; }
         public long StartedTick { get; }
-        public FieldWork(string recipeId, string stageId, string actorId, string toolId, long startedTick)
-        { RecipeId = recipeId; StageId = stageId; ActorId = actorId; ToolId = toolId; StartedTick = startedTick; }
+        public bool ToolChargesRestored { get; }
+        public string GroupId {get;}public IReadOnlyList<FieldAssignment> Assignments {get;}
+        public FieldWork(string recipeId, string stageId, string actorId, string toolId, long startedTick, bool toolChargesRestored=false,string groupId=null,IEnumerable<FieldAssignment> assignments=null)
+        { RecipeId = recipeId; StageId = stageId; ActorId = actorId; ToolId = toolId; StartedTick = startedTick; ToolChargesRestored=toolChargesRestored;GroupId=groupId;Assignments=(assignments??Array.Empty<FieldAssignment>()).ToArray(); }
     }
     public sealed class MissionFieldState
     {
@@ -91,7 +119,7 @@ namespace Orionis.Domain
         { Subjects = subjects.ToList().AsReadOnly(); Objectives = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(objectives));
           Observed = observed.ToList().AsReadOnly(); Work = work; Completed = completed.ToList().AsReadOnly(); }
     }
-    public static class MissionField
+    public static partial class MissionField
     {
         public static MissionFieldState Initial(MissionFieldDefinition d) => d == null ? null :
             new MissionFieldState(d.Subjects, d.Objectives.ToDictionary(o => o.Id, o => o.InitialState), Array.Empty<string>(), null, Array.Empty<FieldWork>());
@@ -127,18 +155,28 @@ namespace Orionis.Domain
         private static void Ready(CampaignState state)
         { MissionCombat.RequireFree(state, true); if (state.Expedition == null || state.Expedition.GateChoicePending || state.Expedition.Travel?.SceneId != null) throw new InvalidOperationException("Finish the Gate choice/conversation first."); }
         public static FieldRequirements Requirements(CampaignState state, string recipeId) =>
-            (FieldRequirements)state.Base.Mission.Travel.Field.DoorRecipes.SingleOrDefault(x => x.Id == recipeId) ?? MissionCare.Recipe(state, recipeId)?.Requirements ??
+            (FieldRequirements)state.Base.Mission.Travel.Field.DoorRecipes.SingleOrDefault(x => x.Id == recipeId) ?? state.Base.Mission.Travel.Field.Actions.SingleOrDefault(x=>x.Id==recipeId) ?? state.Base.Cargo?.Caches.Select(c=>c.Recipe).OfType<FieldActionRecipe>().SingleOrDefault(r=>r.Id==recipeId) ?? MissionCare.Recipe(state, recipeId)?.Requirements ??
             (MissionRescue.IsRecipe(state, recipeId) ? state.Base.Rescue.Requirements : state.Base.Cargo?.Reveal.Id == recipeId ? state.Base.Cargo.Reveal : null);
+        public static string ActionBlocker(CampaignState s,FieldActionRecipe action)
+        {
+            if(!ActionVisible(s,action))return "HIDDEN";
+            if(!action.RequiresKnowledge.All(s.Expedition.Travel.Knowledge.Contains))return "KNOWLEDGE_REQUIRED";
+            if(action.Condition!=null&&InstanceValue(s,action.Condition.InstanceId,action.Condition.Field)!=action.Condition.Value)return "PREPARATION_REQUIRED";
+            if(action.Gate==null)return null;
+            var value=s.Expedition.Travel.Field.Completed.Select(w=>s.Base.Mission.Travel.Field.Actions.SingleOrDefault(a=>a.Id==w.RecipeId)).Where(a=>a!=null).SelectMany(a=>a.Effects).LastOrDefault(e=>e.Type=="SET_INSTANCE_STATE"&&e.InstanceId==action.Gate.InstanceId&&e.Field==action.Gate.Field)?.Value??action.Gate.InitialValue;
+            return value==action.Gate.Value?null:"Complete the required local preparation first.";
+        }
         public static CampaignState Start(CampaignState state, string recipeId, string actorId, string toolId)
         {
             Ready(state); var t = state.Expedition.Travel; var f = t.Field;
             var r = Requirements(state, recipeId) ?? throw new InvalidOperationException("Unknown field Recipe.");
+            if(r is FieldActionRecipe groupMember&&groupMember.WorkGroupId!=null)throw new InvalidOperationException("Start this Recipe through its authored work group.");
             var care = MissionCare.Recipe(state, recipeId);
             var rescue = MissionRescue.IsRecipe(state, recipeId);
             var cargo = state.Base.Cargo?.Reveal.Id == recipeId;
             var door = state.Base.Mission.Travel.Transitions.SingleOrDefault(x => x.Id == (r as DoorRecipe)?.DoorId);
             if (f.Work != null || f.Completed.Any(w => w.RecipeId == recipeId) ||
-                (cargo ? state.Expedition.StageId != state.Base.Cargo.StageId : rescue ? !MissionRescue.CanDepart(state) : care != null ? care.StageId != state.Expedition.StageId : door == null || t.OpenDoors.Contains(door.Id) || door.Destination(state.Expedition.StageId) == null) ||
+                (r is FieldActionRecipe action ? action.StageId!=state.Expedition.StageId||ActionBlocker(state,action)!=null : cargo ? state.Expedition.StageId != state.Base.Cargo.StageId : rescue ? !MissionRescue.CanDepart(state) : care != null ? care.StageId != state.Expedition.StageId : door == null || t.OpenDoors.Contains(door.Id) || door.Destination(state.Expedition.StageId) == null) ||
                 !Candidates(state, r).Contains((actorId, toolId)))
                 throw new InvalidOperationException("Field work requires a local unfinished target, qualified Actor and charged, undamaged equipped Tool.");
             return Replace(state, With(t, new MissionFieldState(f.Subjects, f.Objectives.ToDictionary(p => p.Key, p => p.Value), f.Observed,
@@ -154,6 +192,8 @@ namespace Orionis.Domain
         {
             Ready(state); var t = state.Expedition.Travel; var f = t.Field; var w = f.Work ?? throw new InvalidOperationException("No field work is active.");
             var r = Requirements(state, w.RecipeId);
+            if(r is FieldActionRecipe checkedAction&&ActionBlocker(state,checkedAction)!=null)throw new InvalidOperationException("Field work prerequisites changed.");
+            if(w.GroupId!=null)ValidateGroup(state,w);
             if (w.StageId != state.Expedition.StageId || !Candidates(state, r).Contains((w.ActorId, w.ToolId))) throw new InvalidOperationException("Sticky Actor or reserved Tool is unavailable.");
             var candidate = state;
             for (int i = 0; i < r.Ticks; i++) candidate = ReceivingWork.AdvanceTick(candidate);
@@ -168,9 +208,14 @@ namespace Orionis.Domain
             var delta = cargo ? state.Base.Cargo.SuspicionDelta : care?.SuspicionDelta ?? 0;
             var npcs = t.Npcs.Select(n => n.Id == guardId && MissionCombat.GuardState(state, n.Id, "NEUTRAL") == "NEUTRAL" ?
                 new MissionNpc(n.Id, n.StageId, n.Label, n.Disposition, Math.Min(100, n.Suspicion + delta), n.Hostility) : n);
+            var finished=w.Assignments.Count==0?new[]{w}:w.Assignments.Select((a,i)=>new FieldWork(a.RecipeId,w.StageId,a.ActorId,null,w.StartedTick,groupId:w.GroupId,assignments:i==0?w.Assignments:null));
             var next = new TravelState(t.Visits.ToDictionary(p => p.Key, p => p.Value), r is DoorRecipe doorRecipe ? t.OpenDoors.Concat(new[] { doorRecipe.DoorId }).Distinct() : t.OpenDoors, t.Knowledge, npcs,
-                t.StartedConversations, t.SceneId, t.NodeId, t.History, new MissionFieldState(rescue ? f.Subjects.Select(x => MissionRescue.SendToGate(state, x)) : f.Subjects, f.Objectives.ToDictionary(p => p.Key, p => p.Value), f.Observed, null, f.Completed.Concat(new[] { w })));
-            return MissionCare.Escalate(Replace(candidate, next, party));
+                t.StartedConversations, t.SceneId, t.NodeId, t.History, new MissionFieldState(rescue ? f.Subjects.Select(x => MissionRescue.SendToGate(state, x)) : f.Subjects, f.Objectives.ToDictionary(p => p.Key, p => p.Value), f.Observed, null, f.Completed.Concat(finished)));
+            var updated=Replace(candidate,next,party);var actionRecipe=r as FieldActionRecipe;
+            if(actionRecipe!=null&&actionRecipe.SocialEffects.Count>0)updated=Replace(updated,MissionTravel.Apply(updated.Expedition.Travel,actionRecipe.SocialEffects));
+            if(w.GroupId!=null)updated=Replace(updated,MissionTravel.Apply(updated.Expedition.Travel,state.Base.Mission.Travel.Field.Workflows.Groups.Single(g=>g.Id==w.GroupId).Effects));
+            updated=Replace(updated,Refresh(updated,updated.Expedition.StageId,updated.Expedition.Travel));
+            return ResourceCargo.ApplyFieldAction(MissionCare.Escalate(updated),actionRecipe);
         }
         public static bool EffectAllowed(TravelState travel, ConversationEffect effect) => effect.ConditionInstanceId == null ||
             travel.Field?.Subjects.Any(s => s.Id == effect.ConditionInstanceId && effect.ConditionField == "combatState" && s.Combat == effect.ConditionEquals) == true;
@@ -212,7 +257,7 @@ namespace Orionis.Domain
         {
             var e = state.Expedition;
             return new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, state.Transfers,
-                new ExpeditionState(e.MissionId, e.StageId, e.StartedTick, e.GateChoicePending, e.GateOpen, e.ConnectionOpenedTick, party ?? e.Party, t, e.Combat, e.ExtractedTick, teamId: e.TeamId), teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+                new ExpeditionState(e.MissionId, e.StageId, e.StartedTick, e.GateChoicePending, e.GateOpen, e.ConnectionOpenedTick, party ?? e.Party, t, e.Combat, e.ExtractedTick, teamId: e.TeamId), teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
         }
         public static void Validate(CampaignState state)
         {
@@ -248,27 +293,31 @@ namespace Orionis.Domain
             if (f.Completed.Select(w => w.RecipeId).Distinct().Count() != f.Completed.Count) throw new InvalidOperationException("Duplicate completed field work.");
             foreach (var w in f.Completed.Concat(f.Work == null ? Array.Empty<FieldWork>() : new[] { f.Work }))
             {
+                if(w.GroupId!=null)ValidateGroup(state,w);
+                else if(w.Assignments.Count!=0)throw new InvalidOperationException("Assignments require an authored work group.");
                 var r = Requirements(state, w.RecipeId);
+                if(r is FieldActionRecipe member&&member.WorkGroupId!=w.GroupId)throw new InvalidOperationException("Work group identity does not match its authored bubble.");
                 var care = MissionCare.Recipe(state, w.RecipeId);
                 var rescue = MissionRescue.IsRecipe(state, w.RecipeId);
             var cargo = state.Base.Cargo?.Reveal.Id == w.RecipeId;
                 var actor = state.Expedition.Party.SingleOrDefault(u => u.UnitId == w.ActorId);
                 var tool = actor?.Tools.SingleOrDefault(x => x.InstanceId == w.ToolId);
                 var door = state.Base.Mission.Travel.Transitions.SingleOrDefault(x => x.Id == (r as DoorRecipe)?.DoorId);
-                if (r == null || actor == null || (rescue || cargo ? w.ToolId != null : tool == null || tool.Damaged || !tool.Services.Contains(r.Service)) || ProfessionTier(state, w.ActorId, r.Profession) < r.MinimumTier ||
-                    actor.Perception < r.MinimumPerception || (cargo ? state.Base.Cargo.StageId != w.StageId : rescue ? state.Base.Rescue.StageId != w.StageId || !t.Knowledge.Contains("operative-contacted") || !MissionCare.Resolved(state) || MissionEvacuation.SecureRoute(state, w.StageId) == null : care != null ? care.StageId != w.StageId : door == null || door.Destination(w.StageId) == null) || !t.Visits.ContainsKey(w.StageId) ||
+                if (r == null || actor == null || (string.IsNullOrEmpty(r.Service) ? w.ToolId != null : tool == null || tool.Damaged || !tool.Services.Contains(r.Service)) || ProfessionTier(state, w.ActorId, r.Profession) < r.MinimumTier ||
+                    actor.Perception < r.MinimumPerception || (r is FieldActionRecipe action ? action.StageId!=w.StageId : cargo ? state.Base.Cargo.StageId != w.StageId : rescue ? state.Base.Rescue.StageId != w.StageId || !t.Knowledge.Contains("operative-contacted") || !MissionCare.Resolved(state) || MissionEvacuation.SecureRoute(state, w.StageId) == null : care != null ? care.StageId != w.StageId : door == null || door.Destination(w.StageId) == null) || !t.Visits.ContainsKey(w.StageId) ||
                     w.StartedTick < state.Expedition.StartedTick || w.StartedTick > state.Clock.ElapsedTicks ||
                     (ReferenceEquals(w, f.Work) ? w.StageId != state.Expedition.StageId || t.SceneId != null || !MissionCombat.CanAct(state, w.ActorId) ||
-                        f.Completed.Any(done => done.RecipeId == w.RecipeId) || r is DoorRecipe && t.OpenDoors.Contains(door.Id) || !rescue && !cargo && tool.Charges < r.ChargeCost :
+                        f.Completed.Any(done => done.RecipeId == w.RecipeId) || r is DoorRecipe && t.OpenDoors.Contains(door.Id) || tool!=null && tool.Charges < r.ChargeCost :
                         r is DoorRecipe && !t.OpenDoors.Contains(door.Id) || w.StartedTick + r.Ticks > state.Clock.ElapsedTicks)) throw new InvalidOperationException("Invalid field Actor/Tool/work reference.");
             }
             foreach (var door in state.Base.Mission.Travel.Transitions.Where(x => x.InitialState == "LOCKED"))
                 if (t.OpenDoors.Contains(door.Id) != f.Completed.Any(w => d.DoorRecipes.Any(r => r.Id == w.RecipeId && r.DoorId == door.Id)))
                     throw new InvalidOperationException("Locked doorway lacks committed Recipe evidence.");
-            long availableTick = state.Expedition.StartedTick;
+            long availableTick = state.Expedition.StartedTick;string cohort=null;long cohortStarted=-1;
             foreach (var w in f.Completed)
             {
-                if (w.StartedTick < availableTick) throw new InvalidOperationException("Completed field work overlaps earlier work.");
+                if (w.StartedTick < availableTick&&!(w.GroupId!=null&&w.GroupId==cohort&&w.StartedTick==cohortStarted)) throw new InvalidOperationException("Completed field work overlaps earlier work.");
+                cohort=w.GroupId;cohortStarted=w.StartedTick;
                 availableTick = checked(w.StartedTick + Requirements(state, w.RecipeId).Ticks);
             }
             if (f.Work != null && f.Work.StartedTick < availableTick) throw new InvalidOperationException("Active work overlaps committed work.");
@@ -276,7 +325,8 @@ namespace Orionis.Domain
                 foreach (var tool in member.Tools)
                 {
                     var initial = state.Base.Mission.Personnel.Single(u => u.UnitId == member.UnitId).Tools.Single(t => t.InstanceId == tool.InstanceId);
-                    if (f.Completed.Where(w => w.ToolId == tool.InstanceId).Sum(w => Requirements(state, w.RecipeId).ChargeCost) > initial.Charges - tool.Charges)
+                    if (f.Work?.ToolChargesRestored==true||f.Completed.Any(w=>w.ToolChargesRestored&&(w.ToolId==null||Requirements(state,w.RecipeId).ChargeCost==0)))throw new InvalidOperationException("Refill history requires completed Tool-consuming work.");
+                    if (f.Completed.Where(w => w.ToolId == tool.InstanceId&&!w.ToolChargesRestored).Sum(w => Requirements(state, w.RecipeId).ChargeCost) > initial.Charges - tool.Charges)
                         throw new InvalidOperationException("Completed work lacks its committed Tool charges.");
                 }
         }

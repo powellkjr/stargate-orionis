@@ -29,6 +29,13 @@ namespace Orionis.Infrastructure
             public List<ReceivingRecord> receiving;
             public List<TransferRecord> transfers;
             public string missionFingerprint;
+            public string resourceProcessingFingerprint;
+            public string personnelRecoveryFingerprint;
+            public JObject roomCores;
+            public string roomCoreFingerprint;
+            public JObject workforce;
+            public string baseExecutionFingerprint;
+            public JArray completedWork;
             public string combatFingerprint;
             public string careFingerprint;
             public string rescueFingerprint;
@@ -42,6 +49,7 @@ namespace Orionis.Infrastructure
             public List<PersonnelConditionRecord> personnel;
             public string constructionFingerprint;
             public Dictionary<string, double> supplyStock;
+            [JsonProperty(NullValueHandling=NullValueHandling.Ignore)] public Dictionary<string,double> archivedCargoSupply;
             public List<ConstructionRecord> constructionSites;
             public List<string> excavatedCells;
             public List<ClearingRecord> clearings;
@@ -53,6 +61,7 @@ namespace Orionis.Infrastructure
             [JsonRequired] public string recipeId;
             [JsonRequired] public int col, row;
             [JsonRequired] public long startedTick;
+            public double? creditedSupply;
             [JsonRequired] public List<ClearingBubbleRecord> bubbles;
             [JsonProperty(Required = Required.AllowNull)] public long? completedTick;
         }
@@ -70,6 +79,7 @@ namespace Orionis.Infrastructure
         }
         private sealed class ConstructionRecord
         {
+            public List<ClearingBubbleRecord> bubbles;
             [JsonRequired] public string roomId, definitionId, actorId, supplyClass, maintenanceRoomId, securityActorId;
             public int? fromTier;
             [JsonRequired] public int tier, col, row;
@@ -86,11 +96,14 @@ namespace Orionis.Infrastructure
             public HandlingRecord examination;
             public string equippedUnitId;
             public string storageLocationId, custodyRoomId;
+            public JObject resourceProcess;
+            public string fieldStageId;
             [JsonRequired] public long recoveredTick;
             [JsonProperty(Required = Required.AllowNull)] public string roomId;
         }
         private sealed class PersonnelConditionRecord
         {
+            public string bedRoomId;
             [JsonRequired] public string unitId;
             [JsonRequired] public int health, stamina, endurance;
             [JsonRequired] public List<ToolRecord> tools;
@@ -127,6 +140,7 @@ namespace Orionis.Infrastructure
             [JsonRequired] public long startedTick;
             [JsonProperty(Required = Required.AllowNull)] public long? endedTick;
             [JsonRequired] public int rounds;
+            public uint? targetSeed;
         }
         private sealed class MemberRecord
         {
@@ -162,6 +176,8 @@ namespace Orionis.Infrastructure
             [JsonRequired] public string instanceId;
             [JsonRequired] public string roomId;
             [JsonRequired] public bool paused;
+            [JsonProperty(NullValueHandling=NullValueHandling.Ignore)] public long? startedTick;
+            [JsonProperty(NullValueHandling=NullValueHandling.Ignore)] public long? completedTick;
             [JsonRequired] public List<ProgressRecord> progress;
         }
         private sealed class ProgressRecord
@@ -203,6 +219,7 @@ namespace Orionis.Infrastructure
         }
         private readonly BootstrapSnapshot fixture;
         private readonly string fingerprint;
+        private readonly string previousDefinitionFingerprint;
         private readonly string receivingFingerprint;
         private readonly string missionFingerprint;
         private readonly string combatFingerprint;
@@ -230,6 +247,7 @@ namespace Orionis.Infrastructure
             fixture = BootstrapReader.Parse(bootstrapJson);
             previousExpansion = fixture.previousExpansionSnapshot == null ? null : new CampaignSaveCodec(fixture.previousExpansionSnapshot.ToString());
             previousCapacity = fixture.previousCapacitySnapshot == null ? null : new CampaignSaveCodec(fixture.previousCapacitySnapshot.ToString());
+            if(fixture.previousRoomDefinitions!=null){var previous=JsonConvert.SerializeObject(new{fixture.baseName,roomDefinitions=fixture.previousRoomDefinitions.ToObject<List<BootstrapSnapshot.Definition>>(),fixture.rooms,fixture.units});using var previousHash=SHA256.Create();previousDefinitionFingerprint=BitConverter.ToString(previousHash.ComputeHash(Encoding.UTF8.GetBytes(previous))).Replace("-", "").ToLowerInvariant();}
             var content = JsonConvert.SerializeObject(new { fixture.baseName, fixture.roomDefinitions, fixture.rooms, fixture.units });
             using var hash = SHA256.Create();
             fingerprint = BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(content))).Replace("-", "").ToLowerInvariant();
@@ -242,6 +260,7 @@ namespace Orionis.Infrastructure
             // Older crate definitions had no authored nameResolution. This compatibility
             // variant changes presentation only; physical payload/provenance still validate.
             var beforeNaming = fixture.missionCargo?.DeepClone() as JObject;
+            beforeNaming?.Property("additionalCaches")?.Remove();
             foreach (var pair in beforeNaming?["items"] ?? new JArray())
                 if (pair["item"]?["nameResolution"]?["previousName"] != null)
                 {
@@ -266,17 +285,25 @@ namespace Orionis.Infrastructure
             // PersonnelScope during validation; do not serialize new construction under an old scope.
             var record = new Record
             {
-                format = "orionis-prototype-save", schemaVersion = session.Campaign.Base.Construction == null ? 20 : 23, fixtureFingerprint = fingerprint,
+                completedWork=data.Execution==null?null:JArray.FromObject(session.Campaign.CompletedWork),
+                workforce=data.Execution==null?null:JObject.FromObject(session.Campaign.Workforce),
+                baseExecutionFingerprint=data.Execution==null?null:HashProjection(fixture.baseExecution),
+                roomCores=session.Campaign.Cores==null?null:JObject.FromObject(session.Campaign.Cores),
+                roomCoreFingerprint=session.Campaign.Cores==null?null:HashProjection(fixture.roomCoreSetup),
+                personnelRecoveryFingerprint = data.Construction==null ? null : HashProjection(fixture.personnelRecovery),
+                resourceProcessingFingerprint = data.Construction==null ? null : HashProjection(ResourceProjection(data.ResourceProcessing)),
+                format = "orionis-prototype-save", schemaVersion = data.Execution!=null ? 34 : session.Campaign.Cores!=null ? 29 : session.Campaign.Base.Construction == null ? 20 : fixture.roomConstruction?["execution"]?["generalWorkShare"]==null ? 27 : 28, fixtureFingerprint = fingerprint,
+                archivedCargoSupply=data.Execution==null?null:session.Campaign.Construction.ArchivedCargoSupply.ToDictionary(p=>p.Key,p=>p.Value),
                 constructionFingerprint = fixture.roomConstruction == null ? null : ConstructionFingerprint(),
                 supplyStock = session.Campaign.Construction?.Supply.ToDictionary(p => p.Key, p => p.Value),
                 roomGroups = session.Campaign.Construction?.Groups.Select(g => new GroupRecord { id = g.Id, primaryChild = g.Primary, secondaryChild = g.Secondary, children = new List<string> { g.Primary, g.Secondary }, active = g.Active }).ToList(),
                 excavatedCells = session.Campaign.Construction?.Excavated.ToList(),
-                clearings = session.Campaign.Construction?.Clearings.Select(o => new ClearingRecord { recipeId=o.RecipeId, col=o.Col, row=o.Row, startedTick=o.StartedTick, completedTick=o.CompletedTick, bubbles=o.Bubbles.Select(b=>new ClearingBubbleRecord { actorId=b.ActorId,ticks=b.Ticks,completedTick=b.CompletedTick }).ToList() }).ToList(),
-                constructionSites = session.Campaign.Construction?.Sites.Select(site => new ConstructionRecord { roomId = site.RoomId, definitionId = site.DefinitionId, tier = site.Tier, fromTier = site.FromTier, col = site.Col, row = site.Row, actorId = site.ActorId, maintenanceRoomId = site.MaintenanceRoomId, securityActorId = site.SecurityActorId, startedTick = site.StartedTick, durationTicks = site.DurationTicks, workedTicks = site.WorkedTicks, supplyCost = site.SupplyCost, supplyClass = site.SupplyClass, paused = site.Paused, completedTick = site.CompletedTick }).ToList(),
-                personnel = session.Campaign.Personnel.Select(p => new PersonnelConditionRecord { unitId = p.UnitId, health = p.Health, stamina = p.Stamina, endurance = p.Endurance,
+                clearings = session.Campaign.Construction?.Clearings.Select(o => new ClearingRecord { recipeId=o.RecipeId, col=o.Col, row=o.Row, startedTick=o.StartedTick, completedTick=o.CompletedTick, creditedSupply=o.CreditedSupply, bubbles=o.Bubbles.Select(b=>new ClearingBubbleRecord { actorId=b.ActorId,ticks=b.Ticks,completedTick=b.CompletedTick }).ToList() }).ToList(),
+                constructionSites = session.Campaign.Construction?.Sites.Select(site => new ConstructionRecord { roomId = site.RoomId, definitionId = site.DefinitionId, tier = site.Tier, fromTier = site.FromTier, col = site.Col, row = site.Row, actorId = site.ActorId, maintenanceRoomId = site.MaintenanceRoomId, securityActorId = site.SecurityActorId, startedTick = site.StartedTick, durationTicks = site.DurationTicks, workedTicks = site.WorkedTicks, supplyCost = site.SupplyCost, supplyClass = site.SupplyClass, paused = site.Paused, completedTick = site.CompletedTick, bubbles=site.Bubbles.Select(b=>new ClearingBubbleRecord {actorId=b.ActorId,ticks=b.Ticks,completedTick=b.CompletedTick}).ToList() }).ToList(),
+                personnel = session.Campaign.Personnel.Select(p => new PersonnelConditionRecord { unitId = p.UnitId, bedRoomId=p.BedRoomId, health = p.Health, stamina = p.Stamina, endurance = p.Endurance,
                     tools = p.Tools.Select(t => new ToolRecord { instanceId = t.InstanceId, kitId = t.KitId, slot = t.Slot, charges = t.Charges, damaged = t.Damaged }).ToList() }).ToList(),
                 cargoFingerprint = cargoFingerprint, handlingFingerprint = handlingFingerprint, processingFingerprint = processingFingerprint, equipmentFingerprint = equipmentFingerprint,
-                cargo = session.Campaign.Cargo.Select(i => new CargoRecord { id = i.Id, sourceContainerId = i.SourceContainerId, sourceMissionId = i.SourceMissionId, recoveredTick = i.RecoveredTick, payload = i.Payload, roomId = i.RoomId, storageLocationId = i.StorageLocationId, custodyRoomId = i.CustodyRoomId, retained = i.Retained, equippedUnitId = i.EquippedUnitId, examination = i.Examination == null ? null : new HandlingRecord { legacyStorageFinding = i.Examination.LegacyStorageFinding, roomId = i.Examination.RoomId, primaryRoomId = i.Examination.PrimaryRoomId, actorId = i.Examination.ActorId, startedTick = i.Examination.StartedTick, ticks = i.Examination.Ticks, paused = i.Examination.Paused, completedTick = i.Examination.CompletedTick }, handling = i.Handling == null ? null : new HandlingRecord { roomId = i.Handling.RoomId, primaryRoomId = i.Handling.PrimaryRoomId, actorId = i.Handling.ActorId, startedTick = i.Handling.StartedTick, ticks = i.Handling.Ticks, paused = i.Handling.Paused, completedTick = i.Handling.CompletedTick } }).ToList(),
+                cargo = session.Campaign.Cargo.Select(i => new CargoRecord { id = i.Id, sourceContainerId = i.SourceContainerId, sourceMissionId = i.SourceMissionId, recoveredTick = i.RecoveredTick, payload = i.Payload, roomId = i.RoomId, resourceProcess = RecipeProcessSave.Write(i.ResourceWork,session.Campaign.Base.ResourceProcessing), fieldStageId=i.FieldStageId, storageLocationId = i.StorageLocationId, custodyRoomId = i.CustodyRoomId, retained = i.Retained, equippedUnitId = i.EquippedUnitId, examination = i.Examination == null ? null : new HandlingRecord { legacyStorageFinding = i.Examination.LegacyStorageFinding, roomId = i.Examination.RoomId, primaryRoomId = i.Examination.PrimaryRoomId, actorId = i.Examination.ActorId, startedTick = i.Examination.StartedTick, ticks = i.Examination.Ticks, paused = i.Examination.Paused, completedTick = i.Examination.CompletedTick }, handling = i.Handling == null ? null : new HandlingRecord { roomId = i.Handling.RoomId, primaryRoomId = i.Handling.PrimaryRoomId, actorId = i.Handling.ActorId, startedTick = i.Handling.StartedTick, ticks = i.Handling.Ticks, paused = i.Handling.Paused, completedTick = i.Handling.CompletedTick } }).ToList(),
                 teams = session.Campaign.Teams.Select(t => new TeamRecord { id = t.Id, designation = t.Designation, roomId = t.RoomId, members = t.Members.ToList() }).ToList(),
                 baseName = data.BaseName, randomAlgorithm = RandomState.Algorithm,
                 randomSeed = session.Campaign.Random.Seed, randomState = session.Campaign.Random.Value,
@@ -284,7 +311,7 @@ namespace Orionis.Infrastructure
                 assignments = session.Campaign.Assignments.Select(a => new AssignmentRecord { unitId = a.UnitId, roomInstanceId = a.RoomInstanceId }).ToList(),
                 receivingFingerprint = receivingFingerprint,
                 receiving = session.Campaign.Receiving.Select(o => new ReceivingRecord { instanceId = o.InstanceId, roomId = o.RoomId,
-                    paused = o.Paused, progress = o.Progress.Select(p => new ProgressRecord { stepId = p.StepId, actorId = p.ActorId, ticks = p.Ticks }).ToList() }).ToList(),
+                    paused = o.Paused, startedTick=o.StartedTick,completedTick=o.CompletedTick,progress = o.Progress.Select(p => new ProgressRecord { stepId = p.StepId, actorId = p.ActorId, ticks = p.Ticks }).ToList() }).ToList(),
                 transfers = session.Campaign.Transfers.Select(t => new TransferRecord { unitId = t.UnitId, sourceRoomId = t.SourceRoomId,
                     destinationRoomId = t.DestinationRoomId, timing = t.Timing.ToString(), requestedTick = t.RequestedTick,
                     workInstanceId = t.WorkInstanceId, workStepId = t.WorkStepId }).ToList(),
@@ -297,7 +324,7 @@ namespace Orionis.Infrastructure
                     gateChoicePending = session.Campaign.Expedition.GateChoicePending, gateOpen = session.Campaign.Expedition.GateOpen,
                     travel = TravelSave.Write(MissionTravel.Current(session.Campaign)),
                     combat = data.Combat == null ? null : (session.Campaign.Expedition.Combat?.Battles ?? Array.Empty<BattleRecord>()).Select(b => new Battle
-                    { incidentId = b.IncidentId, outcome = b.Outcome, startedTick = b.StartedTick, endedTick = b.EndedTick, rounds = b.Rounds }).ToList(),
+                    { incidentId = b.IncidentId, outcome = b.Outcome, startedTick = b.StartedTick, endedTick = b.EndedTick, rounds = b.Rounds, targetSeed=b.TargetSeed }).ToList(),
                     party = session.Campaign.Expedition.Party.Select(p => new MemberRecord { unitId = p.UnitId, startingHealth = p.StartingHealth ?? PersonnelCondition.MaximumHealth(session.Campaign), perception = p.Perception, stamina = p.Stamina,
                         endurance = p.Endurance, equipment = p.Equipment.Select(g => new EquipmentRecord { instanceId = g.InstanceId, slotId = g.Slot, name = g.Name, damage = g.Damage, protection = g.Protection }).ToList(), tools = p.Tools.Select(t => new ToolRecord { instanceId = t.InstanceId, kitId = t.KitId, slot = t.Slot, charges = t.Charges, damaged = t.Damaged }).ToList() }).ToList()
                 },
@@ -313,9 +340,25 @@ namespace Orionis.Infrastructure
             Deserialize(json); // Validate the complete candidate before any filesystem write.
             return json;
         }
-        private string ConstructionFingerprint(bool legacyClearing = false)
+        // Recognized historical graphs are immutable: started work keeps its bubble IDs,
+        // Actor assignments and committed/pending outputs across subsequent saves.
+        private JObject ResourceProjection(ResourceProcessingCatalog catalog)
+        {
+            if(catalog==null)return fixture.resourceProcessing;
+            foreach(var projection in new[]{fixture.resourceProcessing,fixture.previousResourceProcessing})
+            {
+                if(projection==null)continue;
+                var candidate=ResourceProcessingReader.Read(projection);
+                if(candidate.RecipeId==catalog.RecipeId && candidate.Bubbles.Select(b=>b.Id).SequenceEqual(catalog.Bubbles.Select(b=>b.Id)))return projection;
+            }
+            throw new FormatException("Unrecognized resource processing graph.");
+        }
+        private static string HashProjection(JToken token){using var hash=SHA256.Create();return BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(token?.ToString(Formatting.None)??"null"))).Replace("-", "").ToLowerInvariant();}
+        private string ConstructionFingerprint(bool legacyClearing = false,bool legacyGeneral=false,bool legacyVariation=false)
         {
             var policy=fixture.roomConstruction?.DeepClone();
+            if((legacyVariation||legacyClearing||legacyGeneral)&&policy?["terrain"] is JObject variation)variation.Remove("variation");
+            if(legacyGeneral && policy?["execution"] is JObject execution)execution.Remove("generalWorkShare");
             if(legacyClearing && policy?["terrain"] is JObject terrain)terrain.Remove("clearingRecipe");
             using var hash = SHA256.Create();
             return BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(policy?.ToString(Formatting.None) ?? "null"))).Replace("-", "").ToLowerInvariant();
@@ -333,6 +376,7 @@ namespace Orionis.Infrastructure
             }
             throw new FormatException("No authored personnel progression scope matches this save.");
         }
+        private JObject PreviousOffworldMission(string fingerprint)=>new[]{fixture.previousOffworldMission,fixture.previousOffworldInteractionMission,fixture.previousLabMission}.FirstOrDefault(p=>p!=null&&HashProjection(p)==fingerprint);
         public SavedSession Deserialize(string json)
         {
             var token = JToken.Parse(json, new JsonLoadSettings { DuplicatePropertyNameHandling = DuplicatePropertyNameHandling.Error });
@@ -344,23 +388,35 @@ namespace Orionis.Infrastructure
                     && value.Value.Type != JTokenType.Integer) throw new FormatException("Save requires an integer: " + value.Name);
             if (root.Descendants().OfType<JProperty>().Any(p => (p.Name == "endedTick" || p.Name == "extractedTick" || p.Name == "completedTick") && p.Value.Type != JTokenType.Null && p.Value.Type != JTokenType.Integer)) throw new FormatException("Combat end tick requires an integer or null.");
             foreach (var value in root.DescendantsAndSelf().OfType<JProperty>())
-                if (new[] { "gateChoicePending", "gateOpen", "damaged", "paused", "active" }.Contains(value.Name) && value.Value.Type != JTokenType.Boolean)
+                if (new[] { "gateChoicePending", "gateOpen", "damaged", "paused", "active", "toolChargesRestored" }.Contains(value.Name) && value.Value.Type != JTokenType.Boolean)
                     throw new FormatException("Save requires a boolean: " + value.Name);
             if (root.Descendants().OfType<JProperty>().Any(p => p.Name == "fromTier" && p.Value.Type != JTokenType.Null && p.Value.Type != JTokenType.Integer)) throw new FormatException("Upgrade tier requires an integer or null.");
+            if(root.Descendants().OfType<JProperty>().Any(p=>p.Name=="targetSeed"&&p.Value.Type!=JTokenType.Null&&p.Value.Type!=JTokenType.Integer))throw new FormatException("Combat seed must be an integer or null.");
             var record = token.ToObject<Record>(JsonSerializer.Create(Settings));
+            bool catalogExtension=previousDefinitionFingerprint!=null&&record.schemaVersion<=31&&record.fixtureFingerprint==previousDefinitionFingerprint;
             if (record.rooms.Any(r => r == null) || record.units.Any(u => u == null))
                 throw new FormatException("Save contains a null room or Unit.");
-            if (record.format != "orionis-prototype-save" || record.schemaVersion < 1 || record.schemaVersion > 23)
-                throw new FormatException("Unsupported save format/version. This prototype reads versions 1 through 23.");
+            if (record.format != "orionis-prototype-save" || record.schemaVersion < 1 || record.schemaVersion > 34)
+                throw new FormatException("Unsupported save format/version. This prototype reads versions 1 through 34.");
+            if(record.schemaVersion>=32 ? record.archivedCargoSupply==null : record.archivedCargoSupply!=null)throw new FormatException("Invalid archived cargo Supply ledger for save version.");
+            if(record.schemaVersion>=31 ? record.completedWork==null : record.completedWork!=null)throw new FormatException("Invalid completed-work journal for save version.");
+            if(record.schemaVersion>=30 ? record.workforce==null||record.baseExecutionFingerprint!=HashProjection(fixture.baseExecution) : record.workforce!=null||record.baseExecutionFingerprint!=null)throw new FormatException("Invalid base execution authoring or Response posture.");
+            if(record.schemaVersion>=29 ? record.roomCores==null||record.roomCoreFingerprint!=HashProjection(fixture.roomCoreSetup)&&!(record.schemaVersion<=31&&fixture.previousRoomCoreSetup!=null&&record.roomCoreFingerprint==HashProjection(fixture.previousRoomCoreSetup)) : record.roomCores!=null||record.roomCoreFingerprint!=null)throw new FormatException("Invalid Core state or authoring fingerprint.");
+            bool historicalResource = fixture.previousResourceProcessing!=null && record.resourceProcessingFingerprint==HashProjection(fixture.previousResourceProcessing);
+            if(record.schemaVersion>=24 ? record.resourceProcessingFingerprint!=HashProjection(fixture.resourceProcessing)&&!historicalResource : record.resourceProcessingFingerprint!=null||record.cargo?.Any(i=>i.resourceProcess!=null||i.fieldStageId!=null)==true)throw new FormatException("Resource cargo authoring does not match this save version.");
+            // Unstarted caches adopt Medium; any persistent process retains its original graph.
+            var resourceProjection=historicalResource && record.cargo?.Any(i=>i.resourceProcess!=null)==true ? fixture.previousResourceProcessing : fixture.resourceProcessing;
+            if(record.schemaVersion>=26 ? record.personnelRecoveryFingerprint!=HashProjection(fixture.personnelRecovery) : record.personnelRecoveryFingerprint!=null||record.personnel?.Any(p=>p.bedRoomId!=null)==true)throw new FormatException("Invalid personnel recovery authoring or bed records for save version.");
+            if(record.schemaVersion>=25 ? record.clearings==null||record.clearings.Any(o=>o?.creditedSupply==null) : record.clearings?.Any(o=>o?.creditedSupply!=null)==true)throw new FormatException("Invalid clearing Supply credits for save version.");
             if(record.schemaVersion>=23 ? record.clearings==null || record.clearings.Any(o=>o==null||o.bubbles==null||o.bubbles.Any(b=>b==null)) : record.clearings?.Count>0)throw new FormatException("Invalid clearing Recipe records for save version.");
             if (record.schemaVersion >= 22 ? record.roomGroups == null || record.roomGroups.Any(g => g == null || g.children == null || !g.children.SequenceEqual(new[] { g.primaryChild, g.secondaryChild })) || ((JArray)root["constructionSites"]).Any(site => ((JObject)site).Property("fromTier") == null) : record.roomGroups?.Count > 0 || record.constructionSites?.Any(site => site?.fromTier != null) == true)
                 throw new FormatException("Invalid Room Group or upgrade records for the save version.");
-            if (record.schemaVersion >= 21 ? record.excavatedCells == null || record.excavatedCells.Any(c => c == null) || record.supplyStock == null || record.constructionSites == null || record.constructionSites.Any(site => site == null) || fixture.roomConstruction == null || record.constructionFingerprint != ConstructionFingerprint() && (record.schemaVersion >= 23 || record.constructionFingerprint != ConstructionFingerprint(true)) : record.constructionSites?.Count > 0)
+            if (record.schemaVersion >= 21 ? record.excavatedCells == null || record.excavatedCells.Any(c => c == null) || record.supplyStock == null || record.constructionSites == null || record.constructionSites.Any(site => site == null) || fixture.roomConstruction == null || record.constructionFingerprint != ConstructionFingerprint() && !(record.schemaVersion<=31&&record.constructionFingerprint==ConstructionFingerprint(false,false,true)) && !(record.schemaVersion<=27 && record.constructionFingerprint==ConstructionFingerprint(false,true)) && (record.schemaVersion >= 23 || record.constructionFingerprint != ConstructionFingerprint(true,true)) : record.constructionSites?.Count > 0)
                 throw new FormatException("Invalid or unsupported construction save state.");
             if (record.schemaVersion >= 20 ? record.personnel == null || record.personnel.Any(p => p == null || p.tools == null || p.tools.Any(t => t == null)) ||
                 record.expedition?.party.Any(p => p.startingHealth == null) == true : record.personnel?.Count > 0)
                 throw new FormatException("Invalid personnel condition records for the save version.");
-            if (previousExpansion != null && record.fixtureFingerprint != fingerprint)
+            if (previousExpansion != null && record.fixtureFingerprint != fingerprint && !catalogExtension)
             {
                 var prior = previousExpansion.Deserialize(json);
                 var source = BootstrapReader.Parse(JsonConvert.SerializeObject(fixture));
@@ -370,9 +426,11 @@ namespace Orionis.Infrastructure
                 source.mission["personnel"] = progression.mission["personnel"].DeepClone(); source.receiving["units"] = progression.receiving["units"].DeepClone();
                 var campaign = prior.Campaign;
                 var expandedData = BootstrapReader.Read(JsonConvert.SerializeObject(source));
-                return new SavedSession(RoomConstruction.SeedStaff(new CampaignState(expandedData, campaign.Random, campaign.Clock, campaign.Assignments, campaign.Receiving, campaign.Transfers, campaign.Expedition, campaign.Teams, campaign.Cargo, campaign.Personnel)), prior.Selection);
+                var expandedExpedition=campaign.Expedition;
+                if(expandedExpedition?.Travel!=null){var travel=TravelSave.Read(TravelSave.Write(expandedExpedition.Travel),expandedData.Mission,expandedNpcIds:campaign.Base.Mission.Travel.Npcs.Select(n=>n.Id).ToArray(),priorSubjects:campaign.Base.Mission.Travel.Field.Subjects.Select(s=>s.Id).ToArray());expandedExpedition=new ExpeditionState(expandedExpedition.MissionId,expandedExpedition.StageId,expandedExpedition.StartedTick,expandedExpedition.GateChoicePending,expandedExpedition.GateOpen,expandedExpedition.ConnectionOpenedTick,expandedExpedition.Party,travel,expandedExpedition.Combat,expandedExpedition.ExtractedTick,expandedExpedition.TeamId);}
+                return new SavedSession(RoomConstruction.SeedStaff(new CampaignState(expandedData, campaign.Random, campaign.Clock, campaign.Assignments, campaign.Receiving, campaign.Transfers, expandedExpedition, campaign.Teams, campaign.Cargo, campaign.Personnel, cores: campaign.Cores, workforce: campaign.Workforce, completedWork: campaign.CompletedWork)), prior.Selection);
             }
-            if (previousCapacity != null && record.fixtureFingerprint != fingerprint)
+            if (previousCapacity != null && record.fixtureFingerprint != fingerprint && !catalogExtension)
             {
                 var prior = previousCapacity.Deserialize(json);
                 var source = BootstrapReader.Parse(JsonConvert.SerializeObject(fixture));
@@ -384,9 +442,9 @@ namespace Orionis.Infrastructure
                 source.receiving["units"] = progression.receiving["units"].DeepClone();
                 var dataWithCapacities = BootstrapReader.Read(JsonConvert.SerializeObject(source));
                 var campaign = prior.Campaign;
-                return new SavedSession(new CampaignState(dataWithCapacities, campaign.Random, campaign.Clock, campaign.Assignments, campaign.Receiving, campaign.Transfers, campaign.Expedition, campaign.Teams, campaign.Cargo, campaign.Personnel, campaign.Construction), prior.Selection);
+                return new SavedSession(new CampaignState(dataWithCapacities, campaign.Random, campaign.Clock, campaign.Assignments, campaign.Receiving, campaign.Transfers, campaign.Expedition, campaign.Teams, campaign.Cargo, campaign.Personnel, campaign.Construction, cores: campaign.Cores, workforce: campaign.Workforce, completedWork: campaign.CompletedWork), prior.Selection);
             }
-            if (previousProgression != null && record.fixtureFingerprint != fingerprint)
+            if (previousProgression != null && record.fixtureFingerprint != fingerprint && !catalogExtension)
                 return previousProgression.Deserialize(json); // Exact old scope validates all state/fingerprints before publication.
             if (record.schemaVersion <= (fixture.previousBaseMaxVersion ?? 11) && fixture.previousBaseSnapshot != null && record.fixtureFingerprint != fingerprint)
             {
@@ -401,7 +459,7 @@ namespace Orionis.Infrastructure
                     branch = u.Branch, color = u.Color, perception = u.Perception, stamina = u.Stamina, endurance = u.Endurance }).ToList();
                 var dataWithRoom = BootstrapReader.Read(JsonConvert.SerializeObject(migrated));
                 return new SavedSession(new CampaignState(dataWithRoom, prior.Campaign.Random, prior.Campaign.Clock, prior.Campaign.Assignments,
-                    prior.Campaign.Receiving, prior.Campaign.Transfers, prior.Campaign.Expedition, prior.Campaign.Teams), prior.Selection);
+                    prior.Campaign.Receiving, prior.Campaign.Transfers, prior.Campaign.Expedition, prior.Campaign.Teams, cores: prior.Campaign.Cores, workforce: prior.Campaign.Workforce, completedWork: prior.Campaign.CompletedWork), prior.Selection);
             }
             if (record.schemaVersion >= 18 ? record.equipmentFingerprint != equipmentFingerprint || record.cargo == null ||
                 ((JArray)root["cargo"]).Any(i => ((JObject)i).Property("equippedUnitId") == null || i["equippedUnitId"].Type != JTokenType.Null && i["equippedUnitId"].Type != JTokenType.String) ||
@@ -421,12 +479,12 @@ namespace Orionis.Infrastructure
                 ((JArray)root["cargo"]).Any(i => i?["retained"]?.Type != JTokenType.Boolean || ((JObject)i).Property("handling") == null) :
                 record.cargo?.Any(i => i != null && (i.handling != null || i.retained == true)) == true)
                 throw new FormatException("Handling/retention records do not match the save schema.");
-            if (record.schemaVersion >= 15 ? record.cargoFingerprint != cargoFingerprint && record.cargoFingerprint != previousCargoNamingFingerprint || record.cargo == null || record.cargo.Any(i => i == null) : record.cargo?.Count > 0)
+            if (record.schemaVersion >= 15 ? record.cargoFingerprint != cargoFingerprint && record.cargoFingerprint != previousCargoNamingFingerprint && !(record.schemaVersion<=33&&fixture.previousLabCargo!=null&&record.cargoFingerprint==HashProjection(fixture.previousLabCargo)) && !(record.schemaVersion<=32&&fixture.previousSafeCargo!=null&&record.cargoFingerprint==HashProjection(fixture.previousSafeCargo)) && !(record.schemaVersion<=31&&fixture.previousMissionCargo!=null&&record.cargoFingerprint==HashProjection(fixture.previousMissionCargo)) || record.cargo == null || record.cargo.Any(i => i == null) : record.cargo?.Count > 0)
                 throw new FormatException("Cargo state/definitions do not match the save schema.");
             if (record.schemaVersion >= 12 ? record.teams == null || record.teams.Any(t => t == null || t.members == null) ||
                 record.expedition != null && ((JObject)root["expedition"]).Property("teamId") == null : record.teams != null || record.expedition?.teamId != null)
                 throw new FormatException("SG team records do not match the save schema.");
-            if (record.schemaVersion >= 9 ? root.Property("combatFingerprint") == null || record.combatFingerprint != combatFingerprint : record.combatFingerprint != null || record.expedition?.combat != null)
+            if (record.schemaVersion >= 9 ? root.Property("combatFingerprint") == null || record.combatFingerprint != combatFingerprint && !(record.schemaVersion<=31&&fixture.previousOffworldCombat!=null&&record.combatFingerprint==HashProjection(fixture.previousOffworldCombat)) : record.combatFingerprint != null || record.expedition?.combat != null)
                 throw new FormatException("Combat state/definitions do not match the save schema.");
             if (record.schemaVersion >= 10 ? root.Property("careFingerprint") == null || record.careFingerprint != careFingerprint : record.careFingerprint != null ||
                 record.expedition?.travel?["field"]?["completed"]?.Any(w => fixture.missionCare?["recipes"]?.Any(r => (string)r["id"] == (string)w["recipeId"]) == true) == true ||
@@ -441,12 +499,12 @@ namespace Orionis.Infrastructure
                 throw new FormatException("Save clock does not match its schema version.");
             if (record.schemaVersion >= 3 && record.assignments == null || record.schemaVersion < 3 && record.assignments != null)
                 throw new FormatException("Save staffing does not match its schema version.");
-            if (record.schemaVersion >= 4 && (record.receiving == null || record.receivingFingerprint != receivingFingerprint) ||
+            if (record.schemaVersion >= 4 && (record.receiving == null || record.receivingFingerprint != receivingFingerprint && !(record.schemaVersion<=31&&fixture.previousRoomReceiving!=null&&record.receivingFingerprint==HashProjection(fixture.previousRoomReceiving)) && !(record.schemaVersion<=26&&fixture.previousToolTierReceiving!=null&&record.receivingFingerprint==HashProjection(fixture.previousToolTierReceiving))) ||
                 record.schemaVersion < 4 && (record.receiving != null || record.receivingFingerprint != null))
                 throw new FormatException("Save Receiving definitions/state do not match the schema or current authored content.");
             if (record.schemaVersion >= 5 && record.transfers == null || record.schemaVersion < 5 && record.transfers != null)
                 throw new FormatException("Save transfers do not match the schema version.");
-            if (record.schemaVersion >= 6 && (root.Property("expedition") == null || record.missionFingerprint != (record.schemaVersion == 6 ? legacyMissionFingerprint :
+            if (record.schemaVersion >= 6 && (root.Property("expedition") == null || record.missionFingerprint != ((record.schemaVersion<=33&&PreviousOffworldMission(record.missionFingerprint)!=null || record.schemaVersion <= 26 && fixture.previousToolTierMission!=null&&record.missionFingerprint==HashProjection(fixture.previousToolTierMission) || record.schemaVersion <= 23 && fixture.previousProcessingMission != null && record.missionFingerprint == HashProjection(fixture.previousProcessingMission) || record.schemaVersion <= 24 && fixture.previousToolChargeMission != null && record.missionFingerprint == HashProjection(fixture.previousToolChargeMission)) ? record.missionFingerprint : record.schemaVersion == 6 ? legacyMissionFingerprint :
                     record.schemaVersion == 7 ? (fixture.mission?["previousTravelFingerprint"]?.Value<string>() ?? missionFingerprint) : missionFingerprint)) ||
                 record.schemaVersion < 6 && (root.Property("expedition") != null || record.missionFingerprint != null))
                 throw new FormatException("Save mission state/definitions do not match its schema version.");
@@ -467,7 +525,7 @@ namespace Orionis.Infrastructure
             var clock = new CampaignClock(record.elapsedTicks ?? 0);
             var compatibleLegacy = fixture.saveCompatibility != null && fixture.saveCompatibility.Any(
                 c => record.schemaVersion <= c.maxSaveVersion && c.fromFingerprint == record.fixtureFingerprint && c.toFingerprint == fingerprint);
-            if (record.fixtureFingerprint != fingerprint && !compatibleLegacy)
+            if (record.fixtureFingerprint != fingerprint && !compatibleLegacy && !(record.schemaVersion<=31&&record.fixtureFingerprint==previousDefinitionFingerprint))
                 throw new FormatException("Save belongs to a different fixture snapshot; no migration is available yet.");
             if (record.randomAlgorithm != RandomState.Algorithm) throw new FormatException("Unsupported random stream algorithm.");
             var completedIds = (record.constructionSites ?? new List<ConstructionRecord>()).Where(site => site.completedTick.HasValue && !site.fromTier.HasValue).Select(site => site.roomId);
@@ -489,7 +547,7 @@ namespace Orionis.Infrastructure
             }
             var restored = new BootstrapSnapshot
             {
-                roomPlanning = fixture.roomPlanning, roomConstruction = fixture.roomConstruction,
+                previousLabMission=fixture.previousLabMission,previousLabCargo=fixture.previousLabCargo,previousSafeCargo=fixture.previousSafeCargo,previousRoomReceiving=fixture.previousRoomReceiving,previousMissionCargo=fixture.previousMissionCargo,previousRoomCoreSetup=fixture.previousRoomCoreSetup,previousRoomDefinitions=fixture.previousRoomDefinitions,roomPlanning = fixture.roomPlanning, roomConstruction = fixture.roomConstruction, resourceCargoEconomy = fixture.resourceCargoEconomy, resourceProcessing=resourceProjection, previousResourceProcessing=fixture.previousResourceProcessing, roomCoreSetup=fixture.roomCoreSetup, baseExecution=fixture.baseExecution,previousOffworldInteractionMission=fixture.previousOffworldInteractionMission,previousOffworldMission=fixture.previousOffworldMission,previousOffworldCombat=fixture.previousOffworldCombat, previousProcessingMission=fixture.previousProcessingMission, previousToolChargeMission=fixture.previousToolChargeMission, previousToolTierMission=fixture.previousToolTierMission,previousToolTierReceiving=fixture.previousToolTierReceiving, personnelRecovery=fixture.personnelRecovery,
                 format = fixture.format, sources = fixture.sources, roomDefinitions = fixture.roomDefinitions, baseName = record.baseName, receiving = fixture.receiving, mission = fixture.mission, missionMap = fixture.missionMap, missionCombat = fixture.missionCombat, missionCare = fixture.missionCare, missionRescue = fixture.missionRescue, roomStorage = fixture.roomStorage, missionCargo = fixture.missionCargo, cargoHandling = fixture.cargoHandling, cargoProcessing = fixture.cargoProcessing, unitEquipment = fixture.unitEquipment,
                 rooms = record.rooms.Select(r => new BootstrapSnapshot.Room { id = r.id, definitionId = r.definitionId,
                     col = r.col, row = r.row, width = r.width, height = r.height, constructionTier = r.constructionTier }).ToList(),
@@ -520,7 +578,7 @@ namespace Orionis.Infrastructure
                 throw new FormatException("Save has missing/null Receiving work.");
             // Older saves have no admitted items; never infer completed work or replay rewards.
             var receiving = record.receiving?.Select(o => new ReceivingOrder(o.instanceId, o.roomId, o.paused,
-                o.progress.Select(p => new InspectionProgress(p.stepId, p.actorId, p.ticks))));
+                o.progress.Select(p => new InspectionProgress(p.stepId, p.actorId, p.ticks)),o.startedTick,o.completedTick));
             if (record.transfers != null && record.transfers.Any(t => t == null)) throw new FormatException("Save has a null transfer.");
             if (record.schemaVersion < 19)
             {
@@ -546,6 +604,7 @@ namespace Orionis.Infrastructure
             var transfers = record.transfers?.Select(t => new StaffTransfer(t.unitId, t.sourceRoomId, t.destinationRoomId,
                 t.timing == "NextTick" ? StaffTransferTiming.NextTick : t.timing == "FinishStep" ? StaffTransferTiming.FinishStep :
                     throw new FormatException("Unsupported pending transfer timing."), t.requestedTick, t.workInstanceId, t.workStepId));
+            bool upgradeToolTiers=record.schemaVersion<=26&&fixture.previousToolTierMission!=null&&record.missionFingerprint!=missionFingerprint;
             ExpeditionState expedition = null;
             if (record.expedition != null)
             {
@@ -558,25 +617,34 @@ namespace Orionis.Infrastructure
                     var tools = p.tools.Select(t =>
                     {
                         var definition = loadout.Tools.SingleOrDefault(d => d.InstanceId == t.instanceId) ?? throw new FormatException("Unknown equipped Tool.");
+                        if(upgradeToolTiers){t.kitId=definition.KitId;t.charges=definition.Charges;}
                         return new ExpeditionTool(t.instanceId, t.kitId, t.slot, t.charges, t.damaged, definition.Label, definition.Tier, definition.Services);
                     });
                     return new ExpeditionMember(p.unitId, p.perception, p.stamina, p.endurance, tools, p.equipment?.Select(g => new MissionEquipment(g.instanceId, g.slotId, g.name, g.damage, g.protection)), record.schemaVersion >= 20 ? p.startingHealth : data.Combat?.PartyHealth);
                 });
                 if (record.schemaVersion == 6 && (e.travel != null || e.stageId != data.Mission.GateStageId)) throw new FormatException("Legacy deployment contains unsupported travel.");
                 if (record.schemaVersion >= 7 && ((JObject)root["expedition"]).Property("travel") == null) throw new FormatException("Missing travel record.");
+                if(upgradeToolTiers&&e.travel?["field"]?["completed"] is JArray paidWork)
+                {
+                    var rules=new CampaignState(data,new RandomState(1,1));
+                    foreach(var work in paidWork)if(work["toolId"]?.Type==JTokenType.String&&MissionField.Requirements(rules,(string)work["recipeId"]).ChargeCost>0)work["toolChargesRestored"]=true;
+                }
                 var travel = record.schemaVersion == 6 ? MissionTravel.Initial(data.Mission) : TravelSave.Read(e.travel, data.Mission,
-                    record.schemaVersion == 7 ? fixture.mission?["previousTravelNpcIds"]?.ToObject<string[]>() ?? data.Mission.Travel.Npcs.Select(n => n.Id).ToArray() : null);
+                    record.schemaVersion == 7 ? fixture.mission?["previousTravelNpcIds"]?.ToObject<string[]>() ?? data.Mission.Travel.Npcs.Select(n => n.Id).ToArray() : null, PreviousOffworldMission(record.missionFingerprint)!=null?PreviousOffworldMission(record.missionFingerprint)["travel"]["npcs"].Select(n=>(string)n["id"]).ToArray():null,PreviousOffworldMission(record.missionFingerprint)?["travel"]?["field"]?["subjects"]?.Select(n=>(string)n["id"]).ToArray());
                 if (record.schemaVersion >= 9 && (data.Combat == null ? e.combat != null : e.combat == null || e.combat.Any(b => b == null))) throw new FormatException("Missing/invalid combat records.");
-                var combat = data.Combat == null ? null : new CombatState(e.combat?.Select(b => new BattleRecord(b.incidentId, b.startedTick, b.endedTick, b.rounds, b.outcome)) ?? Array.Empty<BattleRecord>());
+                var combat = data.Combat == null ? null : new CombatState(e.combat?.Select(b => new BattleRecord(b.incidentId, b.startedTick, b.endedTick, b.rounds, b.outcome,b.targetSeed)) ?? Array.Empty<BattleRecord>());
                 expedition = new ExpeditionState(e.missionId, e.stageId, e.startedTick, e.gateChoicePending, e.gateOpen, e.connectionOpenedTick, party, travel, combat, e.extractedTick, e.teamId);
             }
             var personnel = record.personnel?.Select(p => new PersonnelRecord(p.unitId, p.health, p.stamina, p.endurance, p.tools.Select(t =>
             {
                 var expected = data.Mission?.Personnel.SingleOrDefault(u => u.UnitId == p.unitId)?.Tools.SingleOrDefault(d => d.InstanceId == t.instanceId)
                     ?? throw new FormatException("Unknown personnel Tool or Unit.");
+                if(upgradeToolTiers){t.kitId=expected.KitId;t.charges=expected.Charges;}
                 return new ExpeditionTool(t.instanceId, t.kitId, t.slot, t.charges, t.damaged, expected.Label, expected.Tier, expected.Services);
-            })));
-            return new SavedSession(new CampaignState(data, new RandomState(record.randomSeed, record.randomState), clock, assignments, receiving, transfers, expedition, record.teams?.Select(t => new SGTeam(t.id, t.designation, t.roomId, t.members)), record.cargo?.Select(i => new RecoveredItem(i.id, i.sourceContainerId, i.sourceMissionId, i.recoveredTick, i.payload, i.roomId, i.handling == null ? null : new HandlingOrder(i.handling.roomId, i.handling.primaryRoomId, i.handling.actorId, i.handling.startedTick, i.handling.ticks, i.handling.paused, i.handling.completedTick), i.retained ?? false, i.examination == null ? null : new ExaminationOrder(i.examination.roomId, i.examination.primaryRoomId, i.examination.actorId, i.examination.startedTick, i.examination.ticks, i.examination.paused, i.examination.completedTick, i.examination.legacyStorageFinding), i.equippedUnitId, i.custodyRoomId)), personnel, record.schemaVersion < 21 ? null : new ConstructionState(record.supplyStock, record.constructionSites.Select(site => new RoomConstructionSite(site.roomId, site.definitionId, site.tier, site.col, site.row, site.actorId, site.startedTick, site.durationTicks, site.workedTicks, site.supplyCost, site.supplyClass, site.paused, site.completedTick, site.maintenanceRoomId, site.securityActorId, site.fromTier)), record.excavatedCells, record.roomGroups?.Select(g => new RoomGroup(g.id, g.primaryChild, g.secondaryChild, g.active)), record.clearings?.Select(o => new TerrainClearingOrder(o.recipeId, o.col, o.row, o.startedTick, o.bubbles.Select(b => new ClearingBubbleWork(b.actorId,b.ticks,b.completedTick)), o.completedTick)))), selection);
+            }),p.bedRoomId));
+            var restoredCampaign = new CampaignState(data, new RandomState(record.randomSeed, record.randomState), clock, assignments, receiving, transfers, expedition, record.teams?.Select(t => new SGTeam(t.id, t.designation, t.roomId, t.members)), record.cargo?.Select(i => new RecoveredItem(i.id, i.sourceContainerId, i.sourceMissionId, i.recoveredTick, i.payload, i.roomId, i.handling == null ? null : new HandlingOrder(i.handling.roomId, i.handling.primaryRoomId, i.handling.actorId, i.handling.startedTick, i.handling.ticks, i.handling.paused, i.handling.completedTick), i.retained ?? false, i.examination == null ? null : new ExaminationOrder(i.examination.roomId, i.examination.primaryRoomId, i.examination.actorId, i.examination.startedTick, i.examination.ticks, i.examination.paused, i.examination.completedTick, i.examination.legacyStorageFinding), i.equippedUnitId, i.custodyRoomId,RecipeProcessSave.Read(i.resourceProcess,ResourceProcessingReader.Read(resourceProjection)),i.fieldStageId)), personnel, record.schemaVersion < 21 ? null : new ConstructionState(record.supplyStock, record.constructionSites.Select(site => new RoomConstructionSite(site.roomId, site.definitionId, site.tier, site.col, site.row, site.actorId, site.startedTick, site.durationTicks, site.workedTicks, site.supplyCost, site.supplyClass, site.paused, site.completedTick, site.maintenanceRoomId, site.securityActorId, site.fromTier).WithBubbles(site.bubbles?.Select(b=>new ClearingBubbleWork(b.actorId,b.ticks,b.completedTick))??Enumerable.Empty<ClearingBubbleWork>())), record.excavatedCells, record.roomGroups?.Select(g => new RoomGroup(g.id, g.primaryChild, g.secondaryChild, g.active)), record.clearings?.Select(o => new TerrainClearingOrder(o.recipeId, o.col, o.row, o.startedTick, o.bubbles.Select(b => new ClearingBubbleWork(b.actorId,b.ticks,b.completedTick)), o.completedTick,record.schemaVersion>=25 ? o.creditedSupply.Value : o.completedTick.HasValue ? data.Construction.RockSupply : 0)),record.archivedCargoSupply), cores: RoomCoreReader.State(record.roomCores), workforce: BaseExecutionReader.State(record.workforce), completedWork: record.completedWork?.ToObject<CompletedOperation[]>());
+            if(record.schemaVersion<26&&restoredCampaign.Expedition?.Returned==true)restoredCampaign=PersonnelRecovery.OnReturn(restoredCampaign);
+            return new SavedSession(restoredCampaign,selection);
         }
     }
 }

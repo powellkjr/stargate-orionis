@@ -1,0 +1,142 @@
+{
+  "format": "orionis-resource-cargo-playtest-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "instanceId": "supply-cache-01",
+  "roomDefinitionId": "receiving",
+  "recipe": {
+    "id": "SUPPLY_CACHE_RECOVERY",
+    "bubbles": [
+      {
+        "id": "ASSESS_CACHE_QUALITY",
+        "durationTicks": 1,
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "toolService": "TET1",
+        "dependsOn": [],
+        "outputWeight": 0,
+        "reveals": [
+          "QUALITY",
+          "TIERS",
+          "SAFE_HANDLING"
+        ]
+      },
+      {
+        "id": "MEASURE_CACHE_CONVERSION",
+        "durationTicks": 1,
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "toolService": "SCT1",
+        "dependsOn": [
+          "ASSESS_CACHE_QUALITY"
+        ],
+        "outputWeight": 0,
+        "reveals": [
+          "CONVERSION"
+        ]
+      },
+      {
+        "id": "RECOVER_CACHE_1",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_2",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_3",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_4",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_5",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_6",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_7",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_8",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      }
+    ],
+    "finalEffect": "CONSUME_TARGET"
+  },
+  "notes": "20 INV includes two linked inspections and eighteen independent recovery bubbles. Exact output distribution is authored here. No critical chance or mandatory special property is invented.",
+  "defaultPolicies": {
+    "SUPPLY": "BALANCED",
+    "MATERIAL": "BALANCED"
+  },
+  "allocationStatus": "PROVISIONAL_DEFAULT_WITHOUT_CORES"
+}

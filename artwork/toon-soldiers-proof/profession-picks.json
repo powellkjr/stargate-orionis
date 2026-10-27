@@ -1,0 +1,193 @@
+{
+    "professions": [
+        {
+            "label": "Soldier",
+            "body": "TS_Body_01_infantry",
+            "head": "TS_Head_15_gunner_only",
+            "notes": "Rifle ready, movement, fire, reload and crouch.",
+            "backpack": "backpack_ammobox",
+            "palette": "red",
+            "professionColor": "#d1495b",
+            "defaultAction": 3,
+            "npc": false,
+            "equipmentNames": [
+                "None",
+                "Assault Rifle A",
+                "Assault Rifle B",
+                "Grenade Launcher",
+                "Heavy Machine Gun",
+                "Mini Gun",
+                "Rocket Launcher",
+                "Shot Gun",
+                "Sub Machine Gun"
+            ],
+            "equipmentSlotMap": [
+                0,
+                1,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11
+            ]
+        },
+        {
+            "label": "Technician",
+            "body": "TS_Body_05_engineer",
+            "head": "TS_Head_05_engineer",
+            "notes": "Hammer / pickaxe work. Fine repair and console clips missing.",
+            "backpack": "backpack_engineer",
+            "palette": "yellow",
+            "professionColor": "#f4a261",
+            "defaultAction": 12,
+            "npc": false,
+            "equipmentNames": [
+                "None",
+                "Flamethrower",
+                "Welder",
+                "Wrench"
+            ],
+            "equipmentSlotMap": [
+                0,
+                12,
+                13,
+                14
+            ]
+        },
+        {
+            "label": "Scientist",
+            "body": "TS_Body_08_trench",
+            "head": "TS_Head_10_glasses",
+            "notes": "Blue approximates purple; no purple atlas supplied. Sample-pickup study; scanner/console missing.",
+            "backpack": "",
+            "palette": "blue",
+            "professionColor": "#7b6ef6",
+            "defaultAction": 16,
+            "npc": false,
+            "equipmentNames": [
+                "None"
+            ],
+            "equipmentSlotMap": [
+                0
+            ]
+        },
+        {
+            "label": "Medical",
+            "body": "TS_Body_06_medic",
+            "head": "TS_Head_06_medic_A",
+            "notes": "Blue approximates cyan. Low-reach study only; treatment/carrying missing.",
+            "backpack": "backpack_medic",
+            "palette": "blue",
+            "professionColor": "#4cc9f0",
+            "defaultAction": 17,
+            "npc": false,
+            "equipmentNames": [
+                "None",
+                "Medigun",
+                "Needle Gun"
+            ],
+            "equipmentSlotMap": [
+                0,
+                15,
+                16
+            ]
+        },
+        {
+            "label": "Scout",
+            "body": "TS_Body_04_sniper",
+            "head": "TS_Head_02_Scout",
+            "notes": "Green approximates teal. Travel / turning; tracking/binoculars missing.",
+            "backpack": "backpack_standard",
+            "palette": "green",
+            "professionColor": "#2a9d8f",
+            "defaultAction": 19,
+            "npc": false,
+            "equipmentNames": [
+                "None",
+                "Crossbow",
+                "Knife",
+                "Sniper Rifle"
+            ],
+            "equipmentSlotMap": [
+                0,
+                17,
+                18,
+                19
+            ]
+        },
+        {
+            "label": "Diplomat",
+            "body": "TS_Body_09_general",
+            "head": "TS_Head_08_beret",
+            "notes": "Yellow approximates gold. Conversation study; listening/negotiation variants missing.",
+            "backpack": "",
+            "palette": "yellow",
+            "professionColor": "#b8a14f",
+            "defaultAction": 18,
+            "npc": false,
+            "equipmentNames": [
+                "None",
+                "Handgun",
+                "Revolver"
+            ],
+            "equipmentSlotMap": [
+                0,
+                20,
+                21
+            ]
+        },
+        {
+            "label": "Worker",
+            "body": "TS_Body_07_unequipped",
+            "head": "TS_Head_05_engineer",
+            "notes": "NPC visual study: plain work clothes / hardhat; shared work and travel.",
+            "backpack": "",
+            "palette": "grey",
+            "professionColor": "",
+            "defaultAction": 12,
+            "npc": true,
+            "equipmentNames": [
+                "None"
+            ],
+            "equipmentSlotMap": [
+                0
+            ]
+        },
+        {
+            "label": "Guard",
+            "body": "TS_Body_01_infantry",
+            "head": "TS_Head_01_infantry",
+            "notes": "NPC visual study: grey infantry / helmet, no backpack; rifle guard stance.",
+            "backpack": "",
+            "palette": "grey",
+            "professionColor": "",
+            "defaultAction": 62,
+            "npc": true,
+            "equipmentNames": [
+                "None"
+            ],
+            "equipmentSlotMap": [
+                0
+            ]
+        },
+        {
+            "label": "Captain",
+            "body": "TS_Body_09_general",
+            "head": "TS_Head_09_general",
+            "notes": "NPC visual study: blue officer coat / peaked cap, no backpack; conversation.",
+            "backpack": "",
+            "palette": "blue",
+            "professionColor": "",
+            "defaultAction": 18,
+            "npc": true,
+            "equipmentNames": [
+                "None"
+            ],
+            "equipmentSlotMap": [
+                0
+            ]
+        }
+    ]
+}

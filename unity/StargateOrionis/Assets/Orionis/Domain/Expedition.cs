@@ -146,6 +146,7 @@ namespace Orionis.Domain
             {
                 var unit = state.Base.Units.SingleOrDefault(u => u.Id == id) ?? throw new ArgumentException("Unknown Unit.");
                 var loadout = definition.Personnel.Single(u => u.UnitId == id);
+                if(PersonnelRecovery.InBed(state,id))throw new InvalidOperationException("Release this Unit from its Infirmary bed before deployment.");
                 if (IsIncapacitated(state, id)) throw new InvalidOperationException("An incapacitated Unit cannot deploy.");
                 return new ExpeditionMember(id, unit.Perception, PersonnelCondition.Stamina(state, id), PersonnelCondition.Endurance(state, id), PersonnelCondition.Tools(state, id), UnitEquipment.Loadout(state, id), PersonnelCondition.Health(state, id));
             });
@@ -176,6 +177,6 @@ namespace Orionis.Domain
                 false, expedition.ConnectionOpenedTick, expedition.Party, expedition.Travel, expedition.Combat, expedition.ExtractedTick, teamId: expedition.TeamId);
         }
         private static CampaignState Copy(CampaignState state, ExpeditionState expedition) =>
-            new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, state.Transfers, expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction);
+            new CampaignState(state.Base, state.Random, state.Clock, state.Assignments, state.Receiving, state.Transfers, expedition, teams: state.Teams, cargo: state.Cargo, personnel: state.Personnel, construction: state.Construction, cores: state.Cores, workforce: state.Workforce, completedWork: state.CompletedWork);
     }
 }

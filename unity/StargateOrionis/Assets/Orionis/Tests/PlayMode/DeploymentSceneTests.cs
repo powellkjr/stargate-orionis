@@ -17,7 +17,31 @@ namespace Orionis.Tests
 {
     public sealed class DeploymentSceneTests
     {
-        private static void Click(string name) => GameObject.Find(name).GetComponent<Button>().onClick.Invoke();
+        [Test] public void HoldingBuildsDetectedSubjectConversationsPatientAndLootControls()
+        {
+            var session=new Orionis.Application.CampaignSession(new CampaignState(BootstrapReader.Read(File.ReadAllText("Assets/Orionis/Data/Generated/bootstrap.json")),new RandomState(1,1)),null);
+            session.Deploy(new[]{"unit-6","unit-25","unit-37","unit-46"});session.ChooseGate(false);session.MoveParty("door-gate-to-yard");session.Respond("yard-ignore","unit-6");session.Engage("incident-yard-guards");while(MissionCombat.Active(session.State)!=null)session.AdvanceCombatRound();session.MoveParty("door-yard-to-mainhall");
+            var recipe=MissionField.Requirements(session.State,"hack-door-mainhall-to-holding");var actor=MissionField.Candidates(session.State,recipe).First();session.StartFieldWork(recipe.Id,actor.ActorId,actor.ToolId);session.AdvanceFieldWork();session.MoveParty("door-mainhall-to-holding");
+            var root=new GameObject("Holding panel regression",typeof(RectTransform));
+            try{root.AddComponent<MissionTravelPanel>().Bind(session);var buttons=root.GetComponentsInChildren<Button>();foreach(string id in new[]{"talk-dialogue-operative","talk-dialogue-holding-worker","talk-dialogue-holding-guard","care-stabilize-patient-01","Reveal equipment cache"})Assert.That(buttons.Any(b=>b.name==id),Is.True,id);}
+            finally{Object.DestroyImmediate(root);}
+        }
+
+        // Editor account availability is unrelated to this offline game. Expect
+        // only this exact package warning if emitted; keep gameplay logs strict.
+        private static void EditorAccountWarning(string message,string stack,LogType type)
+        {
+            if(type==LogType.Warning&&message=="Account API did not become accessible within 30 seconds. This may be due to network issues or editor focus.")LogAssert.Expect(LogType.Warning,message);
+        }
+        [SetUp] public void ObserveEditorAccountWarning()=>UnityEngine.Application.logMessageReceived+=EditorAccountWarning;
+        [TearDown] public void StopObservingEditorAccountWarning()=>UnityEngine.Application.logMessageReceived-=EditorAccountWarning;
+        private static void Click(string name)
+        {
+            var target=GameObject.Find("map-action-"+name)??GameObject.Find(name);
+            if(name.StartsWith("responder-"))target=Object.FindObjectsByType<Button>().FirstOrDefault(b=>b.name.StartsWith("map-action-")&&b.name.EndsWith("-actor-"+name.Substring(10)))?.gameObject??target;
+            Assert.That(target,Is.Not.Null,"Missing control: "+name);
+            target.GetComponent<Button>().onClick.Invoke();
+        }
         [UnityTest] public IEnumerator GuardCombatUiSavesRoundsDisengagesAndCommitsOneTickWithoutHealing()
         {
             var directory = Path.Combine(Path.GetTempPath(), "orionis-combat-ui-" + Guid.NewGuid().ToString("N"));
@@ -34,24 +58,17 @@ namespace Orionis.Tests
                 foreach (var id in new[] { "unit-6", "unit-10", "unit-37", "unit-46" }) GameObject.Find("Select " + id).GetComponent<Toggle>().isOn = true;
                 Click("Deploy mission"); yield return null; Click("Maintain Gate"); yield return null;
                 Click("move-door-gate-to-yard"); yield return null; Click("response-yard-ignore"); yield return null; Click("responder-unit-6"); yield return null;
-                Click("engage-incident-yard-guards"); yield return null;
-                Assert.That(GameObject.Find("Combat health").GetComponentInChildren<Text>().text, Does.Contain("round 0"));
-                Assert.That(GameObject.Find("map-cell-stage-gate-yard-4-6").GetComponent<Button>().interactable, Is.False);
-                Click("Next combat round"); yield return null;
-                Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(1));
-                Click("Save prototype"); Click("Next combat round"); yield return null; Click("Load prototype"); yield return null;
-                Assert.That(Orionis.Domain.MissionCombat.Active(b.Session.State).Rounds, Is.EqualTo(1));
-                Assert.That(GameObject.Find("Combat health").GetComponentInChildren<Text>().text, Does.Contain("90 HP"));
-                Assert.That(GameObject.Find("Play combat").GetComponentInChildren<Text>().text, Is.EqualTo("Play rounds"));
-                Click("Disengage combat"); yield return null;
-                Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(2));
-                Click("engage-incident-yard-guards"); yield return null;
-                for (int n = 0; n < 30 && Orionis.Domain.MissionCombat.Active(b.Session.State) != null; n++) { Click("Next combat round"); yield return null; }
-                Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(3));
-                Assert.That(GameObject.Find("engage-incident-yard-guards"), Is.Null);
-                Click("Save prototype"); Click("Load prototype"); yield return null;
-                Assert.That(Orionis.Domain.MissionCombat.Inspect(b.Session.State).PartyHealth["unit-6"], Is.EqualTo(70));
-                Assert.That(Orionis.Domain.MissionCombat.GuardsClear(b.Session.State, "stage-outer-yard"), Is.True);
+                Click("engage-incident-yard-guards");yield return null;
+                Assert.That(MissionCombat.Active(b.Session.State),Is.Null,"Choosing combat only opens confirmation.");Click("Start combat");yield return null;
+                Assert.That(GameObject.Find("Play combat"),Is.Null);Assert.That(GameObject.Find("Next combat round"),Is.Null);
+                yield return new WaitUntil(()=>MissionCombat.Active(b.Session.State)==null||MissionCombat.Active(b.Session.State).Rounds>0);
+                var snapshot=MissionCombat.Inspect(b.Session.State);long tick=b.Session.State.Clock.ElapsedTicks;int health=snapshot.PartyHealth["unit-6"];Click("Save prototype");
+                yield return new WaitForSeconds(1.6f);Click("Load prototype");yield return null;
+                Assert.That(MissionCombat.Active(b.Session.State).Rounds,Is.EqualTo(1));Assert.That(MissionCombat.Inspect(b.Session.State).PartyHealth["unit-6"],Is.EqualTo(health));
+                Click("Disengage combat");yield return null;Assert.That(b.Session.State.Clock.ElapsedTicks,Is.EqualTo(tick+1));
+                Click("engage-incident-yard-guards");yield return null;Click("Start combat");yield return null;
+                yield return new WaitUntil(()=>MissionCombat.Active(b.Session.State)==null);
+                Assert.That(MissionCombat.GuardsClear(b.Session.State,"stage-outer-yard"),Is.True);Assert.That(MissionCombat.Inspect(b.Session.State).PartyHealth["unit-6"],Is.LessThanOrEqualTo(health));
                 LogAssert.NoUnexpectedReceived();
             }
             finally
@@ -83,7 +100,7 @@ namespace Orionis.Tests
                 Assert.That(b.Session.State.Expedition.Travel.Field.Work.ActorId, Is.EqualTo("unit-6"));
                 Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(2));
                 Click("Complete field work"); yield return null;
-                Assert.That(b.Session.State.Expedition.Party[0].Tools.Single(t => t.Services.Contains("TECH_SERVICE_I")).Charges, Is.EqualTo(2));
+                Assert.That(b.Session.State.Expedition.Party[0].Tools.Single(t => t.Services.Contains("TECH_SERVICE_I")).Charges, Is.EqualTo(8));
                 Click("move-door-mainhall-to-holding"); yield return null;
                 Assert.That(GameObject.Find("Current Stage").GetComponentInChildren<Text>().text, Is.EqualTo("Holding Area"));
                 Assert.That(GameObject.Find("Mission progress limit").GetComponentInChildren<Text>().text, Does.Contain("transmitter code confirms"));
@@ -119,12 +136,14 @@ namespace Orionis.Tests
                 Object.Destroy(Object.FindAnyObjectByType<PrototypeBootstrap>().gameObject); yield return null;
                 root = new GameObject("Medical UI test"); var b = root.AddComponent<PrototypeBootstrap>();
                 b.Configure(asset, new FileCampaignSaveStore(path, new CampaignSaveCodec(asset.text))); yield return null;
+                if(GameObject.Find("Pause clock").GetComponentInChildren<Text>().text=="Pause")Click("Pause clock");
                 b.Session.AssignUnit("unit-1", "r1"); Click("r6"); yield return null;
                 GameObject.Find("Team designation").GetComponent<InputField>().text = "SG-12"; Click("Create SG team"); yield return null;
                 Assert.That(GameObject.Find("Team member unit-1").GetComponent<Toggle>().interactable, Is.False);
-                foreach (var id in new[] { "unit-6", "unit-10", "unit-37", "unit-46", "unit-7", "unit-8" })
+                foreach (var id in new[] { "unit-6", "unit-25", "unit-37", "unit-46", "unit-7", "unit-8" })
                 { GameObject.Find("Team member " + id).GetComponent<Toggle>().isOn = true; yield return null; }
                 Assert.That(b.Session.State.Teams.Single().Members.Count, Is.EqualTo(6));
+                Assert.That(GameObject.Find("SG member slots").transform.childCount,Is.EqualTo(6),"Every permanent member needs a visible scrollable slot.");
                 Click("Save prototype"); Click("Load prototype"); yield return null; Click("r6"); yield return null;
                 Assert.That(GameObject.Find("SG team members").GetComponentInChildren<Text>().text, Does.Contain("SG-12 / 6/6"));
                 Click("Close Ready Room"); yield return null;
@@ -138,16 +157,13 @@ namespace Orionis.Tests
                 reserve.isOn = false; fourth.isOn = true;
                 Assert.That(SGTeams.ExperienceShares(b.Session.State, "sg-team-r6", 60).Values.All(v => v == 10), Is.True);
                 Canvas.ForceUpdateCanvases();
-                var memberList = GameObject.Find("Deployment team").GetComponent<ScrollRect>();
-                var memberText = memberList.content.GetComponent<Text>();
-                Assert.That(memberText.text, Does.Contain("Health 100").And.Contain("charges"));
-                Assert.That(GameObject.Find("Deployment status").GetComponentInChildren<Text>().text, Does.Contain("Ready to deploy"));
-                Assert.That(memberText.text, Does.Contain(b.Session.State.Base.Units.Single(u => u.Id == "unit-46").Name));
-                Assert.That(memberText.cachedTextGenerator.lineCount, Is.GreaterThanOrEqualTo(12), "All four two-line members must render, even below the viewport.");
-                Assert.That(memberList.content.rect.height, Is.GreaterThanOrEqualTo(memberText.preferredHeight - 1));
-                var top = memberList.content.anchoredPosition.y;
-                memberList.verticalNormalizedPosition = 0; yield return null;
-                Assert.That(memberList.content.anchoredPosition.y, Is.GreaterThan(top), "The fourth member must be reachable by scrolling.");
+                var memberList=GameObject.Find("Team deployment members").GetComponent<ScrollRect>();
+                var memberCards=memberList.content.GetComponentsInChildren<PersonnelCardView>();
+                Assert.That(memberCards.Length,Is.EqualTo(6),"All team members and reserves have cards.");
+                Assert.That(GameObject.Find("Deployment status").GetComponentInChildren<Text>().text,Does.Contain("Ready to deploy"));
+                Assert.That(memberList.content.rect.height,Is.GreaterThan(memberList.viewport.rect.height));
+                var top=memberList.content.anchoredPosition.y;memberList.verticalNormalizedPosition=0;yield return null;
+                Assert.That(memberList.content.anchoredPosition.y,Is.GreaterThan(top),"Reserve cards are reachable by scrolling.");
                 Click("Deploy SG team"); yield return null;
                 Assert.That(b.Session.State.Expedition.TeamId, Is.EqualTo("sg-team-r6"));
                 Click("Mission view"); yield return null; Click("r6"); yield return null;
@@ -157,12 +173,22 @@ namespace Orionis.Tests
                 Click("Close Gate"); yield return null; yield return null;
                 Assert.That(GameObject.Find("map-action-move-door-gate-to-yard").GetComponent<MapActionHex>(), Is.Not.Null);
                 Click("map-action-move-door-gate-to-yard"); yield return null; Click("response-yard-ignore"); yield return null; Click("responder-unit-6"); yield return null;
-                Click("engage-incident-yard-guards"); yield return null;
-                while (MissionCombat.Active(b.Session.State) != null) { Click("Next combat round"); yield return null; }
-                Click("move-door-yard-to-mainhall"); yield return null; Click("hack-hack-door-mainhall-to-holding"); yield return null;
+                Click("engage-incident-yard-guards"); yield return null;Click("Start combat");yield return null;
+                yield return new WaitUntil(()=>MissionCombat.Active(b.Session.State)==null);
+                Click("move-door-yard-to-mainhall"); yield return null;
+                Click("map-action-hack-hack-door-mainhall-to-processing"); yield return null;
+                Click("map-action-hack-hack-door-mainhall-to-processing-actor-unit-25");yield return null;
+                Click("Complete field work");yield return null;Click("move-door-mainhall-to-processing");yield return null;
+                Click("action-isolate-mining-power");yield return null;Click("responder-unit-25");yield return null;Click("Complete field work");yield return null;
+                Click("inspect-resource-cache");yield return null;Click("Save prototype");Click("Load prototype");yield return null;
+                Click("inspect-resource-cache");yield return null;
+                Click("action-collect-supply-cache");yield return null;Click("responder-unit-6");yield return null;Click("Complete field work");yield return null;
+                Assert.That(ResourceCargo.Known(b.Session.State,b.Session.State.Cargo.Single(),"CONVERSION"),Is.True);
+                Click("move-door-mainhall-to-processing");yield return null;Click("hack-hack-door-mainhall-to-holding");yield return null;
+                Click("responder-unit-6");yield return null;
                 Click("Complete field work"); yield return null; Click("move-door-mainhall-to-holding"); yield return null;
-                Click("engage-incident-holding-guards"); yield return null;
-                while (MissionCombat.Active(b.Session.State) != null) { Click("Next combat round"); yield return null; }
+                Click("engage-incident-holding-guards"); yield return null;Click("Start combat");yield return null;
+                yield return new WaitUntil(()=>MissionCombat.Active(b.Session.State)==null);
                 Click("Reveal equipment cache"); yield return null; Click("responder-unit-46"); yield return null;
                 Click("Save prototype"); Click("Cancel field work"); yield return null; Click("Load prototype"); yield return null;
                 Assert.That(b.Session.State.Expedition.Travel.Field.Work.RecipeId, Is.EqualTo("persuade-epidemiologist"));
@@ -170,22 +196,22 @@ namespace Orionis.Tests
                 Assert.That(RecoveredCargo.Revealed(b.Session.State), Is.True);
                 for (int i = 1; i <= 3; i++)
                 {
-                    Click("Patients and evacuation"); yield return null;
-                    Assert.That(GameObject.Find("Evacuation readiness").GetComponentInChildren<Text>().text, Does.Contain("patients"));
+                    Assert.That(MissionCare.Resolved(b.Session.State),Is.False);
                     Click("care-stabilize-patient-0" + i); yield return null;
+                    Click("responder-unit-37");yield return null;
                     Assert.That(GameObject.Find("Field work details").GetComponentInChildren<Text>().text, Does.Contain("Medic Tools"));
                     Click("Save prototype"); Click("Cancel field work"); yield return null; Click("Load prototype"); yield return null;
                     Assert.That(b.Session.State.Expedition.Travel.Field.Work.ActorId, Is.EqualTo("unit-37"));
                     Click("Complete field work"); yield return null;
                 }
-                Click("Save prototype"); Click("Load prototype"); yield return null; Click("Patients and evacuation"); yield return null;
-                Assert.That(GameObject.Find("Evacuation readiness").GetComponentInChildren<Text>().text, Does.Contain("Secure route to Gate available"));
+                Click("Save prototype"); Click("Load prototype"); yield return null;
+                Assert.That(MissionEvacuation.SecureRoute(b.Session.State),Is.Not.Null);
                 Assert.That(MissionCare.Resolved(b.Session.State), Is.True);
                 Assert.That(GameObject.Find("care-stabilize-patient-01").GetComponent<Button>().interactable, Is.False);
-                Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(10));
-                Click("Close patient care"); yield return null; Click("talk-dialogue-operative"); yield return null;
+                Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(17));
+                Click("talk-dialogue-operative"); yield return null;
                 Click("response-operative-ready"); yield return null; Click("responder-unit-6"); yield return null;
-                Click("Patients and evacuation"); yield return null; Click("Send operative to Gate"); yield return null;
+                Click("Send operative to Gate"); yield return null;
                 Click("responder-unit-6"); yield return null;
                 Click("Save prototype"); Click("Cancel field work"); yield return null; Click("Load prototype"); yield return null;
                 Assert.That(b.Session.State.Expedition.Travel.Field.Work.ToolId, Is.Null);
@@ -195,16 +221,23 @@ namespace Orionis.Tests
                 Assert.That(GameObject.Find("Visible mission objectives").GetComponentInChildren<Text>().text, Does.Contain("COMPLETED").And.Contain("ACTIVE"));
                 Click("move-door-gate-to-yard"); yield return null;
                 Assert.That(GameObject.Find("Extract to SGC").GetComponent<Button>().interactable, Is.False);
-                Click("Redial Gate"); yield return null; Click("Extract to SGC"); yield return null;
+                var extractionHealth=MissionCombat.Inspect(b.Session.State).PartyHealth["unit-6"];
+                Click("Redial Gate"); yield return null; Click("Extract to SGC"); yield return null; Click("Confirm extraction to SGC");yield return null;
+                if(GameObject.Find("Pause clock").GetComponentInChildren<Text>().text=="Pause")Click("Pause clock");
                 Assert.That(GameObject.Find("Mission debrief").GetComponentInChildren<Text>().text, Does.Contain("Operative recovered to SGC"));
-                Click("Recover mission cargo"); yield return null;
-                Assert.That(b.Session.State.Cargo.Count, Is.EqualTo(2));
+                Assert.That(b.Session.State.Cargo.All(i=>i.FieldStageId==null),Is.True);
+                Assert.That(b.Session.State.Cargo.Count, Is.EqualTo(3));
                 Click("Save prototype"); Click("Load prototype"); yield return null;
-                Assert.That(b.Session.State.Expedition.Returned, Is.True); Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(15));
-                Assert.That(GameObject.Find("Returned personnel").GetComponentInChildren<Text>().text, Does.Contain("Health 60"));
+                Assert.That(b.Session.State.Expedition.Returned, Is.True); Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(22));
+                Assert.That(GameObject.Find("Returned personnel").GetComponentsInChildren<PersonnelCardView>().Length,Is.EqualTo(4));
+                Assert.That(GameObject.Find("Returned personnel-unit-6").transform.Find("Health count").GetComponentInChildren<Text>().text,Is.EqualTo(extractionHealth+"/100"));
                 Click("Mission view"); yield return null; Click("unit-6"); yield return null;
-                Assert.That(GameObject.Find("Details").GetComponentInChildren<Text>().text, Does.Contain("Returned health: 60"));
-                Click("Open recovered cargo"); yield return null;
+                Assert.That(GameObject.Find("Details").GetComponentInChildren<Text>().text, Does.Contain("Returned health: "+extractionHealth));
+                Click("r2"); yield return null;
+                var cargoList=GameObject.Find("Cargo item viewport").GetComponent<ScrollRect>();Canvas.ForceUpdateCanvases();
+                Assert.That(cargoList.content.childCount,Is.EqualTo(3));
+                Assert.That(cargoList.content.rect.height,Is.GreaterThan(cargoList.viewport.rect.height),"Three recovered items must scroll rather than spill into controls.");
+                cargoList.verticalNormalizedPosition=0;yield return null;
                 Click("cargo-missing-operative-rifle-01"); yield return null;
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Not.Contain("ASGARD").And.Not.Contain("ELECTROMAGNETIC"));
                 Click("Admit cargo r2"); yield return null;
@@ -212,50 +245,66 @@ namespace Orionis.Tests
                 foreach (var profession in new[] { "TECHNICIAN", "SCIENTIST" })
                 {
                     var worker = b.Session.State.Base.Receiving.Workers.First(w => SGTeams.ForUnit(b.Session.State, w.UnitId) == null && w.Qualifications.TryGetValue(profession, out var tier) && tier >= 1 && w.ToolServices.Contains(profession == "TECHNICIAN" ? "TET1" : "SCT1"));
-                    Click("r2"); yield return null; Click(worker.UnitId); yield return null; Click("Assign Unit"); yield return null;
+                    Click(worker.UnitId); yield return null; Click("Assign Unit"); yield return null;
                 }
                 Click("Open recovered cargo"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
                 if (GameObject.Find("Pause clock").GetComponentInChildren<Text>().text == "Pause") Click("Pause clock");
-                for (int i = 0; i < 4; i++) { Click("Advance tick"); yield return null; }
+                for (int i = 0; i < 4; i++) { Click("Advance tick"); yield return null;
+                    var tracker=GameObject.Find("Cargo inspection tracker").GetComponent<InspectionProgressView>();
+                    Assert.That(tracker.Rail.SegmentCount,Is.EqualTo(4));
+                    float deadline=Time.realtimeSinceStartup+3.5f;
+                    while(Enumerable.Range(0,4).Sum(n=>tracker.Rail.Fraction(n))<i+1&&Time.realtimeSinceStartup<deadline)yield return null;
+                    Assert.That(Enumerable.Range(0,4).Sum(n=>tracker.Rail.Fraction(n)),Is.EqualTo(i+1));
+                }
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Contain("Unknown rifle").And.Not.Contain("ASGARD").And.Not.Contain("ELECTROMAGNETIC"));
                 Click("Store cargo r10"); yield return null;
                 Assert.That(b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01").RoomId, Is.EqualTo("r10"));
-                Click("cargo-room-r2"); yield return null;
                 Assert.That(GameObject.Find("cargo-missing-operative-rifle-01"), Is.Null, "A routed object must leave Receiving's current-custody list.");
-                Click("cargo-room-r10"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
+                Click("Follow routed item"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Contain("Identification: Unresolved").And.Contain("Intake: Complete"));
                 Click("Save prototype"); Click("Load prototype"); yield return null;
                 Assert.That(b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01").RoomId, Is.EqualTo("r10"));
-                Click("Mission view"); yield return null; Click("Open recovered cargo"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
+                Click("Mission view"); yield return null; Click("r10"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Contain("Validated storage: Containment r10").And.Not.Contain("examination:"));
                 Click("Start cargo examination r4"); yield return null;
                 Assert.That(b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01").CustodyRoomId, Is.EqualTo("r4"));
-                Click("cargo-room-r10"); yield return null;
                 Assert.That(GameObject.Find("cargo-missing-operative-rifle-01"), Is.Null);
-                Assert.That(GameObject.Find("cargo-room-r10").GetComponentInChildren<Text>().text, Does.Contain("1 reserved"));
-                Click("cargo-room-r4"); yield return null;
+                Assert.That(b.Session.State.Cargo.Count(i=>i.RoomId=="r10"),Is.EqualTo(1),"Fallback storage stays reserved while Analysis holds custody.");
+                Click("Follow routed item"); yield return null;
                 Assert.That(GameObject.Find("cargo-missing-operative-rifle-01"), Is.Not.Null);
                 Click("Close recovered cargo"); yield return null;
                 var scientist = b.Session.State.Base.Receiving.Workers.First(w => SGTeams.ForUnit(b.Session.State, w.UnitId) == null && w.Qualifications.ContainsKey("SCIENTIST") && w.ToolServices.Contains("SCT1"));
-                Click("r4"); yield return null; Click(scientist.UnitId); yield return null; Click("Assign Unit"); yield return null;
+                Click("r4"); yield return null;Click("Close recovered cargo");yield return null; Click(scientist.UnitId); yield return null; Click("Assign Unit"); yield return null;
                 Click("Open recovered cargo"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
                 Click("Advance tick"); yield return null;
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Not.Contain("ASGARD"));
+                var analysisTracker=GameObject.Find("Cargo inspection tracker").GetComponent<InspectionProgressView>();
+                float analysisDeadline=Time.realtimeSinceStartup+3.5f;
+                while(analysisTracker.Rail.Fraction(0)<1&&Time.realtimeSinceStartup<analysisDeadline)yield return null;
+                Assert.That(analysisTracker.Rail.SegmentCount,Is.EqualTo(2));Assert.That(analysisTracker.Rail.Fraction(0),Is.EqualTo(1));Assert.That(analysisTracker.Rail.Fraction(1),Is.EqualTo(0));
                 Click("Save prototype"); Click("Load prototype"); yield return null;
-                Click("Mission view"); yield return null; Click("Open recovered cargo"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
+                Click("Mission view"); yield return null; Click("r4"); yield return null; Click("cargo-missing-operative-rifle-01"); yield return null;
                 Click("Advance tick"); yield return null;
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Contain("ASGARD").And.Contain("ELECTROMAGNETIC"));
                 Assert.That(GameObject.Find("Cargo physical details").GetComponentInChildren<Text>().text, Does.Contain("Identification: Established").And.Contain("free the Analysis item place"));
                 var returnTick = b.Session.State.Clock.ElapsedTicks;
-                Click("Return cargo to storage"); yield return null;
+                Click("Return cargo to storage"); yield return null;Click("Follow routed item");yield return null;
                 Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(returnTick), "Returning custody to reserved storage is free.");
                 Assert.That(b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01").CustodyRoomId, Is.EqualTo("r10"));
-                Click("Store cargo r9"); yield return null;
+                Click("Store cargo r9"); yield return null;Click("Follow routed item");yield return null;
                 Click("Save prototype"); Click("Load prototype"); yield return null;
                 Assert.That(b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01").RoomId, Is.EqualTo("r9"));
                 Assert.That(b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01").Retained, Is.True);
+                Click("Mission view");yield return null;Click("r2");yield return null;Click("cargo-supply-cache-01");yield return null;
+                var supplyBefore=b.Session.State.Construction.Supply.ToDictionary(p=>p.Key,p=>p.Value);
+                Click("Admit resource r2");yield return null;
+                Assert.That(GameObject.Find("Resource recipe progress").GetComponent<InspectionProgressView>().Rail.SegmentCount,Is.EqualTo(10));
+                var expectedRecovery=ResourceCargo.Totals(b.Session.State,b.Session.State.Cargo.Single(i=>i.Id=="supply-cache-01"));
+                for(int n=0;n<b.Session.State.Base.ResourceProcessing.Bubbles.Sum(node=>node.DurationTicks);n++){Click("Advance tick");yield return null;if(n==3){Click("Save prototype");Click("Load prototype");yield return null;}}
+                Assert.That(ResourceCargo.Consumed(b.Session.State,b.Session.State.Cargo.Single(i=>i.Id=="supply-cache-01")),Is.True);
+                foreach(var output in expectedRecovery)Assert.That(b.Session.State.Construction.Supply[output.Key],Is.EqualTo(supplyBefore[output.Key]+output.Value));
                 var aftermath = MissionCombat.Inspect(b.Session.State);
-                var returnedHealth = aftermath.PartyHealth["unit-6"];
+                var returnedHealth = PersonnelCondition.Health(b.Session.State,"unit-6");
                 var toolCharges = b.Session.State.Expedition.Party.SelectMany(m => m.Tools).Select(t => t.InstanceId + ":" + t.Charges).ToArray();
                 Click("Mission view"); yield return null; Click("r9"); yield return null;
                 Click("equipment-item-missing-operative-rifle-01"); yield return null;
@@ -265,25 +314,25 @@ namespace Orionis.Tests
                 Click("Save prototype"); Click("Load prototype"); yield return null;
                 var carried = b.Session.State.Cargo.Single(i => i.Id == "missing-operative-rifle-01");
                 Assert.That(carried.RoomId, Is.EqualTo("r9")); Assert.That(carried.EquippedUnitId, Is.EqualTo("unit-6"));
-                Assert.That(MissionCombat.Inspect(b.Session.State).PartyHealth["unit-6"], Is.EqualTo(returnedHealth));
+                Assert.That(PersonnelCondition.Health(b.Session.State,"unit-6"), Is.EqualTo(returnedHealth));
                 Assert.That(b.Session.State.Expedition.Party.SelectMany(m => m.Tools).Select(t => t.InstanceId + ":" + t.Charges), Is.EqualTo(toolCharges));
                 Click("Prepare redeployment"); yield return null;
                 Click("Save prototype"); Click("Load prototype"); yield return null;
                 Assert.That(b.Session.State.Expedition, Is.Null);
                 Assert.That(PersonnelCondition.Health(b.Session.State, "unit-6"), Is.EqualTo(returnedHealth));
                 Click("select-team-sg-team-r6"); yield return null;
-                Assert.That(GameObject.Find("Deployment team").GetComponentInChildren<Text>().text, Does.Contain("Health " + returnedHealth));
+                Assert.That(GameObject.Find("team-unit-unit-6").transform.Find("Health count").GetComponentInChildren<Text>().text,Is.EqualTo(returnedHealth+"/100"));
                 Click("Deploy SG team"); yield return null;
-                Assert.That(MissionCombat.Inspect(b.Session.State).PartyHealth["unit-6"], Is.EqualTo(returnedHealth));
+                Assert.That(PersonnelCondition.Health(b.Session.State,"unit-6"), Is.EqualTo(returnedHealth));
                 Assert.That(b.Session.State.Expedition.Party.SelectMany(m => m.Tools).Select(t => t.InstanceId + ":" + t.Charges), Is.EqualTo(toolCharges));
                 Assert.That(b.Session.State.Expedition.Party.Single(m => m.UnitId == "unit-6").Equipment.Single().InstanceId, Is.EqualTo("missing-operative-rifle-01"));
-                Click("Reset mission"); yield return null;
-                Assert.That(b.Session.State.Expedition, Is.Null); Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(23));
+                var resetTick=b.Session.State.Clock.ElapsedTicks;Click("Reset mission"); yield return null;
+                Assert.That(b.Session.State.Expedition, Is.Null); Assert.That(b.Session.State.Clock.ElapsedTicks, Is.EqualTo(resetTick));
                 Assert.That(b.Session.State.Teams.Single().Designation, Is.EqualTo("SG-12"));
                 Click("select-team-sg-team-r6"); yield return null;
                 Click("Deploy SG team"); yield return null;
                 Assert.That(b.Session.State.Expedition.GateChoicePending, Is.True);
-                Assert.That(b.Session.State.Expedition.Party.Single(m => m.UnitId == "unit-6").Equipment.Single().InstanceId, Is.EqualTo("missing-operative-rifle-01"));
+                Assert.That(b.Session.State.Expedition.Party.Single(m => m.UnitId == "unit-6").Equipment.Any(e=>e.InstanceId=="missing-operative-rifle-01"),Is.False,"Debug Reset removes this mission's physical cargo and dependent equipment custody.");
                 Click("Load prototype"); yield return null;
                 Assert.That(b.Session.State.Expedition, Is.Null, "Debug reset must not overwrite the saved redeployment preparation.");
                 Assert.That(PersonnelCondition.Health(b.Session.State, "unit-6"), Is.EqualTo(returnedHealth));

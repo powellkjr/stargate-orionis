@@ -24,7 +24,7 @@ namespace Orionis.Presentation
         private void Update()
         {
             bool changed=false;
-            for(int i=0;i<shown.Length;i++){float next=Mathf.MoveTowards(shown[i],targets[i],Time.unscaledDeltaTime*3);changed|=next!=shown[i];shown[i]=next;}
+            for(int i=0;i<shown.Length;i++){float next=Mathf.Lerp(shown[i],targets[i],1-Mathf.Exp(-Time.unscaledDeltaTime*8));if(Mathf.Abs(next-targets[i])<.0001f)next=targets[i];changed|=next!=shown[i];shown[i]=next;}
             if(changed)SetVerticesDirty();
         }
         protected override void OnPopulateMesh(VertexHelper mesh)
@@ -35,8 +35,8 @@ namespace Orionis.Presentation
             if(r.width<=0||r.height<=0)return;
             Box(mesh,r,new Color(.045f,.055f,.065f));
             float pitch=Mathf.Max(12,r.height*1.5f);
-            for(float x=r.xMin-pitch;x<r.xMax;x+=pitch)
-                Polygon(mesh,r,new[]{new Vector2(x,r.yMin),new Vector2(x+r.height*.5f,r.yMax),new Vector2(x+r.height*.5f+pitch*.45f,r.yMax),new Vector2(x+pitch*.45f,r.yMin)},new Color(.36f,.29f,.095f));
+            for(float x=r.xMin-pitch;x<r.xMax+pitch;x+=pitch)
+                Polygon(mesh,r,new[]{new Vector2(x,r.yMin),new Vector2(x-r.height*.5f,r.yMax),new Vector2(x-r.height*.5f+pitch*.45f,r.yMax),new Vector2(x+pitch*.45f,r.yMin)},new Color(.36f,.29f,.095f));
             float step=r.width/shown.Length, skew=Mathf.Min(r.height*.32f,step*.2f);
             for(int i=0;i<shown.Length;i++)
             {

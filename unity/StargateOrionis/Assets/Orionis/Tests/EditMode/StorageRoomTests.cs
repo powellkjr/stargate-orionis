@@ -39,7 +39,7 @@ namespace Orionis.Tests
             s.CreateTeam("r6", "SG-1");
             foreach (var id in new[] { "unit-6", "unit-10", "unit-37", "unit-46" }) s.SetTeamMember("sg-team-r6", id, true);
             s.AssignUnit("unit-19", "r2"); s.AdmitIncoming("ITEM_ASGARD_RIFLE_0001", "r2"); s.AdvanceOneTick(); s.DeployTeam("sg-team-r6");
-            var j = JObject.Parse(new CampaignSaveCodec(old).Serialize(new SavedSession(s.State, new SelectionReference(SelectionKind.Room, "r9")))); j["schemaVersion"] = 13;
+            var j = JObject.Parse(new CampaignSaveCodec(old).Serialize(new SavedSession(s.State, new SelectionReference(SelectionKind.Room, "r9")))); j["schemaVersion"] = 13;j.Property("archivedCargoSupply")?.Remove();
             if (conflict) { var room = j["rooms"].Single(r => (string)r["id"] == "r10"); room["col"] = 8; }
             var codec = new CampaignSaveCodec(Json);
             if (conflict) { Assert.Catch(() => codec.Deserialize(j.ToString())); return; }
@@ -67,7 +67,7 @@ namespace Orionis.Tests
             var s = new CampaignSession(new CampaignState(BootstrapReader.Read(old), new RandomState(1, 1)), null);
             s.CreateTeam("r6", "SG-1"); s.SetTeamMember("sg-team-r6", "unit-6", true); s.SetTeamMember("sg-team-r6", "unit-10", true);
             s.AssignUnit("unit-19", "r2"); s.AdmitIncoming("ITEM_ASGARD_RIFLE_0001", "r2"); s.AdvanceOneTick(); s.DeployTeam("sg-team-r6"); s.ChooseGate(false);
-            var j = JObject.Parse(new CampaignSaveCodec(old).Serialize(new SavedSession(s.State, null))); j["schemaVersion"] = 12;
+            var j = JObject.Parse(new CampaignSaveCodec(old).Serialize(new SavedSession(s.State, null))); j["schemaVersion"] = 12;j.Property("archivedCargoSupply")?.Remove();
             if (conflict) { var ready = j["rooms"].Single(r => (string)r["id"] == "r6"); ready["col"] = 4; ready["row"] = 4; }
             var codec = new CampaignSaveCodec(Json);
             if (conflict) { Assert.Catch(() => codec.Deserialize(j.ToString())); return; }

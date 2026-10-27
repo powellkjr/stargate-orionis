@@ -1,0 +1,37 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "stage-main-hall / processing"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "hack-door-mainhall-to-security\nTarget: door-mainhall-to-security / target-door-mainhall-to-security\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-mainhall-to-security\nimplemented: true\nprofession: TECHNICIAN\nactionType: HACK\nminimumTier: 2\nrequiredToolService: TECH_SERVICE_II\nchargeCost: 1\ndurationMinutes: 3\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nminimumPerception: 6\nrequiresState:\n  type: TRANSITION_STATE\n  transitionId: door-mainhall-to-security\n  equals: LOCKED" as nb9fdc754090c4984e21a #EAF1F8
+rectangle "State prerequisite\ntype: TRANSITION_STATE\ntransitionId: door-mainhall-to-security\nequals: LOCKED" as n50a8d8ffc0d934a0e333 #FFF1CC
+rectangle "hack-door-mainhall-to-processing\nTarget: door-mainhall-to-processing /\ntarget-door-mainhall-to-processing\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-mainhall-to-processing\nimplemented: true\nprofession: TECHNICIAN\nactionType: HACK\nminimumTier: 1\nrequiredToolService: TECH_SERVICE_I\nchargeCost: 1\ndurationMinutes: 3\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nminimumPerception: 0\nrequiresState:\n  type: TRANSITION_STATE\n  transitionId: door-mainhall-to-processing\n  equals: LOCKED" as n1b310030fc3c9c30f896 #EAF1F8
+rectangle "State prerequisite\ntype: TRANSITION_STATE\ntransitionId: door-mainhall-to-processing\nequals: LOCKED" as n30a463b5b8524a8119f2 #FFF1CC
+rectangle "enter-code-door-mainhall-to-processing\nTarget: door-mainhall-to-processing /\ntarget-door-mainhall-to-processing\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-mainhall-to-processing\nimplemented: true\ndurationMinutes: 1\nminimumTier: 0\nprofession: UNTRAINED\nactionType: ENTER_DOOR_CODE\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nrequiresState:\n  type: ALL\n  conditions:\n    - \n      type: KNOWLEDGE_PRESENT\n      factId: facility-room-codes-known\n    - \n      type: TRANSITION_STATE\n      transitionId: door-mainhall-to-processing\n      equals: LOCKED\noutcomeText: The room code is accepted. No Tool charge spent." as n368c8e49b0f37802bda8 #EAF1F8
+rectangle "State prerequisite\ntype: ALL\nconditions:\n  - \n    type: KNOWLEDGE_PRESENT\n    factId: facility-room-codes-known\n  - \n    type: TRANSITION_STATE\n    transitionId: door-mainhall-to-processing\n    equals: LOCKED" as n0a40ac5ac65bed52fb04 #FFF1CC
+rectangle "hack-door-mainhall-to-holding\nTarget: door-mainhall-to-holding / target-door-mainhall-to-holding\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-mainhall-to-holding\nimplemented: true\nprofession: TECHNICIAN\nactionType: HACK\nminimumTier: 1\nrequiredToolService: TECH_SERVICE_I\nchargeCost: 1\ndurationMinutes: 3\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nminimumPerception: 0\nrequiresState:\n  type: TRANSITION_STATE\n  transitionId: door-mainhall-to-holding\n  equals: LOCKED" as n9993868db1f515d64eb3 #EAF1F8
+rectangle "State prerequisite\ntype: TRANSITION_STATE\ntransitionId: door-mainhall-to-holding\nequals: LOCKED" as nc012b3fe9a634f4e23c2 #FFF1CC
+rectangle "enter-code-door-mainhall-to-holding\nTarget: door-mainhall-to-holding / target-door-mainhall-to-holding\nanchor:\n  x: 0.5\n  y: 0.5\nimplemented: true\narchetypeId: target_transition_standard\ntransitionId: door-mainhall-to-holding\nimplemented: true\ndurationMinutes: 1\nminimumTier: 0\nprofession: UNTRAINED\nactionType: ENTER_DOOR_CODE\nrequiredToolService: \nchargeCost: 0\neffects:\n  - \n    type: OPEN_TARGET_TRANSITION\nrequiresKnowledge:\n  []\nhiddenUntilKnowledge:\n  []\nrequiresState:\n  type: ALL\n  conditions:\n    - \n      type: KNOWLEDGE_PRESENT\n      factId: facility-room-codes-known\n    - \n      type: TRANSITION_STATE\n      transitionId: door-mainhall-to-holding\n      equals: LOCKED\noutcomeText: The room code is accepted. No Tool charge spent." as nc893918905af14781f72 #EAF1F8
+rectangle "State prerequisite\ntype: ALL\nconditions:\n  - \n    type: KNOWLEDGE_PRESENT\n    factId: facility-room-codes-known\n  - \n    type: TRANSITION_STATE\n    transitionId: door-mainhall-to-holding\n    equals: LOCKED" as ne6ebbf93094661722e13 #FFF1CC
+rectangle "obs-mainhall-signal-weak\nPassive observation\nminimumTier: 1\nminimumPerception: 5\npresentationType: OBJECT_OUTLINE\nimplemented: true\nvisibleIn:\n  - VISIBLE\nrequiresKnowledge:\n  - operative-transmitter-code-known\nrevealsFacts:\n  - operative-signal-west\nstageId: stage-main-hall\nprofession: SCOUT\ntext: The operative's transmitter signal is weak but detectable west\nof the main hall.\ntargetDirection: WEST\nrequiredToolService: SIGNAL_DIRECTION_FINDING" as n5b8bbd75935c568505ef #DAEDEB
+rectangle "Knowledge / operative-transmitter-code-known\nStarting Knowledge" as n745eeb45e0f3a86454f0 #FFF1CC
+rectangle "Knowledge / operative-signal-west" as nadb347e2237a7a2f1a33 #FFF1CC
+n50a8d8ffc0d934a0e333 ..> nb9fdc754090c4984e21a : "requires state"
+n30a463b5b8524a8119f2 ..> n1b310030fc3c9c30f896 : "requires state"
+n0a40ac5ac65bed52fb04 ..> n368c8e49b0f37802bda8 : "requires state"
+nc012b3fe9a634f4e23c2 ..> n9993868db1f515d64eb3 : "requires state"
+ne6ebbf93094661722e13 ..> nc893918905af14781f72 : "requires state"
+n745eeb45e0f3a86454f0 ..> n5b8bbd75935c568505ef : "requires"
+n5b8bbd75935c568505ef --> nadb347e2237a7a2f1a33 : "reveals"
+@enduml

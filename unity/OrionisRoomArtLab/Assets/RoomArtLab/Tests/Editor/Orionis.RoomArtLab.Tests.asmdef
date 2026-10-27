@@ -1,0 +1,7 @@
+{
+  "name": "Orionis.RoomArtLab.Tests",
+  "references": ["Orionis.RoomArtLab.Editor"],
+  "includePlatforms": ["Editor"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

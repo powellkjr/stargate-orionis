@@ -1,0 +1,27 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-holding-worker"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-holding-worker\nparticipants:\n  right: worker-holding-01\n  left: ACTIVE_SGC_SPEAKER\nstartNodeId: holding-worker-start\nonStartEffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-holding-01\n    delta: 45\n    when:\n      instanceId: guard-holding-01\n      field: combatState\n      equals: NEUTRAL" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "holding-worker-start\nspeaker: worker-holding-01\nside: RIGHT\ntext: I don't know what they're doing with the sick people. They\nkeep telling us to stay out of the way." as n740ac8f1dde136c1956c #EAF1F8
+rectangle "holding-worker-smalltalk\ntext: Where do they keep spare supplies?\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: ADD_KNOWLEDGE\n    knowledgeId: holding-hidden-entrance-known\nendConversation: true" as n130811381efa9a50b774 #E5DAF5
+rectangle "holding-worker-leave\ntext: That's all.\nsource: NEUTRAL\neffects:\n  []\nendConversation: true" as nb94b28e4e4cb37fb5e42 #E5DAF5
+ncced28c6dc3f99c2396a --> n740ac8f1dde136c1956c : "default start"
+n740ac8f1dde136c1956c --> n130811381efa9a50b774 : "choose response, then qualified Actor"
+n130811381efa9a50b774 --> n361e48d0308f20e32dba
+n740ac8f1dde136c1956c --> nb94b28e4e4cb37fb5e42 : "choose response, then qualified Actor"
+nb94b28e4e4cb37fb5e42 --> n361e48d0308f20e32dba
+@enduml

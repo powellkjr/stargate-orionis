@@ -1,0 +1,435 @@
+{
+  "format": "orionis-resource-cargo-playtest-1",
+  "contentStatus": "PROVISIONAL_PLAYTEST",
+  "instanceId": "supply-cache-01",
+  "roomDefinitionId": "receiving",
+  "recipe": {
+    "id": "SUPPLY_CACHE_RECOVERY",
+    "bubbles": [
+      {
+        "id": "ASSESS_CACHE_QUALITY",
+        "durationTicks": 1,
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "toolService": "TET1",
+        "dependsOn": [],
+        "outputWeight": 0,
+        "reveals": [
+          "QUALITY",
+          "TIERS",
+          "SAFE_HANDLING"
+        ]
+      },
+      {
+        "id": "MEASURE_CACHE_CONVERSION",
+        "durationTicks": 1,
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "toolService": "SCT1",
+        "dependsOn": [
+          "ASSESS_CACHE_QUALITY"
+        ],
+        "outputWeight": 0,
+        "reveals": [
+          "CONVERSION"
+        ]
+      },
+      {
+        "id": "RECOVER_CACHE_1",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_2",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_3",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_4",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_5",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_6",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_7",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_8",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_9",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_10",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_11",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_12",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_13",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_14",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_15",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_16",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_17",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      },
+      {
+        "id": "RECOVER_CACHE_18",
+        "durationTicks": 1,
+        "profession": "UNTRAINED",
+        "minimumTier": 0,
+        "toolService": null,
+        "dependsOn": [
+          "MEASURE_CACHE_CONVERSION"
+        ],
+        "outputWeight": 1,
+        "reveals": []
+      }
+    ],
+    "finalEffect": "CONSUME_TARGET"
+  },
+  "notes": "20 INV includes two linked inspections and eighteen independent recovery bubbles. Exact output distribution is authored here. No critical chance or mandatory special property is invented.",
+  "defaultPolicies": {
+    "SUPPLY": "BALANCED",
+    "MATERIAL": "BALANCED"
+  },
+  "allocationStatus": "PROVISIONAL_DEFAULT_WITHOUT_CORES",
+  "stageId": "stage-processing",
+  "item": {
+    "id": "SIM_SUPPLY_CACHE",
+    "name": "Supply cache",
+    "nameResolution": {
+      "initialName": "Unknown cache",
+      "processExitNames": {
+        "receiving": "Supply cache",
+        "analysis": "Supply cache"
+      }
+    },
+    "type": "ITEM",
+    "version": 1,
+    "tags": [
+      "PHYSICAL_OBJECT"
+    ],
+    "identity": {
+      "description": "Movable resource cache in the reference mission Processing Room.",
+      "formFactor": "CACHE",
+      "subjectTags": [
+        "PHYSICAL_OBJECT"
+      ]
+    },
+    "physical": {
+      "inventoryClass": "EQUIPMENT",
+      "isContainer": true,
+      "isTool": false
+    },
+    "storage": {
+      "storageClasses": [
+        "INV"
+      ],
+      "handlingCost": 10,
+      "isUnique": false,
+      "isStackable": false,
+      "isCargo": true
+    },
+    "processCompatibility": {
+      "receiving": true,
+      "analysis": false,
+      "construction": false,
+      "repair": false,
+      "reverseEngineering": false,
+      "salvage": false
+    },
+    "extension": {
+      "contentStatus": "PROVISIONAL_SIMULATOR_BENCHMARK",
+      "handlingCostProvisional": true
+    },
+    "theoryBindings": [],
+    "materials": null
+  },
+  "physicalPayload": {
+    "state": {
+      "quantity": 1,
+      "condition": "INTACT",
+      "constructionState": "COMPLETE",
+      "percentOfWhole": 1000
+    },
+    "reality": {
+      "authoredTags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "resourceCargo": {
+        "mode": "WILD",
+        "family": "SUPPLY",
+        "tiers": [
+          1,
+          2
+        ],
+        "conversionStat": 1230
+      }
+    },
+    "knowledge": {
+      "revealedTags": [
+        "PHYSICAL_OBJECT"
+      ],
+      "instanceFindings": [],
+      "recognizedIdentity": null
+    },
+    "processes": {},
+    "history": [
+      {
+        "event": "AUTHORED_MISSION_INSTANCE",
+        "location": "stage-processing"
+      }
+    ],
+    "instanceId": "supply-cache-01",
+    "itemId": "SIM_SUPPLY_CACHE"
+  },
+  "actions": [
+    {
+      "id": "inspect-mining-system",
+      "stageId": "stage-processing",
+      "label": "Inspect mining system",
+      "profession": "TECHNICIAN",
+      "minimumTier": 1,
+      "minimumPerception": 0,
+      "service": "TECH_SERVICE_I",
+      "chargeCost": 1,
+      "ticks": 1,
+      "effects": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "field": "inspected",
+          "value": true,
+          "instanceId": "mining-system-01"
+        }
+      ]
+    },
+    {
+      "id": "isolate-mining-power",
+      "stageId": "stage-processing",
+      "label": "Isolate mining power",
+      "profession": "TECHNICIAN",
+      "minimumTier": 2,
+      "minimumPerception": 0,
+      "service": "TECH_SERVICE_II",
+      "chargeCost": 1,
+      "ticks": 1,
+      "effects": [
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "mining-system-01",
+          "field": "operational",
+          "value": false
+        },
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "mining-system-01",
+          "field": "powerFeedIsolated",
+          "value": true
+        },
+        {
+          "type": "SET_INSTANCE_STATE",
+          "instanceId": "radiation-source-01",
+          "field": "active",
+          "value": false
+        }
+      ]
+    },
+    {
+      "id": "collect-supply-cache",
+      "stageId": "stage-processing",
+      "label": "Collect Supply cache",
+      "profession": "UNTRAINED",
+      "minimumTier": 0,
+      "minimumPerception": 0,
+      "service": null,
+      "chargeCost": 0,
+      "ticks": 1,
+      "effects": [
+        {
+          "type": "CARRY_TARGET",
+          "instanceId": "supply-cache-01"
+        }
+      ]
+    }
+  ],
+  "hazard": {
+    "implemented": true,
+    "kind": "HAZARD",
+    "incidentId": "incident-processing-radiation",
+    "archetypeId": "incident_radiation_hazard",
+    "stageId": "stage-processing",
+    "sourceInstanceId": "radiation-source-01",
+    "initialState": "ACTIVE",
+    "resolutionCondition": {
+      "instanceId": "radiation-source-01",
+      "field": "active",
+      "equals": false
+    }
+  }
+}

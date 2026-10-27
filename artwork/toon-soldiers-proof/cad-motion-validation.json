@@ -1,0 +1,735 @@
+{
+    "passed": true,
+    "count": 182,
+    "moving": 182,
+    "samples": [
+        {
+            "label": "BA_BackSwordGuard01",
+            "motion": 1.338448405265808
+        },
+        {
+            "label": "BA_BackSwordStabAttack01",
+            "motion": 0.8679449558258057
+        },
+        {
+            "label": "BA_BackSwordStabAttack02",
+            "motion": 1.336787223815918
+        },
+        {
+            "label": "BA_DodgeDown01",
+            "motion": 0.5575835108757019
+        },
+        {
+            "label": "BA_DodgeDown02",
+            "motion": 0.6719895601272583
+        },
+        {
+            "label": "BA_DodgeRight01",
+            "motion": 0.28703856468200686
+        },
+        {
+            "label": "BA_DodgeRight02",
+            "motion": 0.22877199947834016
+        },
+        {
+            "label": "BA_DodgeRight03",
+            "motion": 0.6228997707366943
+        },
+        {
+            "label": "BA_DodgeRight04",
+            "motion": 0.4339245557785034
+        },
+        {
+            "label": "BA_DualBackHandSwordAttack01",
+            "motion": 0.5402007699012756
+        },
+        {
+            "label": "BA_DualBackHandSwordAttack02",
+            "motion": 0.6329728364944458
+        },
+        {
+            "label": "BA_DualBackHandSwordStabAttack01",
+            "motion": 1.2363635301589966
+        },
+        {
+            "label": "BA_DualHandGuard01",
+            "motion": 1.096841812133789
+        },
+        {
+            "label": "BA_DualHandGuard02",
+            "motion": 1.193312644958496
+        },
+        {
+            "label": "BA_DualHandGuard03",
+            "motion": 0.9286018013954163
+        },
+        {
+            "label": "BA_DualHandGuard04",
+            "motion": 1.660549283027649
+        },
+        {
+            "label": "BA_DualHandHeadGuard01",
+            "motion": 1.3423970937728882
+        },
+        {
+            "label": "BA_DualHandHeadGuard02",
+            "motion": 1.0904499292373658
+        },
+        {
+            "label": "BA_DualHandMagicAttack01",
+            "motion": 1.28839910030365
+        },
+        {
+            "label": "BA_DualHandMagicAttack02",
+            "motion": 0.9715928435325623
+        },
+        {
+            "label": "BA_DualHandMagicAttack03",
+            "motion": 1.2549529075622559
+        },
+        {
+            "label": "BA_DualHandMagicAttack04",
+            "motion": 0.8341754078865051
+        },
+        {
+            "label": "BA_DualHandStomackGuard01",
+            "motion": 0.34193864464759829
+        },
+        {
+            "label": "BA_DualHandSwordAttack01",
+            "motion": 0.9331463575363159
+        },
+        {
+            "label": "BA_DualHandSwordAttack02",
+            "motion": 0.8137973546981812
+        },
+        {
+            "label": "BA_DualHandSwordAttack03",
+            "motion": 0.8989718556404114
+        },
+        {
+            "label": "BA_DualHandSwordAttack04",
+            "motion": 0.9515143036842346
+        },
+        {
+            "label": "BA_DualHandSwordAttack05",
+            "motion": 1.4296398162841797
+        },
+        {
+            "label": "BA_DualHandSwordSkillAttack01",
+            "motion": 0.7350731492042542
+        },
+        {
+            "label": "BA_DualHandSwordSkillAttack02",
+            "motion": 0.48093950748443606
+        },
+        {
+            "label": "BA_DualHandSwordSkillAttack03",
+            "motion": 0.5838244557380676
+        },
+        {
+            "label": "BA_DualHandSwordStabAttack01",
+            "motion": 0.4096486270427704
+        },
+        {
+            "label": "BA_DualHandXGuard03",
+            "motion": 1.3529727458953858
+        },
+        {
+            "label": "BA_Harakiri",
+            "motion": 1.071743130683899
+        },
+        {
+            "label": "BA_KneeKick01",
+            "motion": 0.9306657314300537
+        },
+        {
+            "label": "BA_KneeKick02",
+            "motion": 1.3014296293258668
+        },
+        {
+            "label": "BA_KnockBack01",
+            "motion": 0.33633705973625185
+        },
+        {
+            "label": "BA_KnockDown01",
+            "motion": 1.3546923398971558
+        },
+        {
+            "label": "BA_LeftElbowAttack01",
+            "motion": 0.7557038068771362
+        },
+        {
+            "label": "BA_LeftHandGuard01",
+            "motion": 1.3536171913146973
+        },
+        {
+            "label": "BA_LeftHandGuard02",
+            "motion": 0.7082726955413818
+        },
+        {
+            "label": "BA_LeftHandGuard03",
+            "motion": 1.3926186561584473
+        },
+        {
+            "label": "BA_LeftHandMagicAttack01",
+            "motion": 0.33207350969314577
+        },
+        {
+            "label": "BA_LeftHandMagicAttack02",
+            "motion": 0.7880458831787109
+        },
+        {
+            "label": "BA_LeftHandMagicAttack03",
+            "motion": 0.3987656235694885
+        },
+        {
+            "label": "BA_LeftHandMagicGuard01",
+            "motion": 1.2499347925186158
+        },
+        {
+            "label": "BA_LeftHandStomachGuard01",
+            "motion": 0.665080189704895
+        },
+        {
+            "label": "BA_LeftHandStomachGuard02",
+            "motion": 0.7548044919967651
+        },
+        {
+            "label": "BA_LeftHandStomachGuard03",
+            "motion": 1.229302167892456
+        },
+        {
+            "label": "BA_LightHit01",
+            "motion": 0.4167846143245697
+        },
+        {
+            "label": "BA_PoisnDamage01",
+            "motion": 0.4778839945793152
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack01",
+            "motion": 0.38812994956970217
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack02",
+            "motion": 0.1985797882080078
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack03",
+            "motion": 0.6345036625862122
+        },
+        {
+            "label": "BA_RightBackHandSwordAttack04",
+            "motion": 0.7865896224975586
+        },
+        {
+            "label": "BA_RightBackHandSwordSkillAttack01",
+            "motion": 1.4307528734207154
+        },
+        {
+            "label": "BA_RightBackHandSwordStabAttack01",
+            "motion": 0.3931732773780823
+        },
+        {
+            "label": "BA_RightElbowAttack01",
+            "motion": 0.881473958492279
+        },
+        {
+            "label": "BA_RightFootFinish01",
+            "motion": 1.355685830116272
+        },
+        {
+            "label": "BA_RightFootFinish02",
+            "motion": 0.8897311687469482
+        },
+        {
+            "label": "BA_RightFootFinish03",
+            "motion": 1.3359030485153199
+        },
+        {
+            "label": "BA_RightFootMagicAttack01",
+            "motion": 0.6908378601074219
+        },
+        {
+            "label": "BA_RightFootMagicAttack02",
+            "motion": 0.5263514518737793
+        },
+        {
+            "label": "BA_RightFootMagicAttack03",
+            "motion": 0.57058185338974
+        },
+        {
+            "label": "BA_RightHandGuard01",
+            "motion": 0.25535595417022707
+        },
+        {
+            "label": "BA_RightHandMagicAttack01",
+            "motion": 1.2327815294265748
+        },
+        {
+            "label": "BA_RightHandMagicAttack02",
+            "motion": 0.23939287662506104
+        },
+        {
+            "label": "BA_RightHandMagicAttack03",
+            "motion": 0.18608693778514863
+        },
+        {
+            "label": "BA_RightHandMagicAttack04",
+            "motion": 0.8546259999275208
+        },
+        {
+            "label": "BA_RightHandMagicAttack05",
+            "motion": 0.7159887552261353
+        },
+        {
+            "label": "BA_RightHandMagicAttack06",
+            "motion": 0.3512108325958252
+        },
+        {
+            "label": "BA_RightHandMagicChant01",
+            "motion": 1.348056435585022
+        },
+        {
+            "label": "BA_RightHandMagicChant02",
+            "motion": 0.5790042877197266
+        },
+        {
+            "label": "BA_RIghtHandSwordAttack01",
+            "motion": 1.2598592042922974
+        },
+        {
+            "label": "BA_RightHandSwordAttack02",
+            "motion": 0.4168677031993866
+        },
+        {
+            "label": "BA_RightHandSwordPullAndPut01",
+            "motion": 1.5920675992965699
+        },
+        {
+            "label": "BA_RIghtHandSwordPullAndPut02",
+            "motion": 0.31499192118644717
+        },
+        {
+            "label": "BA_RightHandSwordStabAttack01",
+            "motion": 0.5327367782592773
+        },
+        {
+            "label": "BA_RightHandThrowWeapon01",
+            "motion": 0.8263965249061585
+        },
+        {
+            "label": "BA_SwordFInish01",
+            "motion": 1.0619795322418213
+        },
+        {
+            "label": "BA_SwordFinish02",
+            "motion": 1.1656070947647095
+        },
+        {
+            "label": "CA_Applaud",
+            "motion": 1.1529762744903565
+        },
+        {
+            "label": "CA_BackPain1",
+            "motion": 0.8267623782157898
+        },
+        {
+            "label": "CA_BackPain2",
+            "motion": 0.630143404006958
+        },
+        {
+            "label": "CA_BackPain3",
+            "motion": 0.2241288125514984
+        },
+        {
+            "label": "CA_Beg1",
+            "motion": 0.7172473073005676
+        },
+        {
+            "label": "CA_Beg2",
+            "motion": 0.21507196128368379
+        },
+        {
+            "label": "CA_Bow1",
+            "motion": 0.13031724095344544
+        },
+        {
+            "label": "CA_Bow2",
+            "motion": 0.18703076243400575
+        },
+        {
+            "label": "CA_Bow3",
+            "motion": 0.38909873366355898
+        },
+        {
+            "label": "CA_CallSomeoneByRightHand",
+            "motion": 1.0617146492004395
+        },
+        {
+            "label": "CA_Dogeza",
+            "motion": 1.6851402521133423
+        },
+        {
+            "label": "CA_DrinkingWithLeftHand01",
+            "motion": 0.27687808871269228
+        },
+        {
+            "label": "CA_DrinkingWithRightHand01",
+            "motion": 0.8975574374198914
+        },
+        {
+            "label": "CA_DrinkingWithRightHand02",
+            "motion": 0.22157417237758637
+        },
+        {
+            "label": "CA_GuideWithBothHands01",
+            "motion": 0.4438529312610626
+        },
+        {
+            "label": "CA_GuideWithLeftHand01",
+            "motion": 0.6665222644805908
+        },
+        {
+            "label": "CA_GuideWithRightHand01",
+            "motion": 0.7831231355667114
+        },
+        {
+            "label": "CA_GuideWithRightHand02",
+            "motion": 0.6574279069900513
+        },
+        {
+            "label": "CA_GuideWithRightHand03",
+            "motion": 0.5494116544723511
+        },
+        {
+            "label": "CA_GuideWithRightHand04",
+            "motion": 0.2592400312423706
+        },
+        {
+            "label": "CA_Hi1",
+            "motion": 1.0021758079528809
+        },
+        {
+            "label": "CA_Hi2",
+            "motion": 0.26880648732185366
+        },
+        {
+            "label": "CA_Hi3",
+            "motion": 1.3741341829299927
+        },
+        {
+            "label": "CA_Hi4",
+            "motion": 0.28775814175605776
+        },
+        {
+            "label": "CA_Hi5",
+            "motion": 0.13716351985931397
+        },
+        {
+            "label": "CA_Kiss1",
+            "motion": 0.892367422580719
+        },
+        {
+            "label": "CA_Kiss2",
+            "motion": 1.4396387338638306
+        },
+        {
+            "label": "CA_LeanAgainstTheWall01",
+            "motion": 1.0863440036773682
+        },
+        {
+            "label": "CA_LeanAgainstTheWall02",
+            "motion": 0.25332921743392947
+        },
+        {
+            "label": "CA_LeanAgainstTheWall03",
+            "motion": 0.11675195395946503
+        },
+        {
+            "label": "CA_LeanAgainstTheWall04",
+            "motion": 0.20538350939750672
+        },
+        {
+            "label": "CA_LeanAgainstTheWall05",
+            "motion": 0.8187206387519836
+        },
+        {
+            "label": "CA_LookAtTheWatch",
+            "motion": 1.3023945093154908
+        },
+        {
+            "label": "CA_LookingAround",
+            "motion": 0.28574874997138979
+        },
+        {
+            "label": "CA_Nod1",
+            "motion": 0.10983646661043167
+        },
+        {
+            "label": "CA_Nod2",
+            "motion": 0.038311686366796496
+        },
+        {
+            "label": "CA_Nod3",
+            "motion": 0.5900915265083313
+        },
+        {
+            "label": "CA_OMG1",
+            "motion": 1.4421316385269166
+        },
+        {
+            "label": "CA_OMG2",
+            "motion": 0.23963826894760133
+        },
+        {
+            "label": "CA_OMG3",
+            "motion": 0.24164170026779176
+        },
+        {
+            "label": "CA_Phone1",
+            "motion": 0.5893679857254028
+        },
+        {
+            "label": "CA_Phone2",
+            "motion": 0.26577356457710268
+        },
+        {
+            "label": "CA_Phone3",
+            "motion": 0.060371655970811847
+        },
+        {
+            "label": "CA_PickUp01",
+            "motion": 0.561785101890564
+        },
+        {
+            "label": "CA_PickUp02",
+            "motion": 1.1442362070083619
+        },
+        {
+            "label": "CA_PickUp03",
+            "motion": 1.2899011373519898
+        },
+        {
+            "label": "CA_PickUp04",
+            "motion": 0.23544572293758393
+        },
+        {
+            "label": "CA_Salut1",
+            "motion": 0.19506490230560304
+        },
+        {
+            "label": "CA_Salut2",
+            "motion": 1.592057466506958
+        },
+        {
+            "label": "CA_Salut3",
+            "motion": 0.8197813034057617
+        },
+        {
+            "label": "CA_ScratchHead",
+            "motion": 1.1122511625289918
+        },
+        {
+            "label": "CA_ScratchLeftShoulder",
+            "motion": 0.6316784024238586
+        },
+        {
+            "label": "CA_ScratchRightShoulder",
+            "motion": 0.5054370760917664
+        },
+        {
+            "label": "CA_ShakeHead",
+            "motion": 0.11041641980409622
+        },
+        {
+            "label": "CA_SitInAChairAndApplaud",
+            "motion": 0.37949514389038088
+        },
+        {
+            "label": "CA_SitInAChairAndDrinking",
+            "motion": 0.14560119807720185
+        },
+        {
+            "label": "CA_SitInAChairAndFan",
+            "motion": 0.09253770858049393
+        },
+        {
+            "label": "CA_SitInAChairAndSalut1",
+            "motion": 0.4120946526527405
+        },
+        {
+            "label": "CA_SitInAChairAndSalut2",
+            "motion": 0.3959912061691284
+        },
+        {
+            "label": "CA_SitInAChairAndSalut3",
+            "motion": 0.3332194685935974
+        },
+        {
+            "label": "CA_SitInAChairAndSayNo",
+            "motion": 0.5760061144828796
+        },
+        {
+            "label": "CA_SitInAChairAndWavingHand01",
+            "motion": 1.0216563940048218
+        },
+        {
+            "label": "CA_SitInAChairAndWavingHand02",
+            "motion": 0.554947018623352
+        },
+        {
+            "label": "CA_SitInAChairAndWhy",
+            "motion": 1.0943187475204468
+        },
+        {
+            "label": "CA_SitOnChair01",
+            "motion": 0.5122518539428711
+        },
+        {
+            "label": "CA_SitOnChair02",
+            "motion": 1.1825220584869385
+        },
+        {
+            "label": "CA_SitOnChair03",
+            "motion": 0.13845977187156678
+        },
+        {
+            "label": "CA_SitOnChair04",
+            "motion": 0.5420753359794617
+        },
+        {
+            "label": "CA_Smoking1",
+            "motion": 1.5122272968292237
+        },
+        {
+            "label": "CA_Smoking2",
+            "motion": 0.9731378555297852
+        },
+        {
+            "label": "CA_Squat",
+            "motion": 0.15567763149738313
+        },
+        {
+            "label": "CA_StandingNextToChair01",
+            "motion": 0.4986022114753723
+        },
+        {
+            "label": "CA_StandingWithCane01",
+            "motion": 0.04107547178864479
+        },
+        {
+            "label": "CA_StandingWithCane02",
+            "motion": 0.13826680183410645
+        },
+        {
+            "label": "CA_StandingWithInformationBoard01",
+            "motion": 0.2553364634513855
+        },
+        {
+            "label": "CA_StandingWithInformationBoard02",
+            "motion": 0.23241883516311646
+        },
+        {
+            "label": "CA_StandingWithInformationBoard03",
+            "motion": 0.3489946126937866
+        },
+        {
+            "label": "CA_Stop",
+            "motion": 0.7534185647964478
+        },
+        {
+            "label": "CA_Stretch1",
+            "motion": 1.5292998552322388
+        },
+        {
+            "label": "CA_Stretch2",
+            "motion": 0.8026270866394043
+        },
+        {
+            "label": "CA_Stretch3",
+            "motion": 0.7998864650726318
+        },
+        {
+            "label": "CA_Taming01",
+            "motion": 0.7839545607566834
+        },
+        {
+            "label": "CA_Taming02",
+            "motion": 0.8088964819908142
+        },
+        {
+            "label": "CA_Taming03",
+            "motion": 1.2489635944366456
+        },
+        {
+            "label": "CA_TieShoelaces",
+            "motion": 1.2307074069976807
+        },
+        {
+            "label": "CA_TiredAndLeanAgainstTheWall01",
+            "motion": 0.681022047996521
+        },
+        {
+            "label": "CA_TiredAndLeanAgainstTheWall02",
+            "motion": 0.23281081020832063
+        },
+        {
+            "label": "CA_TouchSmartPhone",
+            "motion": 0.10666141659021378
+        },
+        {
+            "label": "CA_TouchTheBelly",
+            "motion": 0.17570190131664277
+        },
+        {
+            "label": "CA_Waiting1",
+            "motion": 0.09317664802074433
+        },
+        {
+            "label": "CA_Waiting2",
+            "motion": 0.8584454655647278
+        },
+        {
+            "label": "CA_WalkingAround",
+            "motion": 0.38949885964393618
+        },
+        {
+            "label": "CA_Warning",
+            "motion": 0.8244308233261108
+        },
+        {
+            "label": "CA_WavingHandWithInformationBoard01",
+            "motion": 0.8487834334373474
+        },
+        {
+            "label": "CA_WavingHandWIthInformationBoard02",
+            "motion": 0.1136968582868576
+        },
+        {
+            "label": "CA_WavingLeftHand01",
+            "motion": 0.3921984136104584
+        },
+        {
+            "label": "CA_WavingRightHand01",
+            "motion": 1.828484058380127
+        },
+        {
+            "label": "CA_WavingRightHand02",
+            "motion": 0.10865344852209091
+        },
+        {
+            "label": "CA_WavingRightHand03",
+            "motion": 1.3585760593414307
+        },
+        {
+            "label": "CA_Why1",
+            "motion": 1.5093746185302735
+        },
+        {
+            "label": "CA_Why2",
+            "motion": 0.6013479232788086
+        }
+    ]
+}

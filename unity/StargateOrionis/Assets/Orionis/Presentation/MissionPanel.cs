@@ -28,7 +28,7 @@ namespace Orionis.Presentation
 		{
 			session = value;
 			MissionDefinition mission = session.State.Base.Mission;
-			PrototypeUi.Label(PrototypeUi.Rect("Mission title", base.transform, new Vector2(0.01f, 0.87f), new Vector2(0.98f, 1f)), mission.Title, 30);
+			PrototypeUi.Label(PrototypeUi.Rect("Mission title", base.transform, new Vector2(0.01f, 0.87f), new Vector2(0.46f, 1f)), mission.Title, 30);
 			ExpeditionState expedition = session.State.Expedition;
 			if (expedition != null && expedition.Returned)
 			{
@@ -193,28 +193,9 @@ namespace Orionis.Presentation
 			}
 			PrototypeUi.Label(rectTransform, text);
 			PrototypeUi.Rect("Mission objective tracker", base.transform, new Vector2(0.48f, 0.65f), new Vector2(0.98f, 0.84f)).gameObject.AddComponent<MissionObjectivePanel>().Bind(session.State);
-			RectTransform missionMap = PrototypeUi.Rect("Mission map", base.transform, new Vector2(0.48f, 0.02f), new Vector2(0.98f, 0.64f));
+			RectTransform missionMap = PrototypeUi.Rect("Mission map", base.transform, new Vector2(0.02f, 0.02f), new Vector2(0.98f, 0.64f));
 			missionMap.gameObject.AddComponent<MissionMapView>().Bind(session);
-			RectTransform roster = PrototypeUi.Rect("Offworld roster viewport", base.transform, new Vector2(0.48f, 0.02f), new Vector2(0.98f, 0.64f));
-			roster.gameObject.AddComponent<Image>().color = new Color(0.07f, 0.1f, 0.14f);
-			roster.gameObject.AddComponent<Mask>().showMaskGraphic = true;
-			RectTransform rectTransform2 = PrototypeUi.Rect("Offworld roster content", roster, new Vector2(0f, 1f), Vector2.one);
-			rectTransform2.pivot = new Vector2(0.5f, 1f);
-			party = PrototypeUi.Label(PrototypeUi.Rect("Offworld party", rectTransform2, Vector2.zero, Vector2.one), "Deployed team & equipment (scroll)\n\n", 16);
-			foreach (ExpeditionMember member in expedition.Party)
-			{
-				UnitSummary unitSummary = session.State.Base.Units.Single((UnitSummary u) => u.Id == member.UnitId);
-				DeploymentLoadout deploymentLoadout = mission.Personnel.Single((DeploymentLoadout p) => p.UnitId == member.UnitId);
-				Text text2 = party;
-				text2.text = text2.text + unitSummary.Name + " / " + unitSummary.Profession + " " + unitSummary.Tier + ((deploymentLoadout.BranchId == null) ? "" : (" / " + deploymentLoadout.BranchId + " " + deploymentLoadout.BranchTier)) + "\nStamina " + member.Stamina + " / Perception " + member.Perception + " / Endurance " + member.Endurance + ((session.State.Base.Combat == null) ? "" : (" / Health " + MissionCombat.Inspect(session.State).PartyHealth[member.UnitId])) + "\n" + Tools(member.UnitId, member.Tools) + "\n" + PrototypeUi.EquipmentLabel(member.Equipment) + "\n\n";
-			}
-			rectTransform2.sizeDelta = new Vector2(0f, Math.Max(240, party.text.Split('\n', StringSplitOptions.None).Length * 25 + 24));
-			ScrollRect scrollRect = roster.gameObject.AddComponent<ScrollRect>();
-			scrollRect.viewport = roster;
-			scrollRect.content = rectTransform2;
-			scrollRect.horizontal = false;
-			scrollRect.movementType = ScrollRect.MovementType.Clamped;
-			scrollRect.scrollSensitivity = 30f;
+            var roster=PersonnelCards("Offworld roster viewport",new Vector2(.02f,.02f),new Vector2(.98f,.64f),expedition.Party.Select(m=>m.UnitId));
 			roster.gameObject.SetActive(value: false);
 			Button toggle = PrototypeUi.Button("Toggle team details", base.transform, new Vector2(0.76f, 0.85f), new Vector2(0.98f, 0.94f), "Team & equipment", new Color(0.13f, 0.25f, 0.31f), delegate
 			{
@@ -226,13 +207,13 @@ namespace Orionis.Presentation
 			{
 				toggle.GetComponentInChildren<Text>().text = (roster.gameObject.activeSelf ? "Show map" : "Team & equipment");
 			});
-			status = PrototypeUi.Label(PrototypeUi.Rect("Deployment status", base.transform, new Vector2(0.02f, 0f), new Vector2(0.97f, 0.07f)), "", 16);
+			status = PrototypeUi.Label(PrototypeUi.Rect("Deployment status", base.transform, new Vector2(0.02f, 0f), new Vector2(0.45f, 0.045f)), "", 13);
 			if (expedition.StageId == mission.GateStageId && !expedition.GateChoicePending)
 			{
 				PrototypeUi.Button("Extract to SGC", base.transform, new Vector2(0.49f, 0.85f), new Vector2(0.74f, 0.94f), "Extract to SGC", new Color(0.12f, 0.35f, 0.3f), delegate
 				{
-					Run(session.ExtractMission);
-				}).interactable = expedition.GateOpen && expedition.Travel.SceneId == null && expedition.Travel.Field?.Work == null && MissionCombat.Active(session.State) == null;
+					MissionExtractionPanel.Open(transform,session);
+				}).interactable = MissionRescue.ExtractionBlocker(session.State)==null;
 			}
 			if (expedition.GateChoicePending)
 			{
@@ -255,11 +236,12 @@ namespace Orionis.Presentation
 			{
 				PrototypeUi.Rect("Stage travel", base.transform, new Vector2(0.02f, 0.13f), new Vector2(0.45f, 0.64f)).gameObject.AddComponent<MissionTravelPanel>().Bind(session);
 			}
-			Button button = PrototypeUi.Button("Redial Gate", base.transform, new Vector2(0.02f, 0.04f), new Vector2(0.45f, 0.12f), "Redial SGC / " + mission.RedialTicks + " tick", new Color(0.15f, 0.23f, 0.3f), delegate
+			Button button = PrototypeUi.Button("Redial Gate", base.transform, new Vector2(0.02f, 0.055f), new Vector2(0.45f, 0.12f), "Redial SGC / " + mission.RedialTicks + " tick", new Color(0.15f, 0.23f, 0.3f), delegate
 			{
 				Run(session.RedialGate);
 			});
-			button.interactable = !expedition.GateChoicePending && !expedition.GateOpen && expedition.StageId == mission.GateStageId;
+			button.gameObject.SetActive(expedition.StageId==mission.GateStageId);
+            button.interactable = !expedition.GateChoicePending && !expedition.GateOpen && expedition.StageId == mission.GateStageId;
 			Button[] array = new Button[1] { button };
 			foreach (Button button2 in array)
 			{
@@ -283,23 +265,46 @@ namespace Orionis.Presentation
 			}
 		}
 
+        private RectTransform PersonnelCards(string name,Vector2 min,Vector2 max,IEnumerable<string> ids,bool report=false)
+        {
+            var viewport=PrototypeUi.Rect(name,transform,min,max);viewport.gameObject.AddComponent<RectMask2D>();
+            var content=PrototypeUi.Rect(name+" entries",viewport,new Vector2(0,1),Vector2.one);content.pivot=new Vector2(.5f,1);
+            var list=ids.ToArray();content.sizeDelta=new Vector2(0,list.Length*156);
+            var scroll=viewport.gameObject.AddComponent<ScrollRect>();scroll.content=content;scroll.viewport=viewport;scroll.horizontal=false;scroll.scrollSensitivity=35;
+            for(int i=0;i<list.Length;i++)
+            {
+                var id=list[i];var unit=session.State.Base.Units.Single(u=>u.Id==id);
+                var button=PrototypeUi.Button(name+"-"+id,content,new Vector2(0,1),Vector2.one,PrototypeUi.UnitLabel(unit,session.State.Base.Mission)+"\n"+(report?"At extraction":"Offworld"),Color.Lerp(PrototypeUi.ParseColor(unit.Color),Color.black,.6f),()=>session.Selection.SelectUnit(id));
+                var rect=button.GetComponent<RectTransform>();rect.offsetMin=new Vector2(2,-(i+1)*156+3);rect.offsetMax=new Vector2(-2,-i*156-3);
+                button.gameObject.AddComponent<PersonnelCardView>().Bind(session,id,report);
+            }
+            return viewport;
+        }
+
 		private void Debrief()
 		{
 			CampaignState s = session.State;
 			ExpeditionState expedition = s.Expedition;
 			bool flag = expedition.Travel.Field.Subjects.Any((FieldSubject x) => x.Id == s.Base.Rescue?.SubjectId && x.Evacuation == "EXTRACTED");
-			PrototypeUi.Label(PrototypeUi.Rect("Mission debrief", base.transform, new Vector2(0.02f, 0.67f), new Vector2(0.97f, 0.87f)), "RETURNED TO SGC\n" + (flag ? "Operative recovered to SGC. Extract objective completed." : "Team returned without the operative.") + "\nReturned at tick " + expedition.ExtractedTick + ". The Gate is closed. Save/Load retains this result.", 22);
-			string text = string.Join("\n\n", expedition.Party.Select((ExpeditionMember u) => s.Base.Units.Single((UnitSummary x) => x.Id == u.UnitId).Name + " / Health " + MissionCombat.Inspect(s).PartyHealth[u.UnitId] + " / Stamina " + u.Stamina + "\n" + Tools(u.UnitId, u.Tools) + "\n" + PrototypeUi.EquipmentLabel(u.Equipment)));
-			PrototypeUi.Label(PrototypeUi.Rect("Returned personnel", base.transform, new Vector2(0.02f, 0.1f), new Vector2(0.51f, 0.66f)), text, 19);
-			if (s.Base.Cargo != null && RecoveredCargo.Revealed(s))
+			PrototypeUi.Label(PrototypeUi.Rect("Mission debrief", base.transform, new Vector2(0.53f, 0.66f), new Vector2(0.97f, 0.86f)), "RETURNED TO SGC\n" + (flag ? "Operative recovered to SGC. Extract objective completed." : "Team returned without the operative.") + "\nReturned at tick " + expedition.ExtractedTick + ". The Gate is closed. Save/Load retains this result.", 22);
+            PersonnelCards("Returned personnel",new Vector2(.02f,.12f),new Vector2(.51f,.86f),expedition.Party.Select(m=>m.UnitId),true);
+			if(s.Base.ResourceProcessing!=null&&ResourceCargo.Collected(s))
 			{
-				bool flag2 = s.Cargo.Any((RecoveredItem i) => i.SourceContainerId == s.Base.Cargo.ContainerId);
-				PrototypeUi.Button("Recover mission cargo", base.transform, new Vector2(0.53f, 0.13f), new Vector2(0.97f, 0.24f), flag2 ? "Crate recovered / Base > Recovered cargo" : ("Recover " + s.Base.Cargo.Label + " to incoming inventory"), new Color(0.12f, 0.35f, 0.4f), delegate
+				var cache=s.Cargo.Single(i=>ResourceCargo.IsResource(s,i));
+				PrototypeUi.Button("Recover Supply cache",transform,new Vector2(.53f,.51f),new Vector2(.97f,.63f),cache.FieldStageId==null?"Supply cache recovered / Receiving queue":"Extract marked Supply cache to incoming inventory",new Color(.12f,.35f,.4f),()=>Run(session.RecoverResourceCache)).interactable=cache.FieldStageId!=null&&ResourceCargo.Collected(s);
+			}
+			if (s.Base.Cargo?.Caches.Any(c=>RecoveredCargo.CacheRevealed(s,c))==true)
+			{
+				PrototypeUi.Button("Recover mission cargo", base.transform, new Vector2(0.53f, 0.13f), new Vector2(0.97f, 0.24f), RecoveredCargo.CanRecover(s)?"Recover marked cargo":"Marked cargo recovered / Receiving queue", new Color(0.12f, 0.35f, 0.4f), delegate
 				{
 					Run(session.RecoverMissionCargo);
 				}).interactable = RecoveredCargo.CanRecover(s);
 			}
-			PrototypeUi.Label(PrototypeUi.Rect("Debrief actions", base.transform, new Vector2(0.02f, 0f), new Vector2(0.97f, 0.09f)), "Prepare redeployment retains injuries, stamina, Tool charges and equipment. Reset mission is a debug reset; Save writes the current state.", 17);
+            var receiving=s.Base.Rooms.FirstOrDefault(r=>r.Definition.Id=="receiving");
+            int queued=s.Cargo.Count(i=>i.FieldStageId==null&&i.EquippedUnitId==null&&(i.CustodyRoomId==null||i.CustodyRoomId==receiving?.Id)&&!ResourceCargo.Consumed(s,i));
+            if(receiving!=null&&queued>0)
+                PrototypeUi.Button("Open Receiving queue",transform,new Vector2(.53f,.40f),new Vector2(.97f,.48f),"Open Receiving / "+queued+" items",new Color(.12f,.35f,.4f),()=>GetComponentInParent<PrototypeBootstrap>().OpenReceiving());
+			PrototypeUi.Label(PrototypeUi.Rect("Debrief actions", base.transform, new Vector2(0.02f, 0f), new Vector2(0.97f, 0.09f)), "Cards show extraction health and Tool charges. Tools refill on return; base cards show their current state.", 17);
 			PrototypeUi.Button("Prepare redeployment", base.transform, new Vector2(0.53f, 0.28f), new Vector2(0.97f, 0.39f), "Prepare redeployment / retain personnel condition", new Color(0.12f, 0.35f, 0.4f), delegate
 			{
 				Run(session.PrepareRedeployment);

@@ -1,0 +1,48 @@
+{
+    "unity": "6000.5.2f1",
+    "project": "C:\\Users\\Powel\\Documents\\projects\\git\\stargate-orionis\\unity\\OrionisArtLab",
+    "clips": [
+        {
+            "name": "idle",
+            "seconds": 2.0,
+            "meshMotion": 0.0830257460474968,
+            "height": 2.72617769241333,
+            "loop": true,
+            "humanoid": true,
+            "bones": 20,
+            "triangles": 1174
+        },
+        {
+            "name": "run",
+            "seconds": 0.8333333730697632,
+            "meshMotion": 1.0244733095169068,
+            "height": 2.737682580947876,
+            "loop": true,
+            "humanoid": true,
+            "bones": 20,
+            "triangles": 1174
+        },
+        {
+            "name": "shoot",
+            "seconds": 1.0,
+            "meshMotion": 0.08475614339113236,
+            "height": 2.726177215576172,
+            "loop": false,
+            "humanoid": true,
+            "bones": 20,
+            "triangles": 1174
+        },
+        {
+            "name": "shoot_burst",
+            "seconds": 1.3000000715255738,
+            "meshMotion": 0.25553837418556216,
+            "height": 2.726177215576172,
+            "loop": false,
+            "humanoid": true,
+            "bones": 20,
+            "triangles": 1174
+        }
+    ],
+    "passed": true,
+    "liveRenderPassed": false
+}

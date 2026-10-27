@@ -8,7 +8,7 @@ namespace Orionis.Presentation
         public static string UnitLabel(Orionis.Domain.UnitSummary unit, Orionis.Domain.MissionDefinition mission)
         {
             var branch = mission == null ? null : System.Linq.Enumerable.FirstOrDefault(mission.Personnel, p => p.UnitId == unit.Id);
-            return "Name: " + unit.Name + "\n" + unit.Profession + unit.Tier +
+            return PresentationArt.DisplayName(unit.Id,unit.Name) + "\n" + unit.Profession + unit.Tier +
                 (branch?.BranchId == null ? "" : "/" + branch.BranchId + branch.BranchTier);
         }
         public static string DeploymentLabel(Orionis.Domain.CampaignState state, string id)

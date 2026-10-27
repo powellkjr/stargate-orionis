@@ -103,7 +103,7 @@ namespace Orionis.Tests
             var old = File.ReadAllText("../tools/fixtures/bootstrap-before-ready-room.json"); var s = Create(old);
             s.Selection.SelectRoom("r5"); s.AdvanceOneTick(); s.Deploy(new[] { "unit-6" });
             var j = JObject.Parse(new CampaignSaveCodec(old).Serialize(new SavedSession(s.State, new SelectionReference(SelectionKind.Room, "r5"))));
-            j["schemaVersion"] = 11; j.Property("teams").Remove(); ((JObject)j["expedition"]).Property("teamId").Remove();
+            j["schemaVersion"] = 11;j.Property("archivedCargoSupply")?.Remove(); j.Property("teams").Remove(); ((JObject)j["expedition"]).Property("teamId").Remove();
             if (conflict) j["rooms"][4]["col"] = 8;
             var c = new CampaignSaveCodec(Json);
             if (conflict) { Assert.Catch(() => c.Deserialize(j.ToString())); return; }

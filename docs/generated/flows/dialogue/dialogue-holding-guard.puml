@@ -1,0 +1,30 @@
+@startuml
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam ArrowFontSize 11
+skinparam rectangleRoundCorner 8
+skinparam nodesep 25
+skinparam ranksep 40
+skinparam dpi 110
+title "dialogue-holding-guard"
+caption "demos/shared/data/offworld/missing-operative-001.finalized.json"
+legend left
+Authored design, including content not yet ported to Unity.
+Solid arrows: authored flow/effects. Dotted arrows: prerequisites or references.
+All listed requirements apply together; a dotted edge is not an automatic route.
+endlegend
+rectangle "START\ndialogueSceneId: dialogue-holding-guard\nparticipants:\n  right: guard-holding-01\n  left: ACTIVE_SGC_SPEAKER\nstartNodeId: holding-guard-watch" as ncced28c6dc3f99c2396a #FFF1CC
+rectangle "END CONVERSATION" as n361e48d0308f20e32dba #D9EEDB
+rectangle "holding-guard-watch\nspeaker: guard-holding-01\nside: RIGHT\ntext: Help if you're here to help. Don't start opening things you\nweren't asked to open." as n1f2979c143f13fbfe3d7 #EAF1F8
+rectangle "holding-guard-acknowledge\ntext: Understood.\nsource: NEUTRAL\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-holding-01\n    delta: -5\nendConversation: true" as n9f3f9f0ab703d1a3f831 #E5DAF5
+rectangle "holding-guard-ask-why-held\ntext: Why are these people being kept here?\nsource: DIPLOMAT\nrequirements:\n  profession: DIPLOMAT\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-holding-01\n    delta: 15\nendConversation: true" as n30c4296642176b6caecf #E5DAF5
+rectangle "holding-guard-security-question\ntext: Who authorized the restrictions?\nsource: SOLDIER\nrequirements:\n  profession: SOLDIER\n  minimumTier: 1\neffects:\n  - \n    type: CHANGE_NPC_SUSPICION\n    instanceId: guard-holding-01\n    delta: 25\nendConversation: true" as n62b2902d2bb6288dd36f #E5DAF5
+ncced28c6dc3f99c2396a --> n1f2979c143f13fbfe3d7 : "default start"
+n1f2979c143f13fbfe3d7 --> n9f3f9f0ab703d1a3f831 : "choose response, then qualified Actor"
+n9f3f9f0ab703d1a3f831 --> n361e48d0308f20e32dba
+n1f2979c143f13fbfe3d7 --> n30c4296642176b6caecf : "choose response, then qualified Actor"
+n30c4296642176b6caecf --> n361e48d0308f20e32dba
+n1f2979c143f13fbfe3d7 --> n62b2902d2bb6288dd36f : "choose response, then qualified Actor"
+n62b2902d2bb6288dd36f --> n361e48d0308f20e32dba
+@enduml

@@ -169,6 +169,9 @@
         },
         "materials": {
           "$ref": "#/$defs/stringArray"
+        },
+        "resourceCargo": {
+          "$ref": "resource-cargo-economy.schema.json#/$defs/cargoPayload"
         }
       }
     },
@@ -216,9 +219,15 @@
           "$ref": "#/$defs/stringArray",
           "description": "Known Tags: instance recognition/interpretation derived from retained evidence and current SGC Theory/Pattern Knowledge. Re-evaluate when relevant institutional Knowledge changes; do not reveal Reality merely because its definition is loaded."
         },
-        "identityTags": {"$ref": "#/$defs/stringArray"},
-        "conditionTags": {"$ref": "#/$defs/stringArray"},
-        "functionalityTags": {"$ref": "#/$defs/stringArray"},
+        "identityTags": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "conditionTags": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "functionalityTags": {
+          "$ref": "#/$defs/stringArray"
+        },
         "instanceFindings": {
           "type": "array",
           "items": {
@@ -276,6 +285,30 @@
               "knowledgeRequirements"
             ]
           }
+        },
+        "resourceCargo": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "quality": {
+              "type": "string",
+              "enum": [
+                "POOR",
+                "STANDARD",
+                "RICH",
+                "EXCEPTIONAL"
+              ]
+            },
+            "tiers": {
+              "$ref": "resource-cargo-economy.schema.json#/$defs/tiers"
+            },
+            "conversionStat": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 2000
+            }
+          },
+          "description": "Only explicitly evidenced cargo findings; loading hidden Reality does not populate this record."
         }
       }
     },
@@ -443,6 +476,73 @@
               "type": "null"
             }
           ]
+        },
+        "pendingResourceOutcome": {
+          "anyOf": [
+            {
+              "$ref": "resource-cargo-economy.schema.json#/$defs/pendingResourceOutcome"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bubbleWork": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "bubbleId",
+              "actorId",
+              "workedTicks",
+              "completedTick"
+            ],
+            "properties": {
+              "bubbleId": {
+                "$ref": "#/$defs/identifier"
+              },
+              "actorId": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/identifier"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "workedTicks": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "completedTick": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "description": "Sticky Actor and progress for independent Recipe bubbles; completedBubbles still records committed outcomes."
+        },
+        "resourceOutcomes": {
+          "type": "array",
+          "items": {
+            "$ref": "resource-cargo-economy.schema.json#/$defs/pendingResourceOutcome"
+          },
+          "description": "Fixed calculated outcomes for finished bubbles. An outcome whose bubble is absent from completedBubbles is pending commit; committed outcomes remain as process history, not another resource balance."
+        },
+        "allocationHighTierPercent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Allocation captured when recovery opens. Committed and pending outcomes do not reroll after equipment changes."
         }
       }
     },
@@ -472,6 +572,9 @@
           "$ref": "#/$defs/process"
         },
         "salvage": {
+          "$ref": "#/$defs/process"
+        },
+        "maintenance": {
           "$ref": "#/$defs/process"
         }
       }

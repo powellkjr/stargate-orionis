@@ -1,0 +1,199 @@
+{
+    "placements": [
+        {
+            "id": "7c1421ecc5d14cd5bf9ce73abc9ad5c9",
+            "roomId": "base:analysis",
+            "layout": "comparison",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Table_01.prefab",
+            "position": {
+                "x": 6.204062461853027,
+                "y": 0.0,
+                "z": 9.99960708618164
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "b9d1fb04c5254c7ea41d1a1b74298d51",
+            "roomId": "base:cultural_platform",
+            "layout": "single:2x2",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chair_01.prefab",
+            "position": {
+                "x": 3.2644076347351076,
+                "y": 0.0,
+                "z": 2.674018383026123
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "5e72e35c474d4f479cc5c462bd6ec278",
+            "roomId": "base:cultural_platform",
+            "layout": "single:2x2",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Statue_01.prefab",
+            "position": {
+                "x": 3.8515419960021974,
+                "y": 0.0,
+                "z": 3.184851884841919
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "ac48ec0eb3f946efb858574ffadbc2aa",
+            "roomId": "base:cultural_platform",
+            "layout": "single:2x2",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonPrototype/Prefabs/Props/SM_Prop_Microphone_01.prefab",
+            "position": {
+                "x": 2.3718156814575197,
+                "y": 0.0,
+                "z": 4.411325454711914
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "7de1e9cda2884c67ae0768b80df5f3db",
+            "roomId": "base:cultural_platform",
+            "layout": "single:2x2",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Plinth_01.prefab",
+            "position": {
+                "x": 2.2355034351348879,
+                "y": 0.0,
+                "z": 5.003264427185059
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "9131d9500f6842a7aed54cd1d529d866",
+            "roomId": "base:analysis",
+            "layout": "comparison",
+            "assetId": "sprite:test-rig",
+            "position": {
+                "x": 10.129778861999512,
+                "y": 0.0,
+                "z": 9.245500564575196
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "724c9f15f17445e4a8cd2fe38479442a",
+            "roomId": "base:infirmary",
+            "layout": "comparison",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Medkit_01.prefab",
+            "position": {
+                "x": 2.7745234966278078,
+                "y": 0.0,
+                "z": 7.838896751403809
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "96cd2b43d7ee4288b3ba8caeeeeb7373",
+            "roomId": "base:living_quarters",
+            "layout": "comparison",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Mug_01.prefab",
+            "position": {
+                "x": 2.3618507385253908,
+                "y": 0.0,
+                "z": 8.07040786743164
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "fe63db5d47674289b90ac4a4061bd9e9",
+            "roomId": "mission:missing-operative-001:stage-gate-yard",
+            "layout": "mission",
+            "assetId": "sprite:gate",
+            "position": {
+                "x": 1.5507330894470215,
+                "y": 0.0,
+                "z": 1.0556246042251588
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "289ebe69abef45179668f9947627871e",
+            "roomId": "mission:missing-operative-001:stage-gate-yard",
+            "layout": "mission",
+            "assetId": "sprite:console",
+            "position": {
+                "x": 0.8187170028686523,
+                "y": 0.0,
+                "z": 1.3094710111618043
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "3da019d190d24ff9b0be9e7c7c46a4cd",
+            "roomId": "mission:missing-operative-001:stage-gate-yard",
+            "layout": "mission",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Environment/SM_Gen_Env_Rock_01.prefab",
+            "position": {
+                "x": 0.8585889935493469,
+                "y": 0.0,
+                "z": 2.2592990398406984
+            },
+            "yaw": 0.0,
+            "scale": 0.4699999988079071
+        },
+        {
+            "id": "f1bfa78c0e8548a38f7ad190133c5ce7",
+            "roomId": "mission:missing-operative-001:stage-hidden-store",
+            "layout": "mission",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Shelf_02.prefab",
+            "position": {
+                "x": 1.2573033571243287,
+                "y": 0.0,
+                "z": 3.2470862865448
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "336d984f641942cfb5b5848bc1f66aec",
+            "roomId": "mission:missing-operative-001:stage-security-hall",
+            "layout": "mission",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Light_Wall_01.prefab",
+            "position": {
+                "x": 3.248875379562378,
+                "y": 0.0,
+                "z": 1.7384508848190308
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "c216418c28aa48bfa7b45924a1e536ad",
+            "roomId": "mission:missing-operative-001:stage-security-hall",
+            "layout": "mission",
+            "assetId": "sprite:security",
+            "position": {
+                "x": 6.026288032531738,
+                "y": 0.0,
+                "z": 1.0760923624038697
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        },
+        {
+            "id": "89a5b7be5b1b4836995af30c7a4d126b",
+            "roomId": "base:cultural_platform",
+            "layout": "single:2x2",
+            "assetId": "unity/StargateOrionis/Assets/Synty/PolygonGeneric/Prefabs/Props/SM_Gen_Prop_Chest_01.prefab",
+            "position": {
+                "x": 6.366738319396973,
+                "y": 0.0,
+                "z": 4.40964937210083
+            },
+            "yaw": 0.0,
+            "scale": 1.0
+        }
+    ]
+}

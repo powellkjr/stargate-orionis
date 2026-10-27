@@ -1,0 +1,1278 @@
+{
+  "recipe": {
+    "id": "RECEIVING_BASELINE_PROTOTYPE",
+    "requiredRoomCapability": "CAN_ACCEPT_RECEIVING",
+    "storageClass": "INV",
+    "steps": [
+      {
+        "id": "DETERMINE_HANDLING",
+        "name": "Inspect handling and condition",
+        "profession": "TECHNICIAN",
+        "minimumTier": 1,
+        "toolService": "TET1",
+        "roomService": null,
+        "durationTicks": 2,
+        "exposureCategory": "conditionTags"
+      },
+      {
+        "id": "DETERMINE_ITEM_CLASS",
+        "name": "Classify the object",
+        "profession": "SCIENTIST",
+        "minimumTier": 1,
+        "toolService": "SCT1",
+        "roomService": null,
+        "durationTicks": 2,
+        "exposureCategory": "identityTags"
+      }
+    ]
+  },
+  "items": [
+    {
+      "instance": {
+        "instanceId": "ITEM_ASGARD_RIFLE_0001",
+        "itemId": "ASGARD_EM_RIFLE",
+        "processingTags": [
+          "RECEIVING_REQUIRED",
+          "IDENTITY_UNKNOWN"
+        ],
+        "state": {
+          "condition": "UNKNOWN",
+          "functionalState": "FUNCTIONAL",
+          "quantity": 1,
+          "percentOfWhole": 1000,
+          "powerState": "CHARGED",
+          "constructionState": "COMPLETE",
+          "damage": []
+        },
+        "reality": {
+          "theoryBindings": [],
+          "authoredTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION",
+            "FUNCTIONAL",
+            "CHARGED"
+          ],
+          "technology": [
+            "ELECTROMAGNETIC_ACCELERATION_II"
+          ],
+          "fabricationEcosystem": [
+            "ASGARD_FABRICATION_II"
+          ],
+          "materials": []
+        },
+        "knowledge": {
+          "revealedTags": [
+            "PHYSICAL_OBJECT"
+          ],
+          "instanceFindings": [],
+          "recognizedIdentity": null,
+          "recognizedCivilization": null,
+          "recognizedItemClass": null,
+          "handlingKnowledge": [],
+          "knownProcessRequirements": []
+        },
+        "custody": {
+          "storageId": "INCOMING_INVENTORY",
+          "containerId": "INCOMING_INVENTORY",
+          "leaseId": null,
+          "state": "STANDBY",
+          "nextStorageId": null,
+          "status": "STORED",
+          "reservedBy": null,
+          "committedBy": null,
+          "cost": {
+            "unitCost": 1,
+            "extendedCost": 1
+          }
+        },
+        "processes": {
+          "receiving": {
+            "state": "NOT_STARTED",
+            "completedSteps": [],
+            "currentStep": null
+          },
+          "analysis": {
+            "state": "NOT_STARTED",
+            "completedSteps": [],
+            "currentStep": null,
+            "findingsProduced": []
+          },
+          "reverseEngineering": {
+            "state": "NOT_STARTED",
+            "recipeId": null,
+            "completedBubbles": [],
+            "currentBubble": null,
+            "partialProgress": 0
+          },
+          "salvage": {
+            "state": "NOT_STARTED"
+          }
+        },
+        "history": [
+          {
+            "event": "RECOVERED",
+            "source": "OFFWORLD"
+          },
+          {
+            "event": "ENTERED_SGC_CUSTODY",
+            "location": "INCOMING_INVENTORY"
+          }
+        ],
+        "relationships": {
+          "parentInstanceId": null,
+          "childInstanceIds": [],
+          "createdFrom": [],
+          "sourceRecipeId": null,
+          "derivedKnowledge": []
+        }
+      },
+      "item": {
+        "id": "ASGARD_EM_RIFLE",
+        "family": "RIFLE",
+        "version": 1,
+        "identity": {
+          "description": "A handheld Asgard ranged weapon using Tier-II electromagnetic acceleration.",
+          "civilization": "ASGARD",
+          "formFactor": "RIFLE",
+          "subjectTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD"
+          ]
+        },
+        "possibleReality": {
+          "inherentTags": [
+            "WEAPON",
+            "RANGED_WEAPON",
+            "RIFLE",
+            "ASGARD",
+            "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+          ],
+          "possibleTags": [
+            "FUNCTIONAL",
+            "DAMAGED",
+            "CHARGED",
+            "DISCHARGED",
+            "CONTAMINATED",
+            "UNSTABLE"
+          ]
+        },
+        "processingExposure": {
+          "receiving": {
+            "identityTags": [
+              "WEAPON",
+              "RANGED_WEAPON",
+              "RIFLE"
+            ],
+            "conditionTags": [
+              "FUNCTIONAL",
+              "DAMAGED",
+              "CHARGED",
+              "DISCHARGED",
+              "CONTAMINATED",
+              "UNSTABLE"
+            ]
+          },
+          "analysis": {
+            "orderedFunctionalityTags": [
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          }
+        },
+        "nameResolution": {
+          "initialName": "Unknown object",
+          "processExitNames": {
+            "receiving": "Unknown rifle",
+            "analysis": "Unknown electromagnetic rifle"
+          }
+        },
+        "salvageGuidance": {
+          "preserveMass": true
+        },
+        "extension": {
+          "ordinaryAsgardPatternsAreImplicitInFabricationCapability": true
+        },
+        "physical": {
+          "inventoryClass": "EQUIPMENT",
+          "isContainer": false,
+          "isTool": false
+        },
+        "name": "Asgard Electromagnetic Rifle",
+        "type": "ITEM",
+        "tags": [
+          "WEAPON",
+          "RANGED_WEAPON",
+          "RIFLE",
+          "ASGARD"
+        ],
+        "storage": {
+          "storageClasses": [
+            "INV",
+            "CC",
+            "EQ"
+          ],
+          "handlingCost": 1,
+          "isUnique": false,
+          "isStackable": false,
+          "isCargo": true
+        },
+        "processCompatibility": {
+          "receiving": true,
+          "analysis": true,
+          "construction": false,
+          "repair": true,
+          "reverseEngineering": true,
+          "salvage": true
+        },
+        "materials": {
+          "baseCost": 251,
+          "materialClass": "M2"
+        },
+        "theoryBindings": [
+          {
+            "theoryId": "ELECTROMAGNETIC_ACCELERATION_II",
+            "implementedProperties": [],
+            "implementationTags": [
+              "ELECTROMAGNETIC_ACCELERATION_II_IMPLEMENTATION"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "rooms": [
+    {
+      "definitionId": "cultural_platform",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "analysis",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [
+        "CAN_ACCEPT_ANALYSIS"
+      ],
+      "services": []
+    },
+    {
+      "definitionId": "containment",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [
+        "CAN_ACCEPT_CONTAINMENT"
+      ],
+      "services": []
+    },
+    {
+      "definitionId": "data_storage",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "equipment_storage",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [
+        "CAN_ACCEPT_EQUIPMENT_STORAGE"
+      ],
+      "services": []
+    },
+    {
+      "definitionId": "gate_room",
+      "capacityByTier": {
+        "1": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "holding",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "infirmary",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "living_quarters",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "maintenance",
+      "capacityByTier": {
+        "1": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "material_storage",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "generator",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "ration_storage",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "receiving",
+      "capacityByTier": {
+        "1": 40,
+        "2": 60,
+        "3": 80
+      },
+      "storageClasses": [
+        "INV"
+      ],
+      "capabilities": [
+        "CAN_ACCEPT_RECEIVING"
+      ],
+      "services": []
+    },
+    {
+      "definitionId": "research",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "response_room",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "supply_storage",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "tech_platform",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "workshop",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [
+        "CAN_ACCEPT_WORKSHOP",
+        "CAN_REVERSE_ENGINEER"
+      ],
+      "services": []
+    },
+    {
+      "definitionId": "ready_room",
+      "capacityByTier": {
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    },
+    {
+      "definitionId": "warehouse",
+      "capacityByTier": {
+        "1": 0
+      },
+      "storageClasses": [],
+      "capabilities": [],
+      "services": []
+    }
+  ],
+  "units": [
+    {
+      "id": "unit-1",
+      "qualifications": {
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-2",
+      "qualifications": {
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-3",
+      "qualifications": {
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-4",
+      "qualifications": {
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-5",
+      "qualifications": {
+        "SOLDIER": 3,
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3",
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-6",
+      "qualifications": {
+        "SOLDIER": 3,
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3",
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-7",
+      "qualifications": {
+        "SOLDIER": 3,
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3",
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-8",
+      "qualifications": {
+        "SOLDIER": 3,
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3",
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-9",
+      "qualifications": {
+        "SOLDIER": 3,
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-10",
+      "qualifications": {
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-11",
+      "qualifications": {
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-12",
+      "qualifications": {
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-13",
+      "qualifications": {
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-14",
+      "qualifications": {
+        "SCOUT": 3,
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3",
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-15",
+      "qualifications": {
+        "SCOUT": 3,
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3",
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-16",
+      "qualifications": {
+        "SCOUT": 3,
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3",
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-17",
+      "qualifications": {
+        "SCOUT": 3,
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3",
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-18",
+      "qualifications": {
+        "SCOUT": 3,
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "STT1",
+        "STT2",
+        "STT3",
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-19",
+      "qualifications": {
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-20",
+      "qualifications": {
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-21",
+      "qualifications": {
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-22",
+      "qualifications": {
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-23",
+      "qualifications": {
+        "TECHNICIAN": 3,
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III",
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-24",
+      "qualifications": {
+        "TECHNICIAN": 3,
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III",
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-25",
+      "qualifications": {
+        "TECHNICIAN": 3,
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III",
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-26",
+      "qualifications": {
+        "TECHNICIAN": 3,
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III",
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-27",
+      "qualifications": {
+        "TECHNICIAN": 3,
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III",
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-28",
+      "qualifications": {
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-29",
+      "qualifications": {
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-30",
+      "qualifications": {
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-31",
+      "qualifications": {
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-32",
+      "qualifications": {
+        "SCIENTIST": 3,
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3",
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-33",
+      "qualifications": {
+        "SCIENTIST": 3,
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3",
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-34",
+      "qualifications": {
+        "SCIENTIST": 3,
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3",
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-35",
+      "qualifications": {
+        "SCIENTIST": 3,
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3",
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-36",
+      "qualifications": {
+        "SCIENTIST": 3,
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "SCT1",
+        "SCT2",
+        "SCT3",
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-37",
+      "qualifications": {
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-38",
+      "qualifications": {
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-39",
+      "qualifications": {
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-40",
+      "qualifications": {
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    },
+    {
+      "id": "unit-41",
+      "qualifications": {
+        "MEDIC": 3,
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3",
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-42",
+      "qualifications": {
+        "MEDIC": 3,
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3",
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-43",
+      "qualifications": {
+        "MEDIC": 3,
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3",
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-44",
+      "qualifications": {
+        "MEDIC": 3,
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3",
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-45",
+      "qualifications": {
+        "MEDIC": 3,
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "MET1",
+        "MET2",
+        "MET3",
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-46",
+      "qualifications": {
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-47",
+      "qualifications": {
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-48",
+      "qualifications": {
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-49",
+      "qualifications": {
+        "DIPLOMAT": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3"
+      ]
+    },
+    {
+      "id": "unit-50",
+      "qualifications": {
+        "DIPLOMAT": 3,
+        "SOLDIER": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3",
+        "SOT1",
+        "SOT2",
+        "SOT3"
+      ]
+    },
+    {
+      "id": "unit-51",
+      "qualifications": {
+        "DIPLOMAT": 3,
+        "SCOUT": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3",
+        "STT1",
+        "STT2",
+        "STT3"
+      ]
+    },
+    {
+      "id": "unit-52",
+      "qualifications": {
+        "DIPLOMAT": 3,
+        "TECHNICIAN": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3",
+        "TET1",
+        "TET2",
+        "TET3",
+        "TECH_SERVICE_I",
+        "TECH_SERVICE_II",
+        "TECH_SERVICE_III"
+      ]
+    },
+    {
+      "id": "unit-53",
+      "qualifications": {
+        "DIPLOMAT": 3,
+        "SCIENTIST": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3",
+        "SCT1",
+        "SCT2",
+        "SCT3"
+      ]
+    },
+    {
+      "id": "unit-54",
+      "qualifications": {
+        "DIPLOMAT": 3,
+        "MEDIC": 3
+      },
+      "toolServices": [
+        "DIT1",
+        "DIT2",
+        "DIT3",
+        "MET1",
+        "MET2",
+        "MET3"
+      ]
+    }
+  ],
+  "admission": {
+    "id": "RECEIVING_ADMISSION",
+    "requiredProcessingTags": [
+      "RECEIVING_REQUIRED"
+    ],
+    "requiredRoomCapabilities": [
+      "CAN_ACCEPT_RECEIVING"
+    ]
+  },
+  "transitions": [
+    {
+      "id": "RECEIVING_AUTHORIZE",
+      "requiredProcessingTags": [
+        "RECEIVING_REQUIRED"
+      ],
+      "addProcessingTags": [
+        "RECEIVING_AUTHORIZED"
+      ]
+    },
+    {
+      "id": "RECEIVING_COMPLETE",
+      "requiredProcessingTags": [
+        "RECEIVING_REQUIRED",
+        "RECEIVING_AUTHORIZED"
+      ],
+      "removeProcessingTags": [
+        "RECEIVING_REQUIRED",
+        "RECEIVING_AUTHORIZED",
+        "IDENTITY_UNKNOWN"
+      ],
+      "addProcessingTags": [
+        "RECEIVING_COMPLETE",
+        "IDENTITY_ESTABLISHED"
+      ]
+    }
+  ]
+}

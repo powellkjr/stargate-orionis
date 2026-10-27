@@ -147,11 +147,16 @@
             "contentStatus": {
               "type": "string",
               "enum": [
-                "PROVISIONAL_SIMULATOR_BENCHMARK"
+                "PROVISIONAL_SIMULATOR_BENCHMARK",
+                "PROVISIONAL_PLAYTEST"
               ]
             },
             "handlingCostProvisional": {
               "type": "boolean"
+            },
+            "coreDefinitionId": {
+              "$ref": "#/$defs/identifier",
+              "description": "Authored Core definition for this removable physical equipment; does not create a manufacturing Pattern."
             }
           }
         },

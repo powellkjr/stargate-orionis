@@ -1,0 +1,69 @@
+{
+    "bodies": [
+        "TS_Body_01_infantry",
+        "TS_Body_02_gunner",
+        "TS_Body_03_scout",
+        "TS_Body_04_sniper",
+        "TS_Body_05_engineer",
+        "TS_Body_06_medic",
+        "TS_Body_07_unequipped",
+        "TS_Body_08_trench",
+        "TS_Body_09_general"
+    ],
+    "heads": [
+        "TS_Head_00_unequipped",
+        "TS_Head_01_infantry",
+        "TS_Head_02_Scout",
+        "TS_Head_04_sniper",
+        "TS_Head_05_engineer",
+        "TS_Head_06_medic_A",
+        "TS_Head_07_medic_B",
+        "TS_Head_08_beret",
+        "TS_Head_09_general",
+        "TS_Head_10_glasses",
+        "TS_Head_11_gasmask",
+        "TS_Head_12_gasmask_helmet",
+        "TS_Head_13_gasmask_general",
+        "TS_Head_14_gasmask_medic",
+        "TS_Head_15_gunner_only"
+    ],
+    "backpacks": [
+        "backpack_ammobox",
+        "backpack_engineer",
+        "backpack_flammer",
+        "backpack_medic",
+        "backpack_standard"
+    ],
+    "handProps": [
+        "weapon_assault_rifle_A",
+        "weapon_assault_rifle_B",
+        "weapon_crossbow",
+        "weapon_flamethrower",
+        "weapon_grenade_launcher",
+        "weapon_handgun",
+        "weapon_heavy_machinegun",
+        "weapon_knife",
+        "weapon_light_machinegun",
+        "weapon_medigun",
+        "weapon_minigun",
+        "weapon_needle_gun",
+        "weapon_revolver",
+        "weapon_rocket_launcher",
+        "weapon_shotgun",
+        "weapon_sniper_rifle",
+        "weapon_submachinegun",
+        "weapon_welder",
+        "weapon_wrench"
+    ],
+    "colors": [
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_black.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_blue.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_brown.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_green.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_grey.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_olive.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_red.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_white.mat",
+        "Assets/Toon_Soldiers/ToonSoldiers_2/models/Materials/Color/ToonSoldiers_yellow.mat"
+    ]
+}

@@ -1,0 +1,2819 @@
+{
+  "id": "missing-operative-001",
+  "title": "Missing Operative",
+  "briefing": "An undercover operative working for an allied Haven has stopped communicating from a remote Supply-mining operation. The operative's transmitter code has been provided. Travel to the mining operation, determine what happened to the operative, and recover them if possible.",
+  "gateStageId": "stage-gate-yard",
+  "maxPartySize": 4,
+  "redialTicks": 1,
+  "personnel": [
+    {
+      "id": "unit-1",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": null,
+      "tools": [
+        {
+          "instanceId": "unit-1-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-2",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Marksman",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-2-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-2-tool-2",
+          "kitId": "MKT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Marksman Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-3",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Guardian",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-3-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-3-tool-2",
+          "kitId": "GUT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Guardian Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-4",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Tactician",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-4-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-4-tool-2",
+          "kitId": "TAT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Tactician Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-5",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-5-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-5-tool-2",
+          "kitId": "STT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-6",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-6-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-6-tool-2",
+          "kitId": "TET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-7",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-7-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-7-tool-2",
+          "kitId": "SCT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-8",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-8-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-8-tool-2",
+          "kitId": "MET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-9",
+      "profession": "SOLDIER",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-9-tool-1",
+          "kitId": "SOT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-9-tool-2",
+          "kitId": "SOT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-10",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": null,
+      "tools": [
+        {
+          "instanceId": "unit-10-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-11",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Pathfinder",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-11-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-11-tool-2",
+          "kitId": "PAT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Pathfinder Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-12",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Tracker",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-12-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-12-tool-2",
+          "kitId": "TRT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Tracker Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-13",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Observer",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-13-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-13-tool-2",
+          "kitId": "OBT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Observer Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-14",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-14-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-14-tool-2",
+          "kitId": "SOT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-15",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-15-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-15-tool-2",
+          "kitId": "TET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-16",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-16-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-16-tool-2",
+          "kitId": "SCT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-17",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-17-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-17-tool-2",
+          "kitId": "MET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-18",
+      "profession": "SCOUT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-18-tool-1",
+          "kitId": "STT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-18-tool-2",
+          "kitId": "DIT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-19",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": null,
+      "tools": [
+        {
+          "instanceId": "unit-19-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-20",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Demolitions",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-20-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-20-tool-2",
+          "kitId": "DET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Demolitions Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-21",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Integrations",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-21-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-21-tool-2",
+          "kitId": "IGT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Integrations Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-22",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Overdrive",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-22-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-22-tool-2",
+          "kitId": "OVT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Overdrive Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-23",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-23-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-23-tool-2",
+          "kitId": "SOT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-24",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-24-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-24-tool-2",
+          "kitId": "STT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-25",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-25-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-25-tool-2",
+          "kitId": "SCT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-26",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-26-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-26-tool-2",
+          "kitId": "MET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-27",
+      "profession": "TECHNICIAN",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-27-tool-1",
+          "kitId": "TET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-27-tool-2",
+          "kitId": "DIT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-28",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": null,
+      "tools": [
+        {
+          "instanceId": "unit-28-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-29",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Applied",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-29-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-29-tool-2",
+          "kitId": "APT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Applied Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-30",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Operational",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-30-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-30-tool-2",
+          "kitId": "OPT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Operational Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-31",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Strategic",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-31-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-31-tool-2",
+          "kitId": "SGT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Strategic Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-32",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-32-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-32-tool-2",
+          "kitId": "SOT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-33",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-33-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-33-tool-2",
+          "kitId": "STT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-34",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-34-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-34-tool-2",
+          "kitId": "TET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-35",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-35-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-35-tool-2",
+          "kitId": "MET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-36",
+      "profession": "SCIENTIST",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-36-tool-1",
+          "kitId": "SCT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-36-tool-2",
+          "kitId": "DIT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-37",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": null,
+      "tools": [
+        {
+          "instanceId": "unit-37-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-38",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Trauma",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-38-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-38-tool-2",
+          "kitId": "TUT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Trauma Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-39",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Field Medicine",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-39-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-39-tool-2",
+          "kitId": "FMT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Field Medicine Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-40",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Epidemiology",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-40-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-40-tool-2",
+          "kitId": "EPT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Epidemiology Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-41",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-41-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-41-tool-2",
+          "kitId": "SOT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-42",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-42-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-42-tool-2",
+          "kitId": "STT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-43",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-43-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-43-tool-2",
+          "kitId": "TET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-44",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-44-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-44-tool-2",
+          "kitId": "SCT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-45",
+      "profession": "MEDIC",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "DIPLOMAT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-45-tool-1",
+          "kitId": "MET3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-45-tool-2",
+          "kitId": "DIT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-46",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": null,
+      "tools": [
+        {
+          "instanceId": "unit-46-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-47",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Negotiator",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-47-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-47-tool-2",
+          "kitId": "NET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Negotiator Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-48",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Ambassador",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-48-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-48-tool-2",
+          "kitId": "AMT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Ambassador Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-49",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "specialization",
+        "id": "Arbiter",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-49-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-49-tool-2",
+          "kitId": "ART3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Arbiter Tools 3",
+          "services": [],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-50",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SOLDIER",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-50-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-50-tool-2",
+          "kitId": "SOT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Soldier Tools 3",
+          "services": [
+            "SOT1",
+            "SOT2",
+            "SOT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-51",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCOUT",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-51-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-51-tool-2",
+          "kitId": "STT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scout Tools 3",
+          "services": [
+            "STT1",
+            "STT2",
+            "STT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-52",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "TECHNICIAN",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-52-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-52-tool-2",
+          "kitId": "TET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Technician Tools 3",
+          "services": [
+            "TET1",
+            "TET2",
+            "TET3",
+            "TECH_SERVICE_I",
+            "TECH_SERVICE_II",
+            "TECH_SERVICE_III"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-53",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "SCIENTIST",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-53-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-53-tool-2",
+          "kitId": "SCT3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Scientist Tools 3",
+          "services": [
+            "SCT1",
+            "SCT2",
+            "SCT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    },
+    {
+      "id": "unit-54",
+      "profession": "DIPLOMAT",
+      "tier": 3,
+      "branch": {
+        "kind": "cross",
+        "id": "MEDIC",
+        "tier": 3
+      },
+      "tools": [
+        {
+          "instanceId": "unit-54-tool-1",
+          "kitId": "DIT3",
+          "slot": 0,
+          "tier": 3,
+          "label": "Diplomat Tools 3",
+          "services": [
+            "DIT1",
+            "DIT2",
+            "DIT3"
+          ],
+          "charges": 9,
+          "damaged": false
+        },
+        {
+          "instanceId": "unit-54-tool-2",
+          "kitId": "MET3",
+          "slot": 1,
+          "tier": 3,
+          "label": "Medic Tools 3",
+          "services": [
+            "MET1",
+            "MET2",
+            "MET3"
+          ],
+          "charges": 9,
+          "damaged": false
+        }
+      ]
+    }
+  ],
+  "travel": {
+    "stages": [
+      {
+        "id": "stage-gate-yard",
+        "name": "Gate Yard",
+        "known": true
+      },
+      {
+        "id": "stage-outer-yard",
+        "name": "Outer Yard",
+        "known": true
+      },
+      {
+        "id": "stage-main-hall",
+        "name": "Main Hall",
+        "known": false
+      },
+      {
+        "id": "stage-holding-area",
+        "name": "Holding Area",
+        "known": false
+      },
+      {
+        "id": "stage-processing",
+        "name": "Processing Room",
+        "known": false
+      },
+      {
+        "id": "stage-security-hall",
+        "name": "Security Hall",
+        "known": false
+      },
+      {
+        "id": "stage-overseer-office",
+        "name": "Overseer Office",
+        "known": false
+      },
+      {
+        "id": "stage-hidden-store",
+        "name": "Hidden Store",
+        "known": false
+      },
+      {
+        "id": "stage-hidden-safe",
+        "name": "Hidden Safe",
+        "known": false
+      },
+      {
+        "id": "stage-analysis-lab",
+        "name": "Analysis Lab",
+        "known": false
+      }
+    ],
+    "transitions": [
+      {
+        "id": "door-gate-to-yard",
+        "from": "stage-gate-yard",
+        "to": "stage-outer-yard",
+        "initialState": "OPEN"
+      },
+      {
+        "id": "door-yard-to-mainhall",
+        "from": "stage-outer-yard",
+        "to": "stage-main-hall",
+        "initialState": "OPEN"
+      },
+      {
+        "id": "door-mainhall-to-holding",
+        "from": "stage-main-hall",
+        "to": "stage-holding-area",
+        "initialState": "LOCKED"
+      },
+      {
+        "id": "door-mainhall-to-processing",
+        "from": "stage-main-hall",
+        "to": "stage-processing",
+        "initialState": "LOCKED"
+      },
+      {
+        "id": "door-mainhall-to-security",
+        "from": "stage-main-hall",
+        "to": "stage-security-hall",
+        "initialState": "CLOSED"
+      },
+      {
+        "id": "door-security-to-office",
+        "from": "stage-security-hall",
+        "to": "stage-overseer-office",
+        "initialState": "CLOSED"
+      },
+      {
+        "id": "door-processing-to-office",
+        "from": "stage-processing",
+        "to": "stage-overseer-office",
+        "initialState": "CLOSED"
+      },
+      {
+        "id": "door-stage-hidden-store",
+        "from": "stage-holding-area",
+        "to": "stage-hidden-store",
+        "initialState": "OPEN",
+        "requiredKnowledge": "holding-hidden-entrance-known"
+      },
+      {
+        "id": "door-stage-hidden-safe",
+        "from": "stage-overseer-office",
+        "to": "stage-hidden-safe",
+        "initialState": "OPEN",
+        "requiredKnowledge": "office-hidden-safe-known"
+      },
+      {
+        "id": "door-processing-to-lab",
+        "from": "stage-processing",
+        "to": "stage-analysis-lab",
+        "initialState": "LOCKED"
+      }
+    ],
+    "npcs": [
+      {
+        "id": "guard-yard-01",
+        "stageId": "stage-outer-yard",
+        "label": "npc guard poorly trained",
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      {
+        "id": "guard-holding-01",
+        "stageId": "stage-holding-area",
+        "label": "npc guard poorly trained",
+        "disposition": "WATCHING",
+        "suspicion": 20,
+        "hostility": 0
+      },
+      {
+        "id": "guard-security-01",
+        "stageId": "stage-security-hall",
+        "label": "npc guard poorly trained",
+        "disposition": "ROUTINE",
+        "suspicion": 10,
+        "hostility": 0
+      },
+      {
+        "id": "guard-security-02",
+        "stageId": "stage-security-hall",
+        "label": "npc guard poorly trained",
+        "disposition": "ROUTINE",
+        "suspicion": 10,
+        "hostility": 0
+      },
+      {
+        "id": "reynolds-01",
+        "stageId": "stage-security-hall",
+        "label": "Security supervisor",
+        "disposition": "ROUTINE",
+        "suspicion": 10,
+        "hostility": 0
+      },
+      {
+        "id": "mcguffin-01",
+        "stageId": "stage-overseer-office",
+        "label": "Overseer",
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
+      },
+      {
+        "id": "guard-yard-02",
+        "stageId": "stage-outer-yard",
+        "label": "npc guard poorly trained",
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
+      }
+    ],
+    "startingKnowledge": [
+      "destination-is-small-supply-mining-operation",
+      "allied-operative-embedded-here",
+      "operative-communications-stopped",
+      "operative-transmitter-code-known",
+      "PULSED_POWER_I",
+      "ELECTROMAGNETIC_ACCELERATION_I"
+    ],
+    "conversations": [
+      {
+        "id": "dialogue-yard-entry",
+        "stageId": "stage-outer-yard",
+        "npcId": "guard-yard-01",
+        "startNodeId": "yard-entry-guard-line",
+        "firstVisit": 1,
+        "dispositions": [
+          "ROUTINE",
+          "WATCHING"
+        ],
+        "nodes": [
+          {
+            "id": "yard-entry-guard-line",
+            "text": "Visitors check in with Reynolds inside.",
+            "end": false,
+            "effects": [],
+            "responses": [
+              {
+                "id": "yard-ignore",
+                "text": "Continue on.",
+                "source": "NEUTRAL",
+                "profession": null,
+                "minimumTier": 1,
+                "nextNodeId": null,
+                "end": true,
+                "effects": []
+              },
+              {
+                "id": "yard-diplomat-smalltalk",
+                "text": "Busy shift?",
+                "source": "DIPLOMAT",
+                "profession": "DIPLOMAT",
+                "minimumTier": 1,
+                "nextNodeId": "yard-smalltalk-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "ADD_KNOWLEDGE",
+                    "knowledgeId": "reynolds-is-security-supervisor"
+                  },
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 0
+                  }
+                ]
+              },
+              {
+                "id": "yard-diplomat-personal",
+                "text": "Anything unusual happen here lately?",
+                "source": "DIPLOMAT",
+                "profession": "DIPLOMAT",
+                "minimumTier": 1,
+                "nextNodeId": "yard-personal-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 20
+                  }
+                ]
+              },
+              {
+                "id": "yard-soldier-security",
+                "text": "Who is responsible for Gate security?",
+                "source": "SOLDIER",
+                "profession": "SOLDIER",
+                "minimumTier": 1,
+                "nextNodeId": "yard-security-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 25
+                  }
+                ]
+              },
+              {
+                "id": "yard-soldier-press-policy",
+                "text": "Your checkpoint procedure is sloppy. Who authorized this?",
+                "source": "SOLDIER",
+                "profession": "SOLDIER",
+                "minimumTier": 2,
+                "nextNodeId": "yard-policy-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 45
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "yard-smalltalk-answer",
+            "text": "Same as usual. Reynolds handles anyone who needs more than directions.",
+            "end": true,
+            "effects": [],
+            "responses": []
+          },
+          {
+            "id": "yard-personal-answer",
+            "text": "Nothing you need to worry about. Reynolds can answer questions.",
+            "end": true,
+            "effects": [],
+            "responses": []
+          },
+          {
+            "id": "yard-security-answer",
+            "text": "Reynolds. Why?",
+            "end": true,
+            "effects": [],
+            "responses": []
+          },
+          {
+            "id": "yard-policy-answer",
+            "text": "You can take that up with Reynolds.",
+            "end": true,
+            "effects": [
+              {
+                "type": "SET_NPC_DISPOSITION",
+                "instanceId": "guard-yard-01",
+                "value": "SUSPICIOUS"
+              }
+            ],
+            "responses": []
+          }
+        ]
+      },
+      {
+        "id": "dialogue-operative",
+        "stageId": "stage-holding-area",
+        "npcId": "operative-01",
+        "startNodeId": "operative-contact",
+        "firstVisit": 0,
+        "dispositions": [],
+        "onStartEffects": [
+          {
+            "type": "CHANGE_NPC_SUSPICION",
+            "instanceId": "guard-holding-01",
+            "delta": 45,
+            "when": {
+              "instanceId": "guard-holding-01",
+              "field": "combatState",
+              "equals": "NEUTRAL"
+            }
+          },
+          {
+            "type": "ADD_KNOWLEDGE",
+            "knowledgeId": "operative-located"
+          },
+          {
+            "type": "SET_DETECTION_STATE",
+            "instanceId": "operative-01",
+            "value": "LOCATED"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "operative-contact",
+            "text": "Keep your voice down. I can move once the patients are safe or the source is contained. If you clear the yard checkpoint first, I can slip out early.",
+            "end": false,
+            "effects": [],
+            "responses": [
+              {
+                "id": "operative-ready",
+                "text": "Stay put while we make a route to the Gate.",
+                "source": "NEUTRAL",
+                "profession": null,
+                "minimumTier": 1,
+                "nextNodeId": null,
+                "end": true,
+                "effects": [
+                  {
+                    "type": "SET_EVAC_STATE",
+                    "instanceId": "operative-01",
+                    "value": "READY_TO_EVACUATE"
+                  },
+                  {
+                    "type": "ACTIVATE_OBJECTIVE",
+                    "value": "extract-operative"
+                  },
+                  {
+                    "type": "ADD_KNOWLEDGE",
+                    "knowledgeId": "operative-contacted"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "field": {
+      "subjects": [
+        {
+          "id": "operative-01",
+          "stageId": "stage-holding-area",
+          "label": "Injured person",
+          "detection": "HIDDEN",
+          "evacuation": null,
+          "combat": null
+        },
+        {
+          "id": "guard-holding-01",
+          "stageId": "stage-holding-area",
+          "label": "npc guard poorly trained",
+          "detection": "HIDDEN",
+          "evacuation": null,
+          "combat": "NEUTRAL"
+        }
+      ],
+      "doorRecipes": [
+        {
+          "id": "hack-door-mainhall-to-holding",
+          "doorId": "door-mainhall-to-holding",
+          "profession": "TECHNICIAN",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "service": "TECH_SERVICE_I",
+          "chargeCost": 1,
+          "ticks": 1
+        },
+        {
+          "id": "hack-door-mainhall-to-processing",
+          "doorId": "door-mainhall-to-processing",
+          "profession": "TECHNICIAN",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "service": "TECH_SERVICE_I",
+          "chargeCost": 1,
+          "ticks": 1
+        },
+        {
+          "id": "hack-door-processing-to-lab",
+          "doorId": "door-processing-to-lab",
+          "profession": "TECHNICIAN",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "service": "TECH_SERVICE_I",
+          "chargeCost": 1,
+          "ticks": 1
+        }
+      ],
+      "observations": [
+        {
+          "id": "obs-operative-identity",
+          "stageId": "stage-holding-area",
+          "subjectId": "operative-01",
+          "text": "The transmitter code confirms this is the missing operative.",
+          "profession": "UNTRAINED",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "requiresKnowledge": [
+            "operative-transmitter-code-known"
+          ],
+          "revealsFacts": [
+            "operative-located"
+          ],
+          "detection": "LOCATED"
+        }
+      ],
+      "objectives": [
+        {
+          "id": "locate-operative",
+          "initialState": "ACTIVE",
+          "text": "Locate the missing operative.",
+          "detectionSubjectId": "operative-01",
+          "activateOnComplete": "extract-operative"
+        },
+        {
+          "id": "extract-operative",
+          "initialState": "HIDDEN",
+          "text": "Extract the operative.",
+          "detectionSubjectId": null,
+          "activateOnComplete": null
+        }
+      ],
+      "actions": [
+        {
+          "id": "inspect-mining-system",
+          "stageId": "stage-processing",
+          "label": "Inspect mining system",
+          "profession": "TECHNICIAN",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "service": "TECH_SERVICE_I",
+          "chargeCost": 1,
+          "ticks": 1,
+          "effects": [
+            {
+              "type": "SET_INSTANCE_STATE",
+              "field": "inspected",
+              "value": true,
+              "instanceId": "mining-system-01"
+            }
+          ]
+        },
+        {
+          "id": "isolate-mining-power",
+          "stageId": "stage-processing",
+          "label": "Isolate mining power",
+          "profession": "TECHNICIAN",
+          "minimumTier": 2,
+          "minimumPerception": 0,
+          "service": "TECH_SERVICE_II",
+          "chargeCost": 1,
+          "ticks": 1,
+          "effects": [
+            {
+              "type": "SET_INSTANCE_STATE",
+              "instanceId": "mining-system-01",
+              "field": "operational",
+              "value": false
+            },
+            {
+              "type": "SET_INSTANCE_STATE",
+              "instanceId": "mining-system-01",
+              "field": "powerFeedIsolated",
+              "value": true
+            },
+            {
+              "type": "SET_INSTANCE_STATE",
+              "instanceId": "radiation-source-01",
+              "field": "active",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "collect-supply-cache",
+          "stageId": "stage-processing",
+          "label": "Collect Supply cache",
+          "profession": "UNTRAINED",
+          "minimumTier": 0,
+          "minimumPerception": 0,
+          "service": null,
+          "chargeCost": 0,
+          "ticks": 1,
+          "effects": [
+            {
+              "type": "CARRY_TARGET",
+              "instanceId": "supply-cache-01"
+            }
+          ]
+        },
+        {
+          "id": "small-talk-worker-holding",
+          "stageId": "stage-holding-area",
+          "label": "small talk",
+          "outcomeText": "The worker reveals a concealed entrance beside Holding. The hidden store is now accessible.",
+          "profession": "DIPLOMAT",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "service": null,
+          "chargeCost": 0,
+          "ticks": 1,
+          "effects": [],
+          "socialEffects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "instanceId": null,
+              "knowledgeId": "holding-hidden-entrance-known",
+              "value": null,
+              "delta": 0
+            },
+            {
+              "type": "CHANGE_NPC_SUSPICION",
+              "instanceId": "guard-holding-01",
+              "knowledgeId": null,
+              "value": null,
+              "delta": 30,
+              "conditionInstanceId": "guard-holding-01",
+              "conditionField": "combatState",
+              "conditionEquals": "NEUTRAL"
+            }
+          ]
+        },
+        {
+          "id": "inquire-worker-processing",
+          "stageId": "stage-processing",
+          "label": "inquire",
+          "outcomeText": "The worker reveals a hidden safe room behind the Overseer office. Its concealed door is now visible.",
+          "profession": "DIPLOMAT",
+          "minimumTier": 1,
+          "minimumPerception": 0,
+          "service": null,
+          "chargeCost": 0,
+          "ticks": 1,
+          "effects": [],
+          "socialEffects": [
+            {
+              "type": "ADD_KNOWLEDGE",
+              "instanceId": null,
+              "knowledgeId": "office-hidden-safe-known",
+              "value": null,
+              "delta": 0
+            }
+          ],
+          "gate": {
+            "instanceId": "radiation-source-01",
+            "field": "active",
+            "value": false,
+            "initialValue": true
+          }
+        }
+      ]
+    }
+  },
+  "previousTravelFingerprint": "45dfd4a1d4c5c2ec9581d8ecc782d06a7d402e3436074d868b90be81c1637c53",
+  "previousTravelNpcIds": [
+    "guard-yard-01"
+  ],
+  "previousTravelDefinition": {
+    "stages": [
+      {
+        "id": "stage-gate-yard",
+        "name": "Gate Yard",
+        "known": true
+      },
+      {
+        "id": "stage-outer-yard",
+        "name": "Outer Yard",
+        "known": true
+      },
+      {
+        "id": "stage-main-hall",
+        "name": "Main Hall",
+        "known": false
+      }
+    ],
+    "transitions": [
+      {
+        "id": "door-gate-to-yard",
+        "from": "stage-gate-yard",
+        "to": "stage-outer-yard",
+        "initialState": "OPEN"
+      },
+      {
+        "id": "door-yard-to-mainhall",
+        "from": "stage-outer-yard",
+        "to": "stage-main-hall",
+        "initialState": "OPEN"
+      }
+    ],
+    "npcs": [
+      {
+        "id": "guard-yard-01",
+        "stageId": "stage-outer-yard",
+        "label": "npc guard poorly trained",
+        "disposition": "ROUTINE",
+        "suspicion": 0,
+        "hostility": 0
+      }
+    ],
+    "startingKnowledge": [
+      "destination-is-small-supply-mining-operation",
+      "allied-operative-embedded-here",
+      "operative-communications-stopped",
+      "operative-transmitter-code-known",
+      "PULSED_POWER_I",
+      "ELECTROMAGNETIC_ACCELERATION_I"
+    ],
+    "conversations": [
+      {
+        "id": "dialogue-yard-entry",
+        "stageId": "stage-outer-yard",
+        "npcId": "guard-yard-01",
+        "startNodeId": "yard-entry-guard-line",
+        "firstVisit": 1,
+        "dispositions": [
+          "ROUTINE",
+          "WATCHING"
+        ],
+        "nodes": [
+          {
+            "id": "yard-entry-guard-line",
+            "text": "Visitors check in with Reynolds inside.",
+            "end": false,
+            "effects": [],
+            "responses": [
+              {
+                "id": "yard-ignore",
+                "text": "Continue on.",
+                "source": "NEUTRAL",
+                "profession": null,
+                "minimumTier": 1,
+                "nextNodeId": null,
+                "end": true,
+                "effects": []
+              },
+              {
+                "id": "yard-diplomat-smalltalk",
+                "text": "Busy shift?",
+                "source": "DIPLOMAT",
+                "profession": "DIPLOMAT",
+                "minimumTier": 1,
+                "nextNodeId": "yard-smalltalk-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "ADD_KNOWLEDGE",
+                    "knowledgeId": "reynolds-is-security-supervisor"
+                  },
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 0
+                  }
+                ]
+              },
+              {
+                "id": "yard-diplomat-personal",
+                "text": "Anything unusual happen here lately?",
+                "source": "DIPLOMAT",
+                "profession": "DIPLOMAT",
+                "minimumTier": 1,
+                "nextNodeId": "yard-personal-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 20
+                  }
+                ]
+              },
+              {
+                "id": "yard-soldier-security",
+                "text": "Who is responsible for Gate security?",
+                "source": "SOLDIER",
+                "profession": "SOLDIER",
+                "minimumTier": 1,
+                "nextNodeId": "yard-security-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 25
+                  }
+                ]
+              },
+              {
+                "id": "yard-soldier-press-policy",
+                "text": "Your checkpoint procedure is sloppy. Who authorized this?",
+                "source": "SOLDIER",
+                "profession": "SOLDIER",
+                "minimumTier": 2,
+                "nextNodeId": "yard-policy-answer",
+                "end": false,
+                "effects": [
+                  {
+                    "type": "CHANGE_NPC_SUSPICION",
+                    "instanceId": "guard-yard-01",
+                    "delta": 45
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "yard-smalltalk-answer",
+            "text": "Same as usual. Reynolds handles anyone who needs more than directions.",
+            "end": true,
+            "effects": [],
+            "responses": []
+          },
+          {
+            "id": "yard-personal-answer",
+            "text": "Nothing you need to worry about. Reynolds can answer questions.",
+            "end": true,
+            "effects": [],
+            "responses": []
+          },
+          {
+            "id": "yard-security-answer",
+            "text": "Reynolds. Why?",
+            "end": true,
+            "effects": [],
+            "responses": []
+          },
+          {
+            "id": "yard-policy-answer",
+            "text": "You can take that up with Reynolds.",
+            "end": true,
+            "effects": [
+              {
+                "type": "SET_NPC_DISPOSITION",
+                "instanceId": "guard-yard-01",
+                "value": "SUSPICIOUS"
+              }
+            ],
+            "responses": []
+          }
+        ]
+      }
+    ]
+  }
+}

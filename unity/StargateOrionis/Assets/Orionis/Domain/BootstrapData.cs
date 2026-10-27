@@ -58,8 +58,13 @@ namespace Orionis.Domain
     public sealed class BootstrapData
     {
         public ConstructionSetup Construction { get; }
+        public ResourceCargoEconomy CargoEconomy { get; }
+        public ResourceProcessingCatalog ResourceProcessing { get; }
+        public RoomCoreCatalog Cores {get;}
+        public BaseExecutionCatalog Execution {get;}
         public RoomPlanningCatalog Planning { get; }
         public string BaseName { get; }
+        public PersonnelRecoveryRules PersonnelRecovery { get; }
         public IReadOnlyList<RoomInstance> Rooms { get; }
         public IReadOnlyList<UnitSummary> Units { get; }
         public ReceivingCatalog Receiving { get; }
@@ -73,7 +78,7 @@ namespace Orionis.Domain
         public HandlingCatalog Handling { get; }
         public CargoProcessingCatalog Processing { get; }
         public UnitEquipmentCatalog Equipment { get; }
-        public BootstrapData(string baseName, IEnumerable<RoomInstance> rooms, IEnumerable<UnitSummary> units, ReceivingCatalog receiving = null, MissionDefinition mission = null, MissionMapDefinition missionMap = null, CombatDefinition combat = null, CareDefinition care = null, RescueDefinition rescue = null, RoomStorageCatalog storage = null, CargoDefinition cargo = null, HandlingCatalog handling = null, CargoProcessingCatalog processing = null, UnitEquipmentCatalog equipment = null, RoomPlanningCatalog planning = null, ConstructionSetup construction = null)
-        { BaseName = baseName; Rooms = rooms.ToList().AsReadOnly(); Units = units.ToList().AsReadOnly(); Receiving = receiving; Mission = mission; MissionMap = missionMap; Combat = combat; Care = care; Rescue = rescue; Storage = storage; Cargo = cargo; Handling = handling; Processing = processing; Equipment = equipment; Planning = planning; Construction = construction; }
+        public BootstrapData(string baseName, IEnumerable<RoomInstance> rooms, IEnumerable<UnitSummary> units, ReceivingCatalog receiving = null, MissionDefinition mission = null, MissionMapDefinition missionMap = null, CombatDefinition combat = null, CareDefinition care = null, RescueDefinition rescue = null, RoomStorageCatalog storage = null, CargoDefinition cargo = null, HandlingCatalog handling = null, CargoProcessingCatalog processing = null, UnitEquipmentCatalog equipment = null, RoomPlanningCatalog planning = null, ConstructionSetup construction = null, ResourceCargoEconomy cargoEconomy = null, ResourceProcessingCatalog resourceProcessing = null, PersonnelRecoveryRules personnelRecovery = null, RoomCoreCatalog cores = null, BaseExecutionCatalog execution = null)
+        { BaseName = baseName; Rooms = rooms.ToList().AsReadOnly(); Units = units.ToList().AsReadOnly(); Receiving = receiving; Mission = mission; MissionMap = missionMap; Combat = combat; Care = care; Rescue = rescue; Storage = storage; Cargo = cargo; Handling = handling; Processing = processing; Equipment = equipment; Planning = planning; Construction = construction; CargoEconomy = cargoEconomy; ResourceProcessing = resourceProcessing; PersonnelRecovery = personnelRecovery; Cores=cores; Execution=execution; }
     }
 }

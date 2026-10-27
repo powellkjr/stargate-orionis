@@ -21,7 +21,12 @@ namespace Orionis.Domain
         public int Width { get; }
         public int Height { get; }
         public IReadOnlyList<StageFootprint> Stages { get; }
-        public MissionMapDefinition(int width, int height, IEnumerable<StageFootprint> stages)
-        { Width = width; Height = height; Stages = stages.ToList().AsReadOnly(); }
+        public IReadOnlyList<MissionDoorAnchor> Doors {get;}
+        public MissionMapDefinition(int width, int height, IEnumerable<StageFootprint> stages,IEnumerable<MissionDoorAnchor> doors=null)
+        { Width = width; Height = height; Stages = stages.ToList().AsReadOnly();Doors=(doors??Enumerable.Empty<MissionDoorAnchor>()).ToList().AsReadOnly(); }
+    }
+    public sealed class MissionDoorAnchor
+    {
+        public string Id,From,To,FromDirection,ToDirection;public MapCell FromCell,ToCell;public bool Provisional;
     }
 }

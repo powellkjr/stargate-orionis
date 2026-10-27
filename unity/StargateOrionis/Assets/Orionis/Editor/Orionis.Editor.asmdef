@@ -5,7 +5,9 @@
     "Orionis.Domain",
     "Orionis.Application",
     "Orionis.Infrastructure",
-    "Orionis.Presentation"
+    "Orionis.Presentation",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "Unity.RenderPipelines.Core.Runtime"
   ],
   "noEngineReferences": false,
   "includePlatforms": [

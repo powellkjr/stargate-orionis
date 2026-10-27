@@ -24,8 +24,8 @@ namespace Orionis.Presentation
         {
             int completed=order.Bubbles.Count(b=>b.CompletedTick.HasValue);
             title.text="Clear rock "+order.Cell+"   "+completed+"/"+order.Bubbles.Count+" bubbles";
-            phase.text=order.Completed?"COMPLETE / Supply awarded":("UNTRAINED / Maintenance staff / parallel bubbles"+(TerrainClearing.AvailableActors(session.State).Any()?"":" / waiting for available staff"));
-            var fractions=order.Bubbles.Select((b,i)=>(float)b.Ticks/session.State.Base.Construction.ClearingBubbles[i]).ToArray();
+            phase.text=(order.Completed?"COMPLETE":"Maintenance / mixed work")+" / "+order.CreditedSupply.ToString("0.##")+" / "+session.State.Base.Construction.RockSupply.ToString("0.##")+" Supply deposited"+(order.Completed||TerrainClearing.AvailableActors(session.State).Any()?"":" / waiting for available staff");
+            var fractions=order.Bubbles.Select((b,i)=>(float)b.Ticks/TerrainClearing.WorkBubbles(session.State,order)[i].DurationTicks).ToArray();
             var colors=order.Bubbles.Select(b=>b.ActorId==null?Color.white:PrototypeUi.ParseColor(session.State.Base.Units.Single(u=>u.Id==b.ActorId).Color)).ToArray();
             rail.SetSegments(fractions,colors,immediate||order.Completed);
         }
